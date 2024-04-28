@@ -3,7 +3,7 @@ import App from "../App";
 import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
-import IntroductionPage from "../components/IntroductionPage";
+import IntroductionPage from "../components/introduction/IntroductionPage";
 
 function AppRouter() {
     const routes: RouteObject [] = [

@@ -13,7 +13,7 @@ const { pathname } = location;
             <Outlet />
         </SignedIn>
         <SignedOut>
-            /** Vite app signed out **/
+            {/* Vite app signed out */}
             {
                 pathname === "/" ? <Navigate to={Paths.INTRODUCTION} replace={true}/> : null
             }
