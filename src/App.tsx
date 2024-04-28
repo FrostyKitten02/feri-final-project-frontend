@@ -1,13 +1,19 @@
 import {Outlet} from "react-router-dom";
-import {UserButton} from "@clerk/clerk-react";
+import {SignedIn, SignedOut, UserButton} from "@clerk/clerk-react";
+import IntroductionPage from "./components/IntroductionPage";
 
 function App() {
 
   return (
     <div>
-        Vite app
-        <Outlet />
-        <UserButton />
+        <SignedIn>
+            Vite app signed in
+            <UserButton />
+        </SignedIn>
+        <SignedOut>
+            Vite app signed out
+            <Outlet />
+        </SignedOut>
     </div>
   )
 }

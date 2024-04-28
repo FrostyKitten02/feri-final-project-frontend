@@ -3,42 +3,43 @@ import App from "../App";
 import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
-import AuthorizationPage from "../components/authorization/AuthorizationPage";
-import SignOutDemo from "../components/authorization/SignOutDemo";
+import IntroductionPage from "../components/IntroductionPage";
 
 function AppRouter() {
     const routes: RouteObject [] = [
         {
-            path: "auth",
-            element: <AuthorizationPage />,
+            path: "sign-up",
+            element: <SignUpPage/>,
+            errorElement: <ErrorPage />
+        },
+        {
+            path: "/introduction",
+            element: <IntroductionPage />,
+            errorElement: <ErrorPage />
+        },
+        {
+            path: "sign-in",
             errorElement: <ErrorPage />,
+            element: <SignInPage/>,
             children: [
                 {
-                    path: "sign-up",
-                    element: <SignUpPage />,
-                },
-                {
-                    path: "sign-in",
-                    element: <SignInPage />,
-                    children: [
-                        {
-                            path: "factor-one",
-                            element: <SignInPage />,
-                        }
-                    ]
-                },
+                    path: "factor-one",
+                    element: <SignInPage/>,
+                }
             ]
-        }
+        },
+
     ]
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <App />,
-            errorElement: <ErrorPage />,
+            element: <App/>,
+            errorElement: <ErrorPage/>,
             children: routes,
         },
     ]);
 
-    return <RouterProvider router={router} />
+    return <RouterProvider router={router}/>
 }
+
 export default AppRouter;
