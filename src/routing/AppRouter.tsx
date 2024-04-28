@@ -14,11 +14,17 @@ function AppRouter() {
             children: [
                 {
                     path: "sign-up",
-                    element: <SignUpPage />
+                    element: <SignUpPage />,
                 },
                 {
                     path: "sign-in",
-                    element: <SignInPage />
+                    element: <SignInPage />,
+                    children: [
+                        {
+                            path: "factor-one",
+                            element: <SignInPage />,
+                        }
+                    ]
                 }
             ]
         }
