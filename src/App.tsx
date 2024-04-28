@@ -1,4 +1,4 @@
-function RootApp() {
+function App() {
 
   return (
     <div>
@@ -7,4 +7,4 @@ function RootApp() {
   )
 }
 
-export default RootApp;
+export default App;
