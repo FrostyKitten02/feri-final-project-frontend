@@ -4,6 +4,7 @@ import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import AuthorizationPage from "../components/authorization/AuthorizationPage";
+import SignOutDemo from "../components/authorization/SignOutDemo";
 
 function AppRouter() {
     const routes: RouteObject [] = [
@@ -25,7 +26,7 @@ function AppRouter() {
                             element: <SignInPage />,
                         }
                     ]
-                }
+                },
             ]
         }
     ]
