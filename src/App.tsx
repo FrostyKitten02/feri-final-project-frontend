@@ -1,17 +1,22 @@
-import {Outlet} from "react-router-dom";
+import {Navigate, Outlet, useLocation} from "react-router-dom";
 import {SignedIn, SignedOut, UserButton} from "@clerk/clerk-react";
-import IntroductionPage from "./components/IntroductionPage";
+import Paths from "./util/Paths";
 
 function App() {
-
+const location = useLocation();
+const { pathname } = location;
   return (
     <div>
         <SignedIn>
-            Vite app signed in
+           /** Vite app signed in **/
             <UserButton />
+            <Outlet />
         </SignedIn>
         <SignedOut>
-            Vite app signed out
+            /** Vite app signed out **/
+            {
+                pathname === "/" ? <Navigate to={Paths.INTRODUCTION} replace={true}/> : null
+            }
             <Outlet />
         </SignedOut>
     </div>

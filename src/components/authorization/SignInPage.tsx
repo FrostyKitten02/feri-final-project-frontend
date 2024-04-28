@@ -1,4 +1,5 @@
-import { SignIn } from "@clerk/clerk-react";
+import {SignIn} from "@clerk/clerk-react";
+
 
 function SignInPage() {
     return(
@@ -6,7 +7,6 @@ function SignInPage() {
             sign in
             <SignIn path="/sign-in" signUpUrl={import.meta.env.VITE_SIGN_UP_URL}/>
         </div>
-
     )
 };
 

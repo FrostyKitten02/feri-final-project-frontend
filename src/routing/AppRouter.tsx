@@ -13,7 +13,7 @@ function AppRouter() {
             errorElement: <ErrorPage />
         },
         {
-            path: "/introduction",
+            path: "introduction",
             element: <IntroductionPage />,
             errorElement: <ErrorPage />
         },
