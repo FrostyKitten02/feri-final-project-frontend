@@ -4,7 +4,7 @@ import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import AuthorizationPage from "../components/authorization/AuthorizationPage";
-import SignOutDemo from "../components/authorization/SignOutDemo";
+import ProjectMainPage from "../components/main-1/ProjectMainPage";
 
 function AppRouter() {
     const routes: RouteObject [] = [
@@ -27,8 +27,40 @@ function AppRouter() {
                         }
                     ]
                 },
+            ],
+        },
+        {
+            path: "projectId",
+            element: <ProjectMainPage />,
+            errorElement: <ErrorPage />,
+            children: [
+                {
+                    path: "dashboard",
+                    element: <></>
+                },
+                {
+                    path: "team",
+                    element: <></>
+                },
+                {
+                    path: "work-packages",
+                    element: <></>
+                },
+                {
+                    path: "project",
+                    element: <></>
+                }
             ]
-        }
+        },
+        {
+            path: "projects",
+            element: <></>
+        },
+        {
+            path: "profile",
+            element: <></>
+        },
+
     ]
     const router = createBrowserRouter([
         {
