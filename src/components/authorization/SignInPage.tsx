@@ -1,13 +1,11 @@
-import {SignIn} from "@clerk/clerk-react";
-
+import { SignIn } from "@clerk/clerk-react";
 
 function SignInPage() {
-    return(
-        <div className="bg-red-50">
-            sign in
-            <SignIn path="/sign-in" signUpUrl={import.meta.env.VITE_SIGN_UP_URL}/>
-        </div>
-    )
-};
+  return (
+    <div className="flex justify-center items-center w-screen h-screen bg-gradient-to-r from-bg_placeholder1 to-bg_placeholder2">
+      <SignIn path="/sign-in" signUpUrl={import.meta.env.VITE_SIGN_UP_URL} />
+    </div>
+  );
+}
 
 export default SignInPage;

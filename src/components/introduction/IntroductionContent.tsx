@@ -3,13 +3,13 @@ import Paths from "../../util/Paths";
 
 export default function IntroductionContent() {
   return (
-    <div className="flex flex-row ">
-      <div className="flex flex-col w-2/5 h-screen justify-center items-center text-3xl space-y-24">
+    <div className="flex flex-row px-10">
+      <div className="flex flex-col w-2/5 h-screen justify-center items-center text-6xl space-y-24 font-bold">
         <h1>Hero Text 1</h1>
         <h1>Hero Text 2</h1>
         <h1>Hero Text 3</h1>
       </div>
-      <div className="flex flex-col w-3/5 h-screen justify-center items-center space-y-8">
+      <div className="flex flex-col w-3/5 h-screen justify-center items-center space-y-10">
         <div className="">
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -35,7 +35,7 @@ export default function IntroductionContent() {
           qui dolorem eum fugiat quo voluptas nulla pariatur?"
         </div>
         <Link to={Paths.SIGN_UP} className="w-1/2">
-          <div className="p-4 bg-black text-white flex justify-center rounded-lg">
+          <div className="p-4 bg-black text-white flex justify-center rounded-lg font-semibold">
             Sign Up
           </div>
         </Link>
