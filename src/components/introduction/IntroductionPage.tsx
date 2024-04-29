@@ -6,7 +6,7 @@ import IntroductionContent from "./IntroductionContent";
 
 function IntroductionPage() {
   return (
-    <div className="bg-gradient-to-r from-bg_placeholder1 to-bg_placeholder2">
+    <div className="flex flex-col h-screen overflow-auto bg-gradient-to-r from-bg_placeholder1 to-bg_placeholder2">
       <SignedOut>
         <IntroductionHeader />
         <IntroductionContent />
