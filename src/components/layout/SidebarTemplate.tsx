@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import {UserButton, UserProfile} from "@clerk/clerk-react";
+import {UserButton} from "@clerk/clerk-react";
 
 function SidebarTemplate() {
     const [selected, setSelected] = useState<string>(null);
@@ -37,7 +37,6 @@ function SidebarTemplate() {
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }
