@@ -1,0 +1,8 @@
+.slick-slider .slick-dots button:before {
+    font-size: 0.8rem;
+    color: white;
+}
+
+.slick-slider .slick-dots li.slick-active button::before {
+    color: white;
+  }
