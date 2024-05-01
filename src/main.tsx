@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import { ClerkProvider } from '@clerk/clerk-react';
 import AppRouter from "./routing/AppRouter";
 import "./reset-css.css";
+import "./index.css";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
