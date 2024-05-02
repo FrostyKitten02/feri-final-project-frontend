@@ -5,13 +5,17 @@ import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/main-1/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
+import ProjectsOverviewPage from "../components/main-2/ProjectsOverviewPage";
+import MyProjectsPage from "../components/allprojects/MyProjectsPage";
+import AddNewProjectPage from "../components/allprojects/AddNewProjectPage";
+import AssignedToPage from "../components/allprojects/AssignedToPage";
 
 function AppRouter() {
     const routes: RouteObject [] = [
         {
-            path: "sign-up",
-            element: <SignUpPage/>,
-            errorElement: <ErrorPage />
+            path: "sign-up/*",
+            element: <SignUpPage />,
+            errorElement: <ErrorPage />,
         },
         {
             path: "introduction",
@@ -19,15 +23,9 @@ function AppRouter() {
             errorElement: <ErrorPage />
         },
         {
-            path: "sign-in",
+            path: "sign-in/*",
             errorElement: <ErrorPage />,
             element: <SignInPage/>,
-            children: [
-                        {
-                            path: "factor-one",
-                            element: <SignInPage />,
-                        }
-                    ]
         },
         {
             path: "projectId",
@@ -53,8 +51,23 @@ function AppRouter() {
             ]
         },
         {
-            path: "projects",
-            element: <></>
+            path: "projects-overview",
+            element: <ProjectsOverviewPage/>,
+            errorElement: <ErrorPage/>,
+            children: [
+                {
+                    path: "my-projects",
+                    element: <MyProjectsPage />
+                },
+                {
+                    path: "assigned-to",
+                    element: <AssignedToPage/>
+                },
+            ]
+        },
+        {
+            path: "projects-overview/add-new-project",
+            element: <AddNewProjectPage />
         },
         {
             path: "profile",

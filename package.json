@@ -13,10 +13,12 @@
     "@clerk/clerk-react": "^5.0.1",
     "axios": "^1.6.8",
     "cookies": "^0.9.1",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.2.0",
+    "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
     "react-slick": "^0.30.2",
@@ -24,6 +26,7 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "@types/babel__generator": "^7.6.8",
     "@types/babel-generator": "^6.25.8",
     "@types/react": "^18.2.66",

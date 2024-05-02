@@ -6,7 +6,7 @@ function App() {
 const location = useLocation();
 const { pathname } = location;
   return (
-    <div>
+    <div className="bg-gradient-to-r from-bg_placeholder1 to-bg_placeholder2">
         <SignedIn>
            /** Vite app signed in **/
             <UserButton />
