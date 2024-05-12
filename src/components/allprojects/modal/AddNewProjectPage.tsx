@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { useSession } from "@clerk/clerk-react";
-import axios from "axios";
+import axios, { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
+
+import {
+  ProjectControllerApi,
+  CreateProjectRequest,
+} from "../../../../temp_ts/api";
+import { RequestArgs } from "../../../../temp_ts/base";
 
 interface AddNewProjectPageProps {
   handleClose: () => void;
@@ -16,27 +22,32 @@ export default function AddNewProjectPage({
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
+  // variables to get session and cookies
   const session = useSession();
-
   const [cookies] = useCookies(["__session"]);
+
+  // generated client api for project
+  const api = new ProjectControllerApi();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // project object
+    const project: CreateProjectRequest = {
+      title,
+      startDate,
+      endDate,
+    };
+
+    // authorization header
+    const requestArgs: RawAxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${cookies.__session}`,
+      },
+    };
+
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/project",
-        {
-          title,
-          startDate,
-          endDate,
-          ownerId: session.session?.user.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${cookies.__session}`,
-          },
-        }
-      );
+      const response = await api.createProject(project, requestArgs);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -46,27 +57,26 @@ export default function AddNewProjectPage({
   //framer motion
   const dropIn = {
     hidden: {
-      y: "-100vh",
       opacity: 0,
     },
     visible: {
-      y: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 25,
-      }
     },
     exit: {
-      y: "100vh",
       opacity: 0,
-    }
-  } 
+    },
+  };
 
   return (
     <Backdrop onClick={handleClose}>
-      <motion.div className="w-1/2" onClick={(e) => e.stopPropagation()} variants={dropIn} initial="hidden" animate="visible" exit="exit">
+      <motion.div
+        className="w-1/2"
+        onClick={(e) => e.stopPropagation()}
+        variants={dropIn}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
         <div className="flex flex-col bg-white rounded-2xl border-solid border-2 border-gray-200">
           <h1 className="text-black px-16 pt-20 pb-5 font-semibold text-xl">
             Add new project

@@ -115,8 +115,6 @@ export default function MyProjectsPage() {
                 <motion.div
                   key={project.id}
                   className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
                   <div className="border-l-4 border-solid border-rose-500">
                     <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-center items-center">
