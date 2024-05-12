@@ -21,7 +21,7 @@ function AllProjects() {
   return (
     <div className="flex flex-col h-screen px-20 py-20">
       <div className="flex flex-col">
-        <h1 className="flex justify-start items-center w-2/3 font-bold text-3xl">
+        <h1 className="flex justify-start items-center font-bold text-3xl">
           All Projects
         </h1>
         <div className="flex flex-row py-12 space-x-6">

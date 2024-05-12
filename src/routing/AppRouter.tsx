@@ -5,9 +5,9 @@ import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/main-1/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
-import ProjectsOverviewPage from "../components/main-2/AllProjects";
+import ProjectsOverviewPage from "../components/main-2/AllProjectsPage";
 import MyProjectsPage from "../components/allprojects/MyProjectsPage";
-import AddNewProjectPage from "../components/allprojects/AddNewProjectPage";
+import AddNewProjectPage from "../components/allprojects/modal/AddNewProjectPage";
 import AssignedToPage from "../components/allprojects/AssignedToPage";
 
 function AppRouter() {
@@ -64,10 +64,6 @@ function AppRouter() {
                     element: <AssignedToPage/>
                 },
             ]
-        },
-        {
-            path: "all-projects/add-new-project",
-            element: <AddNewProjectPage />
         },
         {
             path: "profile",
