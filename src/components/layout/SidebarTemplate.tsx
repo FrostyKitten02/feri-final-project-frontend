@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
 
 function SidebarTemplate() {
-    const [selected, setSelected] = useState<string>(null);
+    const [selected, setSelected] = useState<string>("");
     const handleSelect = (name: string): void => {
         setSelected(name)
     }
