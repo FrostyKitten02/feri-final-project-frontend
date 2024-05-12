@@ -1,45 +1,43 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import {UserButton, UserProfile} from "@clerk/clerk-react";
+import {UserButton} from "@clerk/clerk-react";
 import * as React from "react";
-import {ListItem, SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
+import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
 import notesIconPath from "../../pictures/icons/notes-icon.svg"
 
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
-    const [selected, setSelected] = useState<string>(null);
+    const [selected, setSelected] = useState<string>('');
     const handleSelect = (name: string): void => {
         setSelected(name);
     }
 
     return (
-        <div className="h-screen py-8 flex items-center min-w-[320px] w-[17%]">
-            <div className="h-full bg-[#B2CDD5] relevant w-full m-5 rounded-[20px] flex flex-col flex-wrap">
-                <div className="w-full h-24 flex flex-row justify-center items-center rounded-t-[20px]">
-                    <img className="h-14" src={notesIconPath} alt="Notes Icon"/>
-                    <div className="text-xl text-center">
-                        PROJECT MANAGER
-                    </div>
+        <div className="h-screen flex items-center min-w-[320px] w-[17%] flex flex-col flex-wrap bg-[#B2CDD5]">
+            <div className="w-full h-24 flex flex-row justify-center items-center">
+                <img className="h-14" src={notesIconPath} alt="Notes Icon"/>
+                <div className="text-xl text-center">
+                    PROJECT MANAGER
                 </div>
-                <div className="pl-6 w-full flex-grow">
-                    {
-                        items.map(item => {
-                            return (
-                                <SidebarItem key={item.name} item={item} handleSelect={handleSelect}
-                                             selected={selected}/>
-                            )
-                        })
-                    }
+            </div>
+            <div className="pl-6 w-full flex-grow">
+                {
+                    items.map(item => {
+                        return (
+                            <SidebarItem key={item.name} item={item} handleSelect={handleSelect}
+                                         selected={selected}/>
+                        )
+                    })
+                }
+            </div>
+            <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
+                <div className="flex px-3 items-center justify-center ">
+                    <UserButton/>
                 </div>
-                <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
-                    <div className="flex px-3 items-center justify-center ">
-                        <UserButton/>
-                    </div>
-                    <div className="flex px-3 flex-col items-center justify-center">
-                        <p>
-                            Ime Priimek
-                        </p>
-                    </div>
+                <div className="flex px-3 flex-col items-center justify-center">
+                    <p>
+                        Ime Priimek
+                    </p>
                 </div>
             </div>
         </div>
@@ -47,7 +45,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected}) => {
-    const select = () => {
+    const select = (): void => {
         handleSelect(item.name);
     }
 
