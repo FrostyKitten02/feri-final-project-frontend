@@ -291,6 +291,12 @@ export interface ProjectDto {
      * @type {string}
      * @memberof ProjectDto
      */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectDto
+     */
     'title'?: string;
     /**
      * 

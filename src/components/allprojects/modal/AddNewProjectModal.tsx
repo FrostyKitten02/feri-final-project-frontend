@@ -5,25 +5,27 @@ import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
 
+import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
+
 import {
   ProjectControllerApi,
   CreateProjectRequest,
 } from "../../../../temp_ts/api";
-import { RequestArgs } from "../../../../temp_ts/base";
 
-interface AddNewProjectPageProps {
+interface AddNewProjectModalProps {
   handleClose: () => void;
+  handleAddProject: () => void;
 }
 
 export default function AddNewProjectPage({
-  handleClose,
-}: AddNewProjectPageProps) {
+  handleClose, handleAddProject
+}: AddNewProjectModalProps) {
   const [title, setTitle] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
   // variables to get session and cookies
-  const session = useSession();
+  // const session = useSession();
   const [cookies] = useCookies(["__session"]);
 
   // generated client api for project
@@ -48,6 +50,10 @@ export default function AddNewProjectPage({
 
     try {
       const response = await api.createProject(project, requestArgs);
+      if (response.status === 201) {
+        handleClose();
+        handleAddProject();
+      }
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -78,13 +84,22 @@ export default function AddNewProjectPage({
         exit="exit"
       >
         <div className="flex flex-col bg-white rounded-2xl border-solid border-2 border-gray-200">
-          <h1 className="text-black px-16 pt-20 pb-5 font-semibold text-xl">
-            Add new project
-          </h1>
-          <div className="px-16 pb-20">
+          <div className="flex flex-row px-8 pt-8 pb-12">
+            <div className="flex w-1/2 jutify-start"> 
+              <h1 className="text-black font-semibold text-xl">
+                Add new project
+              </h1>
+            </div>
+            <div className="flex w-1/2 justify-end">
+              <CloseIcon onClick={handleClose} className="size-6 cursor-pointer fill-gray-500" />
+            </div>
+          </div>
+          <div className="px-16 pb-16">
             <form action="post" className="space-y-8" onSubmit={handleSubmit}>
               <div className="flex flex-col">
-                <label className="text-gray-700 font-bold text-lg">Title</label>
+                <label className="text-gray-700 font-semibold text-lg">
+                  Title
+                </label>
                 <input
                   className="w-1/2 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
                   type="text"
@@ -97,7 +112,7 @@ export default function AddNewProjectPage({
               </div>
               <div className="flex flex-row w-1/2 space-x-8">
                 <div className="flex flex-col w-1/2">
-                  <label className="text-gray-700 font-bold text-lg">
+                  <label className="text-gray-700 font-semibold text-lg">
                     Start date
                   </label>
                   <input
@@ -110,7 +125,7 @@ export default function AddNewProjectPage({
                   />
                 </div>
                 <div className="flex flex-col w-1/2">
-                  <label className="text-gray-700 font-bold text-lg">
+                  <label className="text-gray-700 font-semibold text-lg">
                     End date
                   </label>
                   <input
@@ -125,6 +140,7 @@ export default function AddNewProjectPage({
               </div>
               <div>
                 <button
+                  onClick={handleAddProject}
                   className="px-4 py-2 bg-rose-500 text-white rounded-md"
                   type="submit"
                 >

@@ -1,71 +1,34 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import AddNewProjectPage from "./modal/AddNewProjectPage";
+import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useSession } from "@clerk/clerk-react";
 
-function getMockProject(): Promise<Project[]> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          id: "1",
-          title: "Mock Project 1",
-          ownerId: "mock-owner-id-1",
-          startDate: "2022-01-01",
-          endDate: "2022-12-31",
-        },
-        {
-          id: "2",
-          title: "Mock Project 2",
-          ownerId: "mock-owner-id-1",
-          startDate: "2022-01-01",
-          endDate: "2022-12-31",
-        },
-        {
-          id: "3",
-          title: "Mock Project 3",
-          ownerId: "mock-owner-id-1",
-          startDate: "2022-01-01",
-          endDate: "2022-12-31",
-        },
-        {
-          id: "4",
-          title: "Mock Project 4",
-          ownerId: "mock-owner-id-1",
-          startDate: "2022-01-01",
-          endDate: "2022-12-31",
-        },
-        {
-          id: "5",
-          title: "Mock Project 5",
-          ownerId: "mock-owner-id-1",
-          startDate: "2022-01-01",
-          endDate: "2022-12-31",
-        },
-        {
-          id: "6",
-          title: "Mock Project 6",
-          ownerId: "mock-owner-id-1",
-          startDate: "2022-01-01",
-          endDate: "2022-12-31",
-        },
-      ]);
-    }, 1000); // Delay of 1 second
-  });
-}
+import RightChevron from "../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
+import LeftChevron from "../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
 
-interface Project {
-  id: string;
-  title: string;
-  ownerId: string;
-  startDate: string;
-  endDate: string;
-}
+import {
+  ProjectControllerApi,
+  PageInfoRequest,
+  ProjectSortInfoRequest,
+  ProjectListSearchParams,
+  ListProjectResponse,
+} from "../../../temp_ts/api";
+import { RawAxiosRequestConfig } from "axios";
+import { useCookies } from "react-cookie";
 
 export default function MyProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<ListProjectResponse>();
+
+  // last page and pageNumber state tracking
+  const [lastPage, setLastPage] = useState<boolean>(true);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+
+  // generated client api for project
+  const api = new ProjectControllerApi();
+
+  const [cookies] = useCookies(["__session"]);
 
   // framer motion modal states and functions
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -78,12 +41,74 @@ export default function MyProjectsPage() {
     setModalOpen(true);
   };
 
-  // mock projects
+  // retrieve project list
+  // next and previous page functions
+  const nextPage = () => {
+    const newPageNumber = pageNumber + 1;
+    setPageNumber(newPageNumber);
+    fetchProjects(newPageNumber);
+  };
+
+  const prevPage = () => {
+    const newPageNumber = pageNumber > 1 ? pageNumber - 1 : 1;
+    setPageNumber(newPageNumber);
+    fetchProjects(newPageNumber);
+  };
+
+  // request parameters
+  const sortInfo: ProjectSortInfoRequest = {
+    ascending: true,
+    fields: ["CREATED_AT"],
+  };
+
+  const requestArgs: RawAxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${cookies.__session}`,
+    },
+  };
+
+  // fetch projects on initial render
   useEffect(() => {
-    getMockProject().then((projects: Project[]) => setProjects(projects));
+    try {
+      fetchProjects(1);
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
-  if (!projects.length) {
+  // fetch projects
+  const fetchProjects = async (pageNum: number) => {
+    // dynamically set pageNumber
+    const pageInfo: PageInfoRequest = {
+      elementsPerPage: 8,
+      pageNumber: pageNum,
+    };
+
+    try {
+      const response = await api.listProjects(
+        pageInfo,
+        sortInfo,
+        undefined,
+        requestArgs
+      );
+      if (response.data.projects) {
+        setProjects(response.data);
+        console.log(response.data);
+        if (response.data.pageInfo?.lastPage === true) {
+          setLastPage(true);
+        } else {
+          setLastPage(false);
+        }
+      } else {
+        // handle the case when projects is undefined
+        console.error("Projects is undefined");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (!projects?.projects?.length) {
     return (
       <div className="flex justify-center items-center pt-60 font-bold text-3xl">
         Loading projects...
@@ -93,7 +118,14 @@ export default function MyProjectsPage() {
 
   return (
     <div>
-      <div>{modalOpen && <AddNewProjectPage handleClose={close} />}</div>
+      <div>
+        {modalOpen && (
+          <AddNewProjectPage
+            handleClose={close}
+            handleAddProject={() => fetchProjects(pageNumber)}
+          />
+        )}
+      </div>
       <div className="flex flex-col pt-12 px-8 border-2 border-solid rounded-2xl border-gray-200">
         <div className="flex flex-row">
           <h1 className="flex justify-start items-center w-2/3 font-bold text-2xl">
@@ -110,16 +142,16 @@ export default function MyProjectsPage() {
         </div>
         <div className="flex flex-col py-12">
           <div className="grid grid-cols-4 gap-x-12 gap-y-12">
-            {projects.map((project) => (
+            {projects.projects.map((project) => (
               <Link to={""}>
                 <motion.div
                   key={project.id}
                   className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
                 >
                   <div className="border-l-4 border-solid border-rose-500">
-                    <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-center items-center">
+                    <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
                       <p className="font-semibold italic text-gray-700 text-sm">
-                        ID: {project.id}
+                        ID: {project.id?.slice(0, 8)}...{project.id?.slice(-4)}
                       </p>
                     </div>
                     <h1 className="font-bold pl-4 text-xl">{project.title}</h1>
@@ -137,6 +169,35 @@ export default function MyProjectsPage() {
                 </motion.div>
               </Link>
             ))}
+          </div>
+        </div>
+        <div className="flex flex-row pb-12">
+          <div className="flex w-1/3 justify-start font-semibold">
+            {pageNumber !== 1 && (
+              <button onClick={prevPage}>
+                <div className="flex flex-row">
+                  <LeftChevron className="size-6 fill-gray-700" />
+                  <p>Previous page</p>
+                </div>
+              </button>
+            )}
+          </div>
+          <div className="flex w-1/3 justify-center">
+            <p className="font-semibold text-gray-700">
+              Page {pageNumber}
+            </p>
+          </div>
+          <div className="flex w-1/3 justify-end font-semibold">
+            {!lastPage && (
+              <div>
+                <button onClick={nextPage}>
+                  <div className="flex flex-row">
+                    <p>Next page</p>
+                    <RightChevron className="size-6 fill-gray-700" />
+                  </div>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
