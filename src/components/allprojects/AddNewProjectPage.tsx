@@ -4,9 +4,9 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 
 export default function AddNewProjectPage() {
-  const [title, setTitle] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const session = useSession();
 

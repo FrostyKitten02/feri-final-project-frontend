@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import AddNewProjectPage from "./AddNewProjectPage";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useSession } from "@clerk/clerk-react";
 
 function getMockProject(): Promise<Project[]> {
   return new Promise((resolve) => {
@@ -78,29 +80,50 @@ export default function MyProjectsPage() {
   }
 
   return (
-    <div className="flex flex-col px-20 py-20">
-      <div>
-        <h1 className="font-bold text-3xl">My Projects</h1>
-      </div>
-      <div className="flex flex-col py-20">
-        <div className="w-1/6">
-          <Link to="/projects-overview/add-new-project">
-            <div className="flex justify-center items-center bg-[#0E1428]/40 text-white shadow-lg rounded-lg mb-20 h-20 space-x-6">
-              <p className="font-semibold text-3xl">+</p>
-              <p className="font-semibold text-xl">Add new project</p>
+    <div className="flex flex-col pt-12 px-8 border-2 border-solid rounded-2xl border-gray-200">
+      <div className="flex flex-row">
+        <h1 className="flex justify-start items-center w-2/3 font-bold text-2xl">
+          Overview
+        </h1>
+        <div className="flex w-1/3 justify-end">
+          <Link to="/all-projects/add-new-project">
+            <div className="flex justify-center items-center bg-rose-500 text-white rounded-lg h-12 space-x-4 w-52">
+              <p className="font-semibold text-2xl">+</p>
+              <p className="font-semibold text-lg">Add new project</p>
             </div>
           </Link>
         </div>
-        <div className="grid grid-cols-3 gap-10 w-full">
+      </div>
+      <div className="flex flex-col py-12">
+        <div className="grid grid-cols-4 gap-x-12 gap-y-12">
           {projects.map((project) => (
-            <div
-              key={project.id}
-              className="flex flex-col bg-white/30 justify-center px-10 h-32 rounded-lg border border-gray-300 shadow-lg"
-            >
-              <h1 className="font-semibold">{project.title}</h1>
-              <p>Start: {project.startDate}</p>
-              <p>End: {project.endDate}</p>
-            </div>
+            <Link to={""}>
+              <motion.div
+                key={project.id}
+                className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <div className="border-l-4 border-solid border-rose-500">
+                  <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-center items-center">
+                    <p className="font-semibold italic text-gray-700 text-sm">
+                      ID: {project.id}
+                    </p>
+                  </div>
+                  <h1 className="font-bold pl-4 text-xl">{project.title}</h1>
+                </div>
+                <div className="flex flex-row pt-4">
+                  <div className="w-1/2">
+                    <p className="font-semibold text-gray-700">Start:</p>
+                    <p className="font-semibold">{project.startDate}</p>
+                  </div>
+                  <div className="w-1/2">
+                    <p className="font-semibold text-gray-700">End:</p>
+                    <p className="font-semibold">{project.endDate}</p>
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </div>
