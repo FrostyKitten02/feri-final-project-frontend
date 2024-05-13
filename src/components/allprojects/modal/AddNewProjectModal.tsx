@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { useSession } from "@clerk/clerk-react";
-import axios, { RawAxiosRequestConfig } from "axios";
+import axios, { AxiosError, RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
+import { Bounce, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// toast functions import
+import {
+  toastWarning,
+  toastSuccess,
+  toastError,
+} from "../../toastModals/ToastFunctions";
 
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 
@@ -17,8 +26,25 @@ interface AddNewProjectModalProps {
   handleAddProject: () => void;
 }
 
+// validation function that returns a boolean
+const validateForm = (
+  title: string,
+  startDate: string,
+  endDate: string
+): boolean => {
+  if (title === "" || startDate === "" || endDate === "") {
+    toastWarning("Please fill in all fields!");
+    return false;
+  } else if (startDate > endDate) {
+    toastWarning("End date cannot be before start date!");
+    return false;
+  }
+  return true;
+};
+
 export default function AddNewProjectPage({
-  handleClose, handleAddProject
+  handleClose,
+  handleAddProject,
 }: AddNewProjectModalProps) {
   const [title, setTitle] = useState<string>("");
   const [startDate, setStartDate] = useState<string>("");
@@ -31,8 +57,12 @@ export default function AddNewProjectPage({
   // generated client api for project
   const api = new ProjectControllerApi();
 
+  // form submit function
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // validation call
+    if (!validateForm(title, startDate, endDate)) return;
 
     // project object
     const project: CreateProjectRequest = {
@@ -53,10 +83,14 @@ export default function AddNewProjectPage({
       if (response.status === 201) {
         handleClose();
         handleAddProject();
+        toastSuccess(
+          `Project with id ${response.data.id} was successfully created!`
+        );
       }
       console.log(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      toastError(`An error has occured: ${error.message}`)
     }
   };
 
@@ -85,13 +119,16 @@ export default function AddNewProjectPage({
       >
         <div className="flex flex-col bg-white rounded-2xl border-solid border-2 border-gray-200">
           <div className="flex flex-row px-8 pt-8 pb-12">
-            <div className="flex w-1/2 jutify-start"> 
+            <div className="flex w-1/2 jutify-start">
               <h1 className="text-black font-semibold text-xl">
                 Add new project
               </h1>
             </div>
             <div className="flex w-1/2 justify-end">
-              <CloseIcon onClick={handleClose} className="size-6 cursor-pointer fill-gray-500" />
+              <CloseIcon
+                onClick={handleClose}
+                className="size-6 cursor-pointer fill-gray-500 hover:fill-gray-700"
+              />
             </div>
           </div>
           <div className="px-16 pb-16">
@@ -140,7 +177,6 @@ export default function AddNewProjectPage({
               </div>
               <div>
                 <button
-                  onClick={handleAddProject}
                   className="px-4 py-2 bg-rose-500 text-white rounded-md"
                   type="submit"
                 >

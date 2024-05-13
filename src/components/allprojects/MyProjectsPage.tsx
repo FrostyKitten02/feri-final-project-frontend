@@ -8,6 +8,13 @@ import { useSession } from "@clerk/clerk-react";
 import RightChevron from "../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
 import LeftChevron from "../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
 
+// toast functions import
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../toastModals/ToastFunctions";
+
 import {
   ProjectControllerApi,
   PageInfoRequest,
@@ -20,6 +27,7 @@ import { useCookies } from "react-cookie";
 
 export default function MyProjectsPage() {
   const [projects, setProjects] = useState<ListProjectResponse>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // last page and pageNumber state tracking
   const [lastPage, setLastPage] = useState<boolean>(true);
@@ -67,14 +75,17 @@ export default function MyProjectsPage() {
     },
   };
 
-  // fetch projects on initial render
+  // fetch projects on initial render and set the loading state
   useEffect(() => {
     try {
-      fetchProjects(1);
-    } catch (error) {
-      console.error(error);
+      setIsLoading(true);
+      fetchProjects(pageNumber)
+        .then(() => setIsLoading(false))
+        .catch(() => setIsLoading(false));
+    } catch (error: any) {
+      toastError(error);
     }
-  }, []);
+  }, [pageNumber]);
 
   // fetch projects
   const fetchProjects = async (pageNum: number) => {
@@ -99,22 +110,12 @@ export default function MyProjectsPage() {
         } else {
           setLastPage(false);
         }
-      } else {
-        // handle the case when projects is undefined
-        console.error("Projects is undefined");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      toastError(error);
     }
   };
-
-  if (!projects?.projects?.length) {
-    return (
-      <div className="flex justify-center items-center pt-60 font-bold text-3xl">
-        Loading projects...
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -141,35 +142,52 @@ export default function MyProjectsPage() {
           </div>
         </div>
         <div className="flex flex-col py-12">
-          <div className="grid grid-cols-4 gap-x-12 gap-y-12">
-            {projects.projects.map((project) => (
-              <Link to={""}>
-                <motion.div
-                  key={project.id}
-                  className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
-                >
-                  <div className="border-l-4 border-solid border-rose-500">
-                    <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
-                      <p className="font-semibold italic text-gray-700 text-sm">
-                        ID: {project.id?.slice(0, 8)}...{project.id?.slice(-4)}
-                      </p>
+          {isLoading ? ( // project fetch check (this ensures that projects are either fetched or not fetched before continuing the checks)
+            <div className="flex flex-col justify-center items-center font-bold text-3xl">
+              <h1>Loading projects...</h1>
+            </div>
+          ) : projects && projects.projects && projects.projects.length > 0 ? ( // check if project length is > 0; if it is map projects in a grid
+            <div className="grid grid-cols-4 gap-x-12 gap-y-12">
+              {projects.projects.map((project) => (
+                <Link to={""}>
+                  <motion.div
+                    key={project.id}
+                    className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
+                  >
+                    <div className="border-l-4 border-solid border-rose-500">
+                      <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
+                        <p className="font-semibold italic text-gray-700 text-sm">
+                          ID: {project.id?.slice(0, 8)}...
+                          {project.id?.slice(-4)}
+                        </p>
+                      </div>
+                      <h1 className="font-bold pl-4 text-xl">
+                        {project.title}
+                      </h1>
                     </div>
-                    <h1 className="font-bold pl-4 text-xl">{project.title}</h1>
-                  </div>
-                  <div className="flex flex-row pt-4">
-                    <div className="w-1/2">
-                      <p className="font-semibold text-gray-700">Start:</p>
-                      <p className="font-semibold">{project.startDate}</p>
+                    <div className="flex flex-row pt-4">
+                      <div className="w-1/2">
+                        <p className="font-semibold text-gray-700">Start:</p>
+                        <p className="font-semibold">{project.startDate}</p>
+                      </div>
+                      <div className="w-1/2">
+                        <p className="font-semibold text-gray-700">End:</p>
+                        <p className="font-semibold">{project.endDate}</p>
+                      </div>
                     </div>
-                    <div className="w-1/2">
-                      <p className="font-semibold text-gray-700">End:</p>
-                      <p className="font-semibold">{project.endDate}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            // if no projects are found for the user in the database, display this message
+            <div className="flex flex-col justify-center items-center font-bold text-3xl space-y-4">
+              <h1>No projects found...</h1>
+              <p className="text-base text-gray-700">
+                Click the "Add new project" button to create a new project.
+              </p>
+            </div>
+          )}
         </div>
         <div className="flex flex-row pb-12">
           <div className="flex w-1/3 justify-start font-semibold">
@@ -183,9 +201,7 @@ export default function MyProjectsPage() {
             )}
           </div>
           <div className="flex w-1/3 justify-center">
-            <p className="font-semibold text-gray-700">
-              Page {pageNumber}
-            </p>
+            <p className="font-semibold text-gray-700">Page {pageNumber}</p>
           </div>
           <div className="flex w-1/3 justify-end font-semibold">
             {!lastPage && (

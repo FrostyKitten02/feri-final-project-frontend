@@ -2,11 +2,15 @@ import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function AllProjects() {
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState<string>("my-projects");
+
+  useEffect(() => {
+    navigate("my-projects");
+  }, []);
 
   const goToMyProjects = () => {
     navigate("my-projects");
