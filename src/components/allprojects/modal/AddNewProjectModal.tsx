@@ -10,6 +10,7 @@ import {toastError, toastSuccess, toastWarning,} from "../../toastModals/ToastFu
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 
 import {CreateProjectRequest, ProjectControllerApi,} from "../../../../temp_ts/api";
+import RequestUtil from "../../../util/RequestUtil";
 
 interface AddNewProjectModalProps {
   handleClose: () => void;
@@ -62,11 +63,7 @@ export default function AddNewProjectPage({
     };
 
     // authorization header
-    const requestArgs: RawAxiosRequestConfig = {
-      headers: {
-        Authorization: `Bearer ${cookies.__session}`,
-      },
-    };
+    const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
 
     try {
       const response = await api.createProject(project, requestArgs);

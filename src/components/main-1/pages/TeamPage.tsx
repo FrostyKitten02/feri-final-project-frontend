@@ -9,6 +9,7 @@ import {toastError, toastSuccess } from "../../toastModals/ToastFunctions";
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import { AddPersonToProjectRequest, ProjectControllerApi } from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
+import RequestUtil from "../../../util/RequestUtil";
 
 const employeelist = [
   { name: "Alen Fridau", id: "003fe51c-bd83-410c-86e7-615c424174d2" },
@@ -41,11 +42,7 @@ export default function TeamPage() {
       personId: selectedEmployee.id,
     };
 
-    const requestArgs: RawAxiosRequestConfig = {
-      headers: {
-        Authorization: `Bearer ${cookies.__session}`,
-      },
-    };
+    const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
 
     try {
       if (projectId) {
