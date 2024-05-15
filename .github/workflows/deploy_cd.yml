@@ -15,12 +15,17 @@ jobs:
         with:
           node-version: 20.0.0
 
-      - name: create env file
+      - name: Create .env file
+        uses: ozaytsev86/create-env-file@v1
+        with:
+            ENV_VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+            ENV_VITE_BACKEND_BASE_URL: ${{ secrets.VITE_BACKEND_BASE_URL }}
+
+      - name: SEE ENV FILE
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
-          touch .env
-          echo -e $ENV_FILE >> .env
+          echo | cat .env
 
       - name: install-dependencies-and-build
         run: |
