@@ -46,7 +46,7 @@ export default function AddNewProjectPage({
   const [cookies] = useCookies(["__session"]);
 
   // generated client api for project
-  const api = new ProjectControllerApi();
+  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
 
   // form submit function
   const handleSubmit = async (e: React.FormEvent) => {

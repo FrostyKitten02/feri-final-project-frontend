@@ -18,7 +18,7 @@ const employeelist = [
 ];
 
 export default function TeamPage() {
-  const api = new ProjectControllerApi();
+  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
   const { projectId } = useParams();
   const [cookies] = useCookies(["__session"]);
 

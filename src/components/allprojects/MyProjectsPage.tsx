@@ -34,7 +34,7 @@ export default function MyProjectsPage() {
   //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
 
   // generated client api for project
-  const api = new ProjectControllerApi();
+  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
 
   const [cookies] = useCookies(["__session"]);
 
