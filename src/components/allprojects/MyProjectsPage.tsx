@@ -16,6 +16,7 @@ import {
 import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import RequestUtil from "../../util/RequestUtil";
 
 export default function MyProjectsPage() {
   const navigate = useNavigate();
@@ -77,11 +78,7 @@ export default function MyProjectsPage() {
     fields: ["CREATED_AT"],
   };
 
-  const requestArgs: RawAxiosRequestConfig = {
-    headers: {
-      Authorization: `Bearer ${cookies.__session}`,
-    },
-  };
+  const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
   // fetch projects
   const fetchProjects = async (

@@ -13,6 +13,7 @@ import {
   ProjectDto,
 } from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function DashboardPage() {
   const { projectId } = useParams();
@@ -27,11 +28,7 @@ export default function DashboardPage() {
   }, []);
 
   const fetchProjectDetails = async () => {
-    const requestArgs: RawAxiosRequestConfig = {
-      headers: {
-        Authorization: `Bearer ${cookies.__session}`,
-      },
-    };
+    const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
 
     try {
       if (projectId) {
