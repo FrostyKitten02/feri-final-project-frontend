@@ -20,7 +20,7 @@ export default function DashboardPage() {
   const [projectDetails, setProjectDetails] = useState<ProjectDto>();
   //const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const api = new ProjectControllerApi();
+  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
   const [cookies] = useCookies(["__session"]);
 
   useEffect(() => {

@@ -15,17 +15,10 @@ jobs:
         with:
           node-version: 20.0.0
 
-      - name: create env file
-        env:
-          ENV_FILE: ${{ secrets.ENV_FILE }}
-        run: |
-          touch .env
-          echo $ENV_FILE >> .env
-
       - name: install-dependencies-and-build
         run: |
           npm install
-          CI=false npm run build
+          CI=false npm run build-testing
 
       - name: deploy
         uses: appleboy/scp-action@v0.1.7
