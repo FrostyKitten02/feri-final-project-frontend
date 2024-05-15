@@ -15,19 +15,10 @@ jobs:
         with:
           node-version: 20.0.0
 
-      - name: Crete env file
-        env:
-          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
-          VITE_BACKEND_BASE_URL: ${{ secrets.VITE_BACKEND_BASE_URL }}
-        run: |
-          touch .env
-          echo $VITE_CLERK_PUBLISHABLE_KEY >> .env
-          echo $VITE_BACKEND_BASE_URL >> .env
-
       - name: install-dependencies-and-build
         run: |
           npm install
-          CI=false npm run build
+          CI=false npm run build-testing
 
       - name: deploy
         uses: appleboy/scp-action@v0.1.7
