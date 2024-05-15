@@ -1,5 +1,5 @@
-import RightChevron from "../../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
-import LeftChevron from "../../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
+import RightChevron from "../../../../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
+import LeftChevron from "../../../../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
 
 interface PaginationProps {
   pageNumber: number;
@@ -33,7 +33,7 @@ export default function Pagination(props: PaginationProps) {
       <div className="flex w-1/3 justify-center">
         {/*<p className="font-semibold text-gray-700">Page {props.pageNumber}</p>*/}
         {pagesArray.map((page) => (
-          <div className="flex flex-row px-2">
+          <div className="flex flex-row px-2" key={page}>
             <button onClick={() => props.onPageChange(page)}>{page}</button>
           </div>
         ))}

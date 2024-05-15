@@ -9,8 +9,8 @@ const { pathname } = location;
   return (
     <div>
         <SignedIn>
-           /** Vite app signed in **/
-            <UserButton />
+           {/** Vite app signed in **/
+            /*<UserButton />*/}
             <Outlet />
         </SignedIn>
         <SignedOut>

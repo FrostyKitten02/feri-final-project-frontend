@@ -1,22 +1,22 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
 
 import Pagination from "./pagination/Pagination";
 
 // toast functions import
-import {toastError,} from "../toastModals/ToastFunctions";
+import { toastError } from "../../../toastModals/ToastFunctions";
 
 import {
   ProjectControllerApi,
   PageInfoRequest,
   ProjectSortInfoRequest,
   ListProjectResponse,
-} from "../../../temp_ts/api";
+} from "../../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import RequestUtil from "../../util/RequestUtil";
+import RequestUtil from "../../../../util/RequestUtil";
 
 export default function MyProjectsPage() {
   const navigate = useNavigate();
@@ -78,11 +78,12 @@ export default function MyProjectsPage() {
     fields: ["CREATED_AT"],
   };
 
-  const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
+  const requestArgs: RawAxiosRequestConfig =
+    RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
   // fetch projects
   const fetchProjects = async (
-    pageNum: number,
+    pageNum: number
     // ascending: boolean,
     // fields: string[]
   ) => {
@@ -101,7 +102,7 @@ export default function MyProjectsPage() {
       );
       if (response.status === 200 && response.data) {
         setProjects(response.data);
-        console.log(response.data);
+        //console.log(response.data);
         if (response.data.pageInfo?.lastPage === true) {
           // check if last page and set state accordingly
           setLastPage(true);
@@ -164,13 +165,11 @@ export default function MyProjectsPage() {
             <div className="grid grid-cols-4 gap-x-12 gap-y-12">
               {projects.projects.map((project) => (
                 <div
+                  key={project.id}
                   className="cursor-pointer"
                   onClick={() => navigate(`/project-details/${project.id}`)} // navigate to project details page and pass project id as a parameter
                 >
-                  <motion.div
-                    key={project.id}
-                    className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
-                  >
+                  <motion.div className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box">
                     <div className="border-l-4 border-solid border-rose-500">
                       <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
                         <p className="font-semibold italic text-gray-700 text-sm">
@@ -211,7 +210,7 @@ export default function MyProjectsPage() {
           lastPage={lastPage}
           totalPages={totalPages}
           onPageChange={(newPageNumber) =>
-            fetchProjects(newPageNumber, /*ascending, fields*/)
+            fetchProjects(newPageNumber /*ascending, fields*/)
           }
           nextPage={nextPage}
           prevPage={prevPage}

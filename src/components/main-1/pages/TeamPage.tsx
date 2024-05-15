@@ -60,7 +60,7 @@ export default function TeamPage() {
   }
 
   return (
-    <div className="flex w-screen h-full">
+    <div className="flex w-full h-full">
       <div className="flex flex-col h-full px-20 py-20 w-full">
         <div className="flex flex-row py-6">
           <div className="flex justify-start w-2/3 items-center">

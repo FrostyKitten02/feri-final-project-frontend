@@ -5,11 +5,12 @@ import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/main-1/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
-import ProjectsOverviewPage from "../components/main-2/AllProjectsPage";
-import MyProjectsPage from "../components/allprojects/MyProjectsPage";
-import AssignedToPage from "../components/allprojects/AssignedToPage";
+import ProjectsOverviewPage from "../components/main-2/pages/allprojects/AllProjectsPage";
+import MyProjectsPage from "../components/main-2/pages/allprojects/MyProjectsPage";
+import AssignedToPage from "../components/main-2/pages/allprojects/AssignedToPage";
 import TeamPage from "../components/main-1/pages/TeamPage";
 import DashboardPage from "../components/main-1/pages/DashboardPage";
+import AppMainPage from "../components/main-2/AppMainPage";
 
 function AppRouter() {
     const routes: RouteObject [] = [
@@ -52,17 +53,23 @@ function AppRouter() {
             ]
         },
         {
-            path: "all-projects",
-            element: <ProjectsOverviewPage/>,
-            errorElement: <ErrorPage/>,
+            path: "home-page",
+            element: <AppMainPage />,
             children: [
                 {
-                    path: "my-projects",
-                    element: <MyProjectsPage />
-                },
-                {
-                    path: "assigned-to",
-                    element: <AssignedToPage/>
+                    path: "all-projects",
+                    element: <ProjectsOverviewPage/>,
+                    errorElement: <ErrorPage/>,
+                    children: [
+                        {
+                            path: "my-projects",
+                            element: <MyProjectsPage />
+                        },
+                        {
+                            path: "assigned-to",
+                            element: <AssignedToPage/>
+                        },
+                    ]
                 },
             ]
         },

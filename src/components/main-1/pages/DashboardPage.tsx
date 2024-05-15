@@ -47,7 +47,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex w-screen h-full">
+    <div className="flex w-full h-full">
       <div className="flex flex-col h-full px-20 py-20 w-full">
         <h1 className="flex justify-start items-center font-bold text-3xl py-6">
           Dashboard
