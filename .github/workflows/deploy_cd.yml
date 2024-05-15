@@ -15,22 +15,15 @@ jobs:
         with:
           node-version: 20.0.0
 
-
-      - name: delete env file
-        run: |
-          rm -f .env
-
-      - name: Create .env file
-        uses: ozaytsev86/create-env-file@v1
-        with:
-            ENV_VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
-            ENV_VITE_BACKEND_BASE_URL: ${{ secrets.VITE_BACKEND_BASE_URL }}
-
-      - name: SEE ENV FILE
+      - name: Crete env file
         env:
-          ENV_FILE: ${{ secrets.ENV_FILE }}
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_BACKEND_BASE_URL: ${{ secrets.VITE_BACKEND_BASE_URL }}
         run: |
-          echo | cat .env
+          rm -r .env
+          touch .env
+          echo $VITE_CLERK_PUBLISHABLE_KEY >> .env
+          echo $VITE_BACKEND_BASE_URL >> .env
 
       - name: install-dependencies-and-build
         run: |
