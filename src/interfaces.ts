@@ -1,7 +1,8 @@
 import * as React from "react";
 
 export interface SidebarTemplateProps {
-    items: ListItem []
+    items: ListItem [],
+    return
 }
 
 export interface ListItem {
@@ -14,5 +15,6 @@ export interface ListItem {
 export interface SidebarItemProps {
     item: ListItem,
     handleSelect: (name: string) => void,
-    selected: string
+    selected: string,
+    opened: boolean
 }

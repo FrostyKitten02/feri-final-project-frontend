@@ -3,29 +3,41 @@ import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
 import * as React from "react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
-import notesIconPath from "../../pictures/icons/notes-icon.svg"
+import hamburgerIconPath from "../../pictures/icons/hamburger-icon.svg";
+import {motion} from "framer-motion";
 
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
     const [selected, setSelected] = useState<string>('');
-    const handleSelect = (name: string): void => {
-        setSelected(name);
-    }
+    const [opened, setOpened] = useState<boolean>(true);
+
+    const toggle = () => setOpened(!opened);
+    const handleSelect = (name: string): void => setSelected(name);
+
 
     return (
-        <div className="h-screen flex items-center min-w-[320px] w-[17%] flex flex-col flex-wrap bg-[#B2CDD5]">
-            <div className="w-full h-24 flex flex-row justify-center items-center">
-                <img className="h-14" src={notesIconPath} alt="Notes Icon"/>
-                <div className="text-xl text-center">
-                    PROJECT MANAGER
-                </div>
+        <motion.div animate={{width: opened ? "20%" : "6%"}}
+                    initial={{width: "20%"}}
+                    transition={{duration: 0.4}}
+                    className="h-full flex items-center flex flex-col flex-wrap bg-[#B2CDD5]">
+            <div
+                className={opened ? `w-full py-5 pr-3 flex fley-row items-center justify-end` : `w-full py-5 flex fley-row items-center justify-center`}>
+                {
+                    opened &&
+                    <div className="text-xl text-center w-full">
+                        PROJECT MANAGER
+                    </div>
+                }
+                <button onClick={toggle}>
+                    <img className="h-14" src={hamburgerIconPath}/>
+                </button>
             </div>
             <div className="pl-6 w-full flex-grow">
                 {
                     items.map(item => {
                         return (
                             <SidebarItem key={item.name} item={item} handleSelect={handleSelect}
-                                         selected={selected}/>
+                                         selected={selected} opened={opened}/>
                         )
                     })
                 }
@@ -34,17 +46,20 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
                 <div className="flex px-3 items-center justify-center ">
                     <UserButton/>
                 </div>
-                <div className="flex px-3 flex-col items-center justify-center">
-                    <p>
-                        Ime Priimek
-                    </p>
-                </div>
+                {
+                    opened &&
+                    <div className="flex px-3 flex-col items-center justify-center">
+                        <p>
+                            Ime Priimek
+                        </p>
+                    </div>
+                }
             </div>
-        </div>
+        </motion.div>
     )
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected}) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected, opened}) => {
     const select = (): void => {
         handleSelect(item.name);
     }
@@ -53,10 +68,13 @@ const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected})
         <Link onClick={select} to={item.linkPath}>
             <div
                 className={selected === item.name ? "flex flex-row items-center tracking-wider bg-white py-3 rounded-l-full" : "flex flex-row items-center tracking-wider bg-transparent py-3 hover:bg-white hover:rounded-l-full"}>
-                <img className="h-9 pl-3" src={item.iconPath} alt={item.alt}/>
-                <div className="w-full pl-3 text-xl">
-                    {item.name}
-                </div>
+                <img className="h-10 pl-3" src={item.iconPath} alt={item.alt}/>
+                {
+                    opened &&
+                    <div className="w-full pl-3 text-xl">
+                        {item.name}
+                    </div>
+                }
             </div>
         </Link>
     )
