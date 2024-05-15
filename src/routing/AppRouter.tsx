@@ -70,7 +70,6 @@ function AppRouter() {
             path: "profile",
             element: <></>
         },
-
     ]
     const router = createBrowserRouter([
         {

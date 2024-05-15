@@ -1,67 +1,81 @@
+import * as React from "react";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
+import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
+import hamburgerIconPath from "../../pictures/icons/hamburger-icon.svg";
+import {motion} from "framer-motion";
 
-interface SidebarTemplateProps {
-    projectId?: string;
-}
 
-function SidebarTemplate(props: SidebarTemplateProps) {
-    const [selected, setSelected] = useState<string>("");
-    const handleSelect = (name: string): void => {
-        setSelected(name)
-    }
+const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
+    const [selected, setSelected] = useState<string>('');
+    const [opened, setOpened] = useState<boolean>(true);
+
+    const toggle = () => setOpened(!opened);
+    const handleSelect = (name: string): void => setSelected(name);
 
     return (
-        <div className="relevant bg-red-200 w-[250px] m-5 rounded-[20px]">
-            <div className="h-full py-4 flex flex-col flex-wrap">
-                <div className="px-6 w-full bg-green-50 h-16">
-                    header
-                </div>
-                <div className="pl-6 w-full bg-purple-200 flex-grow">
-                    <SidebarItem name="DASHBOARD"
-                                 handleSelect={handleSelect}
-                                 selected={selected}
-                                 linkPath={`/project-details/${props.projectId}/dashboard`}/>
-                    <SidebarItem name="PROJECT" handleSelect={handleSelect} selected={selected} linkPath={`/project-details/${props.projectId}/project`}/>
-                    <SidebarItem name="WORK PACKAGES" handleSelect={handleSelect} selected={selected} linkPath={`/project-details/${props.projectId}/work-packages`}/>
-                    <SidebarItem name="TEAM" handleSelect={handleSelect} selected={selected} linkPath={`/project-details/${props.projectId}/team`}/>
-                </div>
-                <div className="flex flex-row px-6 w-full h-16">
-                    <div className="bg-yellow-50 flex items-center justify-center px-2">
-                        <UserButton />
+        <motion.div animate={{width: opened ? "20%" : "6%"}}
+                    initial={{width: "20%"}}
+                    transition={{duration: 0.4}}
+                    className="h-full flex items-center flex flex-col flex-wrap bg-[#B2CDD5]">
+            <div
+                className={opened ? `w-full py-5 pr-3 flex fley-row items-center justify-end` : `w-full py-5 flex fley-row items-center justify-center`}>
+                {
+                    opened &&
+                    <div className="text-xl text-center w-full">
+                        PROJECT MANAGER
                     </div>
-                    <div className="bg-gray-50 flex flex-col items-center justify-center w-full px-2">
+                }
+                <button onClick={toggle}>
+                    <img className="h-14" src={hamburgerIconPath}/>
+                </button>
+            </div>
+            <div className="pl-6 w-full flex-grow">
+                {
+                    items.map(item => {
+                        return (
+                            <SidebarItem key={item.name} item={item} handleSelect={handleSelect}
+                                         selected={selected} opened={opened}/>
+                        )
+                    })
+                }
+            </div>
+            <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
+                <div className="flex px-3 items-center justify-center ">
+                    <UserButton/>
+                </div>
+                {
+                    opened &&
+                    <div className="flex px-3 flex-col items-center justify-center">
                         <p>
                             Ime Priimek
                         </p>
-                        <p>
-                            E-mail
-                        </p>
                     </div>
-                </div>
+                }
             </div>
-        </div>
+        </motion.div>
     )
 }
 
-export function SidebarItem({
-                                name,
-                                handleSelect,
-                                selected,
-                                linkPath
-                            }: { name: string, handleSelect: (name: string) => void, selected: string, linkPath: string }) {
-    const select = () => {
-        handleSelect(name);
+const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected, opened}) => {
+    const select = (): void => {
+        handleSelect(item.name);
     }
+
     return (
-        <Link onClick={select} to={linkPath}>
+        <Link onClick={select} to={item.linkPath}>
             <div
-                className={selected === name ? "px-3 tracking-wider bg-blue-50 py-4 rounded-l-full" : "px-3 tracking-wider bg-transparent py-4 hover:bg-blue-50 hover:rounded-l-full"}>
-                {name}
+                className={selected === item.name ? "flex flex-row items-center tracking-wider bg-white py-3 rounded-l-full" : "flex flex-row items-center tracking-wider bg-transparent py-3 hover:bg-white hover:rounded-l-full"}>
+                <img className="h-10 pl-3" src={item.iconPath} alt={item.alt}/>
+                {
+                    opened &&
+                    <div className="w-full pl-3 text-xl">
+                        {item.name}
+                    </div>
+                }
             </div>
         </Link>
-
     )
 }
 
