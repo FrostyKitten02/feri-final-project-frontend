@@ -15,6 +15,11 @@ jobs:
         with:
           node-version: 20.0.0
 
+
+      - name: delete env file
+        run: |
+          rm -f .env
+
       - name: Create .env file
         uses: ozaytsev86/create-env-file@v1
         with:
