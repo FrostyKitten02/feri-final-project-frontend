@@ -5,13 +5,18 @@ import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/main-1/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
+import ProjectsOverviewPage from "../components/main-2/AllProjectsPage";
+import MyProjectsPage from "../components/allprojects/MyProjectsPage";
+import AssignedToPage from "../components/allprojects/AssignedToPage";
+import TeamPage from "../components/main-1/pages/TeamPage";
+import DashboardPage from "../components/main-1/pages/DashboardPage";
 
 function AppRouter() {
     const routes: RouteObject [] = [
         {
-            path: "sign-up",
-            element: <SignUpPage/>,
-            errorElement: <ErrorPage />
+            path: "sign-up/*",
+            element: <SignUpPage />,
+            errorElement: <ErrorPage />,
         },
         {
             path: "introduction",
@@ -19,28 +24,22 @@ function AppRouter() {
             errorElement: <ErrorPage />
         },
         {
-            path: "sign-in",
+            path: "sign-in/*",
             errorElement: <ErrorPage />,
             element: <SignInPage/>,
-            children: [
-                        {
-                            path: "factor-one",
-                            element: <SignInPage />,
-                        }
-                    ]
         },
         {
-            path: "projectId",
+            path: "project-details/:projectId",
             element: <ProjectMainPage />,
             errorElement: <ErrorPage />,
             children: [
                 {
                     path: "dashboard",
-                    element: <></>
+                    element: < DashboardPage />
                 },
                 {
                     path: "team",
-                    element: <></>
+                    element: <TeamPage />
                 },
                 {
                     path: "work-packages",
@@ -53,8 +52,19 @@ function AppRouter() {
             ]
         },
         {
-            path: "projects",
-            element: <></>
+            path: "all-projects",
+            element: <ProjectsOverviewPage/>,
+            errorElement: <ErrorPage/>,
+            children: [
+                {
+                    path: "my-projects",
+                    element: <MyProjectsPage />
+                },
+                {
+                    path: "assigned-to",
+                    element: <AssignedToPage/>
+                },
+            ]
         },
         {
             path: "profile",
