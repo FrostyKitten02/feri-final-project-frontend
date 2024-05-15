@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - 'main'
+      - '*'
 
 jobs:
   deploy:
@@ -20,7 +20,7 @@ jobs:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
           touch .env
-          echo $ENV_FILE >> .env
+          echo -e $ENV_FILE >> .env
 
       - name: install-dependencies-and-build
         run: |
