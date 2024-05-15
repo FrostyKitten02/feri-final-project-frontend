@@ -10,25 +10,25 @@ function ProjectMainPage() {
     const items: ListItem [] = [
         {
             name: "DASHBOARD",
-            linkPath: "/projectId/dashboard",
+            linkPath: "dashboard",
             iconPath: dashboardIconPath,
             alt: "Dashboard Icon"
         },
         {
             name: "TEAM",
-            linkPath: "/projectId/team",
+            linkPath: "team",
             iconPath: usersIconPath,
             alt: "Users Icon"
         },
         {
             name: "WORK PACKAGES",
-            linkPath: "/projectId/project",
+            linkPath: "work-packages",
             iconPath: boxOpenIconPath,
             alt: "Box Open Icon"
         },
         {
             name: "PROJECT",
-            linkPath: "/projectId/project",
+            linkPath: "project",
             iconPath: folderIconPath,
             alt: "Folder Icon"
         }

@@ -1,8 +1,5 @@
-import * as React from "react";
-
 export interface SidebarTemplateProps {
     items: ListItem [],
-    return
 }
 
 export interface ListItem {

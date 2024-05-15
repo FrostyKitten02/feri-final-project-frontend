@@ -1,7 +1,7 @@
+import * as React from "react";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
-import * as React from "react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
 import hamburgerIconPath from "../../pictures/icons/hamburger-icon.svg";
 import {motion} from "framer-motion";
@@ -13,7 +13,6 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
 
     const toggle = () => setOpened(!opened);
     const handleSelect = (name: string): void => setSelected(name);
-
 
     return (
         <motion.div animate={{width: opened ? "20%" : "6%"}}
