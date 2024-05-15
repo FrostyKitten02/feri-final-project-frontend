@@ -7,7 +7,6 @@ import ProjectMainPage from "../components/main-1/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
 import ProjectsOverviewPage from "../components/main-2/AllProjectsPage";
 import MyProjectsPage from "../components/allprojects/MyProjectsPage";
-import AddNewProjectPage from "../components/allprojects/modal/AddNewProjectModal";
 import AssignedToPage from "../components/allprojects/AssignedToPage";
 import TeamPage from "../components/main-1/pages/TeamPage";
 import DashboardPage from "../components/main-1/pages/DashboardPage";

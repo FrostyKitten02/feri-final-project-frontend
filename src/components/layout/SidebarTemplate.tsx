@@ -7,7 +7,7 @@ interface SidebarTemplateProps {
 }
 
 function SidebarTemplate(props: SidebarTemplateProps) {
-    const [selected, setSelected] = useState<string>(null);
+    const [selected, setSelected] = useState<string>("");
     const handleSelect = (name: string): void => {
         setSelected(name)
     }

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
 import { useSession } from "@clerk/clerk-react";
@@ -9,11 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import Pagination from "./pagination/Pagination";
 
 // toast functions import
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../toastModals/ToastFunctions";
+import {toastError,} from "../toastModals/ToastFunctions";
 
 import {
   ProjectControllerApi,
