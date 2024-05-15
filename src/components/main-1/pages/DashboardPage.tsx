@@ -5,23 +5,19 @@ import { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import {
   toastError,
-  toastSuccess,
-  toastWarning,
 } from "../../toastModals/ToastFunctions";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import {
   ProjectControllerApi,
   ProjectDto,
-  GetProjectResponse,
 } from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 
 export default function DashboardPage() {
   const { projectId } = useParams();
   const [projectDetails, setProjectDetails] = useState<ProjectDto>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  //const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const api = new ProjectControllerApi();
   const [cookies] = useCookies(["__session"]);

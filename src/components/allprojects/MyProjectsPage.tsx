@@ -1,9 +1,6 @@
 import {useEffect, useState} from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
-import { useSession } from "@clerk/clerk-react";
-import * as Ariakit from "@ariakit/react";
-import { useQuery } from '@tanstack/react-query'
 
 import Pagination from "./pagination/Pagination";
 
@@ -14,7 +11,6 @@ import {
   ProjectControllerApi,
   PageInfoRequest,
   ProjectSortInfoRequest,
-  ProjectListSearchParams,
   ListProjectResponse,
 } from "../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
@@ -33,8 +29,8 @@ export default function MyProjectsPage() {
   // states needed for pagination and sorting
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  const [ascending, setAscending] = useState<boolean>(true);
-  const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
+  // const [ascending, setAscending] = useState<boolean>(true);
+  //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
 
   // generated client api for project
   const api = new ProjectControllerApi();
@@ -44,7 +40,7 @@ export default function MyProjectsPage() {
   // fetch projects on initial render and set the loading state, listen for pageNumber changes
   useEffect(() => {
     setIsLoading(true);
-    fetchProjects(pageNumber, ascending, fields)
+    fetchProjects(pageNumber /*, ascending, fields*/)
       .then(() => setIsLoading(false))
       .catch((error) => {
         setIsLoading(false);
@@ -90,8 +86,8 @@ export default function MyProjectsPage() {
   // fetch projects
   const fetchProjects = async (
     pageNum: number,
-    ascending: boolean,
-    fields: string[]
+    // ascending: boolean,
+    // fields: string[]
   ) => {
     // dynamically set pageNumber
     const pageInfo: PageInfoRequest = {
@@ -143,7 +139,7 @@ export default function MyProjectsPage() {
           <AddNewProjectPage
             handleClose={close}
             handleAddProject={() =>
-              fetchProjects(pageNumber, ascending, fields)
+              fetchProjects(pageNumber /*, ascending, fields*/)
             }
           />
         )}
@@ -218,7 +214,7 @@ export default function MyProjectsPage() {
           lastPage={lastPage}
           totalPages={totalPages}
           onPageChange={(newPageNumber) =>
-            fetchProjects(newPageNumber, ascending, fields)
+            fetchProjects(newPageNumber, /*ascending, fields*/)
           }
           nextPage={nextPage}
           prevPage={prevPage}

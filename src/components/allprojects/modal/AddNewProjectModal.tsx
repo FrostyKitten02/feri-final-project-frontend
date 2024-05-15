@@ -3,7 +3,6 @@ import {RawAxiosRequestConfig} from "axios";
 import {useCookies} from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
-import { Bounce, toast } from "react-toastify";
 
 // toast functions import
 import {toastError, toastSuccess, toastWarning,} from "../../toastModals/ToastFunctions";

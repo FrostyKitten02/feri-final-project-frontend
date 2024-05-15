@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import SidebarTemplate from "../layout/SidebarTemplate";
 import {Outlet} from "react-router-dom";
 import { useParams } from "react-router-dom";
