@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { useSession } from "@clerk/clerk-react";
+import * as Ariakit from "@ariakit/react";
+import { useQuery } from '@tanstack/react-query'
 
-import RightChevron from "../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
-import LeftChevron from "../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
+import Pagination from "./pagination/Pagination";
 
 // toast functions import
 import {
@@ -24,19 +24,38 @@ import {
 } from "../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function MyProjectsPage() {
-  const [projects, setProjects] = useState<ListProjectResponse>();
+  const navigate = useNavigate();
+
+  const [projects, setProjects] = useState<ListProjectResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // last page and pageNumber state tracking
   const [lastPage, setLastPage] = useState<boolean>(true);
+  const [totalPages, setTotalPages] = useState<number>(0); // last page and total page tracking
+
+  // states needed for pagination and sorting
   const [pageNumber, setPageNumber] = useState<number>(1);
+
+  const [ascending, setAscending] = useState<boolean>(true);
+  const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
 
   // generated client api for project
   const api = new ProjectControllerApi();
 
   const [cookies] = useCookies(["__session"]);
+
+  // fetch projects on initial render and set the loading state, listen for pageNumber changes
+  useEffect(() => {
+    setIsLoading(true);
+    fetchProjects(pageNumber, ascending, fields)
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        setIsLoading(false);
+        toastError(error);
+      });
+  }, [pageNumber]);
 
   // framer motion modal states and functions
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -49,20 +68,18 @@ export default function MyProjectsPage() {
     setModalOpen(true);
   };
 
-  // retrieve project list
   // next and previous page functions
   const nextPage = () => {
     const newPageNumber = pageNumber + 1;
     setPageNumber(newPageNumber);
-    fetchProjects(newPageNumber);
   };
 
   const prevPage = () => {
     const newPageNumber = pageNumber > 1 ? pageNumber - 1 : 1;
     setPageNumber(newPageNumber);
-    fetchProjects(newPageNumber);
   };
 
+  // retrieve project list
   // request parameters
   const sortInfo: ProjectSortInfoRequest = {
     ascending: true,
@@ -75,20 +92,12 @@ export default function MyProjectsPage() {
     },
   };
 
-  // fetch projects on initial render and set the loading state
-  useEffect(() => {
-    try {
-      setIsLoading(true);
-      fetchProjects(pageNumber)
-        .then(() => setIsLoading(false))
-        .catch(() => setIsLoading(false));
-    } catch (error: any) {
-      toastError(error);
-    }
-  }, [pageNumber]);
-
   // fetch projects
-  const fetchProjects = async (pageNum: number) => {
+  const fetchProjects = async (
+    pageNum: number,
+    ascending: boolean,
+    fields: string[]
+  ) => {
     // dynamically set pageNumber
     const pageInfo: PageInfoRequest = {
       elementsPerPage: 8,
@@ -102,15 +111,30 @@ export default function MyProjectsPage() {
         undefined,
         requestArgs
       );
-      if (response.data.projects) {
+      if (response.status === 200 && response.data) {
         setProjects(response.data);
         console.log(response.data);
         if (response.data.pageInfo?.lastPage === true) {
+          // check if last page and set state accordingly
           setLastPage(true);
         } else {
           setLastPage(false);
         }
       }
+
+      if (
+        response.data.pageInfo?.totalElements &&
+        response.data.pageInfo?.elementsPerPage
+      ) {
+        const newTotalPages = Math.ceil(
+          // calculate total pages
+          response.data.pageInfo.totalElements /
+            response.data.pageInfo.elementsPerPage
+        );
+        setTotalPages(newTotalPages); // set total pages
+      }
+
+      setPageNumber(pageNum);
     } catch (error: any) {
       console.error(error);
       toastError(error);
@@ -123,7 +147,9 @@ export default function MyProjectsPage() {
         {modalOpen && (
           <AddNewProjectPage
             handleClose={close}
-            handleAddProject={() => fetchProjects(pageNumber)}
+            handleAddProject={() =>
+              fetchProjects(pageNumber, ascending, fields)
+            }
           />
         )}
       </div>
@@ -149,7 +175,10 @@ export default function MyProjectsPage() {
           ) : projects && projects.projects && projects.projects.length > 0 ? ( // check if project length is > 0; if it is map projects in a grid
             <div className="grid grid-cols-4 gap-x-12 gap-y-12">
               {projects.projects.map((project) => (
-                <Link to={""}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => navigate(`/project-details/${project.id}`)} // navigate to project details page and pass project id as a parameter
+                >
                   <motion.div
                     key={project.id}
                     className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
@@ -176,7 +205,7 @@ export default function MyProjectsPage() {
                       </div>
                     </div>
                   </motion.div>
-                </Link>
+                </div>
               ))}
             </div>
           ) : (
@@ -189,33 +218,16 @@ export default function MyProjectsPage() {
             </div>
           )}
         </div>
-        <div className="flex flex-row pb-12">
-          <div className="flex w-1/3 justify-start font-semibold">
-            {pageNumber !== 1 && (
-              <button onClick={prevPage}>
-                <div className="flex flex-row">
-                  <LeftChevron className="size-6 fill-gray-700" />
-                  <p>Previous page</p>
-                </div>
-              </button>
-            )}
-          </div>
-          <div className="flex w-1/3 justify-center">
-            <p className="font-semibold text-gray-700">Page {pageNumber}</p>
-          </div>
-          <div className="flex w-1/3 justify-end font-semibold">
-            {!lastPage && (
-              <div>
-                <button onClick={nextPage}>
-                  <div className="flex flex-row">
-                    <p>Next page</p>
-                    <RightChevron className="size-6 fill-gray-700" />
-                  </div>
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+        <Pagination
+          pageNumber={pageNumber}
+          lastPage={lastPage}
+          totalPages={totalPages}
+          onPageChange={(newPageNumber) =>
+            fetchProjects(newPageNumber, ascending, fields)
+          }
+          nextPage={nextPage}
+          prevPage={prevPage}
+        />
       </div>
     </div>
   );

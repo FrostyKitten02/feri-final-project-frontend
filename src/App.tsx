@@ -7,7 +7,7 @@ function App() {
 const location = useLocation();
 const { pathname } = location;
   return (
-    <div className="">
+    <div>
         <SignedIn>
            /** Vite app signed in **/
             <UserButton />

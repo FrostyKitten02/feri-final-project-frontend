@@ -5,7 +5,6 @@ import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
 import { Bounce, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 // toast functions import
 import {
@@ -62,7 +61,7 @@ export default function AddNewProjectPage({
     e.preventDefault();
 
     // validation call
-    if (!validateForm(title, startDate, endDate)) return;
+    if (!validateForm(title, startDate, endDate)) return; // return if validation fails
 
     // project object
     const project: CreateProjectRequest = {
@@ -80,7 +79,7 @@ export default function AddNewProjectPage({
 
     try {
       const response = await api.createProject(project, requestArgs);
-      if (response.status === 201) {
+      if (response.status === 201) { // if status is 201, close modal, refetch projects for page and show success toast
         handleClose();
         handleAddProject();
         toastSuccess(

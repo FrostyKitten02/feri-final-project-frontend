@@ -2,7 +2,11 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
 
-function SidebarTemplate() {
+interface SidebarTemplateProps {
+    projectId?: string;
+}
+
+function SidebarTemplate(props: SidebarTemplateProps) {
     const [selected, setSelected] = useState<string>(null);
     const handleSelect = (name: string): void => {
         setSelected(name)
@@ -18,10 +22,10 @@ function SidebarTemplate() {
                     <SidebarItem name="DASHBOARD"
                                  handleSelect={handleSelect}
                                  selected={selected}
-                                 linkPath={"/projectid/dashboard"}/>
-                    <SidebarItem name="PROJECT" handleSelect={handleSelect} selected={selected} linkPath={"/projectid/project"}/>
-                    <SidebarItem name="WORK PACKAGES" handleSelect={handleSelect} selected={selected} linkPath={"/projectid/work-packages"}/>
-                    <SidebarItem name="TEAM" handleSelect={handleSelect} selected={selected} linkPath={"/projectid/team"}/>
+                                 linkPath={`/project-details/${props.projectId}/dashboard`}/>
+                    <SidebarItem name="PROJECT" handleSelect={handleSelect} selected={selected} linkPath={`/project-details/${props.projectId}/project`}/>
+                    <SidebarItem name="WORK PACKAGES" handleSelect={handleSelect} selected={selected} linkPath={`/project-details/${props.projectId}/work-packages`}/>
+                    <SidebarItem name="TEAM" handleSelect={handleSelect} selected={selected} linkPath={`/project-details/${props.projectId}/team`}/>
                 </div>
                 <div className="flex flex-row px-6 w-full h-16">
                     <div className="bg-yellow-50 flex items-center justify-center px-2">
