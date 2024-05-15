@@ -1,25 +1,15 @@
-import { useState } from "react";
-import { useSession } from "@clerk/clerk-react";
-import axios, { AxiosError, RawAxiosRequestConfig } from "axios";
-import { useCookies } from "react-cookie";
+import {useState} from "react";
+import {RawAxiosRequestConfig} from "axios";
+import {useCookies} from "react-cookie";
 import Backdrop from "./Backdrop";
-import { motion } from "framer-motion";
-import { Bounce, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {motion} from "framer-motion";
 
 // toast functions import
-import {
-  toastWarning,
-  toastSuccess,
-  toastError,
-} from "../../toastModals/ToastFunctions";
+import {toastError, toastSuccess, toastWarning,} from "../../toastModals/ToastFunctions";
 
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 
-import {
-  ProjectControllerApi,
-  CreateProjectRequest,
-} from "../../../../temp_ts/api";
+import {CreateProjectRequest, ProjectControllerApi,} from "../../../../temp_ts/api";
 
 interface AddNewProjectModalProps {
   handleClose: () => void;

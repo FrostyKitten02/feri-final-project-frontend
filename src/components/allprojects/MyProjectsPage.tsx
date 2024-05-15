@@ -1,29 +1,17 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { useSession } from "@clerk/clerk-react";
+import {motion} from "framer-motion";
+import {Link} from "react-router-dom";
 
 import RightChevron from "../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
 import LeftChevron from "../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
 
 // toast functions import
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../toastModals/ToastFunctions";
+import {toastError,} from "../toastModals/ToastFunctions";
 
-import {
-  ProjectControllerApi,
-  PageInfoRequest,
-  ProjectSortInfoRequest,
-  ProjectListSearchParams,
-  ListProjectResponse,
-} from "../../../temp_ts/api";
-import { RawAxiosRequestConfig } from "axios";
-import { useCookies } from "react-cookie";
+import {ListProjectResponse, PageInfoRequest, ProjectControllerApi, ProjectSortInfoRequest,} from "../../../temp_ts";
+import {RawAxiosRequestConfig} from "axios";
+import {useCookies} from "react-cookie";
 
 export default function MyProjectsPage() {
   const [projects, setProjects] = useState<ListProjectResponse>();

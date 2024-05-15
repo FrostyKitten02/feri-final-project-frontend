@@ -1,13 +1,12 @@
-import { useRouteError } from "react-router-dom";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Paths from "../util/Paths";
 
 function ErrorPage() {
-  const error = useRouteError();
+
   return (
     <div className="flex flex-col h-screen justify-center items-start space-y-6 px-32 overflow-auto bg-gradient-to-r from-bg_placeholder1 to-bg_placeholder2">
       <div className="flex justify-center w-24 py-1 bg-gray-300 font-medium text-slate-500 border border-solid border-slate-500 rounded-lg">
-        {error.statusText || error.message}
+
       </div>
       <div className="text-5xl font-bold">Oops! Something went wrong.. 😢</div>
       <div className="text-xl">
