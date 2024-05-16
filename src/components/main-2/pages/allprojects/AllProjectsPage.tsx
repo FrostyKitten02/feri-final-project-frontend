@@ -12,18 +12,18 @@ function AllProjects() {
     navigate("my-projects");
   }, []);
 
-  const goToMyProjects = () => {
+  const goToMyProjects = (): void => {
     navigate("my-projects");
     setSelectedTab("my-projects");
   };
 
-  const goToAssignedTo = () => {
+  const goToAssignedTo = (): void => {
     navigate("assigned-to");
     setSelectedTab("assigned-to");
   };
 
   return (
-    <div className="flex flex-col h-screen px-20 py-20">
+    <div className="flex flex-col h-full px-12 py-6 w-full">
       <div className="flex flex-col">
         <h1 className="flex justify-start items-center font-bold text-3xl">
           All Projects

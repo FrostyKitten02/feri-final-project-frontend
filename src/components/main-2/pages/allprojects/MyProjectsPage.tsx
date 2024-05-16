@@ -1,22 +1,19 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
-
 import Pagination from "./pagination/Pagination";
-
 // toast functions import
-import {toastError,} from "../toastModals/ToastFunctions";
-
+import { toastError } from "../../../toastModals/ToastFunctions";
 import {
   ProjectControllerApi,
   PageInfoRequest,
   ProjectSortInfoRequest,
   ListProjectResponse,
-} from "../../../temp_ts/api";
+} from "../../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import RequestUtil from "../../util/RequestUtil";
+import RequestUtil from "../../../../util/RequestUtil";
 
 export default function MyProjectsPage() {
   const navigate = useNavigate();
@@ -33,12 +30,10 @@ export default function MyProjectsPage() {
   // const [ascending, setAscending] = useState<boolean>(true);
   //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
 
-  // generated client api for project
   const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
 
   const [cookies] = useCookies(["__session"]);
 
-  // fetch projects on initial render and set the loading state, listen for pageNumber changes
   useEffect(() => {
     setIsLoading(true);
     fetchProjects(pageNumber /*, ascending, fields*/)
@@ -52,40 +47,38 @@ export default function MyProjectsPage() {
   // framer motion modal states and functions
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const close = () => {
+  const close = (): void => {
     setModalOpen(false);
   };
 
-  const open = () => {
+  const open = (): void => {
     setModalOpen(true);
   };
 
-  // next and previous page functions
-  const nextPage = () => {
+  const nextPage = (): void => {
     const newPageNumber = pageNumber + 1;
     setPageNumber(newPageNumber);
   };
 
-  const prevPage = () => {
+  const prevPage = (): void => {
     const newPageNumber = pageNumber > 1 ? pageNumber - 1 : 1;
     setPageNumber(newPageNumber);
   };
 
-  // retrieve project list
   // request parameters
   const sortInfo: ProjectSortInfoRequest = {
     ascending: true,
     fields: ["CREATED_AT"],
   };
 
-  const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
+  const requestArgs: RawAxiosRequestConfig =
+    RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
-  // fetch projects
   const fetchProjects = async (
-    pageNum: number,
+    pageNum: number
     // ascending: boolean,
     // fields: string[]
-  ) => {
+  ): Promise<void> => {
     // dynamically set pageNumber
     const pageInfo: PageInfoRequest = {
       elementsPerPage: 8,
@@ -101,9 +94,8 @@ export default function MyProjectsPage() {
       );
       if (response.status === 200 && response.data) {
         setProjects(response.data);
-        console.log(response.data);
+        //console.log(response.data);
         if (response.data.pageInfo?.lastPage === true) {
-          // check if last page and set state accordingly
           setLastPage(true);
         } else {
           setLastPage(false);
@@ -119,7 +111,7 @@ export default function MyProjectsPage() {
           response.data.pageInfo.totalElements /
             response.data.pageInfo.elementsPerPage
         );
-        setTotalPages(newTotalPages); // set total pages
+        setTotalPages(newTotalPages);
       }
 
       setPageNumber(pageNum);
@@ -156,21 +148,19 @@ export default function MyProjectsPage() {
           </div>
         </div>
         <div className="flex flex-col py-12">
-          {isLoading ? ( // project fetch check (this ensures that projects are either fetched or not fetched before continuing the checks)
+          {isLoading ? (
             <div className="flex flex-col justify-center items-center font-bold text-3xl">
               <h1>Loading projects...</h1>
             </div>
-          ) : projects && projects.projects && projects.projects.length > 0 ? ( // check if project length is > 0; if it is map projects in a grid
+          ) : projects && projects.projects && projects.projects.length > 0 ? (
             <div className="grid grid-cols-4 gap-x-12 gap-y-12">
               {projects.projects.map((project) => (
                 <div
+                  key={project.id}
                   className="cursor-pointer"
                   onClick={() => navigate(`/project-details/${project.id}`)} // navigate to project details page and pass project id as a parameter
                 >
-                  <motion.div
-                    key={project.id}
-                    className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box"
-                  >
+                  <motion.div className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box">
                     <div className="border-l-4 border-solid border-rose-500">
                       <div className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
                         <p className="font-semibold italic text-gray-700 text-sm">
@@ -197,7 +187,6 @@ export default function MyProjectsPage() {
               ))}
             </div>
           ) : (
-            // if no projects are found for the user in the database, display this message
             <div className="flex flex-col justify-center items-center font-bold text-3xl space-y-4">
               <h1>No projects found...</h1>
               <p className="text-base text-gray-700">
@@ -211,7 +200,7 @@ export default function MyProjectsPage() {
           lastPage={lastPage}
           totalPages={totalPages}
           onPageChange={(newPageNumber) =>
-            fetchProjects(newPageNumber, /*ascending, fields*/)
+            fetchProjects(newPageNumber /*ascending, fields*/)
           }
           nextPage={nextPage}
           prevPage={prevPage}

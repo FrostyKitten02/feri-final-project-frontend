@@ -1,6 +1,6 @@
 import { toast, Bounce } from "react-toastify"
 
-export const toastError = (error: any) => {
+export const toastError = (error: any): void => {
     toast.error(`An error has occured: ${error.message}`, {
       position: "top-center",
       autoClose: 5000,
@@ -14,7 +14,7 @@ export const toastError = (error: any) => {
     });
 }
 
-export const toastSuccess = (message: string) => {
+export const toastSuccess = (message: string): void => {
     toast.success(message, {
       position: "top-center",
       autoClose: 5000,
@@ -28,7 +28,7 @@ export const toastSuccess = (message: string) => {
     });
 }
 
-export const toastWarning = (message: string) => {
+export const toastWarning = (message: string): void => {
     toast.warning(message, {
       position: "top-center",
       autoClose: 5000,

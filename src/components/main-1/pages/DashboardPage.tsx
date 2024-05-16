@@ -7,7 +7,6 @@ import {
   toastError,
 } from "../../toastModals/ToastFunctions";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import {
   ProjectControllerApi,
   ProjectDto,
@@ -27,7 +26,7 @@ export default function DashboardPage() {
     fetchProjectDetails();
   }, []);
 
-  const fetchProjectDetails = async () => {
+  const fetchProjectDetails = async (): Promise<void> => {
     const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
 
     try {
@@ -47,8 +46,8 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex w-screen h-full">
-      <div className="flex flex-col h-full px-20 py-20 w-full">
+    <div className="flex w-full h-full">
+      <div className="flex flex-col h-full px-12 py-6 w-full">
         <h1 className="flex justify-start items-center font-bold text-3xl py-6">
           Dashboard
         </h1>
