@@ -7,7 +7,6 @@ import {
   toastError,
 } from "../../toastModals/ToastFunctions";
 import "react-loading-skeleton/dist/skeleton.css";
-
 import {
   ProjectControllerApi,
   ProjectDto,

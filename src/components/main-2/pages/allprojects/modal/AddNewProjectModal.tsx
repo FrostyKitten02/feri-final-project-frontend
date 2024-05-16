@@ -3,12 +3,8 @@ import {RawAxiosRequestConfig} from "axios";
 import {useCookies} from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
-
-// toast functions import
 import {toastError, toastSuccess, toastWarning,} from "../../../../toastModals/ToastFunctions";
-
 import CloseIcon from "../../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
-
 import {CreateProjectRequest, ProjectControllerApi,} from "../../../../../../temp_ts/api";
 import RequestUtil from "../../../../../util/RequestUtil";
 

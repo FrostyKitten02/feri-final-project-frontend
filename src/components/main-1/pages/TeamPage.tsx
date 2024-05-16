@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { toastError, toastSuccess } from "../../toastModals/ToastFunctions";
 import { useEffect } from "react";
-
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import PersonIcon from "../../../assets/team-page/person-svgrepo-com.svg?react";
 import EmailIcon from "../../../assets/team-page/email-svgrepo-com.svg?react";
@@ -42,7 +41,6 @@ export default function TeamPage() {
   const requestArgs: RawAxiosRequestConfig =
     RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
-  // useEffect to fetch people on project
   useEffect(() => {
     fetchPeopleOnProject();
   }, [projectId, peopleOnProject]);
@@ -54,7 +52,6 @@ export default function TeamPage() {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [searchValue]);
 
-  // function to add a person to the project
   const addPersonToProject = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
@@ -82,7 +79,6 @@ export default function TeamPage() {
     }
   };
 
-  // function to fetch people on the project
   const fetchPeopleOnProject = async (): Promise<void> => {
     try {
       if (projectId) {

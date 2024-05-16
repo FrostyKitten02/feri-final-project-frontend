@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import { motion } from "framer-motion";
-
 import Pagination from "./pagination/Pagination";
-
 // toast functions import
 import { toastError } from "../../../toastModals/ToastFunctions";
-
 import {
   ProjectControllerApi,
   PageInfoRequest,
@@ -33,12 +30,10 @@ export default function MyProjectsPage() {
   // const [ascending, setAscending] = useState<boolean>(true);
   //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
 
-  // generated client api for project
   const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
 
   const [cookies] = useCookies(["__session"]);
 
-  // fetch projects on initial render and set the loading state, listen for pageNumber changes
   useEffect(() => {
     setIsLoading(true);
     fetchProjects(pageNumber /*, ascending, fields*/)
@@ -60,7 +55,6 @@ export default function MyProjectsPage() {
     setModalOpen(true);
   };
 
-  // next and previous page functions
   const nextPage = (): void => {
     const newPageNumber = pageNumber + 1;
     setPageNumber(newPageNumber);
@@ -71,7 +65,6 @@ export default function MyProjectsPage() {
     setPageNumber(newPageNumber);
   };
 
-  // retrieve project list
   // request parameters
   const sortInfo: ProjectSortInfoRequest = {
     ascending: true,
@@ -81,7 +74,6 @@ export default function MyProjectsPage() {
   const requestArgs: RawAxiosRequestConfig =
     RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
-  // fetch projects
   const fetchProjects = async (
     pageNum: number
     // ascending: boolean,
@@ -104,7 +96,6 @@ export default function MyProjectsPage() {
         setProjects(response.data);
         //console.log(response.data);
         if (response.data.pageInfo?.lastPage === true) {
-          // check if last page and set state accordingly
           setLastPage(true);
         } else {
           setLastPage(false);
@@ -120,7 +111,7 @@ export default function MyProjectsPage() {
           response.data.pageInfo.totalElements /
             response.data.pageInfo.elementsPerPage
         );
-        setTotalPages(newTotalPages); // set total pages
+        setTotalPages(newTotalPages);
       }
 
       setPageNumber(pageNum);
@@ -157,11 +148,11 @@ export default function MyProjectsPage() {
           </div>
         </div>
         <div className="flex flex-col py-12">
-          {isLoading ? ( // project fetch check (this ensures that projects are either fetched or not fetched before continuing the checks)
+          {isLoading ? (
             <div className="flex flex-col justify-center items-center font-bold text-3xl">
               <h1>Loading projects...</h1>
             </div>
-          ) : projects && projects.projects && projects.projects.length > 0 ? ( // check if project length is > 0; if it is map projects in a grid
+          ) : projects && projects.projects && projects.projects.length > 0 ? (
             <div className="grid grid-cols-4 gap-x-12 gap-y-12">
               {projects.projects.map((project) => (
                 <div
@@ -196,7 +187,6 @@ export default function MyProjectsPage() {
               ))}
             </div>
           ) : (
-            // if no projects are found for the user in the database, display this message
             <div className="flex flex-col justify-center items-center font-bold text-3xl space-y-4">
               <h1>No projects found...</h1>
               <p className="text-base text-gray-700">

@@ -18,9 +18,9 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items}) => {
         <motion.div animate={{width: opened ? "20%" : "6%"}}
                     initial={{width: "20%"}}
                     transition={{duration: 0.4}}
-                    className="h-full flex items-center flex flex-col flex-wrap bg-[#B2CDD5]">
+                    className="h-full flex items-center flex-col flex-wrap bg-[#B2CDD5]">
             <div
-                className={opened ? `w-full py-5 pr-3 flex fley-row items-center justify-end` : `w-full py-5 flex fley-row items-center justify-center`}>
+                className={opened ? `w-full py-5 pr-3 flex flex-row items-center justify-end` : `w-full py-5 flex flex-row items-center justify-center`}>
                 {
                     opened &&
                     <div className="text-xl text-center w-full">
