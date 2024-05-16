@@ -52,21 +52,21 @@ export default function MyProjectsPage() {
   // framer motion modal states and functions
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const close = () => {
+  const close = (): void => {
     setModalOpen(false);
   };
 
-  const open = () => {
+  const open = (): void => {
     setModalOpen(true);
   };
 
   // next and previous page functions
-  const nextPage = () => {
+  const nextPage = (): void => {
     const newPageNumber = pageNumber + 1;
     setPageNumber(newPageNumber);
   };
 
-  const prevPage = () => {
+  const prevPage = (): void => {
     const newPageNumber = pageNumber > 1 ? pageNumber - 1 : 1;
     setPageNumber(newPageNumber);
   };
@@ -86,7 +86,7 @@ export default function MyProjectsPage() {
     pageNum: number
     // ascending: boolean,
     // fields: string[]
-  ) => {
+  ): Promise<void> => {
     // dynamically set pageNumber
     const pageInfo: PageInfoRequest = {
       elementsPerPage: 8,

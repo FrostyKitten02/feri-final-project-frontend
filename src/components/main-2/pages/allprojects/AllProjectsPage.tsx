@@ -12,12 +12,12 @@ function AllProjects() {
     navigate("my-projects");
   }, []);
 
-  const goToMyProjects = () => {
+  const goToMyProjects = (): void => {
     navigate("my-projects");
     setSelectedTab("my-projects");
   };
 
-  const goToAssignedTo = () => {
+  const goToAssignedTo = (): void => {
     navigate("assigned-to");
     setSelectedTab("assigned-to");
   };

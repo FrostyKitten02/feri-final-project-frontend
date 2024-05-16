@@ -49,7 +49,7 @@ export default function AddNewProjectPage({
   const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
 
   // form submit function
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     // validation call

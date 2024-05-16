@@ -27,7 +27,7 @@ export default function DashboardPage() {
     fetchProjectDetails();
   }, []);
 
-  const fetchProjectDetails = async () => {
+  const fetchProjectDetails = async (): Promise<void> => {
     const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
 
     try {

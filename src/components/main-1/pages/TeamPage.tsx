@@ -35,7 +35,7 @@ export default function TeamPage() {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [searchValue]);
 
-  const addPersonToProject = async (e: React.FormEvent) => {
+  const addPersonToProject = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const personObject: AddPersonToProjectRequest = {

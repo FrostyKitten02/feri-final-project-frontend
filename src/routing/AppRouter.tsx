@@ -36,25 +36,30 @@ function AppRouter() {
             children: [
                 {
                     path: "dashboard",
-                    element: < DashboardPage />
+                    element: <DashboardPage />,
+                    errorElement: <ErrorPage />
                 },
                 {
                     path: "team",
-                    element: <TeamPage />
+                    element: <TeamPage />,
+                    errorElement: <ErrorPage />
                 },
                 {
                     path: "work-packages",
-                    element: <></>
+                    element: <></>,
+                    errorElement: <ErrorPage />
                 },
                 {
                     path: "project",
-                    element: <></>
+                    element: <></>,
+                    errorElement: <ErrorPage />
                 }
             ]
         },
         {
             path: "home-page",
             element: <AppMainPage />,
+            errorElement: <ErrorPage />,
             children: [
                 {
                     path: "all-projects",
@@ -63,11 +68,13 @@ function AppRouter() {
                     children: [
                         {
                             path: "my-projects",
-                            element: <MyProjectsPage />
+                            element: <MyProjectsPage />,
+                            errorElement: <ErrorPage/>
                         },
                         {
                             path: "assigned-to",
-                            element: <AssignedToPage/>
+                            element: <AssignedToPage/>,
+                            errorElement: <ErrorPage/>
                         },
                     ]
                 },
