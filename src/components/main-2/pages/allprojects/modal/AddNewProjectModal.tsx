@@ -44,7 +44,7 @@ export default function AddNewProjectPage({
   // variables to get session and cookies
   // const session = useSession();
   const [cookies] = useCookies(["__session"]);
-
+  
   // form submit function
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();

@@ -29,7 +29,6 @@ export default function MyProjectsPage() {
 
   // const [ascending, setAscending] = useState<boolean>(true);
   //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
-  0;
   const [cookies] = useCookies(["__session"]);
 
   useEffect(() => {
