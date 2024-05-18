@@ -12,12 +12,12 @@ import DashboardPage from "../components/project-main/DashboardPage";
 import TeamPage from "../components/project-main/TeamPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
-import {RedirectToSignIn, useSession} from "@clerk/clerk-react";
+import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 
 
 function AppRouter() {
-    const { isLoaded, session, isSignedIn } = useSession();
+    const { isSignedIn } = useSession();
 
     const signedOutRoutes: RouteObject [] = [
         {
