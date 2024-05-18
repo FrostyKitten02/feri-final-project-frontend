@@ -1,4 +1,4 @@
-import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, RouteObject, RouterProvider} from "react-router-dom";
 import App from "../App";
 import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
@@ -12,63 +12,57 @@ import DashboardPage from "../components/project-main/DashboardPage";
 import TeamPage from "../components/project-main/TeamPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
-import {useSession} from "@clerk/clerk-react";
-import Paths from "../util/Paths";
-
 
 function AppRouter() {
-    const { isSignedIn } = useSession();
 
-    const signedOutRoutes: RouteObject [] = [
+    const routes: RouteObject [] = [
         {
             path: "sign-up/*",
-            element: <SignUpPage />,
-            errorElement: <ErrorPage />,
+            element: <SignUpPage/>,
+            errorElement: <ErrorPage/>,
         },
         {
             path: "introduction",
-            element: <IntroductionPage />,
-            errorElement: <ErrorPage />
+            element: <IntroductionPage/>,
+            errorElement: <ErrorPage/>
         },
         {
             path: "sign-in/*",
-            errorElement: <ErrorPage />,
             element: <SignInPage/>,
+            errorElement: <ErrorPage/>,
         },
-    ]
-
-    const signedInRoutes: RouteObject [] = [
         {
+            //TODO če vpiše id, ki v bazi ne obstaja, ga mora navigirat na / - trenutno lahko vpiše karkoli
             path: ":projectId",
-            element: <ProjectMainPage />,
-            errorElement: <ErrorPage />,
+            element: <ProjectMainPage/>,
+            errorElement: <ErrorPage/>,
             children: [
                 {
                     path: "dashboard",
-                    element: <DashboardPage />,
-                    errorElement: <ErrorPage />
+                    element: <DashboardPage/>,
+                    errorElement: <ErrorPage/>
                 },
                 {
                     path: "team",
-                    element: <TeamPage />,
-                    errorElement: <ErrorPage />
+                    element: <TeamPage/>,
+                    errorElement: <ErrorPage/>
                 },
                 {
                     path: "work-packages",
-                    element: <WorkPackagePage />,
-                    errorElement: <ErrorPage />
+                    element: <WorkPackagePage/>,
+                    errorElement: <ErrorPage/>
                 },
                 {
                     path: "project",
                     element: <></>,
-                    errorElement: <ErrorPage />
+                    errorElement: <ErrorPage/>
                 }
             ]
         },
         {
             path: "/",
-            element: <AppMainPage />,
-            errorElement: <ErrorPage />,
+            element: <AppMainPage/>,
+            errorElement: <ErrorPage/>,
             children: [
                 {
                     path: "projects",
@@ -77,7 +71,7 @@ function AppRouter() {
                     children: [
                         {
                             path: "my-projects",
-                            element: <MyProjectsPage />,
+                            element: <MyProjectsPage/>,
                             errorElement: <ErrorPage/>
                         },
                         {
@@ -98,8 +92,8 @@ function AppRouter() {
         {
             path: "/",
             element: <App/>,
-            errorElement: isSignedIn ? <ErrorPage /> : <Navigate to={Paths.INTRODUCTION} replace={true}/>,
-            children: isSignedIn ? signedInRoutes : signedOutRoutes,
+            errorElement: <ErrorPage/>,
+            children: routes,
         },
     ]);
 
