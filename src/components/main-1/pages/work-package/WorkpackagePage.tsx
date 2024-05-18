@@ -1,17 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  ProjectControllerApi,
-  GetProjectResponse,
-  WorkPackageControllerApi,
-  CreateWorkPackageRequest,
-} from "../../../../../temp_ts";
+import { useState } from "react";
+import { CreateWorkPackageRequest } from "../../../../../temp_ts";
 import RequestUtil from "../../../../util/RequestUtil";
 import { SubmitHandler } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { RawAxiosRequestConfig } from "axios";
 import { toastError, toastSuccess } from "../../../toastModals/ToastFunctions";
 import WorkPackageForm from "./WorkpackageForm";
+import { workPackageAPI } from "../../../../util/ApiDeclarations";
 
 type FormFields = {
   title: string;
@@ -21,28 +17,21 @@ type FormFields = {
 };
 
 export default function WorkPackagePage() {
-  const workPackageApi = new WorkPackageControllerApi(RequestUtil.API_CONFIG);
-  const projectApi = new ProjectControllerApi(RequestUtil.API_CONFIG);
-
   const { projectId } = useParams();
   const [cookies] = useCookies(["__session"]);
 
-  const [projectData, setProjectData] = useState<GetProjectResponse>();
+  //const [projectData, setProjectData] = useState<GetProjectResponse>();
 
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   const requestArgs: RawAxiosRequestConfig =
     RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
-  useEffect(() => {
-    fetchProjectById();
-  }, []);
-
-  // fetch project by id to get startDate and endDate for validation
+  /*
   const fetchProjectById = async (): Promise<void> => {
     try {
       if (projectId) {
-        const response = await projectApi.getProject(projectId, requestArgs);
+        const response = await projectAPI.getProject(projectId, requestArgs);
         if ((response.status = 200)) {
           setProjectData(response.data);
         }
@@ -53,6 +42,7 @@ export default function WorkPackagePage() {
       toastError(error.message);
     }
   };
+  */
 
   const onSubmit: SubmitHandler<FormFields> = async (data): Promise<void> => {
     // onSUbmit function passed to the form (react hook form)
@@ -66,7 +56,7 @@ export default function WorkPackagePage() {
 
     try {
       if (projectId) {
-        const response = await workPackageApi.createWorkPackage(
+        const response = await workPackageAPI.createWorkPackage(
           workPackage,
           requestArgs
         );
@@ -105,7 +95,6 @@ export default function WorkPackagePage() {
           isFormOpen={isFormOpen}
           setIsFormOpen={setIsFormOpen}
           onSubmit={onSubmit}
-          projectData={projectData}
         />
         <div
           className={`flex flex-col py-12 px-12 mt-6 border-2 border-solid rounded-2xl border-gray-200 w-full h-full ${

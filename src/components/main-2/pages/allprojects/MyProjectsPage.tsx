@@ -5,7 +5,6 @@ import Pagination from "./pagination/Pagination";
 // toast functions import
 import { toastError } from "../../../toastModals/ToastFunctions";
 import {
-  ProjectControllerApi,
   PageInfoRequest,
   ProjectSortInfoRequest,
   ListProjectResponse,
@@ -14,6 +13,7 @@ import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import RequestUtil from "../../../../util/RequestUtil";
+import { projectAPI } from "../../../../util/ApiDeclarations";
 
 export default function MyProjectsPage() {
   const navigate = useNavigate();
@@ -29,9 +29,7 @@ export default function MyProjectsPage() {
 
   // const [ascending, setAscending] = useState<boolean>(true);
   //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
-
-  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
-
+  0;
   const [cookies] = useCookies(["__session"]);
 
   useEffect(() => {
@@ -86,7 +84,7 @@ export default function MyProjectsPage() {
     };
 
     try {
-      const response = await api.listProjects(
+      const response = await projectAPI.listProjects(
         pageInfo,
         sortInfo,
         undefined,

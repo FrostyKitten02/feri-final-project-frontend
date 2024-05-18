@@ -12,11 +12,11 @@ import EmailIcon from "../../../assets/team-page/email-svgrepo-com.svg?react";
 import CogIcon from "../../../assets/team-page/cog-svgrepo-com.svg?react";
 import {
   AddPersonToProjectRequest,
-  ProjectControllerApi,
   GetPeopleResponse,
 } from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 import RequestUtil from "../../../util/RequestUtil";
+import { projectAPI } from "../../../util/ApiDeclarations";
 
 // mock list
 const employeelist = [
@@ -26,7 +26,6 @@ const employeelist = [
 ];
 
 export default function TeamPage() {
-  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
   const { projectId } = useParams(); // get the project id from the url
   const [cookies] = useCookies(["__session"]);
 
@@ -61,7 +60,7 @@ export default function TeamPage() {
 
     try {
       if (projectId) {
-        const response = await api.addPersonToProject(
+        const response = await projectAPI.addPersonToProject(
           projectId,
           personObject,
           requestArgs
@@ -83,7 +82,7 @@ export default function TeamPage() {
   const fetchPeopleOnProject = async (): Promise<void> => {
     try {
       if (projectId) {
-        const response = await api.getPeopleOnProjectByProjectId(
+        const response = await projectAPI.getPeopleOnProjectByProjectId(
           projectId,
           requestArgs
         );

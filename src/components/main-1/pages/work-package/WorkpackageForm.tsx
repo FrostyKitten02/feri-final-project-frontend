@@ -2,7 +2,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import CloseIcon from "../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { GetProjectResponse } from "../../../../../temp_ts";
 
 type FormFields = {
   title: string;
@@ -15,14 +14,12 @@ type WorkPackageFormProps = {
   isFormOpen: boolean;
   setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onSubmit: SubmitHandler<FormFields>;
-  projectData?: GetProjectResponse;
 };
 
 export default function WorkPackageForm({
   isFormOpen,
   setIsFormOpen,
   onSubmit,
-  projectData,
 }: WorkPackageFormProps) {
   // react hook form
   const {
@@ -34,7 +31,7 @@ export default function WorkPackageForm({
   } = useForm<FormFields>();
   const watchStartDate = watch("startDate");
   const watchEndDate = watch("endDate");
-  register("isRelevant");
+  register("isRelevant", { value: false }); // register the isRelevant field here, because it's a custom component not input
 
   // states for framer motion relevant switch
   const [isOn, setIsOn] = useState(false);
@@ -42,6 +39,7 @@ export default function WorkPackageForm({
     setIsOn(!isOn);
     setValue("isRelevant", !isOn);
   };
+
   return (
     <motion.div
       className="flex justify-end"
@@ -97,17 +95,7 @@ export default function WorkPackageForm({
                       {...register("startDate", {
                         required: "Start date can not be empty!",
                         validate: (value) => {
-                          if (
-                            projectData?.projectDto?.startDate &&
-                            projectData.projectDto.endDate
-                          ) {
-                            if (
-                              value < projectData?.projectDto?.startDate ||
-                              value > projectData.projectDto.endDate
-                            ) {
-                              return "Start date can not be out of the project range!";
-                            }
-                          } else if (value > watchEndDate) {
+                          if (value > watchEndDate) {
                             return "Start date must be before end date!";
                           }
                           return true;
@@ -130,17 +118,7 @@ export default function WorkPackageForm({
                       {...register("endDate", {
                         required: "End date can not be empty",
                         validate: (value) => {
-                          if (
-                            projectData?.projectDto?.startDate &&
-                            projectData.projectDto.endDate
-                          ) {
-                            if (
-                              value < projectData?.projectDto?.startDate ||
-                              value > projectData.projectDto.endDate
-                            ) {
-                              return "End date can not be out of the project range!";
-                            }
-                          } else if (value < watchStartDate) {
+                          if (value < watchStartDate) {
                             return "End date must be after start date!";
                           }
                           return true;
