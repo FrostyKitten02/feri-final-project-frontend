@@ -3,16 +3,13 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import { format, parseISO } from "date-fns";
-import {
-  toastError,
-} from "../../toastModals/ToastFunctions";
 import "react-loading-skeleton/dist/skeleton.css";
-import {
-  ProjectDto,
-} from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
-import RequestUtil from "../../../util/RequestUtil";
-import { projectAPI } from "../../../util/ApiDeclarations";
+import {ProjectDto} from "../../../temp_ts";
+import {projectAPI} from "../../util/ApiDeclarations";
+import RequestUtil from "../../util/RequestUtil";
+import {toastError} from "../toast-modals/ToastFunctions";
+
 
 export default function DashboardPage() {
   const { projectId } = useParams();

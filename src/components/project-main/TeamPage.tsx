@@ -4,19 +4,16 @@ import { matchSorter } from "match-sorter";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { toastError, toastSuccess } from "../../toastModals/ToastFunctions";
 import { useEffect } from "react";
-import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
-import PersonIcon from "../../../assets/team-page/person-svgrepo-com.svg?react";
-import EmailIcon from "../../../assets/team-page/email-svgrepo-com.svg?react";
-import CogIcon from "../../../assets/team-page/cog-svgrepo-com.svg?react";
-import {
-  AddPersonToProjectRequest,
-  GetPeopleResponse,
-} from "../../../../temp_ts/api";
-import { RawAxiosRequestConfig } from "axios";
-import RequestUtil from "../../../util/RequestUtil";
-import { projectAPI } from "../../../util/ApiDeclarations";
+import CloseIcon from "../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
+import PersonIcon from "../../assets/team-page/person-svgrepo-com.svg?react";
+import EmailIcon from "../../assets/team-page/email-svgrepo-com.svg?react";
+import CogIcon from "../../assets/team-page/cog-svgrepo-com.svg?react";
+import {AddPersonToProjectRequest, GetPeopleResponse} from "../../../temp_ts";
+import {RawAxiosRequestConfig} from "axios";
+import {projectAPI} from "../../util/ApiDeclarations";
+import RequestUtil from "../../util/RequestUtil";
+import {toastError, toastSuccess} from "../toast-modals/ToastFunctions";
 
 // mock list
 const employeelist = [

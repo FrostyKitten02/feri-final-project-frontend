@@ -3,7 +3,7 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
-import hamburgerIconPath from "../../pictures/icons/hamburger-icon.svg";
+import hamburgerIconPath from "../../assets/icons/hamburger-icon.svg";
 import {motion} from "framer-motion";
 
 

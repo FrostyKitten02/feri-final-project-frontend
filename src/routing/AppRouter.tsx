@@ -1,20 +1,25 @@
-import {createBrowserRouter, RouteObject, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
 import App from "../App";
 import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
-import ProjectMainPage from "../components/main-1/ProjectMainPage";
+import ProjectMainPage from "../components/project-main/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
-import ProjectsOverviewPage from "../components/main-2/pages/allprojects/AllProjectsPage";
-import MyProjectsPage from "../components/main-2/pages/allprojects/MyProjectsPage";
-import AssignedToPage from "../components/main-2/pages/allprojects/AssignedToPage";
-import TeamPage from "../components/main-1/pages/TeamPage";
-import DashboardPage from "../components/main-1/pages/DashboardPage";
-import AppMainPage from "../components/main-2/AppMainPage";
-import WorkPackagePage from "../components/main-1/pages/work-package/WorkpackagePage";
+import ProjectsOverviewPage from "../components/app-main/projects/AllProjectsPage";
+import AppMainPage from "../components/app-main/AppMainPage";
+import AssignedToPage from "../components/app-main/projects/AssignedToPage";
+import DashboardPage from "../components/project-main/DashboardPage";
+import TeamPage from "../components/project-main/TeamPage";
+import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
+import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
+import {RedirectToSignIn, useSession} from "@clerk/clerk-react";
+import Paths from "../util/Paths";
+
 
 function AppRouter() {
-    const routes: RouteObject [] = [
+    const { isLoaded, session, isSignedIn } = useSession();
+
+    const signedOutRoutes: RouteObject [] = [
         {
             path: "sign-up/*",
             element: <SignUpPage />,
@@ -30,8 +35,11 @@ function AppRouter() {
             errorElement: <ErrorPage />,
             element: <SignInPage/>,
         },
+    ]
+
+    const signedInRoutes: RouteObject [] = [
         {
-            path: "project-details/:projectId",
+            path: ":projectId",
             element: <ProjectMainPage />,
             errorElement: <ErrorPage />,
             children: [
@@ -58,12 +66,12 @@ function AppRouter() {
             ]
         },
         {
-            path: "home-page",
+            path: "/",
             element: <AppMainPage />,
             errorElement: <ErrorPage />,
             children: [
                 {
-                    path: "all-projects",
+                    path: "projects",
                     element: <ProjectsOverviewPage/>,
                     errorElement: <ErrorPage/>,
                     children: [
@@ -90,8 +98,8 @@ function AppRouter() {
         {
             path: "/",
             element: <App/>,
-            errorElement: <ErrorPage/>,
-            children: routes,
+            errorElement: isSignedIn ? <ErrorPage /> : <Navigate to={Paths.INTRODUCTION} replace={true}/>,
+            children: isSignedIn ? signedInRoutes : signedOutRoutes,
         },
     ]);
 

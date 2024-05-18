@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import SidebarTemplate from "../layout/SidebarTemplate";
+import SidebarTemplate from "../template/SidebarTemplate";
 
 const items = [
     {
         name: "ALL PROJECTS",
-        linkPath: "all-projects",
+        linkPath: "projects",
     },
 ]
 
