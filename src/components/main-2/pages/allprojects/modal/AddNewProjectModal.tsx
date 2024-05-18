@@ -13,7 +13,6 @@ interface AddNewProjectModalProps {
   handleAddProject: () => void;
 }
 
-// validation function that returns a boolean
 const validateForm = (
   title: string,
   startDate: string,

@@ -43,7 +43,7 @@ export default function TeamPage() {
 
   useEffect(() => {
     fetchPeopleOnProject();
-  }, [projectId, peopleOnProject]);
+  }, [projectId]);
 
   // search function for the dropdown
   const matches = useMemo(() => {
@@ -70,6 +70,7 @@ export default function TeamPage() {
           toastSuccess(
             selectedEmployee.name + " was successfully added to the project!"
           );
+          fetchPeopleOnProject();
         }
       } else {
         toastError("Project id not found");
@@ -123,7 +124,7 @@ export default function TeamPage() {
             opacity: isFormOpen ? 1 : 0,
           }}
           transition={{
-            duration: 0.2,
+            duration: 0.3,
             ease: "easeInOut",
             delay: 0.2,
             type: "tween",
@@ -197,7 +198,11 @@ export default function TeamPage() {
             </form>
           </div>
         </motion.div>
-        <div className="flex flex-col border-2 border-solid rounded-2xl border-gray-200 w-full h-full mt-6 z-10">
+        <div
+          className={`flex flex-col border-2 border-solid rounded-2xl border-gray-200 w-full h-full mt-6 ${
+            isFormOpen ? "" : "z-10"
+          }`}
+        >
           <div className="flex flex-col">
             <div></div>
             <div className="flex flex-col">

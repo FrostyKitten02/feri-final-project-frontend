@@ -11,6 +11,7 @@ import AssignedToPage from "../components/main-2/pages/allprojects/AssignedToPag
 import TeamPage from "../components/main-1/pages/TeamPage";
 import DashboardPage from "../components/main-1/pages/DashboardPage";
 import AppMainPage from "../components/main-2/AppMainPage";
+import WorkPackagePage from "../components/main-1/pages/work-package/WorkpackagePage";
 
 function AppRouter() {
     const routes: RouteObject [] = [
@@ -46,7 +47,7 @@ function AppRouter() {
                 },
                 {
                     path: "work-packages",
-                    element: <></>,
+                    element: <WorkPackagePage />,
                     errorElement: <ErrorPage />
                 },
                 {

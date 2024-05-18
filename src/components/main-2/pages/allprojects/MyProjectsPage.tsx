@@ -158,7 +158,14 @@ export default function MyProjectsPage() {
                 <div
                   key={project.id}
                   className="cursor-pointer"
-                  onClick={() => navigate(`/project-details/${project.id}`)} // navigate to project details page and pass project id as a parameter
+                  onClick={() =>
+                    navigate(`/project-details/${project.id}`, {
+                      state: {
+                        startDate: project.startDate,
+                        endDate: project.endDate,
+                      },
+                    })
+                  } // navigate to project details page and pass project id as a parameter and startDate and endDate into state to use in form validation in project-details
                 >
                   <motion.div className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box">
                     <div className="border-l-4 border-solid border-rose-500">
