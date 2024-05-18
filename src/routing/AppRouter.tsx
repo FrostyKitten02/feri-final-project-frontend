@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouteObject, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
 import App from "../App";
 import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
@@ -12,10 +12,20 @@ import DashboardPage from "../components/project-main/DashboardPage";
 import TeamPage from "../components/project-main/TeamPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
+import {useSession} from "@clerk/clerk-react";
+import Paths from "../util/Paths";
 
 function AppRouter() {
+    const { isLoaded, isSignedIn } = useSession();
+    if (!isLoaded) {
+        return (
+            <div>
+                Loading...
+            </div>
+        );
+    }
 
-    const routes: RouteObject [] = [
+    const signedOutRoutes: RouteObject [] = [
         {
             path: "sign-up/*",
             element: <SignUpPage/>,
@@ -31,6 +41,9 @@ function AppRouter() {
             element: <SignInPage/>,
             errorElement: <ErrorPage/>,
         },
+    ]
+
+    const signedInRoutes: RouteObject [] = [
         {
             //TODO če vpiše id, ki v bazi ne obstaja, ga mora navigirat na / - trenutno lahko vpiše karkoli
             path: ":projectId",
@@ -83,17 +96,14 @@ function AppRouter() {
                 },
             ]
         },
-        {
-            path: "profile",
-            element: <></>
-        },
     ]
+
     const router = createBrowserRouter([
         {
             path: "/",
             element: <App/>,
-            errorElement: <ErrorPage/>,
-            children: routes,
+            errorElement: isSignedIn ? <ErrorPage/> : <Navigate to={Paths.INTRODUCTION} replace={true}/>,
+            children: isSignedIn ? signedInRoutes : signedOutRoutes,
         },
     ]);
 
