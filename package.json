@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "build-testing" : "tsc && vite build --mode testing",
+    "build-testing": "tsc && vite build --mode testing",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -25,13 +25,15 @@
     "react": "^18.2.0",
     "react-cookie": "^7.1.4",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.4",
     "react-loading-skeleton": "^3.4.0",
     "react-router-dom": "^6.23.0",
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
     "slick-carousel": "^1.8.1",
     "sort-by": "^1.2.0",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",

@@ -5,7 +5,6 @@ import Pagination from "./pagination/Pagination";
 // toast functions import
 import { toastError } from "../../../toastModals/ToastFunctions";
 import {
-  ProjectControllerApi,
   PageInfoRequest,
   ProjectSortInfoRequest,
   ListProjectResponse,
@@ -14,6 +13,7 @@ import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import RequestUtil from "../../../../util/RequestUtil";
+import { projectAPI } from "../../../../util/ApiDeclarations";
 
 export default function MyProjectsPage() {
   const navigate = useNavigate();
@@ -29,9 +29,6 @@ export default function MyProjectsPage() {
 
   // const [ascending, setAscending] = useState<boolean>(true);
   //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
-
-  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
-
   const [cookies] = useCookies(["__session"]);
 
   useEffect(() => {
@@ -86,7 +83,7 @@ export default function MyProjectsPage() {
     };
 
     try {
-      const response = await api.listProjects(
+      const response = await projectAPI.listProjects(
         pageInfo,
         sortInfo,
         undefined,
@@ -158,7 +155,14 @@ export default function MyProjectsPage() {
                 <div
                   key={project.id}
                   className="cursor-pointer"
-                  onClick={() => navigate(`/project-details/${project.id}`)} // navigate to project details page and pass project id as a parameter
+                  onClick={() =>
+                    navigate(`/project-details/${project.id}`, {
+                      state: {
+                        startDate: project.startDate,
+                        endDate: project.endDate,
+                      },
+                    })
+                  } // navigate to project details page and pass project id as a parameter and startDate and endDate into state to use in form validation in project-details
                 >
                   <motion.div className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box">
                     <div className="border-l-4 border-solid border-rose-500">

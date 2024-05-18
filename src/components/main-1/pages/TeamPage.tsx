@@ -12,11 +12,11 @@ import EmailIcon from "../../../assets/team-page/email-svgrepo-com.svg?react";
 import CogIcon from "../../../assets/team-page/cog-svgrepo-com.svg?react";
 import {
   AddPersonToProjectRequest,
-  ProjectControllerApi,
   GetPeopleResponse,
 } from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 import RequestUtil from "../../../util/RequestUtil";
+import { projectAPI } from "../../../util/ApiDeclarations";
 
 // mock list
 const employeelist = [
@@ -26,7 +26,6 @@ const employeelist = [
 ];
 
 export default function TeamPage() {
-  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
   const { projectId } = useParams(); // get the project id from the url
   const [cookies] = useCookies(["__session"]);
 
@@ -43,7 +42,7 @@ export default function TeamPage() {
 
   useEffect(() => {
     fetchPeopleOnProject();
-  }, [projectId, peopleOnProject]);
+  }, [projectId]);
 
   // search function for the dropdown
   const matches = useMemo(() => {
@@ -61,7 +60,7 @@ export default function TeamPage() {
 
     try {
       if (projectId) {
-        const response = await api.addPersonToProject(
+        const response = await projectAPI.addPersonToProject(
           projectId,
           personObject,
           requestArgs
@@ -70,6 +69,7 @@ export default function TeamPage() {
           toastSuccess(
             selectedEmployee.name + " was successfully added to the project!"
           );
+          fetchPeopleOnProject();
         }
       } else {
         toastError("Project id not found");
@@ -82,7 +82,7 @@ export default function TeamPage() {
   const fetchPeopleOnProject = async (): Promise<void> => {
     try {
       if (projectId) {
-        const response = await api.getPeopleOnProjectByProjectId(
+        const response = await projectAPI.getPeopleOnProjectByProjectId(
           projectId,
           requestArgs
         );
@@ -123,7 +123,7 @@ export default function TeamPage() {
             opacity: isFormOpen ? 1 : 0,
           }}
           transition={{
-            duration: 0.2,
+            duration: 0.3,
             ease: "easeInOut",
             delay: 0.2,
             type: "tween",
@@ -197,7 +197,11 @@ export default function TeamPage() {
             </form>
           </div>
         </motion.div>
-        <div className="flex flex-col border-2 border-solid rounded-2xl border-gray-200 w-full h-full mt-6 z-10">
+        <div
+          className={`flex flex-col border-2 border-solid rounded-2xl border-gray-200 w-full h-full mt-6 ${
+            isFormOpen ? "" : "z-10"
+          }`}
+        >
           <div className="flex flex-col">
             <div></div>
             <div className="flex flex-col">

@@ -1,19 +1,23 @@
-import {useState} from "react";
-import {RawAxiosRequestConfig} from "axios";
-import {useCookies} from "react-cookie";
+import { useState } from "react";
+import { RawAxiosRequestConfig } from "axios";
+import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
-import {toastError, toastSuccess, toastWarning,} from "../../../../toastModals/ToastFunctions";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../../../toastModals/ToastFunctions";
 import CloseIcon from "../../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
-import {CreateProjectRequest, ProjectControllerApi,} from "../../../../../../temp_ts/api";
+import { CreateProjectRequest } from "../../../../../../temp_ts/api";
 import RequestUtil from "../../../../../util/RequestUtil";
+import { projectAPI } from "../../../../../util/ApiDeclarations";
 
 interface AddNewProjectModalProps {
   handleClose: () => void;
   handleAddProject: () => void;
 }
 
-// validation function that returns a boolean
 const validateForm = (
   title: string,
   startDate: string,
@@ -40,10 +44,7 @@ export default function AddNewProjectPage({
   // variables to get session and cookies
   // const session = useSession();
   const [cookies] = useCookies(["__session"]);
-
-  // generated client api for project
-  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
-
+  
   // form submit function
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -59,11 +60,13 @@ export default function AddNewProjectPage({
     };
 
     // authorization header
-    const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
+    const requestArgs: RawAxiosRequestConfig =
+      RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
     try {
-      const response = await api.createProject(project, requestArgs);
-      if (response.status === 201) { // if status is 201, close modal, refetch projects for page and show success toast
+      const response = await projectAPI.createProject(project, requestArgs);
+      if (response.status === 201) {
+        // if status is 201, close modal, refetch projects for page and show success toast
         handleClose();
         handleAddProject();
         toastSuccess(
@@ -73,7 +76,7 @@ export default function AddNewProjectPage({
       console.log(response);
     } catch (error: any) {
       console.error(error);
-      toastError(`An error has occured: ${error.message}`)
+      toastError(`An error has occured: ${error.message}`);
     }
   };
 

@@ -8,18 +8,17 @@ import {
 } from "../../toastModals/ToastFunctions";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
-  ProjectControllerApi,
   ProjectDto,
 } from "../../../../temp_ts/api";
 import { RawAxiosRequestConfig } from "axios";
 import RequestUtil from "../../../util/RequestUtil";
+import { projectAPI } from "../../../util/ApiDeclarations";
 
 export default function DashboardPage() {
   const { projectId } = useParams();
   const [projectDetails, setProjectDetails] = useState<ProjectDto>();
   //const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const api = new ProjectControllerApi(RequestUtil.API_CONFIG);
   const [cookies] = useCookies(["__session"]);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function DashboardPage() {
 
     try {
       if (projectId) {
-        const response = await api.getProject(projectId, requestArgs);
+        const response = await projectAPI.getProject(projectId, requestArgs);
         if (response.status === 200 && response.data) {
           setProjectDetails(response.data.projectDto);
         } else {
