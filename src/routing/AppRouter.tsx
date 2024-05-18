@@ -1,4 +1,4 @@
-import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, RouteObject, RouterProvider} from "react-router-dom";
 import App from "../App";
 import ErrorPage from "../components/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
@@ -12,9 +12,6 @@ import DashboardPage from "../components/project-main/DashboardPage";
 import TeamPage from "../components/project-main/TeamPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
-import {useSession} from "@clerk/clerk-react";
-import Paths from "../util/Paths";
-
 
 function AppRouter() {
 
