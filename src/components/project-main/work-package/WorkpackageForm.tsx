@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import CloseIcon from "../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
+import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 

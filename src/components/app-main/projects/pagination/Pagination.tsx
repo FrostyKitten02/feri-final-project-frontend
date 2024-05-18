@@ -1,5 +1,5 @@
-import RightChevron from "../../../../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
-import LeftChevron from "../../../../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
+import RightChevron from "../../../../assets/all-projects/right-chevron-svgrepo-com.svg?react";
+import LeftChevron from "../../../../assets/all-projects/left-chevron-svgrepo-com.svg?react";
 
 interface PaginationProps {
   pageNumber: number;

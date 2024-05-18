@@ -3,15 +3,12 @@ import { RawAxiosRequestConfig } from "axios";
 import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../../../toastModals/ToastFunctions";
-import CloseIcon from "../../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
-import { CreateProjectRequest } from "../../../../../../temp_ts/api";
-import RequestUtil from "../../../../../util/RequestUtil";
-import { projectAPI } from "../../../../../util/ApiDeclarations";
+import CloseIcon from "../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
+import {CreateProjectRequest} from "../../../../../temp_ts";
+import {toastError, toastSuccess, toastWarning} from "../../../toast-modals/ToastFunctions";
+import {projectAPI} from "../../../../util/ApiDeclarations";
+import RequestUtil from "../../../../util/RequestUtil";
+
 
 interface AddNewProjectModalProps {
   handleClose: () => void;

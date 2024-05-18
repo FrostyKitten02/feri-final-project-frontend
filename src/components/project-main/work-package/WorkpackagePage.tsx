@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { CreateWorkPackageRequest } from "../../../../../temp_ts";
-import RequestUtil from "../../../../util/RequestUtil";
 import { SubmitHandler } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { RawAxiosRequestConfig } from "axios";
-import { toastError, toastSuccess } from "../../../toastModals/ToastFunctions";
 import WorkPackageForm from "./WorkpackageForm";
-import { workPackageAPI } from "../../../../util/ApiDeclarations";
+import {CreateWorkPackageRequest} from "../../../../temp_ts";
+import RequestUtil from "../../../util/RequestUtil";
+import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import {workPackageAPI} from "../../../util/ApiDeclarations";
 
 type FormFields = {
   title: string;

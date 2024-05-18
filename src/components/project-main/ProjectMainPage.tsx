@@ -1,10 +1,10 @@
-import SidebarTemplate from "../layout/SidebarTemplate";
+import SidebarTemplate from "../template/SidebarTemplate";
 import {Outlet} from "react-router-dom";
 import {ListItem} from "../../interfaces";
-import dashboardIconPath from "../../pictures/icons/dashboard-icon.svg";
-import boxOpenIconPath from "../../pictures/icons/box-open-icon.svg"
-import folderIconPath from "../../pictures/icons/folder-icon.svg"
-import usersIconPath from "../../pictures/icons/users-icon.svg"
+import dashboardIconPath from "../../assets/icons/dashboard-icon.svg";
+import boxOpenIconPath from "../../assets/icons/box-open-icon.svg"
+import folderIconPath from "../../assets/icons/folder-icon.svg"
+import usersIconPath from "../../assets/icons/users-icon.svg"
 
 function ProjectMainPage() {
     const items: ListItem [] = [
