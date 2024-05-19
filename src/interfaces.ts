@@ -1,12 +1,14 @@
+import {FC} from "react";
+
 export interface SidebarTemplateProps {
     items: ListItem [],
+    showReturn: boolean
 }
 
 export interface ListItem {
     name: string,
     linkPath: string,
-    iconPath?: string
-    alt?: string
+    iconComponent?: FC<any>
 
 }
 export interface SidebarItemProps {
