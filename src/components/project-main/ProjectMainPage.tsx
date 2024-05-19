@@ -33,7 +33,7 @@ function ProjectMainPage() {
     return (
         <div className="flex flex-row h-screen bg-[#1A426B]">
             <SidebarTemplate items={items} showReturn={true} />
-            <div className="bg-white my-5 mr-5 w-full rounded-[20px]">
+            <div className="bg-white my-5 mr-5 flex-grow rounded-[20px]">
                 <Outlet/>
             </div>
         </div>

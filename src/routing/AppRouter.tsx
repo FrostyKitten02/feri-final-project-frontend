@@ -16,7 +16,9 @@ import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 
 function AppRouter() {
-    const { isLoaded, isSignedIn } = useSession();
+
+    const {isLoaded, isSignedIn} = useSession();
+
     if (!isLoaded) {
         return (
             <div>
@@ -67,7 +69,13 @@ function AppRouter() {
                 },
                 {
                     path: "project",
-                    element: <></>,
+                    element: <div>hello!</div>,
+                    errorElement: <ErrorPage/>
+                },
+                //this is shown initially
+                {
+                    path: "",
+                    element: <div>hello!</div>,
                     errorElement: <ErrorPage/>
                 }
             ]
@@ -92,8 +100,19 @@ function AppRouter() {
                             element: <AssignedToPage/>,
                             errorElement: <ErrorPage/>
                         },
+                        {
+                            path: "",
+                            element: <div>tukaj bo element za /projects/</div>,
+                            errorElement: <ErrorPage/>
+                        },
                     ]
                 },
+                //this is shown initially
+                {
+                    path: "",
+                    element: <div>hello!</div>,
+                    errorElement: <ErrorPage/>
+                }
             ]
         },
     ]
