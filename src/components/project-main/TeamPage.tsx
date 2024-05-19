@@ -3,17 +3,15 @@ import { useState } from "react";
 import { matchSorter } from "match-sorter";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import CloseIcon from "../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import PersonIcon from "../../assets/team-page/person-svgrepo-com.svg?react";
 import EmailIcon from "../../assets/team-page/email-svgrepo-com.svg?react";
 import CogIcon from "../../assets/team-page/cog-svgrepo-com.svg?react";
 import {AddPersonToProjectRequest, GetPeopleResponse} from "../../../temp_ts";
-import {RawAxiosRequestConfig} from "axios";
 import {projectAPI} from "../../util/ApiDeclarations";
-import RequestUtil from "../../util/RequestUtil";
 import {toastError, toastSuccess} from "../toast-modals/ToastFunctions";
+import { useRequestArgs } from "../../util/CustomHooks";
 
 // mock list
 const employeelist = [
@@ -24,7 +22,6 @@ const employeelist = [
 
 export default function TeamPage() {
   const { projectId } = useParams(); // get the project id from the url
-  const [cookies] = useCookies(["__session"]);
 
   // form states
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
@@ -34,8 +31,7 @@ export default function TeamPage() {
 
   const [peopleOnProject, setPeopleOnProject] = useState<GetPeopleResponse>();
 
-  const requestArgs: RawAxiosRequestConfig =
-    RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
+  const requestArgs = useRequestArgs()
 
   useEffect(() => {
     fetchPeopleOnProject();

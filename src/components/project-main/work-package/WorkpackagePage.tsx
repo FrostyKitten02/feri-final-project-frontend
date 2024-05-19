@@ -1,13 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
-import { useCookies } from "react-cookie";
-import { RawAxiosRequestConfig } from "axios";
 import WorkPackageForm from "./WorkpackageForm";
 import {CreateWorkPackageRequest} from "../../../../temp_ts";
-import RequestUtil from "../../../util/RequestUtil";
 import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
 import {workPackageAPI} from "../../../util/ApiDeclarations";
+import { useRequestArgs } from "../../../util/CustomHooks";
 
 type FormFields = {
   title: string;
@@ -18,14 +16,12 @@ type FormFields = {
 
 export default function WorkPackagePage() {
   const { projectId } = useParams();
-  const [cookies] = useCookies(["__session"]);
 
   //const [projectData, setProjectData] = useState<GetProjectResponse>();
 
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
-  const requestArgs: RawAxiosRequestConfig =
-    RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
+  const requestArgs = useRequestArgs();
 
   /*
   const fetchProjectById = async (): Promise<void> => {

@@ -2,13 +2,11 @@ import {useEffect, useState} from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import {motion} from "framer-motion";
 import Pagination from "./pagination/Pagination";
-import {RawAxiosRequestConfig} from "axios";
-import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {ListProjectResponse, PageInfoRequest, ProjectSortInfoRequest} from "../../../../temp_ts";
-import RequestUtil from "../../../util/RequestUtil";
 import {toastError} from "../../toast-modals/ToastFunctions";
+import { useRequestArgs } from "../../../util/CustomHooks";
 
 
 export default function MyProjectsPage() {
@@ -25,7 +23,6 @@ export default function MyProjectsPage() {
 
     // const [ascending, setAscending] = useState<boolean>(true);
     //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
-    const [cookies] = useCookies(["__session"]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -64,8 +61,7 @@ export default function MyProjectsPage() {
         fields: ["CREATED_AT"],
     };
 
-    const requestArgs: RawAxiosRequestConfig =
-        RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
+    const requestArgs = useRequestArgs();
 
     const fetchProjects = async (
         pageNum: number
