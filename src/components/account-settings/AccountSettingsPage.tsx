@@ -23,8 +23,8 @@ export default function AccountSettingsPage() {
     // onSUbmit function passed to the form (react hook form)
     const personType: CreatePersonTypeRequest = {
       name: data.name,
-      researchAvailability: data.researchAvailability / 100,
-      educateAvailability: data.educateAvailability / 100,
+      research: data.researchAvailability / 100,
+      educate: data.educateAvailability / 100,
     };
 
     try {

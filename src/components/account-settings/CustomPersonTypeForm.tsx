@@ -19,7 +19,7 @@ export default function CustomPersonTypeForm({
           <div className="flex flex-col space-y-3">
             <label className="text-gray-700 font-semibold text-lg">Name</label>
             <input
-              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-80"
               type="text"
               placeholder="Enter type name"
               {...register("name", {

@@ -53,13 +53,13 @@ export interface CreatePersonTypeRequest {
      * @type {number}
      * @memberof CreatePersonTypeRequest
      */
-    'researchAvailability'?: number;
+    'research'?: number;
     /**
      * 
      * @type {number}
      * @memberof CreatePersonTypeRequest
      */
-    'educateAvailability'?: number;
+    'educate'?: number;
 }
 /**
  * 
