@@ -2,17 +2,11 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import WorkPackageForm from "./WorkpackageForm";
-import {CreateWorkPackageRequest} from "../../../../temp_ts";
-import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
-import {workPackageAPI} from "../../../util/ApiDeclarations";
+import { CreateWorkPackageRequest } from "../../../../temp_ts";
+import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import { workPackageAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-
-type FormFields = {
-  title: string;
-  startDate: string;
-  endDate: string;
-  isRelevant: boolean;
-};
+import { WorkPackageFormFields } from "../../../types/forms/formTypes";
 
 export default function WorkPackagePage() {
   const { projectId } = useParams();
@@ -40,7 +34,9 @@ export default function WorkPackagePage() {
   };
   */
 
-  const onSubmit: SubmitHandler<FormFields> = async (data): Promise<void> => {
+  const onSubmit: SubmitHandler<WorkPackageFormFields> = async (
+    data
+  ): Promise<void> => {
     // onSUbmit function passed to the form (react hook form)
     const workPackage: CreateWorkPackageRequest = {
       title: data.title,
