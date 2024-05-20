@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { RawAxiosRequestConfig } from "axios";
-import { useCookies } from "react-cookie";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
 import CloseIcon from "../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
-import {CreateProjectRequest} from "../../../../../temp_ts";
-import {toastError, toastSuccess, toastWarning} from "../../../toast-modals/ToastFunctions";
-import {projectAPI} from "../../../../util/ApiDeclarations";
-import RequestUtil from "../../../../util/RequestUtil";
-
+import { CreateProjectRequest } from "../../../../../temp_ts";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../../toast-modals/ToastFunctions";
+import { projectAPI } from "../../../../util/ApiDeclarations";
+import { useRequestArgs } from "../../../../util/CustomHooks";
 
 interface AddNewProjectModalProps {
   handleClose: () => void;
@@ -38,10 +39,8 @@ export default function AddNewProjectPage({
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
-  // variables to get session and cookies
-  // const session = useSession();
-  const [cookies] = useCookies(["__session"]);
-  
+  const requestArgs = useRequestArgs();
+
   // form submit function
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -55,10 +54,6 @@ export default function AddNewProjectPage({
       startDate,
       endDate,
     };
-
-    // authorization header
-    const requestArgs: RawAxiosRequestConfig =
-      RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
 
     try {
       const response = await projectAPI.createProject(project, requestArgs);

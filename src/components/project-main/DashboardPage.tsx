@@ -1,14 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import "react-loading-skeleton/dist/skeleton.css";
-import { RawAxiosRequestConfig } from "axios";
 import {ProjectDto} from "../../../temp_ts";
 import {projectAPI} from "../../util/ApiDeclarations";
-import RequestUtil from "../../util/RequestUtil";
 import {toastError} from "../toast-modals/ToastFunctions";
+import { useRequestArgs } from "../../util/CustomHooks";
 
 
 export default function DashboardPage() {
@@ -16,14 +14,12 @@ export default function DashboardPage() {
   const [projectDetails, setProjectDetails] = useState<ProjectDto>();
   //const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [cookies] = useCookies(["__session"]);
-
   useEffect(() => {
     fetchProjectDetails();
   }, []);
 
   const fetchProjectDetails = async (): Promise<void> => {
-    const requestArgs: RawAxiosRequestConfig = RequestUtil.createBaseAxiosRequestConfig(cookies.__session)
+    const requestArgs = useRequestArgs();
 
     try {
       if (projectId) {

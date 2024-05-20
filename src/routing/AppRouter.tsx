@@ -14,6 +14,7 @@ import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
+import AccountSettingsPage from "../components/account-settings/AccountSettingsPage";
 
 function AppRouter() {
 
@@ -51,6 +52,11 @@ function AppRouter() {
     ]
 
     const signedInRoutes: RouteObject [] = [
+        {
+            path: "account-settings",
+            element: <AccountSettingsPage/>,
+            errorElement: <ErrorPage/>
+        },
         {
             //TODO če vpiše id, ki v bazi ne obstaja, ga mora navigirat na / - trenutno lahko vpiše karkoli
             path: ":projectId",

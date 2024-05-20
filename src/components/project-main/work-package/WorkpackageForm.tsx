@@ -1,20 +1,9 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-
-type FormFields = {
-  title: string;
-  startDate: string;
-  endDate: string;
-  isRelevant: boolean;
-};
-
-type WorkPackageFormProps = {
-  isFormOpen: boolean;
-  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onSubmit: SubmitHandler<FormFields>;
-};
+import { WorkPackageFormProps } from "../../../interfaces";
+import { WorkPackageFormFields } from "../../../types/forms/formTypes";
 
 export default function WorkPackageForm({
   isFormOpen,
@@ -28,7 +17,7 @@ export default function WorkPackageForm({
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<WorkPackageFormFields>();
   const watchStartDate = watch("startDate");
   const watchEndDate = watch("endDate");
   register("isRelevant", { value: false }); // register the isRelevant field here, because it's a custom component not input
