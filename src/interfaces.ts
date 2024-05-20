@@ -1,6 +1,13 @@
-import {FC} from "react";
-
+import { FC } from "react";
 import {ListProjectResponse, ProjectDto} from "../temp_ts";
+import { SubmitHandler } from "react-hook-form";
+import {
+    WorkPackageFormFields,
+    CustomPersonTypeFormFields,
+    //SelectTypeFormFields,
+    PersonType,
+} from "./types/forms/formTypes";
+import * as React from "react";
 
 export interface SidebarTemplateProps {
     items: ListItem [],
@@ -42,4 +49,19 @@ export interface ProjectItemProps {
     modalOpen?: boolean,
     open?: () => void,
     close?: () => void,
+}
+
+export interface WorkPackageFormProps {
+    isFormOpen: boolean;
+    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    onSubmit: SubmitHandler<WorkPackageFormFields>;
+}
+
+export interface CustomPersonTypeFormProps {
+    onSubmit: SubmitHandler<CustomPersonTypeFormFields>;
+}
+
+export interface SelectTypeFormProps {
+    //onSubmit: SubmitHandler<SelectTypeFormFields>;
+    typeList: PersonType
 }
