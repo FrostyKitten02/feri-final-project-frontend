@@ -54,7 +54,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
             </div>
             <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
                 <div className="flex px-3 items-center justify-center ">
-                    <UserButton/>
+                    <UserButton userProfileMode='navigation' userProfileUrl="/account-settings" />
                 </div>
                 {
                     opened &&

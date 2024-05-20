@@ -1,31 +1,21 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
-import { useCookies } from "react-cookie";
-import { RawAxiosRequestConfig } from "axios";
 import WorkPackageForm from "./WorkpackageForm";
-import {CreateWorkPackageRequest} from "../../../../temp_ts";
-import RequestUtil from "../../../util/RequestUtil";
-import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
-import {workPackageAPI} from "../../../util/ApiDeclarations";
-
-type FormFields = {
-  title: string;
-  startDate: string;
-  endDate: string;
-  isRelevant: boolean;
-};
+import { CreateWorkPackageRequest } from "../../../../temp_ts";
+import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import { workPackageAPI } from "../../../util/ApiDeclarations";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { WorkPackageFormFields } from "../../../types/forms/formTypes";
 
 export default function WorkPackagePage() {
   const { projectId } = useParams();
-  const [cookies] = useCookies(["__session"]);
 
   //const [projectData, setProjectData] = useState<GetProjectResponse>();
 
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
-  const requestArgs: RawAxiosRequestConfig =
-    RequestUtil.createBaseAxiosRequestConfig(cookies.__session);
+  const requestArgs = useRequestArgs();
 
   /*
   const fetchProjectById = async (): Promise<void> => {
@@ -44,7 +34,9 @@ export default function WorkPackagePage() {
   };
   */
 
-  const onSubmit: SubmitHandler<FormFields> = async (data): Promise<void> => {
+  const onSubmit: SubmitHandler<WorkPackageFormFields> = async (
+    data
+  ): Promise<void> => {
     // onSUbmit function passed to the form (react hook form)
     const workPackage: CreateWorkPackageRequest = {
       title: data.title,

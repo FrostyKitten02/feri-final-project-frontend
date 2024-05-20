@@ -1,16 +1,21 @@
 import {FC} from "react";
-import {ListProjectResponse, ProjectDto} from "../temp_ts";
+import { SubmitHandler } from "react-hook-form";
+import {
+  WorkPackageFormFields,
+  CustomPersonTypeFormFields,
+  //SelectTypeFormFields,
+  PersonType,
+} from "./types/forms/formTypes";
 
 export interface SidebarTemplateProps {
-    items: ListItem [],
-    showReturn: boolean
+  items: ListItem[];
+  showReturn: boolean;
 }
 
 export interface ListItem {
-    name: string,
-    linkPath: string,
-    iconComponent?: FC<any>
-
+  name: string;
+  linkPath: string;
+  iconComponent?: FC<any>;
 }
 
 export interface SidebarItemProps {
@@ -42,3 +47,19 @@ export interface ProjectItemProps {
     open?: () => void,
     close?: () => void,
 }
+
+export interface WorkPackageFormProps {
+  isFormOpen: boolean;
+  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSubmit: SubmitHandler<WorkPackageFormFields>;
+}
+
+export interface CustomPersonTypeFormProps {
+  onSubmit: SubmitHandler<CustomPersonTypeFormFields>;
+}
+
+export interface SelectTypeFormProps {
+  //onSubmit: SubmitHandler<SelectTypeFormFields>;
+  typeList: PersonType
+}
+
