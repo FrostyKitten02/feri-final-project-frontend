@@ -16,9 +16,10 @@ function AllProjects() {
         "my projects",
         "assigned to"
     ]
+    //todo move modal for adding a new project here
 
     return (
-        <div className="flex flex-col h-full px-10 py-5">
+        <div className="flex flex-col h-full px-10 pt-5 pb-10">
             <h1 className="font-bold text-end text-3xl uppercase">
                 All Projects
             </h1>
@@ -30,7 +31,11 @@ function AllProjects() {
                             <CustomTab tabLink={chooseTab} selectedTab={selectedTab} title={title}/>
                         )
                     })}
-                    <div className="flex-grow border-b-2 border-gray-200 border-solid"/>
+                    <div className="flex flex-row justify-end items-center flex-grow border-b-2 border-gray-200 border-solid">
+                        <button>
+                            + add a new project
+                        </button>
+                    </div>
                 </div>
                 <div className="flex-grow">
                     <Outlet/>

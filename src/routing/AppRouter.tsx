@@ -43,6 +43,11 @@ function AppRouter() {
             element: <SignInPage/>,
             errorElement: <ErrorPage/>,
         },
+        {
+            path: "",
+            element: <Navigate to={Paths.INTRODUCTION} />,
+            errorElement: <ErrorPage />
+        }
     ]
 
     const signedInRoutes: RouteObject [] = [
@@ -102,7 +107,7 @@ function AppRouter() {
                         },
                         {
                             path: "",
-                            element: <div>tukaj bo element za /projects/</div>,
+                            element: <Navigate to="/" />,
                             errorElement: <ErrorPage/>
                         },
                     ]

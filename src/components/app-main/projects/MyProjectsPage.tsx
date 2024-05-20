@@ -1,15 +1,14 @@
 import {FC, useEffect, useState} from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
-import {motion} from "framer-motion";
 import Pagination from "./pagination/Pagination";
 import {RawAxiosRequestConfig} from "axios";
 import {useCookies} from "react-cookie";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {ListProjectResponse, PageInfoRequest, ProjectSortInfoRequest} from "../../../../temp_ts";
 import RequestUtil from "../../../util/RequestUtil";
 import {toastError} from "../../toast-modals/ToastFunctions";
-import {ProjectListingProps} from "../../../interfaces";
+import {ProjectItemProps, ProjectListingProps} from "../../../interfaces";
 
 
 export default function MyProjectsPage() {
@@ -26,6 +25,8 @@ export default function MyProjectsPage() {
     // const [ascending, setAscending] = useState<boolean>(true);
     //const [fields, setFields] = useState<string[]>(["CREATED_AT"]); ////// TO DO: implement sorting //////
     const [cookies] = useCookies(["__session"]);
+// framer motion modal states and functions
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -37,8 +38,6 @@ export default function MyProjectsPage() {
             });
     }, [pageNumber]);
 
-    // framer motion modal states and functions
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     const close = (): void => {
         setModalOpen(false);
@@ -74,7 +73,7 @@ export default function MyProjectsPage() {
     ): Promise<void> => {
         // dynamically set pageNumber
         const pageInfo: PageInfoRequest = {
-            elementsPerPage: 8,
+            elementsPerPage: 5,
             pageNumber: pageNum,
         };
 
@@ -115,98 +114,137 @@ export default function MyProjectsPage() {
     };
 
     return (
-       <div className="flex flex-row flex-grow h-full">
-           <div>
-               {modalOpen && (
-                   <AddNewProjectPage
-                       handleClose={close}
-                       handleAddProject={() =>
-                           fetchProjects(pageNumber /*, ascending, fields*/)
-                       }
-                   />
-               )}
-           </div>
-           <div className="flex flex-col px-10 py-10 w-full border-b-2 border-x-2 border-solid rounded-b-2xl border-gray-200">
-               <div className="flex flex-row">
-                   <motion.button onClick={() => (modalOpen ? close() : open())}>
-                       <div
-                           className="flex justify-center items-center bg-rose-500 text-white rounded-lg h-12 space-x-4 w-52">
-                           <p className="font-semibold text-2xl">+</p>
-                           <p className="font-semibold text-lg">Add new project</p>
-                       </div>
-                   </motion.button>
-               </div>
-               <ProjectListing isLoading={isLoading} allProjects={projects} />
-               <Pagination
-                   pageNumber={pageNumber}
-                   lastPage={lastPage}
-                   totalPages={totalPages}
-                   onPageChange={(newPageNumber) =>
-                       fetchProjects(newPageNumber /*ascending, fields*/)
-                   }
-                   nextPage={nextPage}
-                   prevPage={prevPage}
-               />
-           </div>
-       </div>
+        <div className="flex flex-row flex-grow h-full">
+            <div>
+                {modalOpen && (
+                    <AddNewProjectPage
+                        handleClose={close}
+                        handleAddProject={() =>
+                            fetchProjects(pageNumber /*, ascending, fields*/)
+                        }
+                    />
+                )}
+            </div>
+            <div
+                className="flex flex-col px-10 py-10 w-full border-b-2 border-x-2 border-solid rounded-b-2xl border-gray-200">
+                {/*
+                 <div className="flex flex-row">
+                    <motion.button >
+                        <div
+                            className="flex justify-center items-center bg-rose-500 text-white rounded-lg h-12 space-x-4 w-52">
+                            <p className="font-semibold text-2xl">+</p>
+                            <p className="font-semibold text-lg">Add new project</p>
+                        </div>
+                    </motion.button>
+                </div>
+                */}
+                <ProjectListing isLoading={isLoading} allProjects={projects} modalOpen={modalOpen} open={open}
+                                close={close}/>
+                <Pagination
+                    pageNumber={pageNumber}
+                    lastPage={lastPage}
+                    totalPages={totalPages}
+                    onPageChange={(newPageNumber) =>
+                        fetchProjects(newPageNumber /*ascending, fields*/)
+                    }
+                    nextPage={nextPage}
+                    prevPage={prevPage}
+                />
+            </div>
+        </div>
     );
 }
 
-const ProjectListing:FC<ProjectListingProps> = ({isLoading, allProjects}) => {
-    const navigate = useNavigate();
-    return(
-        <div className="flex flex-col py-12">
-            {isLoading ? (
-                <div className="flex flex-col justify-center items-center font-bold text-3xl">
-                    <h1>Loading projects...</h1>
-                </div>
-            ) : allProjects && allProjects.projects && allProjects.projects.length > 0 ? (
-                <div className="grid grid-cols-4 gap-x-12 gap-y-12">
-                    {
-                        allProjects.projects.map((project) => (
-                            <div
-                                key={project.id}
-                                className="cursor-pointer"
-                                onClick={() =>
-                                    navigate(`/${project.id}`)
-                                } // navigate to project details page and pass project id as a parameter and startDate and endDate into state to use in form validation in project-details
-                            >
-                                <motion.div
-                                    className="flex flex-col bg-white justify-center px-10 h-36 rounded-xl border border-gray-200 border-solid shadow-xl box">
-                                    <div className="border-l-4 border-solid border-rose-500">
-                                        <div
-                                            className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
-                                            <p className="font-semibold italic text-gray-700 text-sm">
-                                                ID: {project.id?.slice(0, 8)}...
-                                                {project.id?.slice(-4)}
-                                            </p>
-                                        </div>
-                                        <h1 className="font-bold pl-4 text-xl">
-                                            {project.title}
-                                        </h1>
-                                    </div>
-                                    <div className="flex flex-row pt-4">
-                                        <div className="w-1/2">
-                                            <p className="font-semibold text-gray-700">Start:</p>
-                                            <p className="font-semibold">{project.startDate}</p>
-                                        </div>
-                                        <div className="w-1/2">
-                                            <p className="font-semibold text-gray-700">End:</p>
-                                            <p className="font-semibold">{project.endDate}</p>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            </div>
-                        ))}
-                </div>
-            ) : (
-                <div className="flex flex-col justify-center items-center font-bold text-3xl space-y-4">
-                    <h1>No projects found...</h1>
-                    <p className="text-base text-gray-700">
-                        Click the "Add new project" button to create a new project.
-                    </p>
-                </div>
-            )}
+const ProjectListing: FC<ProjectListingProps> = ({isLoading, allProjects, modalOpen, open, close}) => {
+    const openModal = (): void => {
+        if (open)
+            open();
+    }
+    const closeModal = (): void => {
+        if (close)
+            close();
+    }
+    return (
+        <div className="flex-grow">
+            <div className="flex flex-row h-full">
+                {isLoading ? (
+                    <div className="flex flex-col justify-center items-center font-bold text-3xl">
+                        <h1>Loading projects...</h1>
+                    </div>
+                ) : allProjects && allProjects.projects && allProjects.projects.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-x-12 gap-y-12">
+                        <ProjectItem addButton={true} modalOpen={modalOpen} open={open} close={close}/>
+                        {
+                            allProjects.projects.map((project) => (
+                                <ProjectItem project={project}/>
+                            ))
+                        }
+                    </div>
+                ) : (
+                    <div className="flex flex-col w-full bg-red-50 justify-center items-center font-bold text-3xl space-y-4">
+                        <h1>No projects found...</h1>
+                        <p className="text-base text-gray-700">
+                            Click the "Add new project" button to create a new project.
+                        </p>
+                        <button
+                            onClick={() => (modalOpen && modalOpen ? closeModal() : openModal())}
+                            className="flex flex-row flex-wrap items-center justify-center rounded-xl p-6 h-48 border border-gray-200 border-solid shadow-xl">
+                            + add a new project
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
+    )
+}
+
+const ProjectItem: FC<ProjectItemProps> = ({project, addButton, modalOpen, open, close}) => {
+    const openModal = (): void => {
+        if (open)
+            open();
+    }
+    const closeModal = (): void => {
+        if (close)
+            close();
+    }
+    return (
+        project ?
+            <Link
+                key={project.id}
+                className="cursor-pointer"
+                to={`/${project.id}`}
+            >
+                <div
+                    className="flex flex-row flex-wrap rounded-xl p-6 h-60 border border-gray-200 border-solid shadow-xl">
+                    <div className="border-l-4 border-solid border-rose-500 w-full">
+                        <div
+                            className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
+                            <p className="font-semibold italic text-gray-700 text-sm">
+                                ID: {project.id?.slice(0, 8)}...
+                                {project.id?.slice(-4)}
+                            </p>
+                        </div>
+                        <h1 className="font-bold pl-4 text-xl">
+                            {project.title}
+                        </h1>
+                    </div>
+                    <div className="flex flex-row pt-4 justify-between w-full">
+                        <div>
+                            <p className="font-semibold text-gray-700">Start:</p>
+                            <p className="font-semibold">{project.startDate}</p>
+                        </div>
+                        <div>
+                            <p className="font-semibold text-gray-700">End:</p>
+                            <p className="font-semibold">{project.endDate}</p>
+                        </div>
+                    </div>
+                </div>
+            </Link>
+            : addButton &&
+            <button
+                onClick={() => (modalOpen && modalOpen ? closeModal() : openModal())}
+                className="flex h-60 flex-row flex-wrap items-center justify-center rounded-xl p-6 h-48 border border-gray-200 border-solid shadow-xl">
+                + add a new project
+            </button>
     )
 }
