@@ -17,7 +17,9 @@ import Paths from "../util/Paths";
 import AccountSettingsPage from "../components/account-settings/AccountSettingsPage";
 
 function AppRouter() {
-    const { isLoaded, isSignedIn } = useSession();
+
+    const {isLoaded, isSignedIn} = useSession();
+
     if (!isLoaded) {
         return (
             <div>
@@ -42,6 +44,11 @@ function AppRouter() {
             element: <SignInPage/>,
             errorElement: <ErrorPage/>,
         },
+        {
+            path: "",
+            element: <Navigate to={Paths.INTRODUCTION} />,
+            errorElement: <ErrorPage />
+        }
     ]
 
     const signedInRoutes: RouteObject [] = [
@@ -73,7 +80,13 @@ function AppRouter() {
                 },
                 {
                     path: "project",
-                    element: <></>,
+                    element: <div>hello!</div>,
+                    errorElement: <ErrorPage/>
+                },
+                //this is shown initially
+                {
+                    path: "",
+                    element: <div>hello!</div>,
                     errorElement: <ErrorPage/>
                 }
             ]
@@ -98,8 +111,19 @@ function AppRouter() {
                             element: <AssignedToPage/>,
                             errorElement: <ErrorPage/>
                         },
+                        {
+                            path: "",
+                            element: <Navigate to="/" />,
+                            errorElement: <ErrorPage/>
+                        },
                     ]
                 },
+                //this is shown initially
+                {
+                    path: "",
+                    element: <div>hello!</div>,
+                    errorElement: <ErrorPage/>
+                }
             ]
         },
     ]

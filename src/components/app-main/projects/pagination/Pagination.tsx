@@ -19,7 +19,7 @@ export default function Pagination(props: PaginationProps) {
   }
 
   return (
-    <div className="flex flex-row pb-12">
+    <div className="flex flex-row">
       <div className="flex w-1/3 justify-start font-semibold">
         {props.pageNumber !== 1 && (
           <button onClick={props.prevPage}>

@@ -16,21 +16,24 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
 
     return (
         <motion.div
-            animate={{width: opened ? "20%" : "6%"}}
+            animate={{width: opened ? "18%" : "6%"}}
             initial={{width: "20%"}}
             transition={{duration: 0.3}}
             className="h-full text-white flex items-center flex-col flex-wrap bg-transparent"
         >
             <div
-                className={opened ? `h-28 w-full py-5 pr-3 flex flex-row items-center justify-end` : `h-28 w-full py-5 flex flex-row items-center justify-center`}>
+                className={opened ? `h-28 w-full py-5 flex flex-row items-center justify-around` : `h-28 w-full py-5 flex flex-row items-center justify-center`}>
                 {opened && (
-                    <motion.div
-                        initial={{visibility: "hidden", opacity: 0}}
-                        animate={{visibility: "visible", opacity: 1}}
-                        transition={{delay: 0.2, duration: 0.7}}
-                        className="text-xl text-center w-full">
-                        PROJECT MANAGER
-                    </motion.div>
+                    <Link to={Paths.HOME} className="text-xl">
+                        <motion.button
+                            initial={{visibility: "hidden", opacity: 0}}
+                            animate={{visibility: "visible", opacity: 1}}
+                            transition={{delay: 0.2, duration: 0.7}}
+                            onClick={() => setSelected('')}
+                            >
+                            PROJECT MANAGER
+                        </motion.button>
+                    </Link>
                 )}
                 <button onClick={toggle}>
                     <HamburgerIcon className="h-10 w-10 fill-white"/>
@@ -68,7 +71,6 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
                 showReturn &&
                 <Link to={Paths.HOME} className="w-full py-6">
                     <div className="flex flex-row items-center justify-around w-full">
-
                         <ReturnIcon className="h-10 w-10 fill-white" />
                     </div>
                 </Link>
