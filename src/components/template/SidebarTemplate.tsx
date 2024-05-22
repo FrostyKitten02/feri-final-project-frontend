@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
@@ -7,12 +7,35 @@ import HamburgerIcon from "../../assets/icons/hamburger-icon.svg?react";
 import ReturnIcon from "../../assets/icons/return.svg?react";
 import {motion} from "framer-motion";
 import Paths from "../../util/Paths";
+import SessionUtil from "../../util/SessionUtil";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) => {
     const [selected, setSelected] = useState<string>('');
     const [opened, setOpened] = useState<boolean>(true);
-    const toggle = () => setOpened(!opened);
-    const handleSelect = (name: string): void => setSelected(name);
+
+    useEffect(() => {
+        const sidebarSelect: string | undefined = SessionUtil.getSidebarSelect();
+        const sidebarStatus: boolean | undefined = SessionUtil.getSidebarStatus();
+        console.log(sidebarStatus)
+        if(sidebarSelect === undefined)
+            SessionUtil.setSidebarSelect('');
+        setSelected(sidebarSelect || '');
+        if (sidebarStatus === undefined) {
+            SessionUtil.setSidebarStatus(true);
+            setOpened(true);
+        } else
+            setOpened(sidebarStatus);
+    }, [])
+  
+    const toggle = (): void => {
+        const newStatus: boolean = !opened;
+        SessionUtil.setSidebarStatus(!SessionUtil.getSidebarStatus || newStatus);
+        setOpened(newStatus);
+    };
+    const handleSidebarSelect = (value: string): void => {
+       setSelected(value);
+       SessionUtil.setSidebarSelect(value);
+    }
 
     return (
         <motion.div
@@ -29,7 +52,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
                             initial={{visibility: "hidden", opacity: 0}}
                             animate={{visibility: "visible", opacity: 1}}
                             transition={{delay: 0.2, duration: 0.7}}
-                            onClick={() => setSelected('')}
+                            onClick={() => handleSidebarSelect('')}
                             >
                             PROJECT MANAGER
                         </motion.button>
@@ -45,7 +68,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
                         <SidebarItem
                             key={item.name}
                             item={item}
-                            handleSelect={handleSelect}
+                            handleSelect={handleSidebarSelect}
                             selected={selected}
                             opened={opened}
                         />
