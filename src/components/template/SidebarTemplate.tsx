@@ -26,6 +26,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
         } else
             setOpened(sidebarStatus);
     }, [])
+  
     const toggle = (): void => {
         const newStatus: boolean = !opened;
         SessionUtil.setSidebarStatus(!SessionUtil.getSidebarStatus || newStatus);
