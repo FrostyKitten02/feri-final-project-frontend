@@ -15,6 +15,7 @@ import WorkPackagePage from "../components/project-main/work-package/Workpackage
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import AccountSettingsPage from "../components/account-settings/AccountSettingsPage";
+import InProgressPage from "../components/template/InProgressPage";
 
 function AppRouter() {
 
@@ -80,13 +81,13 @@ function AppRouter() {
                 },
                 {
                     path: "project",
-                    element: <div>hello!</div>,
+                    element: <InProgressPage />,
                     errorElement: <ErrorPage/>
                 },
                 //this is shown initially
                 {
                     path: "",
-                    element: <div>hello!</div>,
+                    element: <InProgressPage />,
                     errorElement: <ErrorPage/>
                 }
             ]
@@ -121,7 +122,7 @@ function AppRouter() {
                 //this is shown initially
                 {
                     path: "",
-                    element: <div>hello!</div>,
+                    element: <InProgressPage />,
                     errorElement: <ErrorPage/>
                 }
             ]
