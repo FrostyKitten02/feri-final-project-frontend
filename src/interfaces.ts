@@ -17,7 +17,7 @@ export interface SidebarTemplateProps {
 export interface ListItem {
     name: string,
     linkPath: string,
-    iconComponent?: FC<any>
+    iconComponent: FC<any>
 
 }
 
@@ -36,19 +36,12 @@ export interface CustomTabProps {
 
 export interface ProjectListingProps {
     isLoading: boolean,
-    allProjects: ListProjectResponse | null,
-    modalOpen: boolean,
-    open: () => void,
-    close: () => void,
+    allProjects: ListProjectResponse | null
 
 }
 
 export interface ProjectItemProps {
-    project?: ProjectDto,
-    addButton?: boolean,
-    modalOpen?: boolean,
-    open?: () => void,
-    close?: () => void,
+    project?: ProjectDto
 }
 
 export interface WorkPackageFormProps {

@@ -47,9 +47,9 @@ function AppRouter() {
         },
         {
             path: "",
-            element: <Navigate to={Paths.INTRODUCTION} />,
-            errorElement: <ErrorPage />
-        }
+            element: <Navigate to={Paths.INTRODUCTION}/>,
+            errorElement: <ErrorPage/>
+        },
     ]
 
     const signedInRoutes: RouteObject [] = [
@@ -81,15 +81,15 @@ function AppRouter() {
                 },
                 {
                     path: "project",
-                    element: <InProgressPage />,
+                    element: <InProgressPage/>,
                     errorElement: <ErrorPage/>
                 },
                 //this is shown initially
                 {
                     path: "",
-                    element: <InProgressPage />,
+                    element: <InProgressPage/>,
                     errorElement: <ErrorPage/>
-                }
+                },
             ]
         },
         {
@@ -114,7 +114,7 @@ function AppRouter() {
                         },
                         {
                             path: "",
-                            element: <Navigate to="/" />,
+                            element: <Navigate to="/"/>,
                             errorElement: <ErrorPage/>
                         },
                     ]
@@ -122,9 +122,14 @@ function AppRouter() {
                 //this is shown initially
                 {
                     path: "",
-                    element: <InProgressPage />,
+                    element: <InProgressPage/>,
                     errorElement: <ErrorPage/>
-                }
+                },
+                {
+                    path: "dashboard",
+                    element: <InProgressPage/>,
+                    errorElement: <ErrorPage/>
+                },
             ]
         },
     ]
