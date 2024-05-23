@@ -20,10 +20,9 @@ function AllProjects() {
 
     return (
         <div className="flex flex-col h-full px-10 pt-5 pb-10">
-            <h1 className="font-bold text-end text-3xl uppercase">
+            <h1 className="font-bold text-end pb-10 text-3xl uppercase">
                 All Projects
             </h1>
-            <div className="h-[1px] bg-gray-800 my-5"/>
             <div className="flex flex-col flex-grow">
                 <div className="flex flex-row">
                     {allTabs.map(title => {
@@ -31,11 +30,7 @@ function AllProjects() {
                             <CustomTab tabLink={chooseTab} selectedTab={selectedTab} title={title}/>
                         )
                     })}
-                    <div className="flex flex-row justify-end items-center flex-grow border-b-2 border-gray-200 border-solid">
-                        <button>
-                            + add a new project
-                        </button>
-                    </div>
+                    <div className="flex flex-row justify-end items-center flex-grow border-b-2 border-gray-200 border-solid" />
                 </div>
                 <div className="flex-grow">
                     <Outlet/>
@@ -52,8 +47,8 @@ const CustomTab: FC<CustomTabProps> = ({tabLink, selectedTab, title}) => {
     return (
         <button
             onClick={selectTab}
-            className={`flex border-gray-200 border-solid items-center justfiy-center text-lg font-semibold rounded-t-lg px-6 py-2 uppercase 
-                ${selectedTab === TextUtil.replaceSpaces(title) ? "text-rose-500 border-x-2 border-t-2" : "text-gray-700 border-b-2"
+            className={`flex border-gray-200 hover:text-secondary border-solid items-center justfiy-center text-lg font-semibold rounded-t-lg px-6 py-2 uppercase 
+                ${selectedTab === TextUtil.replaceSpaces(title) ? "text-secondary border-x-2 border-t-2" : "text-gray-700 border-b-2"
             }`}
         >
             {title}
