@@ -140,12 +140,13 @@ export default function MyProjectsPage() {
                     prevPage={prevPage}
                 />
             </div>
-            <div className="flex flex-col items-center w-[7%] border-x-2 border-b-2 rounded-br-2xl border-solid border-gray-200">
-                <button
-                    onClick={() => (modalOpen && modalOpen ? close() : open())}
-                    className="h-[10%]">
-                    <AddProjectIcon className="h-10 w-10 fill-black hover:fill-secondary" />
-                </button>
+            <div
+                className="flex flex- w-[7%] border-x-2 border-b-2 rounded-br-2xl border-solid border-gray-200">
+                <div className="flex justify-center w-full h-[10%] items-center">
+                    <button onClick={() => (modalOpen && modalOpen ? close() : open())}>
+                        <AddProjectIcon className="h-12 w-12 fill-black hover:fill-secondary"/>
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -160,7 +161,7 @@ const ProjectListing: FC<ProjectListingProps> = ({isLoading, allProjects}) => {
                         <h1>Loading projects...</h1>
                     </div>
                 ) : allProjects && allProjects.projects && allProjects.projects.length > 0 ? (
-                    <div className="grid flex-grow grid-cols-3 gap-y-16 gap-x-16">
+                    <div className="grid flex-grow grid-cols-3 gap-y-10 gap-x-5">
                         {
                             allProjects.projects.map((project) => (
                                 <ProjectItem project={project}/>
@@ -186,31 +187,33 @@ const ProjectItem: FC<ProjectItemProps> = ({project}) => {
         project &&
         <Link
             key={project.id}
-            className="cursor-pointer"
+            className="cursor-pointer w-[90%] h-[90%] hover:bg-gray-100"
             to={`/${project.id}`}
         >
             <div
-                className="flex flex-row flex-wrap rounded-xl p-6 h-full border border-gray-200 border-solid shadow-xl">
-                <div className="border-l-4 border-solid border-rose-500 w-full">
-                    <div
-                        className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
-                        <p className="font-semibold italic text-gray-700 text-sm">
-                            ID: {project.id?.slice(0, 8)}...
-                            {project.id?.slice(-4)}
-                        </p>
+                className="flex items-center rounded-xl p-6 h-full border border-gray-200 border-solid shadow-xl">
+                <div className="w-full h-full">
+                    <div className="border-l-4 border-solid border-rose-500 w-full">
+                        <div
+                            className="flex bg-rose-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
+                            <p className="font-semibold italic text-gray-700 text-sm">
+                                ID: {project.id?.slice(0, 8)}...
+                                {project.id?.slice(-4)}
+                            </p>
+                        </div>
+                        <h1 className="font-bold pl-4 text-xl">
+                            {project.title}
+                        </h1>
                     </div>
-                    <h1 className="font-bold pl-4 text-xl">
-                        {project.title}
-                    </h1>
-                </div>
-                <div className="flex flex-row pt-4 justify-between w-full">
-                    <div>
-                        <p className="font-semibold text-gray-700">Start:</p>
-                        <p className="font-semibold">{project.startDate}</p>
-                    </div>
-                    <div>
-                        <p className="font-semibold text-gray-700">End:</p>
-                        <p className="font-semibold">{project.endDate}</p>
+                    <div className="flex flex-row pt-4 justify-between w-full">
+                        <div>
+                            <p className="font-semibold text-gray-700">Start:</p>
+                            <p className="font-semibold">{project.startDate}</p>
+                        </div>
+                        <div>
+                            <p className="font-semibold text-gray-700">End:</p>
+                            <p className="font-semibold">{project.endDate}</p>
+                        </div>
                     </div>
                 </div>
             </div>

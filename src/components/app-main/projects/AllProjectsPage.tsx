@@ -47,8 +47,8 @@ const CustomTab: FC<CustomTabProps> = ({tabLink, selectedTab, title}) => {
     return (
         <button
             onClick={selectTab}
-            className={`flex border-gray-200 border-solid items-center justfiy-center text-lg font-semibold rounded-t-lg px-6 py-2 uppercase 
-                ${selectedTab === TextUtil.replaceSpaces(title) ? "text-rose-500 border-x-2 border-t-2" : "text-gray-700 border-b-2"
+            className={`flex border-gray-200 hover:text-secondary border-solid items-center justfiy-center text-lg font-semibold rounded-t-lg px-6 py-2 uppercase 
+                ${selectedTab === TextUtil.replaceSpaces(title) ? "text-secondary border-x-2 border-t-2" : "text-gray-700 border-b-2"
             }`}
         >
             {title}

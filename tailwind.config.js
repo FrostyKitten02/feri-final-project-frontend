@@ -10,7 +10,8 @@ export default {
         bg_placeholder1: '#CEEAF7',
         bg_placeholder2: '#A288E3',
         primary: '#1A426B',
-        secondary: '#EF476F'
+        secondary: '#EF476F',
+        border: ''
       },
     },
   },
