@@ -8,17 +8,14 @@ import CloseIcon from "../../assets/add-new-project/close-bold-svgrepo-com.svg?r
 import PersonIcon from "../../assets/team-page/person-svgrepo-com.svg?react";
 import EmailIcon from "../../assets/team-page/email-svgrepo-com.svg?react";
 import CogIcon from "../../assets/team-page/cog-svgrepo-com.svg?react";
-import {AddPersonToProjectRequest, GetPeopleResponse} from "../../../temp_ts";
-import {projectAPI} from "../../util/ApiDeclarations";
-import {toastError, toastSuccess} from "../toast-modals/ToastFunctions";
+import {
+  AddPersonToProjectRequest,
+  GetPeopleResponse,
+  PersonDto,
+} from "../../../temp_ts";
+import { projectAPI, personAPI } from "../../util/ApiDeclarations";
+import { toastError, toastSuccess } from "../toast-modals/ToastFunctions";
 import { useRequestArgs } from "../../util/CustomHooks";
-
-// mock list
-const employeelist = [
-  { name: "Alen Fridau", id: "003fe51c-bd83-410c-86e7-615c424174d2" },
-  { name: "Alen Fridau 2.0", id: "e9164ca9-b019-46de-a76d-5b67b5e1307f" },
-  { name: "Luka Moleh", id: "bb332249-77e7-41e5-add4-bce5bce26f80" },
-];
 
 export default function TeamPage() {
   const { projectId } = useParams(); // get the project id from the url
@@ -29,26 +26,48 @@ export default function TeamPage() {
   const [selectedEmployee, setSelectedEmployee] = useState<any>("");
   const [searchValue, setSearchValue] = useState("");
 
+  const [personList, setPersonList] = useState<PersonDto[]>([]);
+
   const [peopleOnProject, setPeopleOnProject] = useState<GetPeopleResponse>();
 
-  const requestArgs = useRequestArgs()
+  const requestArgs = useRequestArgs();
 
   useEffect(() => {
     fetchPeopleOnProject();
+    getAllPeople();
   }, [projectId]);
 
   // search function for the dropdown
   const matches = useMemo(() => {
-    return matchSorter(employeelist, searchValue)
-      .slice(0, 4) // limit the number of shown matches
-      .sort((a, b) => a.name.localeCompare(b.name));
+    if (searchValue) {
+      return matchSorter(personList, searchValue, { keys: ["email", "name"] }).slice( // use email and name when searching
+        0,
+        4
+      );
+    } else {
+      return personList.slice(0, 4);
+    }
   }, [searchValue]);
+
+  const getAllPeople = async (): Promise<void> => {
+    try {
+      const response = await personAPI.getAllPeople(requestArgs);
+      if (response.status === 200) {
+        setPersonList(response.data);
+        console.log(personList);
+      } else {
+        toastError("There's been an error retreiving users from the database.");
+      }
+    } catch (error: any) {
+      toastError(error.message);
+    }
+  };
 
   const addPersonToProject = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     const personObject: AddPersonToProjectRequest = {
-      personId: selectedEmployee.id,
+      personId: selectedEmployee?.id,
     };
 
     try {
@@ -58,9 +77,9 @@ export default function TeamPage() {
           personObject,
           requestArgs
         );
-        if (response.status === 201) {
+        if (response.status === 204) {
           toastSuccess(
-            selectedEmployee.name + " was successfully added to the project!"
+            selectedEmployee?.name + " was successfully added to the project!"
           );
           fetchPeopleOnProject();
         }
@@ -131,8 +150,8 @@ export default function TeamPage() {
                 />
               </div>
               <div className="flex flex-col space-y-6">
-                <div className="flex flex-row">
-                  <div className="flex flex-col w-full">
+                <div className="flex flex-row space-x-6">
+                  <div className="flex flex-col w-1/2">
                     <div className="pb-2 space-y-2">
                       <label className="text-gray-700 font-semibold text-lg">
                         Employee
@@ -141,11 +160,11 @@ export default function TeamPage() {
                         Note: only available employees are listed.
                       </p>
                     </div>
-                    <div className="relative">
+                    <div className="relative flex">
                       <input
                         type="text"
                         placeholder="Select employee"
-                        value={selectedEmployee.name}
+                        value={selectedEmployee.email}
                         onClick={() => setIsOpen(!isOpen)}
                         readOnly
                         className="cursor-pointer px-4 focus:outline-none focus:ring-2 focus:ring-gray-200 border border-gray-200 rounded-md py-2"
@@ -169,7 +188,7 @@ export default function TeamPage() {
                                 }}
                                 className="cursor-pointer hover:bg-gray-200 px-4 py-2 border-b border-solid border-gray-300"
                               >
-                                {employee.name}
+                                {employee.email}
                               </div>
                             ))}
                           </div>
@@ -177,14 +196,14 @@ export default function TeamPage() {
                       )}
                     </div>
                   </div>
-                </div>
-                <div>
-                  <button
-                    className="px-4 py-2 bg-rose-500 text-white rounded-md"
-                    type="submit"
-                  >
-                    Assign to project
-                  </button>
+                  <div className="w-1/2 flex items-end">
+                    <button
+                      className="px-4 py-2 bg-rose-500 text-white rounded-md"
+                      type="submit"
+                    >
+                      Assign to project
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>
