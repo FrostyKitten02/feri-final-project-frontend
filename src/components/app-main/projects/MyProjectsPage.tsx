@@ -161,7 +161,7 @@ const ProjectListing: FC<ProjectListingProps> = ({isLoading, allProjects}) => {
                         <h1>Loading projects...</h1>
                     </div>
                 ) : allProjects && allProjects.projects && allProjects.projects.length > 0 ? (
-                    <div className="grid flex-grow grid-cols-3 gap-y-10 ">
+                    <div className="grid flex-grow grid-cols-3">
                         {
                             allProjects.projects.map((project) => (
                                 <ProjectItem project={project}/>
