@@ -88,7 +88,7 @@ export default function AddNewProjectPage({
   return (
     <Backdrop onClick={handleClose}>
       <motion.div
-        className="w-1/2"
+        className="w-2/3"
         onClick={(e) => e.stopPropagation()}
         variants={dropIn}
         initial="hidden"
@@ -111,12 +111,12 @@ export default function AddNewProjectPage({
           </div>
           <div className="px-16 pb-16">
             <form action="post" className="space-y-8" onSubmit={handleSubmit}>
-              <div className="flex flex-col">
+              <div className="flex flex-col w-1/2">
                 <label className="text-gray-700 font-semibold text-lg">
                   Title
                 </label>
                 <input
-                  className="w-1/2 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
                   type="text"
                   name="title"
                   id="title"
@@ -125,7 +125,7 @@ export default function AddNewProjectPage({
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
-              <div className="flex flex-row w-1/2 space-x-8">
+              <div className="flex flex-row w-1/2">
                 <div className="flex flex-col w-1/2">
                   <label className="text-gray-700 font-semibold text-lg">
                     Start date

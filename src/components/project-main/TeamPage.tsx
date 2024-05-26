@@ -22,8 +22,8 @@ export default function TeamPage() {
 
   // form states
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState(false); // dropdown state
-  const [selectedEmployee, setSelectedEmployee] = useState<any>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false); // dropdown state
+  const [selectedEmployee, setSelectedEmployee] = useState<PersonDto>();
   const [searchValue, setSearchValue] = useState("");
 
   const [personList, setPersonList] = useState<PersonDto[]>([]);
@@ -164,7 +164,7 @@ export default function TeamPage() {
                       <input
                         type="text"
                         placeholder="Select employee"
-                        value={selectedEmployee.email}
+                        value={selectedEmployee && selectedEmployee.email}
                         onClick={() => setIsOpen(!isOpen)}
                         readOnly
                         className="cursor-pointer px-4 focus:outline-none focus:ring-2 focus:ring-gray-200 border border-gray-200 rounded-md py-2"

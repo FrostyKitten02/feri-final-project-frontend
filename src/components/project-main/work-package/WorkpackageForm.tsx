@@ -131,7 +131,7 @@ export default function WorkPackageForm({
                     } p-1 w-10 h-6 rounded-2xl ${
                       !isOn ? "bg-gray-300" : "bg-green-600"
                     } cursor-pointer items-center`}
-                    data-isOn={isOn}
+                    data-ison={isOn}
                     onClick={toggleSwitch}
                   >
                     <motion.div
