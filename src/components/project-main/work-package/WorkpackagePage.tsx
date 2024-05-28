@@ -97,11 +97,12 @@ export default function WorkPackagePage() {
             <h1 className="font-bold text-3xl">Work packages</h1>
           </div>
           <div className="flex w-1/3 justify-end items-center">
-            <button onClick={() => setIsFormOpen(true)}>
-              <div className="flex justify-center items-center bg-rose-500 text-white rounded-lg h-12 space-x-4 w-52">
-                <p className="font-semibold text-2xl">+</p>
-                <p className="font-semibold text-lg">Add work package</p>
-              </div>
+            <button
+              onClick={() => setIsFormOpen(true)}
+              className="flex justify-center items-center bg-rose-500 text-white rounded-lg h-12 space-x-4 w-52"
+            >
+              <span className="font-semibold text-2xl">+</span>
+              <span className="font-semibold text-lg">Add work package</span>
             </button>
           </div>
         </div>
@@ -189,12 +190,12 @@ const WorkPackageItem: FC<WorkPackageItemProps> = ({
                 <p className="font-semibold">{workPackage.endDate}</p>
               </div>
             </div>
-            <div
+            <button
               onClick={onClick}
-              className="flex items-center justify-center cursor-pointer bg-rose-500 text-white w-24"
+              className="flex items-center justify-center bg-rose-500 text-white w-24"
             >
-              <p>Add task</p>
-            </div>
+              Add task
+            </button>
           </div>
         </div>
       </div>

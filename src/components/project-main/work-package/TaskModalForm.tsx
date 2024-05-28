@@ -182,7 +182,7 @@ export default function TaskModalForm({ handleClose }: TaskModalProps) {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="flex justify-start">
                 <button
                   className="px-4 py-2 bg-rose-500 text-white rounded-md"
                   type="submit"
