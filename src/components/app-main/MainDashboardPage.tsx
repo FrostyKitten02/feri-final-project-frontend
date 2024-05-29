@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {motion} from "framer-motion";
+import {RelevantProjectsSection} from "./dashboard/RelevantProjectsSection";
 
 export const MainDashboardPage = () => {
     const [view, setView] = useState<string>('all');
@@ -16,6 +17,7 @@ export const MainDashboardPage = () => {
                 <motion.div
                     animate={{
                         opacity: view === 'reminders' ? 0 : 1,
+                        display: view === 'reminders' ? 'none' : 'flex',
                         width: view === 'reminders' ? "0%" : view !== 'all' ? '100%' : '70%'
                     }}
                     transition={{duration: 0.5}}
@@ -23,22 +25,28 @@ export const MainDashboardPage = () => {
                     className={`flex flex-col ${view === "all" ? "p-2 space-y-4": view === 'projects' && 'space-y-0'}`}>
                     <motion.div
                         animate={{
-                            opacity: view === 'all' || view === 'tasks' ? 1 : 0,
-                            height: view === 'tasks' || view === 'all' ? '100%' : '0%'
+                            opacity: view === 'all' || view === 'analytics' ? 1 : 0,
+                            display: view === 'all' || view === 'analytics' ? 'block' : 'none',
+                            height: view === 'analytics' || view === 'all' ? '100%' : '0%'
                         }}
                         transition={{duration: 0.5}}
                         initial={{width: "100%", height: "100%"}}
-                        className={`border-gray-200 border-solid border-2 rounded-[25px] ${view !== 'tasks' ? view !== 'all' ? 'p-0' : 'p-5' : ''}`}>
+                        className={`border-gray-200 border-solid border-2 rounded-[25px] ${view !== 'analytics' ? view !== 'all' ? 'p-0' : 'p-5' : ''}`}>
                         <div className="h-full">
                             <button
-                                onClick={() => handleSelect('tasks')}
+                                onClick={() => handleSelect('analytics')}
                                 className="uppercase">
-                                currently working on tasks
+                                analytics
+                            </button>
+                            <button
+                                className='px-4'
+                                onClick={() => handleSelect('all')}>
+                                back
                             </button>
                             {
                                 !status &&
                                 <div className="h-full flex justify-center items-center">
-                                    You aren't working on any tasks currently.
+                                   No analytics currently.
                                 </div>
                             }
                         </div>
@@ -46,6 +54,7 @@ export const MainDashboardPage = () => {
                     <motion.div
                         animate={{
                             opacity: view === 'all' || view === 'projects' ? 1 : 0,
+                            display: view === 'all' || view === 'projects' ? 'block' : 'none',
                             height: view === 'projects' || view === 'all' ? '100%' : '0%'
                         }}
                         transition={{duration: 0.5}}
@@ -57,10 +66,15 @@ export const MainDashboardPage = () => {
                                 className="uppercase">
                                 currently relevant / in progress projects
                             </button>
+                            <button
+                                className='px-4'
+                                onClick={() => handleSelect('all')}>
+                                back
+                            </button>
                             {
                                 !status &&
                                 <div className="h-full flex justify-center items-center">
-                                    You aren't working on any projects currently.
+                                    <RelevantProjectsSection />
                                 </div>
                             }
                         </div>
@@ -69,6 +83,7 @@ export const MainDashboardPage = () => {
                 <motion.div
                     animate={{
                         opacity: view === 'all' || view === 'reminders' ? 1 : 0,
+                        display: view === 'all' || view === 'reminders' ? 'block' : 'hidden',
                         width: view === 'all' ? "30%" : view === 'reminders' ? '100%' : '0%',
                     }}
                     transition={{duration: 0.5}}
@@ -80,6 +95,11 @@ export const MainDashboardPage = () => {
                                 onClick={() => handleSelect('reminders')}
                                 className="">
                                 REMINDERS
+                            </button>
+                            <button
+                                className='px-4'
+                                onClick={() => handleSelect('all')}>
+                                back
                             </button>
                             {
                                 !status &&
