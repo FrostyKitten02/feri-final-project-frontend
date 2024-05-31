@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { TaskItemProps, TaskListingProps } from "../../../interfaces";
 
-export const TaskListing: FC<TaskListingProps> = ({ allTasks }) => {
+export const TaskListing: FC<TaskListingProps> = ({ allTasks, onAssignClick }) => {
   return (
     <div>
       {allTasks.length > 0 ? (
         <div>
           {allTasks.map((task) => (
             <div key={task.id}>
-              <TaskItem task={task} />
+              <TaskItem task={task} onAssignClick={onAssignClick}/>
             </div>
           ))}
         </div>
@@ -19,13 +19,13 @@ export const TaskListing: FC<TaskListingProps> = ({ allTasks }) => {
   );
 };
 
-const TaskItem: FC<TaskItemProps> = ({ task /*onClick*/ }) => {
+const TaskItem: FC<TaskItemProps> = ({ task, onAssignClick }) => {
   return (
     task && (
       <div key={task.id} className="flex flex-row gap-x-6">
         <div>{task.title}</div>
         <div>
-          <button>
+          <button onClick={() => onAssignClick(task.id)}>
             <span>Assign person</span>
           </button>
         </div>
