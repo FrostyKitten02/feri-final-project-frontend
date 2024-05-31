@@ -12,6 +12,7 @@ import { workPackageAPI, projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { WorkPackageFormFields } from "../../../types/forms/formTypes";
 import TaskModalForm from "./TaskModalForm";
+import AssignPersonModalForm from "./AssignPersonModalForm";
 import { WorkPackageListing } from "./WorkPackageList";
 
 export default function WorkPackagePage() {
@@ -21,27 +22,42 @@ export default function WorkPackagePage() {
   const [workPackages, setWorkPackages] = useState<WorkPackageDto[]>();
   const [tasks, setTasks] = useState<TaskDto[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [modalOpen, setModalOpen] = useState<boolean>(false); // task form modal
+
+  const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false); // task form modal
   const [workPackageId, setWorkPackageId] = useState<string>("");
+
+  const [assignPersonModalOpen, setAssignPersonModalOpen] = useState<boolean>(false);
+  const [taskId, setTaskId] = useState<string>("");
 
   const requestArgs = useRequestArgs();
 
-  const open = (id?: string): void => {
+  const openTaskModal = (id?: string): void => {
     if (id) setWorkPackageId(id);
-    setModalOpen(true);
+    setTaskModalOpen(true);
   };
 
-  const close = (): void => {
+  const closeTaskModal = (): void => {
     setWorkPackageId("");
-    setModalOpen(false);
+    setTaskModalOpen(false);
   };
 
   const handleAddTask = (): void => {
     setWorkPackageId("");
-    setModalOpen(false);
+    setTaskModalOpen(false);
 
     fetchWorkPackagesForProject();
   };
+
+  const openAsignPersonModal = (id?: string): void => {
+    if (id) setTaskId(id);
+    setAssignPersonModalOpen(true);
+    console.log(taskId);
+  }
+
+  const closeAssignPersonModal = (): void => {
+    setTaskId("");
+    setAssignPersonModalOpen(false);
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -126,12 +142,15 @@ export default function WorkPackagePage() {
           setIsFormOpen={setIsFormOpen}
           onSubmit={onSubmit}
         />
-        {modalOpen && (
+        {taskModalOpen && (
           <TaskModalForm
-            handleClose={close}
+            handleClose={closeTaskModal}
             handleAddTask={handleAddTask}
             workPackageId={workPackageId}
           />
+        )}
+        {assignPersonModalOpen && (
+          <AssignPersonModalForm handleClose={closeAssignPersonModal} taskId={taskId}/>
         )}
         <div
           className={`flex flex-col py-12 px-12 mt-6 border-2 border-solid rounded-2xl border-gray-200 w-full h-full ${
@@ -142,7 +161,8 @@ export default function WorkPackagePage() {
             isLoading={isLoading}
             allWorkPackages={workPackages || []}
             allWorkPackageTasks={tasks || []}
-            onClick={open}
+            onClick={openTaskModal}
+            onAssignClick={openAsignPersonModal}
           />
         </div>
       </div>

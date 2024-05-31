@@ -10,6 +10,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
   allWorkPackages,
   onClick,
   allWorkPackageTasks,
+  onAssignClick
 }) => {
   return (
     <div className="flex-grow">
@@ -26,6 +27,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
                   workPackage={workPackage}
                   onClick={onClick}
                   allWorkPackageTasks={allWorkPackageTasks}
+                  onAssignClick={onAssignClick}
                 />
               </div>
             ))}
@@ -47,6 +49,7 @@ const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
   onClick,
   allWorkPackageTasks,
+  onAssignClick
 }) => {
   const tasksForWorkPackage = allWorkPackageTasks.filter(
     (task) => task.workPackageId === workPackage?.id
@@ -87,7 +90,7 @@ const WorkPackageItem: FC<WorkPackageItemProps> = ({
             </button>
           </div>
           <div className="w-1/2 h-full">
-            <TaskListing allTasks={tasksForWorkPackage} />
+            <TaskListing allTasks={tasksForWorkPackage} onAssignClick={onAssignClick}/>
           </div>
         </div>
       </div>

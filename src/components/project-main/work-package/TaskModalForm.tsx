@@ -36,7 +36,7 @@ export default function TaskModalForm({ handleClose, handleAddTask, workPackageI
       startDate: data.startDate,
       endDate: data.endDate,
       isRelevant: data.isRelevant,
-      workPackageId: workPackageId // placeholder, TO DO: implement workPackageId dynamically
+      workPackageId: workPackageId 
     }
 
     try {

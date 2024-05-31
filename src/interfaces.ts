@@ -47,28 +47,36 @@ export interface WorkPackageListingProps {
     isLoading: boolean,
     allWorkPackages: WorkPackageDto[],
     allWorkPackageTasks: TaskDto[],
-    onClick: (id?: string) => void
+    onClick: (id?: string) => void,
+    onAssignClick: (id?: string) => void
 }
 
 export interface WorkPackageItemProps {
     workPackage?: WorkPackageDto,
     allWorkPackageTasks: TaskDto[] 
     onClick: (id?: string) => void, 
+    onAssignClick: (id?: string) => void
 }
 
 export interface TaskListingProps {
     allTasks: TaskDto[]
+    onAssignClick: (id?: string) => void
 }
 
 export interface TaskItemProps {
     task?: TaskDto,
-    //onClick: (id?: string) => void
+    onAssignClick: (id?: string) => void
 }
 
 export interface TaskModalProps {
     handleClose: () => void,
     handleAddTask: () => void,
     workPackageId: string
+}
+
+export interface AssignPersonModalProps {
+    handleClose: () => void,
+    taskId: string
 }
 
 // form props for react hook form
