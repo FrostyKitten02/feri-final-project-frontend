@@ -10,11 +10,7 @@ import {
 } from "../../../toast-modals/ToastFunctions";
 import { projectAPI } from "../../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../../util/CustomHooks";
-
-interface AddNewProjectModalProps {
-  handleClose: () => void;
-  handleAddProject: () => void;
-}
+import { AddNewProjectModalProps } from "../../../../interfaces";
 
 const validateForm = (
   title: string,

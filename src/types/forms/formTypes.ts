@@ -1,10 +1,22 @@
-import { PersonDto } from "../../../temp_ts";
+import { PersonDto, ProjectBudgetSchemaDto } from "../../../temp_ts";
+
+export type AddProjectFormFields = {
+  title: string;
+  startDate: string;
+  endDate: string;
+  projectBudgetSchema: ProjectBudgetSchemaDto;
+  staffBudget: number;
+  travelBudget: number;
+  equipmentBudget: number;
+  subcontractingBudget: number;
+}
 
 export type WorkPackageFormFields = {
   title: string;
   startDate: string;
   endDate: string;
   isRelevant: boolean;
+  assignedPM: number;
 };
 
 export type TaskFormFields = {

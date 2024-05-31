@@ -68,6 +68,17 @@ export interface TaskItemProps {
     onAssignClick: (id?: string) => void
 }
 
+export interface AddNewProjectModalProps {
+    handleClose: () => void;
+    handleAddProject: () => void;
+}
+
+export interface WorkPackageFormProps {
+    isFormOpen: boolean,
+    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    onSubmit: SubmitHandler<WorkPackageFormFields>
+}
+
 export interface TaskModalProps {
     handleClose: () => void,
     handleAddTask: () => void,
@@ -77,14 +88,6 @@ export interface TaskModalProps {
 export interface AssignPersonModalProps {
     handleClose: () => void,
     taskId: string
-}
-
-// form props for react hook form
-
-export interface WorkPackageFormProps {
-    isFormOpen: boolean,
-    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    onSubmit: SubmitHandler<WorkPackageFormFields>
 }
 
 export interface CustomPersonTypeFormProps {
