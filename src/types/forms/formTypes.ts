@@ -5,6 +5,13 @@ export type WorkPackageFormFields = {
   isRelevant: boolean;
 };
 
+export type TaskFormFields = {
+  title: string;
+  startDate: string;
+  endDate: string;
+  isRelevant: boolean;
+}
+
 export type CustomPersonTypeFormFields = {
   name: string;
   researchAvailability: number;

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import {ListProjectResponse, ProjectDto} from "../temp_ts";
+import {ListProjectResponse, ProjectDto, TaskDto, WorkPackageDto} from "../temp_ts";
 import { SubmitHandler } from "react-hook-form";
 import {
     WorkPackageFormFields,
@@ -37,21 +37,50 @@ export interface CustomTabProps {
 export interface ProjectListingProps {
     isLoading: boolean,
     allProjects: ListProjectResponse | null
-
 }
 
 export interface ProjectItemProps {
     project?: ProjectDto
 }
 
+export interface WorkPackageListingProps {
+    isLoading: boolean,
+    allWorkPackages: WorkPackageDto[],
+    allWorkPackageTasks: TaskDto[],
+    onClick: (id?: string) => void
+}
+
+export interface WorkPackageItemProps {
+    workPackage?: WorkPackageDto,
+    allWorkPackageTasks: TaskDto[] 
+    onClick: (id?: string) => void, 
+}
+
+export interface TaskListingProps {
+    allTasks: TaskDto[]
+}
+
+export interface TaskItemProps {
+    task?: TaskDto,
+    //onClick: (id?: string) => void
+}
+
+export interface TaskModalProps {
+    handleClose: () => void,
+    handleAddTask: () => void,
+    workPackageId: string
+}
+
+// form props for react hook form
+
 export interface WorkPackageFormProps {
-    isFormOpen: boolean;
-    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    onSubmit: SubmitHandler<WorkPackageFormFields>;
+    isFormOpen: boolean,
+    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    onSubmit: SubmitHandler<WorkPackageFormFields>
 }
 
 export interface CustomPersonTypeFormProps {
-    onSubmit: SubmitHandler<CustomPersonTypeFormFields>;
+    onSubmit: SubmitHandler<CustomPersonTypeFormFields>
 }
 
 export interface SelectTypeFormProps {

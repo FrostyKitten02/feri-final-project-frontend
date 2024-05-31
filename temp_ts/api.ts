@@ -128,6 +128,36 @@ export interface CreateProjectRequest {
      * @memberof CreateProjectRequest
      */
     'endDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProjectRequest
+     */
+    'projectBudgetSchemaId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'staffBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'travelBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'equipmentBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'subcontractingBudget'?: number;
 }
 /**
  * 
@@ -251,6 +281,19 @@ export interface GetProjectResponse {
 /**
  * 
  * @export
+ * @interface ListProjectBudgetSchemaResponse
+ */
+export interface ListProjectBudgetSchemaResponse {
+    /**
+     * 
+     * @type {Array<ProjectBudgetSchemaDto>}
+     * @memberof ListProjectBudgetSchemaResponse
+     */
+    'projectBudgetSchemaDtoList'?: Array<ProjectBudgetSchemaDto>;
+}
+/**
+ * 
+ * @export
  * @interface ListProjectResponse
  */
 export interface ListProjectResponse {
@@ -357,6 +400,37 @@ export interface PersonDto {
 /**
  * 
  * @export
+ * @interface ProjectBudgetSchemaDto
+ */
+export interface ProjectBudgetSchemaDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'sofinancing'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'indirectBudget'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ProjectDto
  */
 export interface ProjectDto {
@@ -396,6 +470,42 @@ export interface ProjectDto {
      * @memberof ProjectDto
      */
     'workPackages'?: Array<WorkPackageDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectDto
+     */
+    'projectBudgetSchemaId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'staffBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'travelBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'equipmentBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'subcontractingBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'indirectBudget'?: number;
 }
 /**
  * 
@@ -480,6 +590,12 @@ export interface TaskDto {
      * @type {string}
      * @memberof TaskDto
      */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TaskDto
+     */
     'title'?: string;
     /**
      * 
@@ -512,6 +628,12 @@ export interface TaskDto {
  * @interface WorkPackageDto
  */
 export interface WorkPackageDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageDto
+     */
+    'id'?: string;
     /**
      * 
      * @type {string}
@@ -813,6 +935,103 @@ export class PersonTypeControllerApi extends BaseAPI {
      */
     public createPersonType(createPersonTypeRequest: CreatePersonTypeRequest, options?: RawAxiosRequestConfig) {
         return PersonTypeControllerApiFp(this.configuration).createPersonType(createPersonTypeRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ProjectBudgetSchemaControllerApi - axios parameter creator
+ * @export
+ */
+export const ProjectBudgetSchemaControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllProjectBudgetSchema: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/project-budget-schema/list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProjectBudgetSchemaControllerApi - functional programming interface
+ * @export
+ */
+export const ProjectBudgetSchemaControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProjectBudgetSchemaControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllProjectBudgetSchema(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListProjectBudgetSchemaResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllProjectBudgetSchema(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectBudgetSchemaControllerApi.getAllProjectBudgetSchema']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ProjectBudgetSchemaControllerApi - factory interface
+ * @export
+ */
+export const ProjectBudgetSchemaControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProjectBudgetSchemaControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllProjectBudgetSchema(options?: any): AxiosPromise<ListProjectBudgetSchemaResponse> {
+            return localVarFp.getAllProjectBudgetSchema(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ProjectBudgetSchemaControllerApi - object-oriented interface
+ * @export
+ * @class ProjectBudgetSchemaControllerApi
+ * @extends {BaseAPI}
+ */
+export class ProjectBudgetSchemaControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectBudgetSchemaControllerApi
+     */
+    public getAllProjectBudgetSchema(options?: RawAxiosRequestConfig) {
+        return ProjectBudgetSchemaControllerApiFp(this.configuration).getAllProjectBudgetSchema(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
