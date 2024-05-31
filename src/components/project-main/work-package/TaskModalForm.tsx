@@ -10,7 +10,7 @@ import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
 import { taskAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 
-export default function TaskModalForm({ handleClose }: TaskModalProps) {
+export default function TaskModalForm({ handleClose, handleAddTask, workPackageId }: TaskModalProps) {
   const {
     register,
     watch,
@@ -36,13 +36,13 @@ export default function TaskModalForm({ handleClose }: TaskModalProps) {
       startDate: data.startDate,
       endDate: data.endDate,
       isRelevant: data.isRelevant,
-      workPackageId: "6ce3f439-cef0-45b5-a954-ced2ebea805d" // placeholder, TO DO: implement workPackageId dynamically
+      workPackageId: workPackageId // placeholder, TO DO: implement workPackageId dynamically
     }
 
     try {
       const response = await taskAPI.createTask(task, requestArgs);
       if (response.status === 201) {
-        handleClose();
+        handleAddTask();
         toastSuccess("Task " + data.title + " was successfully created.");
       }
     } catch (error: any) {
