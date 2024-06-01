@@ -10,7 +10,12 @@ import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
 import { taskAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 
-export default function TaskModalForm({ handleClose, handleAddTask, workPackageId }: TaskModalProps) {
+export default function TaskModalForm({
+  handleClose,
+  handleAddTask,
+  workPackageId,
+  workPackageTitle,
+}: TaskModalProps) {
   const {
     register,
     watch,
@@ -20,7 +25,7 @@ export default function TaskModalForm({ handleClose, handleAddTask, workPackageI
   } = useForm<TaskFormFields>();
   const watchStartDate = watch("startDate");
   const watchEndDate = watch("endDate");
-  register("isRelevant", { value: false }); 
+  register("isRelevant", { value: false });
 
   const [isOn, setIsOn] = useState(false);
   const toggleSwitch = (): void => {
@@ -28,16 +33,18 @@ export default function TaskModalForm({ handleClose, handleAddTask, workPackageI
     setValue("isRelevant", !isOn);
   };
 
-  const requestArgs = useRequestArgs()
+  const requestArgs = useRequestArgs();
 
-  const onSubmit: SubmitHandler<TaskFormFields> = async (data): Promise<void> => {
+  const onSubmit: SubmitHandler<TaskFormFields> = async (
+    data
+  ): Promise<void> => {
     const task: CreateTaskRequest = {
       title: data.title,
       startDate: data.startDate,
       endDate: data.endDate,
       isRelevant: data.isRelevant,
-      workPackageId: workPackageId 
-    }
+      workPackageId: workPackageId,
+    };
 
     try {
       const response = await taskAPI.createTask(task, requestArgs);
@@ -48,7 +55,7 @@ export default function TaskModalForm({ handleClose, handleAddTask, workPackageI
     } catch (error: any) {
       toastError(error.message);
     }
-  } 
+  };
 
   const dropIn = {
     hidden: {
@@ -77,7 +84,7 @@ export default function TaskModalForm({ handleClose, handleAddTask, workPackageI
             <div className="flex flex-row pb-12">
               <div className="flex w-1/2 jutify-start">
                 <h1 className="text-black font-semibold text-xl">
-                  Add new task
+                  Add new task to: {workPackageTitle}
                 </h1>
               </div>
               <div className="flex w-1/2 justify-end">
