@@ -1,60 +1,75 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Backdrop from "./Backdrop";
 import { motion } from "framer-motion";
 import CloseIcon from "../../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
-import { CreateProjectRequest } from "../../../../../temp_ts";
 import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../../toast-modals/ToastFunctions";
-import { projectAPI } from "../../../../util/ApiDeclarations";
+  CreateProjectRequest,
+  ProjectBudgetSchemaDto,
+} from "../../../../../temp_ts";
+import { toastError, toastSuccess } from "../../../toast-modals/ToastFunctions";
+import { projectAPI, projectSchemaAPI } from "../../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../../util/CustomHooks";
 import { AddNewProjectModalProps } from "../../../../interfaces";
-
-const validateForm = (
-  title: string,
-  startDate: string,
-  endDate: string
-): boolean => {
-  if (title === "" || startDate === "" || endDate === "") {
-    toastWarning("Please fill in all fields!");
-    return false;
-  } else if (startDate > endDate) {
-    toastWarning("End date cannot be before start date!");
-    return false;
-  }
-  return true;
-};
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { AddProjectFormFields } from "../../../../types/forms/formTypes";
 
 export default function AddNewProjectPage({
   handleClose,
   handleAddProject,
 }: AddNewProjectModalProps) {
-  const [title, setTitle] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  const [budgetSchemas, setBudgetSchemas] = useState<ProjectBudgetSchemaDto[]>(
+    []
+  );
+  //const [schemaId, setSchemaId] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddProjectFormFields>();
+  const watchStartDate = watch("startDate");
+  const watchEndDate = watch("endDate");
 
   const requestArgs = useRequestArgs();
 
-  // form submit function
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchBudgetSchemas();
+  }, []);
 
-    // validation call
-    if (!validateForm(title, startDate, endDate)) return; // return if validation fails
+  const fetchBudgetSchemas = async (): Promise<void> => {
+    try {
+      const response = await projectSchemaAPI.getAllProjectBudgetSchema(
+        requestArgs
+      );
+      if (response.status === 200) {
+        if (response.data.projectBudgetSchemaDtoList)
+          setBudgetSchemas(response.data.projectBudgetSchemaDtoList);
+      }
+    } catch (error: any) {
+      toastError(error.message);
+    }
+  };
 
-    // project object
+  const onSubmit: SubmitHandler<AddProjectFormFields> = async (
+    data
+  ): Promise<void> => {
     const project: CreateProjectRequest = {
-      title,
-      startDate,
-      endDate,
+      title: data.title,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      projectBudgetSchemaId: data.projectBudgetSchema.id,
+      staffBudget: data.staffBudget,
+      travelBudget: data.travelBudget,
+      equipmentBudget: data.equipmentBudget,
+      subcontractingBudget: data.subcontractingBudget,
     };
 
     try {
       const response = await projectAPI.createProject(project, requestArgs);
       if (response.status === 201) {
-        // if status is 201, close modal, refetch projects for page and show success toast
         handleClose();
         handleAddProject();
         toastSuccess(
@@ -68,7 +83,6 @@ export default function AddNewProjectPage({
     }
   };
 
-  //framer motion
   const dropIn = {
     hidden: {
       opacity: 0,
@@ -106,47 +120,183 @@ export default function AddNewProjectPage({
             </div>
           </div>
           <div className="px-16 pb-16">
-            <form action="post" className="space-y-8" onSubmit={handleSubmit}>
-              <div className="flex flex-col w-1/2">
-                <label className="text-gray-700 font-semibold text-lg">
-                  Title
-                </label>
-                <input
-                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Enter project title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-row w-1/2">
-                <div className="flex flex-col w-1/2">
-                  <label className="text-gray-700 font-semibold text-lg">
-                    Start date
-                  </label>
-                  <input
-                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    type="date"
-                    name="startdate"
-                    id="startdate"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                  />
+            <form
+              action="post"
+              className="space-y-8"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className="flex flex-row space-x-6">
+                <div className="flex flex-col w-1/2 space-y-6">
+                  <div className="flex flex-col">
+                    <label className="text-gray-700 font-semibold text-lg">
+                      Title
+                    </label>
+                    <input
+                      className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      type="text"
+                      placeholder="Enter project title"
+                      {...register("title", {
+                        required: "Title can not be empty!",
+                      })}
+                    />
+                    {errors.title && (
+                      <div className="text-red-500 font-semibold">
+                        {errors.title.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-row">
+                    <div className="flex flex-col w-1/2">
+                      <label className="text-gray-700 font-semibold text-lg">
+                        Start date
+                      </label>
+                      <input
+                        className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        type="date"
+                        {...register("startDate", {
+                          required: "Start date can not be empty!",
+                          validate: (value) => {
+                            if (value > watchEndDate) {
+                              return "Start date must be before end date!";
+                            }
+                            return true;
+                          },
+                        })}
+                      />
+                      {errors.startDate && (
+                        <div className="text-red-500 font-semibold">
+                          {errors.startDate.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-col w-1/2">
+                      <label className="text-gray-700 font-semibold text-lg">
+                        End date
+                      </label>
+                      <input
+                        className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                        type="date"
+                        {...register("endDate", {
+                          required: "End date can not be empty",
+                          validate: (value) => {
+                            if (value < watchStartDate) {
+                              return "End date must be after start date!";
+                            }
+                            return true;
+                          },
+                        })}
+                      />
+                      {errors.endDate && (
+                        <div className="text-red-500 font-semibold">
+                          {errors.endDate.message}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col w-1/2">
-                  <label className="text-gray-700 font-semibold text-lg">
-                    End date
-                  </label>
-                  <input
-                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    type="date"
-                    name="enddate"
-                    id="enddate"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                  />
+                <div className="flex flex-col w-1/2 space-y-6">
+                  <div className="flex flex-col">
+                    <label>Budget schema</label>
+                    <Controller
+                      name="projectBudgetSchema"
+                      control={control}
+                      defaultValue={undefined}
+                      render={({ field }) => (
+                        <div className="relative flex">
+                          <input
+                            type="text"
+                            placeholder="Select schema"
+                            value={field.value && field.value.name}
+                            onClick={() => setIsOpen(!isOpen)}
+                            readOnly
+                            className="cursor-pointer px-4 focus:outline-none focus:ring-2 focus:ring-gray-200 border border-gray-200 rounded-md py-2"
+                          />
+                          {isOpen && (
+                            <div className="absolute z-10 mt-10 backdrop-blur-xl w-1/2">
+                              <div className="border border-solid border-gray-200 overflow-auto max-h-60">
+                                {budgetSchemas.map((schema) => (
+                                  <div
+                                    key={schema.id}
+                                    onClick={() => {
+                                      field.onChange(schema);
+                                      setIsOpen(false);
+                                      /*
+                                      {
+                                        if (schema?.id) setSchemaId(schema.id);
+                                      }
+                                      */
+                                    }}
+                                  >
+                                    {schema.name}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-row">
+                    <div className="flex flex-col">
+                      <label>Staff budget</label>
+                      <input
+                        type="number"
+                        {...register("staffBudget", {
+                          required: "Staff budget can not be empty.",
+                        })}
+                      />
+                      {errors.staffBudget && (
+                        <div className="text-red-500 font-semibold">
+                          {errors.staffBudget.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <label>Travel budget</label>
+                      <input
+                        type="number"
+                        {...register("travelBudget", {
+                          required: "Travel budget can not be empty.",
+                        })}
+                      />
+                      {errors.travelBudget && (
+                        <div className="text-red-500 font-semibold">
+                          {errors.travelBudget.message}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-row">
+                    <div className="flex flex-col">
+                      <label>Equipment budget</label>
+                      <input
+                        type="number"
+                        {...register("equipmentBudget", {
+                          required: "Equipment budget can not be empty.",
+                        })}
+                      />
+                      {errors.equipmentBudget && (
+                        <div className="text-red-500 font-semibold">
+                          {errors.equipmentBudget.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <label>Subcontracting budget</label>
+                      <input
+                        type="number"
+                        {...register("subcontractingBudget", {
+                          required: "Subcontracting budget can not be empty.",
+                        })}
+                      />
+                      {errors.subcontractingBudget && (
+                        <div className="text-red-500 font-semibold">
+                          {errors.subcontractingBudget.message}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div>
