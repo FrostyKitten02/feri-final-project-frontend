@@ -95,6 +95,7 @@ export default function WorkPackagePage() {
       startDate: data.startDate,
       endDate: data.endDate,
       isRelevant: data.isRelevant,
+      assignedPM: data.assignedPM,
       projectId: projectId,
     };
 

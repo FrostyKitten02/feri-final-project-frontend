@@ -123,6 +123,19 @@ export default function WorkPackageForm({
                 </div>
                 <div className="flex flex-col space-y-2">
                   <label className="text-gray-700 font-semibold text-lg">
+                    PM
+                  </label>
+                  <input
+                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-1/2"
+                    type="number"
+                    min={1}
+                    {...register("assignedPM", {
+                      required: "PM can not be empty",
+                    })}
+                  />
+                </div>
+                <div className="flex flex-col space-y-2">
+                  <label className="text-gray-700 font-semibold text-lg">
                     Relevant
                   </label>
                   <div
