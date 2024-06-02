@@ -25,6 +25,9 @@ export default function AccountSettingsPage() {
       name: data.name,
       research: data.researchAvailability / 100,
       educate: data.educateAvailability / 100,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      personId: "bb332249-77e7-41e5-add4-bce5bce26f80" // HARDCODED for testing, later only admin will add person types for users and id will be implemented dynamically
     };
 
     try {

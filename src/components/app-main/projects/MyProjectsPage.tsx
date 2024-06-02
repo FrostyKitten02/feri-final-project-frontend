@@ -85,7 +85,7 @@ export default function MyProjectsPage() {
             if (response.status === 200 && response.data) {
                 setProjects(response.data);
                 //console.log(response.data);
-                if (response.data.pageInfo?.lastPage === true) {
+                if (response.data.pageInfo && response.data.pageInfo.lastPage === true) {
                     setLastPage(true);
                 } else {
                     setLastPage(false);
@@ -93,8 +93,9 @@ export default function MyProjectsPage() {
             }
 
             if (
-                response.data.pageInfo?.totalElements &&
-                response.data.pageInfo?.elementsPerPage
+                response.data.pageInfo &&
+                response.data.pageInfo.totalElements &&
+                response.data.pageInfo.elementsPerPage
             ) {
                 const newTotalPages = Math.ceil(
                     // calculate total pages
@@ -143,7 +144,7 @@ export default function MyProjectsPage() {
             <div
                 className="flex flex- w-[7%] border-x-2 border-b-2 rounded-br-2xl border-solid border-gray-200">
                 <div className="flex justify-center w-full h-[10%] items-center">
-                    <button onClick={() => (modalOpen && modalOpen ? close() : open())}>
+                    <button onClick={() => (modalOpen ? close() : open())}>
                         <AddProjectIcon className="h-12 w-12 fill-black hover:fill-secondary"/>
                     </button>
                 </div>

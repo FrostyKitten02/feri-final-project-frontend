@@ -128,6 +128,36 @@ export interface CreateProjectRequest {
      * @memberof CreateProjectRequest
      */
     'endDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProjectRequest
+     */
+    'projectBudgetSchemaId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'staffBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'travelBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'equipmentBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProjectRequest
+     */
+    'subcontractingBudget'?: number;
 }
 /**
  * 
@@ -198,6 +228,12 @@ export interface CreateWorkPackageRequest {
     'isRelevant'?: boolean;
     /**
      * 
+     * @type {number}
+     * @memberof CreateWorkPackageRequest
+     */
+    'assignedPM'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof CreateWorkPackageRequest
      */
@@ -247,6 +283,19 @@ export interface GetProjectResponse {
      * @memberof GetProjectResponse
      */
     'projectDto'?: ProjectDto;
+}
+/**
+ * 
+ * @export
+ * @interface ListProjectBudgetSchemaResponse
+ */
+export interface ListProjectBudgetSchemaResponse {
+    /**
+     * 
+     * @type {Array<ProjectBudgetSchemaDto>}
+     * @memberof ListProjectBudgetSchemaResponse
+     */
+    'projectBudgetSchemaDtoList'?: Array<ProjectBudgetSchemaDto>;
 }
 /**
  * 
@@ -357,6 +406,37 @@ export interface PersonDto {
 /**
  * 
  * @export
+ * @interface ProjectBudgetSchemaDto
+ */
+export interface ProjectBudgetSchemaDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'sofinancing'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectBudgetSchemaDto
+     */
+    'indirectBudget'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ProjectDto
  */
 export interface ProjectDto {
@@ -396,6 +476,42 @@ export interface ProjectDto {
      * @memberof ProjectDto
      */
     'workPackages'?: Array<WorkPackageDto>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectDto
+     */
+    'projectBudgetSchemaId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'staffBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'travelBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'equipmentBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'subcontractingBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'indirectBudget'?: number;
 }
 /**
  * 
@@ -409,6 +525,31 @@ export interface ProjectListSearchParams {
      * @memberof ProjectListSearchParams
      */
     'searchStr'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ProjectMonthDto
+ */
+export interface ProjectMonthDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectMonthDto
+     */
+    'date'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectMonthDto
+     */
+    'monthNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectMonthDto
+     */
+    'pmBurnDownRate'?: number;
 }
 /**
  * 
@@ -437,6 +578,25 @@ export const ProjectSortInfoRequestFieldsEnum = {
 
 export type ProjectSortInfoRequestFieldsEnum = typeof ProjectSortInfoRequestFieldsEnum[keyof typeof ProjectSortInfoRequestFieldsEnum];
 
+/**
+ * 
+ * @export
+ * @interface ProjectStatisticsResponse
+ */
+export interface ProjectStatisticsResponse {
+    /**
+     * 
+     * @type {Array<WorkPackageWithStatisticsDto>}
+     * @memberof ProjectStatisticsResponse
+     */
+    'workPackages'?: Array<WorkPackageWithStatisticsDto>;
+    /**
+     * 
+     * @type {Array<ProjectMonthDto>}
+     * @memberof ProjectStatisticsResponse
+     */
+    'months'?: Array<ProjectMonthDto>;
+}
 /**
  * 
  * @export
@@ -480,6 +640,12 @@ export interface TaskDto {
      * @type {string}
      * @memberof TaskDto
      */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TaskDto
+     */
     'title'?: string;
     /**
      * 
@@ -517,6 +683,12 @@ export interface WorkPackageDto {
      * @type {string}
      * @memberof WorkPackageDto
      */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageDto
+     */
     'title'?: string;
     /**
      * 
@@ -544,10 +716,83 @@ export interface WorkPackageDto {
     'projectId'?: string;
     /**
      * 
+     * @type {number}
+     * @memberof WorkPackageDto
+     */
+    'assignedPM'?: number;
+    /**
+     * 
      * @type {Array<TaskDto>}
      * @memberof WorkPackageDto
      */
     'tasks'?: Array<TaskDto>;
+}
+/**
+ * 
+ * @export
+ * @interface WorkPackageWithStatisticsDto
+ */
+export interface WorkPackageWithStatisticsDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'isRelevant'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'projectId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'assignedPM'?: number;
+    /**
+     * 
+     * @type {Array<TaskDto>}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'tasks'?: Array<TaskDto>;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'pmBurnDownRate'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkPackageWithStatisticsDto
+     */
+    'pmBurnDownRatePerTask'?: number;
 }
 
 /**
@@ -819,6 +1064,103 @@ export class PersonTypeControllerApi extends BaseAPI {
 
 
 /**
+ * ProjectBudgetSchemaControllerApi - axios parameter creator
+ * @export
+ */
+export const ProjectBudgetSchemaControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllProjectBudgetSchema: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/project-budget-schema/list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProjectBudgetSchemaControllerApi - functional programming interface
+ * @export
+ */
+export const ProjectBudgetSchemaControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProjectBudgetSchemaControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAllProjectBudgetSchema(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListProjectBudgetSchemaResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllProjectBudgetSchema(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectBudgetSchemaControllerApi.getAllProjectBudgetSchema']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ProjectBudgetSchemaControllerApi - factory interface
+ * @export
+ */
+export const ProjectBudgetSchemaControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProjectBudgetSchemaControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllProjectBudgetSchema(options?: any): AxiosPromise<ListProjectBudgetSchemaResponse> {
+            return localVarFp.getAllProjectBudgetSchema(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ProjectBudgetSchemaControllerApi - object-oriented interface
+ * @export
+ * @class ProjectBudgetSchemaControllerApi
+ * @extends {BaseAPI}
+ */
+export class ProjectBudgetSchemaControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectBudgetSchemaControllerApi
+     */
+    public getAllProjectBudgetSchema(options?: RawAxiosRequestConfig) {
+        return ProjectBudgetSchemaControllerApiFp(this.configuration).getAllProjectBudgetSchema(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * ProjectControllerApi - axios parameter creator
  * @export
  */
@@ -966,6 +1308,39 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProjectStatistics: async (projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectId' is not null or undefined
+            assertParamExists('getProjectStatistics', 'projectId', projectId)
+            const localVarPath = `/project/{projectId}/statistics`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {PageInfoRequest} pageInfo 
          * @param {ProjectSortInfoRequest} [sortInfo] 
          * @param {ProjectListSearchParams} [searchParams] 
@@ -1077,6 +1452,18 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProjectStatistics(projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectStatisticsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectStatistics(projectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.getProjectStatistics']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {PageInfoRequest} pageInfo 
          * @param {ProjectSortInfoRequest} [sortInfo] 
          * @param {ProjectListSearchParams} [searchParams] 
@@ -1135,6 +1522,15 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
          */
         getProject(projectId: string, options?: any): AxiosPromise<GetProjectResponse> {
             return localVarFp.getProject(projectId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProjectStatistics(projectId: string, options?: any): AxiosPromise<ProjectStatisticsResponse> {
+            return localVarFp.getProjectStatistics(projectId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1200,6 +1596,17 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public getProject(projectId: string, options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).getProject(projectId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public getProjectStatistics(projectId: string, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).getProjectStatistics(projectId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

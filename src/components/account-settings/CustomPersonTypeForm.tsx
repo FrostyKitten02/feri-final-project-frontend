@@ -8,8 +8,11 @@ export default function CustomPersonTypeForm({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<CustomPersonTypeFormFields>();
+  const watchStartDate = watch("startDate");
+  const watchEndDate = watch("endDate");
 
   return (
     <div className="flex flex-col space-y-3 w-1/2">
@@ -74,6 +77,54 @@ export default function CustomPersonTypeForm({
               Initial project availability will be calculated based on the
               provided percentages.
             </p>
+          </div>
+          <div className="flex flex-row space-x-8">
+            <div className="flex flex-col w-1/2 space-y-2">
+              <label className="text-gray-700 font-semibold text-lg">
+                Start date
+              </label>
+              <input
+                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-1/2"
+                type="date"
+                {...register("startDate", {
+                  required: "Start date can not be empty!",
+                  validate: (value) => {
+                    if (value > watchEndDate) {
+                      return "Start date must be before end date!";
+                    }
+                    return true;
+                  },
+                })}
+              />
+              {errors.startDate && (
+                <div className="text-red-500 font-semibold">
+                  {errors.startDate.message}
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col w-1/2 space-y-2">
+              <label className="text-gray-700 font-semibold text-lg">
+                End date
+              </label>
+              <input
+                className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-1/2"
+                type="date"
+                {...register("endDate", {
+                  required: "End date can not be empty",
+                  validate: (value) => {
+                    if (value < watchStartDate) {
+                      return "End date must be after start date!";
+                    }
+                    return true;
+                  },
+                })}
+              />
+              {errors.endDate && (
+                <div className="text-red-500 font-semibold">
+                  {errors.endDate.message}
+                </div>
+              )}
+            </div>
           </div>
           <div>
             <button
