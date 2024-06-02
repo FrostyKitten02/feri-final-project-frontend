@@ -14,9 +14,9 @@ function ProjectMainPage() {
             iconComponent: DashboardIcon,
         },
         {
-            name: "TEAM",
-            linkPath: "team",
-            iconComponent: UsersIcon,
+            name: "PROJECT OVERVIEW",
+            linkPath: "project-overview",
+            iconComponent: FolderIcon,
         },
         {
             name: "WORK PACKAGES",
@@ -24,10 +24,10 @@ function ProjectMainPage() {
             iconComponent: BoxOpenIcon,
         },
         {
-            name: "PROJECT",
-            linkPath: "project",
-            iconComponent: FolderIcon,
-        }
+            name: "TEAM",
+            linkPath: "team",
+            iconComponent: UsersIcon,
+        },
     ]
 
     return (

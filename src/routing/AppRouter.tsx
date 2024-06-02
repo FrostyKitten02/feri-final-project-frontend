@@ -81,7 +81,7 @@ function AppRouter() {
                     errorElement: <ErrorPage/>
                 },
                 {
-                    path: "project",
+                    path: "project-overview",
                     element: <InProgressPage/>,
                     errorElement: <ErrorPage/>
                 },

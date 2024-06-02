@@ -2,11 +2,21 @@ import {useEffect, useState} from "react";
 import {ListProjectResponse} from "../../../../temp_ts";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
+import TextUtil from "../../../util/TextUtil";
+import {useNavigate} from "react-router-dom";
+import SessionUtil from "../../../util/SessionUtil";
 
 export const RelevantProjectsSection = () => {
     //todo add loading state
     const [projectResponse, setProjectResponse] = useState<ListProjectResponse>();
+    const navigate = useNavigate();
     const requestArgs = useRequestArgs();
+    const navigateToProject = (id: string | undefined) => {
+        if (id !== undefined) {
+            navigate(`/${id}`);
+            SessionUtil.setSidebarSelect('');
+        }
+    }
     useEffect(() => {
         const fetchProjects = async () => {
             try {
@@ -35,18 +45,20 @@ export const RelevantProjectsSection = () => {
 
     }, [])
     return (
-        <div>
+        <div className="flex-grow">
             {//todo add filter so only relevant projects are shown
-                projectResponse ?
-                projectResponse?.projects?.map(project => {
-                    return (
-                        <div key={project.id} className="">
-                            {project.title}
-                        </div>)
-                }) :
-                <div>
-                    You aren't working on any projects currently.
-                </div>
+                projectResponse?.projects ?
+                    TextUtil.getRelevantProjects(projectResponse.projects).map(project => {
+                        return (
+                            <div key={project.id} className="">
+                                <button onClick={() => navigateToProject(project.id)}>
+                                    {project.title}
+                                </button>
+                            </div>)
+                    }) :
+                    <div>
+                        You aren't working on any projects currently.
+                    </div>
             }
         </div>
     )

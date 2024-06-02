@@ -13,6 +13,9 @@ export default {
         secondary: '#EF476F',
         border: ''
       },
+      fontFamily: {
+
+      }
     },
   },
   plugins: [

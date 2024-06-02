@@ -1,6 +1,6 @@
 export const RemindersSection = () => {
   return(
-      <div>
+      <div className="flex-grow">
           Current reminders.
       </div>
   )

@@ -1,6 +1,6 @@
 export const AnalyticsSection = () => {
     return(
-        <div>
+        <div className="flex-grow">
             Analytics section
         </div>
     )
