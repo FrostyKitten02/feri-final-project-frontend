@@ -172,56 +172,43 @@ export default function WorkPackageForm({
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col space-y-2">
-                    <label className="text-gray-700 font-semibold text-lg">
-                      PM
-                    </label>
-                    <input
-                      className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-1/2"
-                      type="number"
-                      min={1}
-                      {...register("assignedPM", {
-                        required: "PM can not be empty",
-                      })}
-                    />
-                  </div>
                 </div>
-                <div className="flex flex-col space-y-2">
-                  <label className="text-gray-700 font-semibold text-lg">
-                    PM
-                  </label>
-                  <input
-                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-1/2"
-                    type="number"
-                    min={1}
-                    {...register("assignedPM", {
-                      required: "PM can not be empty",
-                    })}
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="text-gray-700 font-semibold text-lg">
+                  PM
+                </label>
+                <input
+                  className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 w-1/2"
+                  type="number"
+                  min={1}
+                  {...register("assignedPM", {
+                    required: "PM can not be empty",
+                  })}
+                />
+              </div>
+              <div className="flex flex-col space-y-2">
+                <label className="text-gray-700 font-semibold text-lg">
+                  Relevant
+                </label>
+                <div
+                  className={`flex ${
+                    !isOn ? "justify-start" : "justify-end"
+                  } p-1 w-10 h-6 rounded-2xl ${
+                    !isOn ? "bg-gray-300" : "bg-green-600"
+                  } cursor-pointer items-center`}
+                  data-ison={isOn}
+                  onClick={toggleSwitch}
+                >
+                  <motion.div
+                    className="w-4 h-4 bg-white rounded-full"
+                    layout
+                    transition={{
+                      type: "spring",
+                      stiffness: 700,
+                      damping: 30,
+                    }}
                   />
-                </div>
-                <div className="flex flex-col space-y-2">
-                  <label className="text-gray-700 font-semibold text-lg">
-                    Relevant
-                  </label>
-                  <div
-                    className={`flex ${
-                      !isOn ? "justify-start" : "justify-end"
-                    } p-1 w-10 h-6 rounded-2xl ${
-                      !isOn ? "bg-gray-300" : "bg-green-600"
-                    } cursor-pointer items-center`}
-                    data-ison={isOn}
-                    onClick={toggleSwitch}
-                  >
-                    <motion.div
-                      className="w-4 h-4 bg-white rounded-full"
-                      layout
-                      transition={{
-                        type: "spring",
-                        stiffness: 700,
-                        damping: 30,
-                      }}
-                    />
-                  </div>
                 </div>
               </div>
               <div>
