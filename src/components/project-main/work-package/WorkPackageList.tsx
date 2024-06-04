@@ -1,60 +1,167 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   WorkPackageItemProps,
   WorkPackageListingProps,
 } from "../../../interfaces";
 import { TaskListing } from "./TaskList";
+import { TaskDto, WorkPackageDto } from "../../../../temp_ts";
+import { useParams } from "react-router-dom";
+import { projectAPI } from "../../../util/ApiDeclarations";
+import { toastError } from "../../toast-modals/ToastFunctions";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import TaskModalForm from "./TaskModalForm";
+import { TaskContext } from "../../../contexts";
+import WorkPackageForm from "./WorkpackageForm";
 
 export const WorkPackageListing: FC<WorkPackageListingProps> = ({
-  isLoading,
-  allWorkPackages,
-  onClick,
-  allWorkPackageTasks,
-  onAssignClick
+  isFormOpen,
+  setIsFormOpen,
 }) => {
+  const { projectId } = useParams();
+
+  const [workPackages, setWorkPackages] = useState<WorkPackageDto[]>([]);
+  const [tasks, setTasks] = useState<TaskDto[]>([]);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [taskModalOpen, setTaskModalOpen] = useState<boolean>(false);
+  const [workPackageId, setWorkPackageId] = useState<string>("");
+  const [workPackageTitle, setWorkPackageTitle] = useState<string>("")
+
+  const requestArgs = useRequestArgs();
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchWorkPackagesForProject().then(() => {
+      setIsLoading(false);
+    });
+  }, [projectId]);
+
+  const openTaskModal = (id?: string, name?: string): void => {
+    if (id && name) {
+      setWorkPackageId(id);
+      setWorkPackageTitle(name);
+    }
+    setTaskModalOpen(true);
+  };
+
+  const closeTaskModal = (): void => {
+    setWorkPackageId("");
+    setWorkPackageTitle("");
+    setTaskModalOpen(false);
+  };
+
+  const handleAddTask = (): void => {
+    fetchTasks();
+    setWorkPackageId("");
+    setWorkPackageTitle("");
+    setTaskModalOpen(false);
+  };
+
+  const closeWorkPackageModal = (): void => {
+    setIsFormOpen(false);
+  };
+
+  const handleAddWorkPackage = (): void => {
+    fetchWorkPackagesForProject();
+    setIsFormOpen(false);
+  };
+
+  const fetchWorkPackagesForProject = async (): Promise<void> => {
+    try {
+      if (projectId) {
+        const response = await projectAPI.getProject(projectId, requestArgs);
+        if (response.status === 200) {
+          if (response.data.projectDto?.workPackages) {
+            setWorkPackages(response.data.projectDto.workPackages);
+          }
+        }
+      } else {
+        toastError("Project id not found!");
+      }
+    } catch (error: any) {
+      toastError(error.message);
+    }
+  };
+
+  const fetchTasks = async (): Promise<void> => {
+    try {
+      if (projectId) {
+        const response = await projectAPI.getProject(projectId, requestArgs);
+        if (response.status === 200) {
+          if (response.data.projectDto?.workPackages) {
+            const allTasks = response.data.projectDto.workPackages.flatMap(
+              (wp) => wp.tasks || []
+            );
+            setTasks(allTasks);
+          }
+        }
+      } else {
+        toastError("Project id not found!");
+      }
+    } catch (error: any) {
+      toastError(error.message);
+    }
+  };
+
   return (
-    <div className="flex-grow">
-      <div className="flex flex-col h-full">
-        {isLoading ? (
-          <div className="flex flex-col justify-center items-center font-bold text-3xl">
-            <h1>Loading work packages...</h1>
-          </div>
-        ) : allWorkPackages && allWorkPackages.length > 0 ? (
-          <div className="flex-col flex-grow gap-y-10 ">
-            {allWorkPackages.map((workPackage) => (
-              <div key={workPackage.id}>
-                <WorkPackageItem
-                  workPackage={workPackage}
-                  onClick={onClick}
-                  allWorkPackageTasks={allWorkPackageTasks}
-                  onAssignClick={onAssignClick}
-                />
+    <TaskContext.Provider value={{ tasks, fetchTasks }}>
+      <div>
+        <div>
+          {isFormOpen && (
+            <WorkPackageForm
+              setIsFormOpen={setIsFormOpen}
+              handleAddWorkPackage={handleAddWorkPackage}
+              handleClose={closeWorkPackageModal}
+            />
+          )}
+        </div>
+        <div>
+          {taskModalOpen && (
+            <TaskModalForm
+              handleClose={closeTaskModal}
+              handleAddTask={handleAddTask}
+              workPackageId={workPackageId}
+              workPackageTitle={workPackageTitle}
+            />
+          )}
+        </div>
+        <div className="flex-grow">
+          <div className="flex flex-col h-full">
+            {isLoading ? (
+              <div className="flex flex-col justify-center items-center font-bold text-3xl">
+                <h1>Loading work packages...</h1>
               </div>
-            ))}
+            ) : workPackages && workPackages.length > 0 ? (
+              <div className="flex-col flex-grow gap-y-10 ">
+                {workPackages.map((workPackage) => (
+                  <div key={workPackage.id}>
+                    <WorkPackageItem
+                      workPackage={workPackage}
+                      onClick={openTaskModal}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col w-full justify-center items-center font-bold text-3xl space-y-4">
+                <h1>No work packages found...</h1>
+                <p className="text-base text-gray-700">
+                  Click the "Add work package" button to add a new work package.
+                </p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="flex flex-col w-full justify-center items-center font-bold text-3xl space-y-4">
-            <h1>No work packages found...</h1>
-            <p className="text-base text-gray-700">
-              Click the "Add work package" button to add a new work package.
-            </p>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
+    </TaskContext.Provider>
   );
 };
 
 const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
   onClick,
-  allWorkPackageTasks,
-  onAssignClick
 }) => {
-  const tasksForWorkPackage = allWorkPackageTasks.filter(
-    (task) => task.workPackageId === workPackage?.id
-  ); // filter from all tasks for workpackage
-
   return (
     workPackage && (
       <div key={workPackage.id} className="p-5 h-72">
@@ -83,14 +190,14 @@ const WorkPackageItem: FC<WorkPackageItemProps> = ({
               </div>
             </div>
             <button
-              onClick={() => onClick(workPackage.id)}
+              onClick={() => onClick(workPackage.id, workPackage.title)}
               className="flex items-center justify-center bg-rose-500 text-white w-24"
             >
               Add task
             </button>
           </div>
           <div className="w-1/2 h-full">
-            <TaskListing allTasks={tasksForWorkPackage} onAssignClick={onAssignClick}/>
+            <TaskListing workPackageId={workPackage.id} />
           </div>
         </div>
       </div>

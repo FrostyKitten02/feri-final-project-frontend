@@ -1,100 +1,99 @@
 import { FC } from "react";
-import {ListProjectResponse, ProjectDto, TaskDto, WorkPackageDto} from "../temp_ts";
+import {
+  ListProjectResponse,
+  ProjectDto,
+  TaskDto,
+  WorkPackageDto,
+} from "../temp_ts";
 import { SubmitHandler } from "react-hook-form";
 import {
-    WorkPackageFormFields,
-    CustomPersonTypeFormFields,
-    //SelectTypeFormFields,
-    PersonType,
+  CustomPersonTypeFormFields,
+  //SelectTypeFormFields,
+  PersonType,
 } from "./types/forms/formTypes";
 import * as React from "react";
 
 export interface SidebarTemplateProps {
-    items: ListItem [],
-    showReturn: boolean
+  items: ListItem[];
+  showReturn: boolean;
 }
 
 export interface ListItem {
-    name: string,
-    linkPath: string,
-    iconComponent: FC<any>
-
+  name: string;
+  linkPath: string;
+  iconComponent: FC<any>;
 }
 
 export interface SidebarItemProps {
-    item: ListItem,
-    handleSelect: (name: string) => void,
-    selected: string,
-    opened: boolean
+  item: ListItem;
+  handleSelect: (name: string) => void;
+  selected: string;
+  opened: boolean;
 }
 
 export interface CustomTabProps {
-    tabLink: (title: string) => void,
-    selectedTab: string,
-    title: string
+  tabLink: (title: string) => void;
+  selectedTab: string;
+  title: string;
 }
 
 export interface ProjectListingProps {
-    isLoading: boolean,
-    allProjects: ListProjectResponse | null
+  isLoading: boolean;
+  allProjects: ListProjectResponse | null;
 }
 
 export interface ProjectItemProps {
-    project?: ProjectDto
+  project?: ProjectDto;
 }
 
 export interface WorkPackageListingProps {
-    isLoading: boolean,
-    allWorkPackages: WorkPackageDto[],
-    allWorkPackageTasks: TaskDto[],
-    onClick: (id?: string) => void,
-    onAssignClick: (id?: string) => void
+    isFormOpen: boolean;
+    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface WorkPackageItemProps {
-    workPackage?: WorkPackageDto,
-    allWorkPackageTasks: TaskDto[] 
-    onClick: (id?: string) => void, 
-    onAssignClick: (id?: string) => void
+  workPackage?: WorkPackageDto;
+  onClick: (id?: string, title?: string) => void;
 }
 
 export interface TaskListingProps {
-    allTasks: TaskDto[]
-    onAssignClick: (id?: string) => void
+  workPackageId?: string;
 }
 
 export interface TaskItemProps {
-    task?: TaskDto,
-    onAssignClick: (id?: string) => void
+  task?: TaskDto;
+  onAssignClick: (id?: string, title?: string) => void;
 }
 
 export interface AddNewProjectModalProps {
-    handleClose: () => void;
-    handleAddProject: () => void;
+  handleClose: () => void;
+  handleAddProject: () => void;
 }
 
 export interface WorkPackageFormProps {
-    isFormOpen: boolean,
-    setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    onSubmit: SubmitHandler<WorkPackageFormFields>
+  handleClose: () => void;
+  handleAddWorkPackage: () => void;
+  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface TaskModalProps {
-    handleClose: () => void,
-    handleAddTask: () => void,
-    workPackageId: string
+  handleClose: () => void;
+  handleAddTask: () => void;
+  workPackageId: string;
+  workPackageTitle: string;
 }
 
 export interface AssignPersonModalProps {
-    handleClose: () => void,
-    taskId: string
+  handleClose: () => void;
+  taskId: string;
+  taskTitle: string;
 }
 
 export interface CustomPersonTypeFormProps {
-    onSubmit: SubmitHandler<CustomPersonTypeFormFields>
+  onSubmit: SubmitHandler<CustomPersonTypeFormFields>;
 }
 
 export interface SelectTypeFormProps {
-    //onSubmit: SubmitHandler<SelectTypeFormFields>;
-    typeList: PersonType
+  //onSubmit: SubmitHandler<SelectTypeFormFields>;
+  typeList: PersonType;
 }

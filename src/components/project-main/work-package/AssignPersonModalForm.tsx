@@ -15,6 +15,7 @@ import { matchSorter } from "match-sorter";
 export default function AssignPersonModalForm({
   handleClose,
   taskId,
+  taskTitle
 }: AssignPersonModalProps) {
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
@@ -129,7 +130,7 @@ export default function AssignPersonModalForm({
             <div className="flex flex-row pb-12">
               <div className="flex w-1/2 jutify-start">
                 <h1 className="text-black font-semibold text-xl">
-                  Assign person to task
+                  Assign person to task: {taskTitle}
                 </h1>
               </div>
               <div className="flex w-1/2 justify-end">
