@@ -16,7 +16,6 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
     useEffect(() => {
         const sidebarSelect: string | undefined = SessionUtil.getSidebarSelect();
         const sidebarStatus: boolean | undefined = SessionUtil.getSidebarStatus();
-        console.log(sidebarStatus)
         if(sidebarSelect === undefined)
             SessionUtil.setSidebarSelect('');
         setSelected(sidebarSelect || '');

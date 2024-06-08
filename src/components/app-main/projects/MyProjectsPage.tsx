@@ -1,13 +1,14 @@
 import {FC, useEffect, useState} from "react";
 import AddNewProjectPage from "./modal/AddNewProjectModal";
 import Pagination from "./pagination/Pagination";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {ListProjectResponse, PageInfoRequest, ProjectSortInfoRequest} from "../../../../temp_ts";
 import {toastError} from "../../toast-modals/ToastFunctions";
 import {ProjectItemProps, ProjectListingProps} from "../../../interfaces";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import AddProjectIcon from "../../../assets/icons/folder-badge-plus.svg?react";
+import SessionUtil from "../../../util/SessionUtil";
 
 
 export default function MyProjectsPage() {
@@ -17,7 +18,6 @@ export default function MyProjectsPage() {
 
     const [lastPage, setLastPage] = useState<boolean>(true);
     const [totalPages, setTotalPages] = useState<number>(0); // last page and total page tracking
-
     // states needed for pagination and sorting
     const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -36,7 +36,6 @@ export default function MyProjectsPage() {
                 toastError(error);
             });
     }, [pageNumber]);
-
 
     const close = (): void => {
         setModalOpen(false);
@@ -184,13 +183,20 @@ const ProjectListing: FC<ProjectListingProps> = ({isLoading, allProjects}) => {
 }
 
 const ProjectItem: FC<ProjectItemProps> = ({project}) => {
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+        navigate(`/${project?.id}/dashboard`);
+        SessionUtil.setSidebarSelect('DASHBOARD');
+    }
     return (
         project &&
         <div
             key={project.id}
             className="p-5 h-72">
-            <Link
-                to={`/${project.id}`}>
+            <button
+                className="w-full h-full"
+                onClick={() => handleNavigate()}>
                 <div
                     className="flex hover:bg-gray-100 items-center rounded-xl p-6 h-full border border-gray-200 border-solid shadow-xl">
                     <div className="w-full h-full">
@@ -218,7 +224,7 @@ const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                         </div>
                     </div>
                 </div>
-            </Link>
+            </button>
         </div>
     )
 }
