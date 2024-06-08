@@ -2,6 +2,7 @@ import {Outlet} from "react-router-dom";
 import SidebarTemplate from "../template/SidebarTemplate";
 import DashboardIcon from "../../assets/icons/dashboard-icon.svg?react";
 import {ListItem} from "../../interfaces";
+import FolderIcon from "../../assets/icons/folder-icon.svg?react";
 
 
 const items: ListItem [] = [
@@ -13,7 +14,7 @@ const items: ListItem [] = [
     {
         name: "ALL PROJECTS",
         linkPath: "projects/my-projects",
-        iconComponent: DashboardIcon
+        iconComponent: FolderIcon
     },
 ]
 export default function AppMainPage() {

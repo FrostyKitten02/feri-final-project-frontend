@@ -8,7 +8,6 @@ import IntroductionPage from "../components/introduction/IntroductionPage";
 import ProjectsOverviewPage from "../components/app-main/projects/AllProjectsPage";
 import AppMainPage from "../components/app-main/AppMainPage";
 import AssignedToPage from "../components/app-main/projects/AssignedToPage";
-import DashboardPage from "../components/project-main/DashboardPage";
 import TeamPage from "../components/project-main/TeamPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
@@ -16,6 +15,8 @@ import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import AccountSettingsPage from "../components/account-settings/AccountSettingsPage";
 import InProgressPage from "../components/template/InProgressPage";
+import {MainDashboardPage} from "../components/app-main/MainDashboardPage";
+import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
 
 function AppRouter() {
 
@@ -66,7 +67,7 @@ function AppRouter() {
             children: [
                 {
                     path: "dashboard",
-                    element: <DashboardPage/>,
+                    element: <ProjectDashboardPage />,
                     errorElement: <ErrorPage/>
                 },
                 {
@@ -80,7 +81,7 @@ function AppRouter() {
                     errorElement: <ErrorPage/>
                 },
                 {
-                    path: "project",
+                    path: "project-overview",
                     element: <InProgressPage/>,
                     errorElement: <ErrorPage/>
                 },
@@ -127,7 +128,7 @@ function AppRouter() {
                 },
                 {
                     path: "dashboard",
-                    element: <InProgressPage/>,
+                    element: <MainDashboardPage />,
                     errorElement: <ErrorPage/>
                 },
             ]
