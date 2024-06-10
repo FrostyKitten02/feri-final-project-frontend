@@ -19,23 +19,16 @@ function AllProjects() {
     //todo move modal for adding a new project here
 
     return (
-        <div className="flex flex-col h-full px-10 pt-5 pb-10">
-            <h1 className="font-bold text-end pb-10 text-3xl uppercase">
-                All Projects
-            </h1>
-            <div className="flex flex-col flex-grow">
-                <div className="flex flex-row">
-                    {allTabs.map(title => {
-                        return (
-                            <CustomTab tabLink={chooseTab} selectedTab={selectedTab} title={title}/>
-                        )
-                    })}
-                    <div className="flex flex-row justify-end items-center flex-grow border-b-2 border-gray-200 border-solid" />
-                </div>
-                <div className="flex-grow">
-                    <Outlet/>
-                </div>
+        <div className="flex flex-col flex-grow px-10 py-16">
+            <div className="flex flex-row">
+                {allTabs.map(title => {
+                    return (
+                        <CustomTab key={title} tabLink={chooseTab} selectedTab={selectedTab} title={title}/>
+                    )
+                })}
+                <div className="flex flex-row justify-end items-center flex-grow border-b-2 border-gray-200 border-solid"/>
             </div>
+            <Outlet/>
         </div>
     );
 }

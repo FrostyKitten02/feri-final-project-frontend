@@ -41,7 +41,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
             animate={{width: opened ? "18%" : "6%"}}
             initial={{width: "18%"}}
             transition={{duration: 0.3}}
-            className="h-full text-white flex items-center flex-col flex-wrap bg-transparent"
+            className={`h-full text-white flex items-center flex-col flex-wrap bg-transparent`}
         >
             <div
                 className={opened ? `h-28 w-full py-5 flex flex-row items-center justify-around` : `h-28 w-full py-5 flex flex-row items-center justify-center`}>
