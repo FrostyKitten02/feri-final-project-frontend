@@ -5,9 +5,7 @@ import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
-import ProjectsOverviewPage from "../components/app-main/projects/AllProjectsPage";
 import AppMainPage from "../components/app-main/AppMainPage";
-import AssignedToPage from "../components/app-main/projects/AssignedToPage";
 import TeamPage from "../components/project-main/TeamPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
@@ -100,25 +98,8 @@ function AppRouter() {
             children: [
                 {
                     path: "projects",
-                    element: <ProjectsOverviewPage/>,
+                    element: <MyProjectsPage />,
                     errorElement: <ErrorPage/>,
-                    children: [
-                        {
-                            path: "my-projects",
-                            element: <MyProjectsPage/>,
-                            errorElement: <ErrorPage/>
-                        },
-                        {
-                            path: "assigned-to",
-                            element: <AssignedToPage/>,
-                            errorElement: <ErrorPage/>
-                        },
-                        {
-                            path: "",
-                            element: <Navigate to="/"/>,
-                            errorElement: <ErrorPage/>
-                        },
-                    ]
                 },
                 //this is shown initially
                 {

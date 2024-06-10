@@ -14,7 +14,7 @@ export const MainDashboardPage = () => {
     };
 
     return (
-        <div className="h-full p-5 overflow-hidden">
+        <div className="h-full flex-grow p-5 overflow-hidden">
             <div className="flex h-full">
                 <motion.div
                     animate={{

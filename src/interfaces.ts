@@ -1,6 +1,5 @@
 import { FC } from "react";
 import {
-  ListProjectResponse,
   ProjectDto,
   TaskDto,
   WorkPackageDto,
@@ -35,11 +34,6 @@ export interface CustomTabProps {
   tabLink: (title: string) => void;
   selectedTab: string;
   title: string;
-}
-
-export interface ProjectListingProps {
-  isLoading: boolean;
-  allProjects: ListProjectResponse | null;
 }
 
 export interface ProjectItemProps {
@@ -96,4 +90,9 @@ export interface CustomPersonTypeFormProps {
 export interface SelectTypeFormProps {
   //onSubmit: SubmitHandler<SelectTypeFormFields>;
   typeList: PersonType;
+}
+
+export interface ProgressObject {
+  text: string,
+  color: string
 }
