@@ -34,14 +34,11 @@ export const RelevantProjectsSection = () => {
                 );
                 if (res.status === 200)
                     setProjectResponse(res.data);
-                else
-                    console.log(res);
             } catch (error) {
-                console.error("Error during request:", error);
+
             }
         };
-        //todo podrobnosti errorja se naj ne bi izpisovale uporabniku
-        fetchProjects().catch(error => console.log('Following error occurred', error));
+        fetchProjects();
 
     }, [])
     return (
