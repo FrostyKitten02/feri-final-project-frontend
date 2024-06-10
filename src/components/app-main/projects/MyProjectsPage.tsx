@@ -99,7 +99,7 @@ export default function MyProjectsPage() {
     };
 
     return (
-        <div className="flex flex-col flex-grow p-5">
+        <div className="flex flex-col flex-grow p-10">
             <div className="h-28">
                 {/* todo add filters*/}
             </div>
@@ -144,7 +144,7 @@ export default function MyProjectsPage() {
                         />
                     </div>
                 </div>
-                <div className="flex px-8 justify-center items-start py-5">
+                <div className="flex px-1 justify-center items-start py-5">
                     <button onClick={() => (modalOpen ? close() : open())}>
                         <AddProjectIcon className="h-12 w-12 fill-black hover:fill-secondary"/>
                     </button>
