@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {UserButton} from "@clerk/clerk-react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
 import HamburgerIcon from "../../assets/icons/hamburger-icon.svg?react";
@@ -12,6 +12,7 @@ import SessionUtil from "../../util/SessionUtil";
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) => {
     const [selected, setSelected] = useState<string>('');
     const [opened, setOpened] = useState<boolean>(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const sidebarSelect: string | undefined = SessionUtil.getSidebarSelect();
@@ -34,6 +35,10 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
     const handleSidebarSelect = (value: string): void => {
        setSelected(value);
        SessionUtil.setSidebarSelect(value);
+    }
+    const handleReturn = () => {
+        navigate(Paths.HOME);
+        SessionUtil.setSidebarSelect("");
     }
 
     return (
@@ -91,11 +96,11 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
             </div>
             {
                 showReturn &&
-                <Link to={Paths.HOME} className="w-full py-6">
+                <button onClick={() => handleReturn()} className="w-full py-6">
                     <div className="flex flex-row items-center justify-around w-full">
                         <ReturnIcon className="h-10 w-10 fill-white" />
                     </div>
-                </Link>
+                </button>
             }
         </motion.div>
     )

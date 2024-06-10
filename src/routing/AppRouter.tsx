@@ -15,6 +15,7 @@ import AccountSettingsPage from "../components/account-settings/AccountSettingsP
 import InProgressPage from "../components/template/InProgressPage";
 import {MainDashboardPage} from "../components/app-main/MainDashboardPage";
 import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
+import ValidateProjectId from "../components/ValidateProjectId";
 
 function AppRouter() {
 
@@ -58,37 +59,43 @@ function AppRouter() {
             errorElement: <ErrorPage/>
         },
         {
-            //TODO če vpiše id, ki v bazi ne obstaja, ga mora navigirat na / - trenutno lahko vpiše karkoli
             path: ":projectId",
-            element: <ProjectMainPage/>,
+            element: <ValidateProjectId/>,
             errorElement: <ErrorPage/>,
             children: [
                 {
-                    path: "dashboard",
-                    element: <ProjectDashboardPage />,
-                    errorElement: <ErrorPage/>
-                },
-                {
-                    path: "team",
-                    element: <TeamPage/>,
-                    errorElement: <ErrorPage/>
-                },
-                {
-                    path: "work-packages",
-                    element: <WorkPackagePage/>,
-                    errorElement: <ErrorPage/>
-                },
-                {
-                    path: "project-overview",
-                    element: <InProgressPage/>,
-                    errorElement: <ErrorPage/>
-                },
-                //this is shown initially
-                {
                     path: "",
-                    element: <InProgressPage/>,
-                    errorElement: <ErrorPage/>
-                },
+                    element: <ProjectMainPage/>,
+                    errorElement: <ErrorPage/>,
+                    children: [
+                        {
+                            path: "dashboard",
+                            element: <ProjectDashboardPage/>,
+                            errorElement: <ErrorPage/>
+                        },
+                        {
+                            path: "team",
+                            element: <TeamPage/>,
+                            errorElement: <ErrorPage/>
+                        },
+                        {
+                            path: "work-packages",
+                            element: <WorkPackagePage/>,
+                            errorElement: <ErrorPage/>
+                        },
+                        {
+                            path: "project-overview",
+                            element: <InProgressPage/>,
+                            errorElement: <ErrorPage/>
+                        },
+                        //this is shown initially
+                        {
+                            path: "",
+                            element: <Navigate to={"dashboard"}/>,
+                            errorElement: <ErrorPage/>
+                        },
+                    ]
+                }
             ]
         },
         {
@@ -98,7 +105,7 @@ function AppRouter() {
             children: [
                 {
                     path: "projects",
-                    element: <MyProjectsPage />,
+                    element: <MyProjectsPage/>,
                     errorElement: <ErrorPage/>,
                 },
                 //this is shown initially
@@ -109,7 +116,7 @@ function AppRouter() {
                 },
                 {
                     path: "dashboard",
-                    element: <MainDashboardPage />,
+                    element: <MainDashboardPage/>,
                     errorElement: <ErrorPage/>
                 },
             ]
