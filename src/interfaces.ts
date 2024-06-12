@@ -96,3 +96,11 @@ export interface ProgressObject {
   text: string,
   color: string
 }
+
+export interface ProjectModalProps {
+  handleAddProject: () => void;
+}
+
+export interface CustomModalErrorProps {
+  error: string | undefined
+}

@@ -9,7 +9,7 @@ import { CreateWorkPackageRequest } from "../../../../temp_ts";
 import { workPackageAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
-import Backdrop from "../../app-main/projects/modal/Backdrop";
+import Backdrop from "../../template/modal/Backdrop";
 
 export default function WorkPackageForm({
   setIsFormOpen,
@@ -86,7 +86,7 @@ export default function WorkPackageForm({
   };
 
   return (
-    <Backdrop onClick={handleClose}>
+    <Backdrop closeModal={handleClose}>
       <motion.div
         className="w-fit z-20"
         onClick={(e) => e.stopPropagation()}
