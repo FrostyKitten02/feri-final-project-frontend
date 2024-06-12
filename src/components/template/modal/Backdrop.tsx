@@ -1,10 +1,5 @@
 import { motion } from "framer-motion";
-
-interface BackdropProps {
-  children: React.ReactNode;
-  closeModal: () => void;
-}
-
+import {BackdropProps} from "../../../interfaces";
 export default function Backdrop({ children, closeModal }: BackdropProps) {
   return (
     <motion.div

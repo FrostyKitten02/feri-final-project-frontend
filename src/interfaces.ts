@@ -30,12 +30,6 @@ export interface SidebarItemProps {
   opened: boolean;
 }
 
-export interface CustomTabProps {
-  tabLink: (title: string) => void;
-  selectedTab: string;
-  title: string;
-}
-
 export interface ProjectItemProps {
   project?: ProjectDto;
 }
@@ -57,11 +51,6 @@ export interface TaskListingProps {
 export interface TaskItemProps {
   task?: TaskDto;
   onAssignClick: (id?: string, title?: string) => void;
-}
-
-export interface AddNewProjectModalProps {
-  handleClose: () => void;
-  handleAddProject: () => void;
 }
 
 export interface WorkPackageFormProps {
@@ -103,4 +92,40 @@ export interface ProjectModalProps {
 
 export interface CustomModalErrorProps {
   error: string | undefined
+}
+
+export interface CustomModalProps {
+  closeModal: () => void,
+  modalWidth: string,
+  children?: React.ReactNode
+}
+
+export interface CustomModalHeaderProps {
+  handleModalOpen: () => void,
+  children?: React.ReactNode
+}
+
+export interface ModalTitleProps {
+  children?: React.ReactNode
+}
+
+export interface ModalTextProps {
+  children?: React.ReactNode,
+  showInfoIcon: boolean
+}
+
+export interface CustomModalBodyProps {
+  children?: React.ReactNode,
+}
+
+export interface ModalDividerProps {
+  children?: React.ReactNode,
+}
+
+export interface CustomModalFooterProps {
+  children?: React.ReactNode,
+}
+export interface BackdropProps {
+  children?: React.ReactNode;
+  closeModal: () => void;
 }
