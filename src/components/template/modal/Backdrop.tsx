@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 
 interface BackdropProps {
   children: React.ReactNode;
-  onClick: () => void;
+  closeModal: () => void;
 }
 
-export default function Backdrop({ children, onClick }: BackdropProps) {
+export default function Backdrop({ children, closeModal }: BackdropProps) {
   return (
     <motion.div
-      onClick={onClick}
+      onClick={closeModal}
       className="flex justify-center items-center absolute top-0 left-0 w-full h-full bg-black/50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

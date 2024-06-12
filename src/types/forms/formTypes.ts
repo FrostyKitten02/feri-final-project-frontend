@@ -1,10 +1,10 @@
-import { PersonDto, ProjectBudgetSchemaDto } from "../../../temp_ts";
+import { PersonDto } from "../../../temp_ts";
 
 export type AddProjectFormFields = {
   title: string;
   startDate: string;
   endDate: string;
-  projectBudgetSchema: ProjectBudgetSchemaDto;
+  projectBudgetSchemaId: string;
   staffBudget: number;
   travelBudget: number;
   equipmentBudget: number;

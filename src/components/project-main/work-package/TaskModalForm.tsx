@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import Backdrop from "../../app-main/projects/modal/Backdrop";
+import Backdrop from "../../template/modal/Backdrop";
 import { TaskModalProps } from "../../../interfaces";
 import CloseIcon from "../../../assets/add-new-project/close-bold-svgrepo-com.svg?react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -70,7 +70,7 @@ export default function TaskModalForm({
   };
 
   return (
-    <Backdrop onClick={handleClose}>
+    <Backdrop closeModal={handleClose}>
       <motion.div
         className="w-fit z-20"
         onClick={(e) => e.stopPropagation()}

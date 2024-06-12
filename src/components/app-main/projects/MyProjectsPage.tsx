@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
-import AddNewProjectPage from "./modal/AddNewProjectModal";
 import Pagination from "./pagination/Pagination";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {ListProjectResponse, PageInfoRequest, ProjectSortInfoRequest} from "../../../../temp_ts";
 import {toastError} from "../../toast-modals/ToastFunctions";
 import {useRequestArgs} from "../../../util/CustomHooks";
-import AddProjectIcon from "../../../assets/icons/folder-badge-plus.svg?react";
 import {ProjectItem} from "./ProjectItem";
+import {ProjectModal} from "./ProjectModal";
 
 
 export default function MyProjectsPage() {
@@ -16,7 +15,6 @@ export default function MyProjectsPage() {
     const [lastPage, setLastPage] = useState<boolean>(true);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         setIsLoading(true);
@@ -27,14 +25,6 @@ export default function MyProjectsPage() {
                 toastError(error);
             });
     }, [pageNumber]);
-
-    const close = (): void => {
-        setModalOpen(false);
-    };
-
-    const open = (): void => {
-        setModalOpen(true);
-    };
 
     const nextPage = (): void => {
         const newPageNumber = pageNumber + 1;
@@ -99,9 +89,10 @@ export default function MyProjectsPage() {
     };
 
     return (
-        <div className="flex flex-col flex-grow p-10">
+        <div className="flex flex-col flex-grow py-10 px-20">
             <div className="h-28">
                 {/* todo add filters*/}
+                <ProjectModal handleAddProject={() => fetchProjects(pageNumber)} />
             </div>
             <div className="flex flex-row flex-grow w-full">
                 <div className="flex flex-grow justify-end flex-col">
@@ -111,8 +102,8 @@ export default function MyProjectsPage() {
                                 <h1>Loading projects...</h1>
                             </div>
                         ) : projects?.projects && projects.projects.length > 0 ? (
-                            <div className="flex flex-row items-center">
-                                <div className="flex justify-start flex-wrap">
+                            <div className="flex flex-row justify-center items-center">
+                                <div className="grid grid-cols-3">
                                     {
                                         projects.projects.map((project) => (
                                             <ProjectItem key={project.id} project={project}/>
@@ -144,21 +135,6 @@ export default function MyProjectsPage() {
                         />
                     </div>
                 </div>
-                <div className="flex px-1 justify-center items-start py-5">
-                    <button onClick={() => (modalOpen ? close() : open())}>
-                        <AddProjectIcon className="h-12 w-12 fill-black hover:fill-secondary"/>
-                    </button>
-                </div>
-            </div>
-            <div>
-                {modalOpen && (
-                    <AddNewProjectPage
-                        handleClose={close}
-                        handleAddProject={() =>
-                            fetchProjects(pageNumber /*, ascending, fields*/)
-                        }
-                    />
-                )}
             </div>
         </div>
     );

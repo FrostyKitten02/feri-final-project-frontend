@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { AssignPersonFormFields } from "../../../types/forms/formTypes";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { AssignPersonModalProps } from "../../../interfaces";
-import Backdrop from "../../app-main/projects/modal/Backdrop";
+import Backdrop from "../../template/modal/Backdrop";
 import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";
 import { AddPersonToTaskRequest, PersonDto } from "../../../../temp_ts";
 import { useEffect, useMemo, useState } from "react";
@@ -116,7 +116,7 @@ export default function AssignPersonModalForm({
   };
 
   return (
-    <Backdrop onClick={handleClose}>
+    <Backdrop  closeModal={handleClose}>
       <motion.div
         className="w-fit z-20"
         onClick={(e) => e.stopPropagation()}
