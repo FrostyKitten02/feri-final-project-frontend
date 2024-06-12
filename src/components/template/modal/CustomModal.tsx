@@ -10,16 +10,14 @@ import Backdrop from "./Backdrop";
 import {IoMdClose, IoMdInformationCircleOutline} from "react-icons/io";
 import {Label} from "flowbite-react";
 
-export const CustomModal = ({children, closeModal, modalWidth, handleSubmit}: CustomModalProps) => {
+export const CustomModal = ({children, closeModal, modalWidth}: CustomModalProps) => {
     return (
         <Backdrop closeModal={closeModal}>
             <div className="bg-white rounded-xl"
                  style={{width: modalWidth}}
                  onClick={(e) => e.stopPropagation()}
             >
-                <form onSubmit={handleSubmit}>
-                    {children}
-                </form>
+                {children}
             </div>
         </Backdrop>
     )

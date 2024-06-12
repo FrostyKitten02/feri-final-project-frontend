@@ -78,184 +78,184 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
             {
                 modalOpen &&
                 <CustomModal closeModal={() => setModalOpen(false)}
-                             handleSubmit={handleSubmit(onSubmit)}
                              modalWidth="700px">
-                    <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
-                        <ModalTitle>
-                            Create a project
-                        </ModalTitle>
-                        <ModalText showInfoIcon={true}>
-                            Information provided in the form can be changed later on.
-                        </ModalText>
-                    </CustomModalHeader>
-                    <CustomModalBody>
-                        <div>
-                            <Label>
-                                Project title
-                            </Label>
-                            <TextInput helperText="Aim to keep your project title brief and concise."
-                                       type="text"
-                                       {...register("title", {
-                                           required: "Title can not be empty!",
-                                       })}
-                            />
-                            <CustomModalError error={errors.title?.message}/>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
+                            <ModalTitle>
+                                Create a project
+                            </ModalTitle>
+                            <ModalText showInfoIcon={true}>
+                                Information provided in the form can be changed later on.
+                            </ModalText>
+                        </CustomModalHeader>
+                        <CustomModalBody>
+                            <div>
+                                <Label>
+                                    Project title
+                                </Label>
+                                <TextInput helperText="Aim to keep your project title brief and concise."
+                                           type="text"
+                                           {...register("title", {
+                                               required: "Title can not be empty!",
+                                           })}
+                                />
+                                <CustomModalError error={errors.title?.message}/>
 
-                        </div>
-                        <div className="flex flex-row justify-between pt-6">
-                            <div className="w-[270px]">
-                                <Label>
-                                    Start date
-                                </Label>
-                                <Controller name="startDate"
-                                            defaultValue={''}
-                                            control={control}
-                                            rules={{
-                                                required: "Start date is required!",
-                                                validate: value => {
-                                                    if (!value) {
-                                                        return "Start date is required!";
-                                                    }
-                                                }
-                                            }}
-                                            render={({field}) => (
-                                                <Datepicker
-                                                    {...field}
-                                                    placeholder="Select start date."
-                                                    onSelectedDateChanged={(date) => field.onChange(TextUtil.formatFormDate(date))}/>
-                                            )}/>
-                                <CustomModalError error={errors.startDate?.message}/>
                             </div>
-                            <div className="w-[270px]">
-                                <Label>
-                                    End date
-                                </Label>
-                                <Controller name="endDate"
-                                            defaultValue={''}
-                                            control={control}
-                                            rules={{
-                                                required: "End date is required!",
-                                                validate: value => {
-                                                    if (!value) {
-                                                        return "End date is required!";
+                            <div className="flex flex-row justify-between pt-6">
+                                <div className="w-[270px]">
+                                    <Label>
+                                        Start date
+                                    </Label>
+                                    <Controller name="startDate"
+                                                defaultValue={''}
+                                                control={control}
+                                                rules={{
+                                                    required: "Start date is required!",
+                                                    validate: value => {
+                                                        if (!value) {
+                                                            return "Start date is required!";
+                                                        }
                                                     }
-                                                    if (value < watchStartDate) {
-                                                        return "End date cannot be before start date!";
+                                                }}
+                                                render={({field}) => (
+                                                    <Datepicker
+                                                        {...field}
+                                                        placeholder="Select start date."
+                                                        onSelectedDateChanged={(date) => field.onChange(TextUtil.formatFormDate(date))}/>
+                                                )}/>
+                                    <CustomModalError error={errors.startDate?.message}/>
+                                </div>
+                                <div className="w-[270px]">
+                                    <Label>
+                                        End date
+                                    </Label>
+                                    <Controller name="endDate"
+                                                defaultValue={''}
+                                                control={control}
+                                                rules={{
+                                                    required: "End date is required!",
+                                                    validate: value => {
+                                                        if (!value) {
+                                                            return "End date is required!";
+                                                        }
+                                                        if (value < watchStartDate) {
+                                                            return "End date cannot be before start date!";
+                                                        }
+                                                        return true;
                                                     }
-                                                    return true;
-                                                }
-                                            }}
-                                            render={({field}) => (
-                                                <Datepicker
-                                                    {...field}
-                                                    placeholder="Select end date."
-                                                    onSelectedDateChanged={(date) => field.onChange(TextUtil.formatFormDate(date))}/>
-                                            )}/>
-                                <CustomModalError error={errors.endDate?.message}/>
+                                                }}
+                                                render={({field}) => (
+                                                    <Datepicker
+                                                        {...field}
+                                                        placeholder="Select end date."
+                                                        onSelectedDateChanged={(date) => field.onChange(TextUtil.formatFormDate(date))}/>
+                                                )}/>
+                                    <CustomModalError error={errors.endDate?.message}/>
+                                </div>
                             </div>
-                        </div>
-                        <ModalDivider>
-                            budget
-                        </ModalDivider>
-                        <div className="flex flex-row justify-between">
-                            <div className="w-[270px]">
-                                <Label>
-                                    Schema
-                                </Label>
-                                <Controller
-                                    name="projectBudgetSchemaId"
-                                    control={control}
-                                    defaultValue={undefined}
-                                    rules={{
-                                        required: "Schema must be defined!",
-                                        validate: value => {
-                                            if (!value) {
-                                                return "Schema must be defined!";
+                            <ModalDivider>
+                                budget
+                            </ModalDivider>
+                            <div className="flex flex-row justify-between">
+                                <div className="w-[270px]">
+                                    <Label>
+                                        Schema
+                                    </Label>
+                                    <Controller
+                                        name="projectBudgetSchemaId"
+                                        control={control}
+                                        defaultValue={undefined}
+                                        rules={{
+                                            required: "Schema must be defined!",
+                                            validate: value => {
+                                                if (!value) {
+                                                    return "Schema must be defined!";
+                                                }
+                                                return true;
                                             }
-                                            return true;
-                                        }
-                                    }}
-                                    render={({field}) => (
-                                        <Select
-                                            {...field}
-                                            onChange={(e) => field.onChange(e.target.value)}
-                                            value={field.value ? field.value : ""}
-                                        >
-                                            <option value="" disabled>Select a budget schema</option>
-                                            {budgetSchemas.map((schema) => (
-                                                <option key={schema.id} value={schema.id}>
-                                                    {schema.name}
-                                                </option>
-                                            ))}
-                                        </Select>
-                                    )}
-                                />
-                                <CustomModalError error={errors.projectBudgetSchemaId?.message}/>
+                                        }}
+                                        render={({field}) => (
+                                            <Select
+                                                {...field}
+                                                onChange={(e) => field.onChange(e.target.value)}
+                                                value={field.value ? field.value : ""}
+                                            >
+                                                <option value="" disabled>Select a budget schema</option>
+                                                {budgetSchemas.map((schema) => (
+                                                    <option key={schema.id} value={schema.id}>
+                                                        {schema.name}
+                                                    </option>
+                                                ))}
+                                            </Select>
+                                        )}
+                                    />
+                                    <CustomModalError error={errors.projectBudgetSchemaId?.message}/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex flex-row justify-between pt-6">
-                            <div className="w-[270px]">
-                                <Label>
-                                    Staff
-                                </Label>
-                                <TextInput type="number"
-                                           min="0"
-                                           rightIcon={LuEuro}
-                                           {...register("staffBudget", {
-                                               required: "Staff can not be empty!",
-                                           })}
-                                />
-                                <CustomModalError error={errors.staffBudget?.message}/>
+                            <div className="flex flex-row justify-between pt-6">
+                                <div className="w-[270px]">
+                                    <Label>
+                                        Staff
+                                    </Label>
+                                    <TextInput type="number"
+                                               min="0"
+                                               rightIcon={LuEuro}
+                                               {...register("staffBudget", {
+                                                   required: "Staff can not be empty!",
+                                               })}
+                                    />
+                                    <CustomModalError error={errors.staffBudget?.message}/>
+                                </div>
+                                <div className="w-[270px]">
+                                    <Label>
+                                        Travel
+                                    </Label>
+                                    <TextInput type="number"
+                                               min="0"
+                                               rightIcon={LuEuro}
+                                               {...register("travelBudget", {
+                                                   required: "Travel can not be empty!",
+                                               })}
+                                    />
+                                    <CustomModalError error={errors.travelBudget?.message}/>
+                                </div>
                             </div>
-                            <div className="w-[270px]">
-                                <Label>
-                                    Travel
-                                </Label>
-                                <TextInput type="number"
-                                           min="0"
-                                           rightIcon={LuEuro}
-                                           {...register("travelBudget", {
-                                               required: "Travel can not be empty!",
-                                           })}
-                                />
-                                <CustomModalError error={errors.travelBudget?.message}/>
+                            <div className="flex flex-row justify-between pt-6">
+                                <div className="w-[270px]">
+                                    <Label>
+                                        Equipment
+                                    </Label>
+                                    <TextInput type="number"
+                                               min="0"
+                                               rightIcon={LuEuro}
+                                               {...register("equipmentBudget", {
+                                                   required: "Equipment can not be empty!",
+                                               })}
+                                    />
+                                    <CustomModalError error={errors.equipmentBudget?.message}/>
+                                </div>
+                                <div className="w-[270px]">
+                                    <Label>
+                                        Subcontracting
+                                    </Label>
+                                    <TextInput type="number"
+                                               min="0"
+                                               rightIcon={LuEuro}
+                                               {...register("subcontractingBudget", {
+                                                   required: "Subcontracting can not be empty!",
+                                               })}
+                                    />
+                                    <CustomModalError error={errors.subcontractingBudget?.message}/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex flex-row justify-between pt-6">
-                            <div className="w-[270px]">
-                                <Label>
-                                    Equipment
-                                </Label>
-                                <TextInput type="number"
-                                           min="0"
-                                           rightIcon={LuEuro}
-                                           {...register("equipmentBudget", {
-                                               required: "Equipment can not be empty!",
-                                           })}
-                                />
-                                <CustomModalError error={errors.equipmentBudget?.message}/>
-                            </div>
-                            <div className="w-[270px]">
-                                <Label>
-                                    Subcontracting
-                                </Label>
-                                <TextInput type="number"
-                                           min="0"
-                                           rightIcon={LuEuro}
-                                           {...register("subcontractingBudget", {
-                                               required: "Subcontracting can not be empty!",
-                                           })}
-                                />
-                                <CustomModalError error={errors.subcontractingBudget?.message}/>
-                            </div>
-                        </div>
-                    </CustomModalBody>
-                    <CustomModalFooter>
-                        Create
-                    </CustomModalFooter>
+                        </CustomModalBody>
+                        <CustomModalFooter>
+                            Create
+                        </CustomModalFooter>
+                    </form>
                 </CustomModal>
             }
         </>
-
     )
 }

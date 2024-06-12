@@ -97,7 +97,6 @@ export interface CustomModalErrorProps {
 export interface CustomModalProps {
   closeModal: () => void,
   modalWidth: string,
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
   children?: React.ReactNode
 }
 
@@ -125,4 +124,8 @@ export interface ModalDividerProps {
 
 export interface CustomModalFooterProps {
   children?: React.ReactNode,
+}
+export interface BackdropProps {
+  children?: React.ReactNode;
+  closeModal: () => void;
 }
