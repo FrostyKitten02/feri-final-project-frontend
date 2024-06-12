@@ -50,6 +50,7 @@ export interface TaskListingProps {
 
 export interface TaskItemProps {
   task?: TaskDto;
+  showIrrelevant: boolean;
   onAssignClick: (id?: string, title?: string) => void;
 }
 

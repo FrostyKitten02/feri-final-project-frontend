@@ -19,7 +19,7 @@ function ProjectMainPage() {
             iconComponent: FolderIcon,
         },
         {
-            name: "WORK PACKAGES",
+            name: "WORK PACKAGES & TASKS",
             linkPath: "work-packages",
             iconComponent: BoxOpenIcon,
         },

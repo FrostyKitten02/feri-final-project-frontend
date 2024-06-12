@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {} from "../../../../temp_ts";
-import { WorkPackageListing } from "./WorkPackageList";
+import { WorkPackageListing } from "./WorkPackageListing";
+import PackagePlusIcon from "../../../assets/icons/package-plus-svgrepo-com.svg?react";
 
 export default function WorkPackagePage() {
   const [workPackageModalOpen, setWorkPackageModalOpen] =
@@ -8,28 +9,21 @@ export default function WorkPackagePage() {
 
   return (
     <div className="flex w-full h-full">
-      <div className="flex flex-col h-full px-12 py-6 w-full">
-        <div className="flex flex-row py-6">
-          <div className="flex justify-start w-2/3 items-center">
-            <h1 className="font-bold text-3xl">Work packages</h1>
-          </div>
-          <div className="flex w-1/3 justify-end items-center">
-            <button
-              onClick={() => setWorkPackageModalOpen(true)}
-              className="flex justify-center items-center bg-rose-500 text-white rounded-lg h-12 space-x-4 w-52"
-            >
-              <span className="font-semibold text-2xl">+</span>
-              <span className="font-semibold text-lg">Add work package</span>
-            </button>
-          </div>
-        </div>
+      <div className="flex flex-row h-full flex-grow">
         <div
-          className={`flex flex-col py-12 px-12 mt-6 border-2 border-solid rounded-2xl border-gray-200 w-full h-full overflow-auto`}
+          className={`flex flex-col py-12 px-12 border-r-2 border-solid border-gray-200 w-full h-full overflow-y-scroll`}
         >
           <WorkPackageListing
             isFormOpen={workPackageModalOpen}
             setIsFormOpen={setWorkPackageModalOpen}
           />
+        </div>
+        <div className="flex px-6 items-start pt-6">
+          <button
+            onClick={() => setWorkPackageModalOpen(true)}
+          >
+            <PackagePlusIcon className="stroke-black size-12"/>
+          </button>
         </div>
       </div>
     </div>

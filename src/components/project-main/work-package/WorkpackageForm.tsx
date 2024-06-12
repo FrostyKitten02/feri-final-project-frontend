@@ -195,7 +195,7 @@ export default function WorkPackageForm({
                   className={`flex ${
                     !isOn ? "justify-start" : "justify-end"
                   } p-1 w-10 h-6 rounded-2xl ${
-                    !isOn ? "bg-gray-300" : "bg-green-600"
+                    !isOn ? "bg-gray-300" : "bg-green"
                   } cursor-pointer items-center`}
                   data-ison={isOn}
                   onClick={toggleSwitch}
