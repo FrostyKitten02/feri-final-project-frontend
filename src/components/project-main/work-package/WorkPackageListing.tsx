@@ -31,7 +31,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
 
   useEffect(() => {
     setIsLoading(true);
-    fetchWorkPackagesForProject().then(() => {
+    fetchWorkPackagesAndTasksForProject().then(() => {
       setIsLoading(false);
     });
   }, [projectId]);
@@ -51,7 +51,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
   };
 
   const handleAddTask = (): void => {
-    fetchTasks();
+    fetchWorkPackagesAndTasksForProject();
     setWorkPackageId("");
     setWorkPackageTitle("");
     setTaskModalOpen(false);
@@ -62,17 +62,21 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
   };
 
   const handleAddWorkPackage = (): void => {
-    fetchWorkPackagesForProject();
+    fetchWorkPackagesAndTasksForProject();
     setIsFormOpen(false);
   };
 
-  const fetchWorkPackagesForProject = async (): Promise<void> => {
+  const fetchWorkPackagesAndTasksForProject = async (): Promise<void> => {
     try {
       if (projectId) {
         const response = await projectAPI.getProject(projectId, requestArgs);
         if (response.status === 200) {
           if (response.data.projectDto?.workPackages) {
             setWorkPackages(response.data.projectDto.workPackages);
+            const allTasks = response.data.projectDto.workPackages.flatMap(
+              (wp) => wp.tasks || []
+            );
+            setTasks(allTasks);
           }
         }
       } else {
@@ -83,6 +87,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
     }
   };
 
+  /*
   const fetchTasks = async (): Promise<void> => {
     try {
       if (projectId) {
@@ -102,9 +107,10 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
       toastError(error.message);
     }
   };
+  */
 
   return (
-    <TaskContext.Provider value={{ tasks, fetchTasks }}>
+    <TaskContext.Provider value={{ tasks, fetchWorkPackagesAndTasksForProject }}>
       <div>
         {isFormOpen && (
           <WorkPackageForm
