@@ -116,7 +116,7 @@ export default function AssignPersonModalForm({
   };
 
   return (
-    <Backdrop onClick={handleClose}>
+    <Backdrop  closeModal={handleClose}>
       <motion.div
         className="w-fit z-20"
         onClick={(e) => e.stopPropagation()}
