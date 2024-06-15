@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {UserButton} from "@clerk/clerk-react";
+import {UserButton, useUser} from "@clerk/clerk-react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
 import HamburgerIcon from "../../assets/icons/hamburger-icon.svg?react";
 import ReturnIcon from "../../assets/icons/return.svg?react";
@@ -13,6 +13,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
     const [selected, setSelected] = useState<string>('');
     const [opened, setOpened] = useState<boolean>(true);
     const navigate = useNavigate();
+    const { user } = useUser();
 
     useEffect(() => {
         const sidebarSelect: string | undefined = SessionUtil.getSidebarSelect();
@@ -44,9 +45,9 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
     return (
         <motion.div
             animate={{width: opened ? "18%" : "6%"}}
-            initial={{width: "18%"}}
+            initial={{width: opened ? "18%" : "6%"}}
             transition={{duration: 0.3}}
-            className={`h-full text-white flex items-center flex-col flex-wrap bg-transparent`}
+            className={`h-full text-white pb-3 flex items-center flex-col flex-wrap bg-transparent`}
         >
             <div
                 className={opened ? `h-28 w-full py-5 flex flex-row items-center justify-around` : `h-28 w-full py-5 flex flex-row items-center justify-center`}>
@@ -90,7 +91,12 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
                         animate={{visibility: "visible", opacity: 1}}
                         transition={{delay: 0.2, duration: 0.7}}
                         className="flex px-3 flex-col items-center justify-center">
-                        Ime Priimek
+                        <div>
+                            {user?.fullName}
+                        </div>
+                        <div>
+                            {user?.primaryEmailAddress?.emailAddress}
+                        </div>
                     </motion.div>
                 }
             </div>
@@ -126,7 +132,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected, 
                         initial={{visibility: "hidden", opacity: 0}}
                         animate={{visibility: "visible", opacity: 1}}
                         transition={{delay: 0.2, duration: 0.7}}
-                        className="pl-3 text-xl">
+                        className="pl-3 text-xl uppercase">
                         {item.name}
                     </motion.div>
                 }
