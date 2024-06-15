@@ -44,7 +44,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
     return (
         <motion.div
             animate={{width: opened ? "18%" : "6%"}}
-            initial={{width: "18%"}}
+            initial={{width: opened ? "18%" : "6%"}}
             transition={{duration: 0.3}}
             className={`h-full text-white flex items-center flex-col flex-wrap bg-transparent`}
         >
@@ -126,7 +126,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected, 
                         initial={{visibility: "hidden", opacity: 0}}
                         animate={{visibility: "visible", opacity: 1}}
                         transition={{delay: 0.2, duration: 0.7}}
-                        className="pl-3 text-xl">
+                        className="pl-3 text-xl uppercase">
                         {item.name}
                     </motion.div>
                 }

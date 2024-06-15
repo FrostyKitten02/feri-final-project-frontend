@@ -12,8 +12,8 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
     const {text, color} = TextUtil.returnProgressText(progress);
     const {userId} = useAuth();
     const handleNavigate = () => {
-        navigate(`/${project?.id}/dashboard`);
-        SessionUtil.setSidebarSelect('DASHBOARD');
+        navigate(`/project/${project?.id}/project-dashboard`);
+        SessionUtil.setSidebarSelect('project dashboard');
     }
     return (
         project &&

@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import Paths from "../util/Paths";
+import Paths from "../../util/Paths";
 
 function ErrorPage() {
   return (

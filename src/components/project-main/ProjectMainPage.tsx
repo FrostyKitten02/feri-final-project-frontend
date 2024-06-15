@@ -9,22 +9,22 @@ import UsersIcon from "../../assets/icons/users-icon.svg?react";
 function ProjectMainPage() {
     const items: ListItem [] = [
         {
-            name: "DASHBOARD",
-            linkPath: "dashboard",
+            name: "project dashboard",
+            linkPath: "project-dashboard",
             iconComponent: DashboardIcon,
         },
         {
-            name: "PROJECT OVERVIEW",
+            name: "project overview",
             linkPath: "project-overview",
             iconComponent: FolderIcon,
         },
         {
-            name: "WORK PACKAGES & TASKS",
+            name: "work packages & tasks",
             linkPath: "work-packages",
             iconComponent: BoxOpenIcon,
         },
         {
-            name: "TEAM",
+            name: "team",
             linkPath: "team",
             iconComponent: UsersIcon,
         },

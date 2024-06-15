@@ -1,6 +1,6 @@
 import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
 import App from "../App";
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "../components/template/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
@@ -16,6 +16,7 @@ import InProgressPage from "../components/template/InProgressPage";
 import {MainDashboardPage} from "../components/app-main/MainDashboardPage";
 import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
 import ValidateProjectId from "../components/ValidateProjectId";
+import {RedirectMain} from "../components/app-main/RedirectMain";
 
 function AppRouter() {
 
@@ -54,12 +55,7 @@ function AppRouter() {
 
     const signedInRoutes: RouteObject [] = [
         {
-            path: "account-settings",
-            element: <AccountSettingsPage/>,
-            errorElement: <ErrorPage/>
-        },
-        {
-            path: ":projectId",
+            path: "project/:projectId",
             element: <ValidateProjectId/>,
             errorElement: <ErrorPage/>,
             children: [
@@ -69,7 +65,7 @@ function AppRouter() {
                     errorElement: <ErrorPage/>,
                     children: [
                         {
-                            path: "dashboard",
+                            path: "project-dashboard",
                             element: <ProjectDashboardPage/>,
                             errorElement: <ErrorPage/>
                         },
@@ -99,6 +95,11 @@ function AppRouter() {
             ]
         },
         {
+            path: "account-settings",
+            element: <AccountSettingsPage/>,
+            errorElement: <ErrorPage/>
+        },
+        {
             path: "/",
             element: <AppMainPage/>,
             errorElement: <ErrorPage/>,
@@ -108,10 +109,9 @@ function AppRouter() {
                     element: <MyProjectsPage/>,
                     errorElement: <ErrorPage/>,
                 },
-                //this is shown initially
                 {
                     path: "",
-                    element: <InProgressPage/>,
+                    element: <RedirectMain />,
                     errorElement: <ErrorPage/>
                 },
                 {

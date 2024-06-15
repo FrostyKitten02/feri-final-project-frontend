@@ -7,12 +7,12 @@ import FolderIcon from "../../assets/icons/folder-icon.svg?react";
 
 const items: ListItem [] = [
     {
-        name: "DASHBOARD",
-        linkPath: "/dashboard",
+        name: "dashboard",
+        linkPath: "dashboard",
         iconComponent: DashboardIcon
     },
     {
-        name: "ALL PROJECTS",
+        name: "all projects",
         linkPath: "projects",
         iconComponent: FolderIcon
     },
