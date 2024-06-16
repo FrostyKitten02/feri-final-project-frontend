@@ -5,6 +5,9 @@ import {HiCalendar} from "react-icons/hi";
 import {FC} from "react";
 import {ProjectItemProps} from "../../../interfaces";
 import {useAuth} from "@clerk/clerk-react";
+import {ProgressCircle} from "@tremor/react";
+import {IoPeopleOutline} from "react-icons/io5";
+import {LuPackage} from "react-icons/lu";
 
 export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
     const navigate = useNavigate();
@@ -20,66 +23,70 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
         <div
             className="p-5 h-72 w-[450px]">
             <button
-                className="w-full h-full"
+                className="w-full h-full rounded-xl"
                 onClick={() => handleNavigate()}>
                 <div
-                    className="flex hover:bg-gray-100 items-center rounded-xl p-6 h-full border border-gray-200 border-solid">
-                    <div className="flex flex-row w-full h-full">
-                        <div className="flex flex-col flex-grow">
-                            <div className="flex flex-row items-center justify-between">
+                    className="flex flex-col w-full h-full hover:bg-gray-100 transition delay-50 border border-gray-200 border-solid rounded-xl">
+                    <div className="flex px-4 pt-4 pb-2 flex-row items-center">
+                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                            <HiCalendar className="h-4 w-4 fill-primary"/>
+                        </div>
+                        <div className="italic pl-2 text-xs text-muted">
+                            {TextUtil.refactorDate(project.startDate)}
+                        </div>
+                        <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
+                        <div className="italic pr-2 text-xs text-muted">
+                            {TextUtil.refactorDate(project.endDate)}
+                        </div>
+                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                            <HiCalendar className="h-4 w-4 fill-primary"/>
+                        </div>
+                    </div>
+                    <div className="flex flex-row flex-grow">
+                        <div className="flex pl-6 pr-4 flex-col justify-center items-center">
+                            <ProgressCircle className="flex-grow z-0" value={progress} size={"lg"} strokeWidth={8} showAnimation={true}>
+                                <span
+                                    className="text-lg flex items-center justify-center font-mono tracking-wide font-bold">
+                                    {progress.toFixed(0)}
+                                </span>
+                                <span className="text-sm font-bold flex justify-center items-center">
+                                    %
+                                </span>
+                            </ProgressCircle>
+                            <div className="flex flex-row space-x-5 pb-3">
                                 <div className="flex flex-row items-center">
-                                    <div className="flex items-center justify-center rounded-full w-6 h-6 bg-red-200">
-                                        <HiCalendar className="h-4 w-4 fill-secondary"/>
-                                    </div>
-                                    <div className="px-2 italic text-xs text-muted">
-                                        {TextUtil.refactorDate(project.startDate)}
-                                    </div>
+                                    <LuPackage size="22"/>
+                                    <span className="pl-1 text-lg font-mono">
+                                        {project.workPackageCount}
+                                    </span>
                                 </div>
-                                <div className="flex flex-row">
-                                    {
-                                        project.ownerId === userId &&
-                                        <div
-                                            className="flex bg-secondary w-fit px-2 rounded-lg ml-2 justify-start items-center">
-                                            <p className="font-semibold italic text-sm uppercase">
-                                                owner
-                                            </p>
-                                        </div>
-                                    }
-                                    <div
-                                        className={`flex ${color} w-fit px-2 rounded-lg ml-2 justify-start items-center`}>
-                                        <p className="font-semibold italic text-sm uppercase">
-                                            {text}
-                                        </p>
-                                    </div>
+                                <div className="flex flex-row items-center">
+                                    <IoPeopleOutline size="22"/>
+                                    <span className="pl-1 text-lg font-mono">
+                                        {project.peopleCount}
+                                    </span>
                                 </div>
                             </div>
-                            <div className="flex flex-grow">
-                                <div className="w-[1px] bg-gray-200 mx-[12px] my-2"/>
-                                <div className="flex flex-col flex-grow">
-                                    <div
-                                        className="flex items-center justify-center text-xl uppercase font-bold flex-grow">
-                                        {project.title}
-                                    </div>
-                                    <div className="text-end">
-                                        {progress.toFixed(0) + `%`}
-                                    </div>
-                                </div>
+                        </div>
+                        <div className="flex flex-grow justify-center items-center text-xl uppercase font-bold pr-6">
+                            {TextUtil.truncateString(project.title, 60)}
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
+                        <div className="px-4 py-2 flex flex-row items-center justify-end">
+                            <div
+                                className="flex bg-blue-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
+                                <p className="font-semibold italic text-sm uppercase">
+                                    {project.ownerId === userId ? "owned" : "assigned"}
+                                </p>
                             </div>
-                            <div className="flex flex-row items-center">
-                                <div className="flex flex-row items-center">
-                                    <div className="flex items-center justify-center rounded-full w-6 h-6 bg-red-200">
-                                        <HiCalendar className="h-4 w-4 fill-secondary"/>
-                                    </div>
-                                    <div className="px-2 italic text-xs text-muted">
-                                        {TextUtil.refactorDate(project.endDate)}
-                                    </div>
-                                </div>
-                                <div className="flex-grow ml-4 p-0">
-                                    <div className="w-full bg-gray-200 rounded-full h-2.5 bg-gray-200">
-                                        <div className="bg-primary h-2.5 rounded-full"
-                                             style={{width: `${progress}%`}}></div>
-                                    </div>
-                                </div>
+                            <div
+                                className={`flex ${color} w-fit px-2 rounded-lg ml-2 justify-start items-center`}>
+                                <p className="font-semibold italic text-sm uppercase">
+                                    {text}
+                                    {project.workPackages?.length}
+                                </p>
                             </div>
                         </div>
                     </div>

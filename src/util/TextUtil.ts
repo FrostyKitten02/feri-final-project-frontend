@@ -72,4 +72,18 @@ export default class TextUtil {
         }
         return "";
     }
+
+    static truncateString(str: string | undefined, num: number): string {
+        if(!str)
+            return "";
+        if (str.length <= num) {
+            return str;
+        }
+        const truncated = str.slice(0, num);
+        const lastSpaceIndex = truncated.lastIndexOf(' ');
+        if (lastSpaceIndex === -1) {
+            return truncated + '...';
+        }
+        return truncated.slice(0, lastSpaceIndex) + '...';
+    }
 }

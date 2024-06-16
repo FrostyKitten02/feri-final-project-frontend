@@ -73,7 +73,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
     return (
         <>
             <button onClick={() => setModalOpen(true)}>
-                <AddProjectIcon className="h-12 w-12 fill-black hover:fill-secondary"/>
+                <AddProjectIcon className="h-12 w-12 fill-black hover:fill-primary transition delay-50"/>
             </button>
             {
                 modalOpen &&
