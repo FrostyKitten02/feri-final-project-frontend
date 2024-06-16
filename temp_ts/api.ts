@@ -162,6 +162,37 @@ export interface CreateProjectRequest {
 /**
  * 
  * @export
+ * @interface CreateSalaryRequest
+ */
+export interface CreateSalaryRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSalaryRequest
+     */
+    'personId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateSalaryRequest
+     */
+    'amount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSalaryRequest
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSalaryRequest
+     */
+    'endDate'?: string;
+}
+/**
+ * 
+ * @export
  * @interface CreateTaskRequest
  */
 export interface CreateTaskRequest {
@@ -270,6 +301,12 @@ export interface GetPersonResponse {
      * @memberof GetPersonResponse
      */
     'person'?: PersonDto;
+    /**
+     * 
+     * @type {SalaryDto}
+     * @memberof GetPersonResponse
+     */
+    'currentSalary'?: SalaryDto;
 }
 /**
  * 
@@ -487,6 +524,18 @@ export interface ProjectDto {
      * @type {number}
      * @memberof ProjectDto
      */
+    'peopleCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
+    'workPackageCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectDto
+     */
     'staffBudget'?: number;
     /**
      * 
@@ -609,6 +658,37 @@ export interface ResourceCreatedResponse {
      * @memberof ResourceCreatedResponse
      */
     'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SalaryDto
+ */
+export interface SalaryDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryDto
+     */
+    'personId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SalaryDto
+     */
+    'amount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryDto
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryDto
+     */
+    'endDate'?: string;
 }
 /**
  * 
@@ -1620,6 +1700,112 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public listProjects(pageInfo: PageInfoRequest, sortInfo?: ProjectSortInfoRequest, searchParams?: ProjectListSearchParams, options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).listProjects(pageInfo, sortInfo, searchParams, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * SalaryControllerApi - axios parameter creator
+ * @export
+ */
+export const SalaryControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {CreateSalaryRequest} createSalaryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSalaryForPerson: async (createSalaryRequest: CreateSalaryRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createSalaryRequest' is not null or undefined
+            assertParamExists('createSalaryForPerson', 'createSalaryRequest', createSalaryRequest)
+            const localVarPath = `/salary`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createSalaryRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SalaryControllerApi - functional programming interface
+ * @export
+ */
+export const SalaryControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SalaryControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateSalaryRequest} createSalaryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createSalaryForPerson(createSalaryRequest: CreateSalaryRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceCreatedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSalaryForPerson(createSalaryRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SalaryControllerApi.createSalaryForPerson']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * SalaryControllerApi - factory interface
+ * @export
+ */
+export const SalaryControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SalaryControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateSalaryRequest} createSalaryRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSalaryForPerson(createSalaryRequest: CreateSalaryRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
+            return localVarFp.createSalaryForPerson(createSalaryRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SalaryControllerApi - object-oriented interface
+ * @export
+ * @class SalaryControllerApi
+ * @extends {BaseAPI}
+ */
+export class SalaryControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {CreateSalaryRequest} createSalaryRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SalaryControllerApi
+     */
+    public createSalaryForPerson(createSalaryRequest: CreateSalaryRequest, options?: RawAxiosRequestConfig) {
+        return SalaryControllerApiFp(this.configuration).createSalaryForPerson(createSalaryRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

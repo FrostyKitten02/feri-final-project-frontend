@@ -1,18 +1,18 @@
 import {useEffect, useState} from "react";
-import Pagination from "./pagination/Pagination";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {ListProjectResponse, PageInfoRequest, ProjectSortInfoRequest} from "../../../../temp_ts";
 import {toastError} from "../../toast-modals/ToastFunctions";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {ProjectItem} from "./ProjectItem";
 import {ProjectModal} from "./ProjectModal";
+import {CustomPagination} from "../../template/pagination/CustomPagination";
+import {ProjectFilter} from "./ProjectFilter";
 
 
 export default function MyProjectsPage() {
 
     const [projects, setProjects] = useState<ListProjectResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [lastPage, setLastPage] = useState<boolean>(true);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -26,35 +26,21 @@ export default function MyProjectsPage() {
             });
     }, [pageNumber]);
 
-    const nextPage = (): void => {
-        const newPageNumber = pageNumber + 1;
-        setPageNumber(newPageNumber);
-    };
+    const onPageChange = (page: number) => {
+        setPageNumber(page);
+    }
 
-    const prevPage = (): void => {
-        const newPageNumber = pageNumber > 1 ? pageNumber - 1 : 1;
-        setPageNumber(newPageNumber);
-    };
-
-    // request parameters
     const sortInfo: ProjectSortInfoRequest = {
         ascending: true,
         fields: ["CREATED_AT"],
     };
-
     const requestArgs = useRequestArgs();
 
-    const fetchProjects = async (
-        pageNum: number
-        // ascending: boolean,
-        // fields: string[]
-    ): Promise<void> => {
-        // dynamically set pageNumber
+    const fetchProjects = async (pageNum: number): Promise<void> => {
         const pageInfo: PageInfoRequest = {
             elementsPerPage: 6,
             pageNumber: pageNum,
         };
-
         try {
             const response = await projectAPI.listProjects(
                 pageInfo,
@@ -64,10 +50,6 @@ export default function MyProjectsPage() {
             );
             if (response.status === 200 && response.data) {
                 setProjects(response.data);
-                //console.log(response.data);
-                if (response.data.pageInfo && response.data.pageInfo.lastPage === true) {
-                    setLastPage(true);
-                } else setLastPage(false);
             }
             if (
                 response.data.pageInfo &&
@@ -75,28 +57,30 @@ export default function MyProjectsPage() {
                 response.data.pageInfo.elementsPerPage
             ) {
                 const newTotalPages = Math.ceil(
-                    // calculate total pages
-                    response.data.pageInfo.totalElements /
-                    response.data.pageInfo.elementsPerPage
+                    response.data.pageInfo.totalElements / response.data.pageInfo.elementsPerPage
                 );
                 setTotalPages(newTotalPages);
             }
             setPageNumber(pageNum);
         } catch (error: any) {
-            console.error(error);
             toastError(error);
         }
     };
 
     return (
         <div className="flex flex-col flex-grow py-10 px-20">
-            <div className="h-28">
-                {/* todo add filters*/}
-                <ProjectModal handleAddProject={() => fetchProjects(pageNumber)} />
+            <div className="h-28 flex flex-grow justify-between items-center">
+                <div>
+                    {/* todo add filters*/}
+                    <ProjectFilter/>
+                </div>
+                <div>
+                    <ProjectModal handleAddProject={() => fetchProjects(pageNumber)}/>
+                </div>
             </div>
-            <div className="flex flex-row flex-grow w-full">
+            <div className="flex flex-row w-full">
                 <div className="flex flex-grow justify-end flex-col">
-                    <div className="flex-grow">
+                    <div className="flex-grow pb-6">
                         {isLoading ? (
                             <div className="flex h-full flex-col justify-center items-center font-bold text-3xl">
                                 <h1>Loading projects...</h1>
@@ -120,19 +104,12 @@ export default function MyProjectsPage() {
                                 </p>
                             </div>
                         )}
-                    </div>
-                    {/*todo change pagination*/}
-                    <div>
-                        <Pagination
-                            pageNumber={pageNumber}
-                            lastPage={lastPage}
-                            totalPages={totalPages}
-                            onPageChange={(newPageNumber) =>
-                                fetchProjects(newPageNumber )
-                            }
-                            nextPage={nextPage}
-                            prevPage={prevPage}
-                        />
+                        <div className="flex justify-center pt-6">
+                            <CustomPagination totalPages={totalPages}
+                                              onPageChange={onPageChange}
+                                              currentPage={pageNumber}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

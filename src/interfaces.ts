@@ -130,3 +130,10 @@ export interface BackdropProps {
   children?: React.ReactNode;
   closeModal: () => void;
 }
+
+export interface CustomPaginationProps {
+  totalPages: number,
+  onPageChange:  (page: number) => void,
+  currentPage: number,
+  totalElements?: number
+}
