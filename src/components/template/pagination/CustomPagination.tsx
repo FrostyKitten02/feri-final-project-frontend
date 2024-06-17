@@ -39,6 +39,7 @@ export const CustomPagination = ({currentPage, onPageChange, totalPages}: Custom
                     pageNumbers.map(pageNumber => {
                         return (
                             <button
+                                key={pageNumber}
                                 className={`${pageNumber === currentPage && "bg-blue-200 text-primary"} px-3 py-1 rounded-lg font-mono delay-50 transition hover:bg-gray-200`}
                                 onClick={() => onPageChange(pageNumber)}>
                                 {pageNumber}

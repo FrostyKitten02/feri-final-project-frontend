@@ -46,6 +46,7 @@ export interface AddPersonToTaskRequest {
      * 
      * @type {number}
      * @memberof AddPersonToTaskRequest
+     * @deprecated
      */
     'occupancy'?: number;
     /**
@@ -60,6 +61,43 @@ export interface AddPersonToTaskRequest {
      * @memberof AddPersonToTaskRequest
      */
     'endDate'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateOccupancyRequest
+ */
+export interface CreateOccupancyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOccupancyRequest
+     */
+    'personId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOccupancyRequest
+     */
+    'projectId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOccupancyRequest
+     */
+    'fromMonth'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOccupancyRequest
+     */
+    'toMonth'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateOccupancyRequest
+     */
+    'value'?: number;
 }
 /**
  * 
@@ -443,6 +481,37 @@ export interface PersonDto {
 /**
  * 
  * @export
+ * @interface PersonWorkDto
+ */
+export interface PersonWorkDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonWorkDto
+     */
+    'personId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonWorkDto
+     */
+    'occupancyId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonWorkDto
+     */
+    'totalWorkPm'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonWorkDto
+     */
+    'avgSalary'?: number;
+}
+/**
+ * 
+ * @export
  * @interface ProjectBudgetSchemaDto
  */
 export interface ProjectBudgetSchemaDto {
@@ -599,6 +668,24 @@ export interface ProjectMonthDto {
      * @memberof ProjectMonthDto
      */
     'pmBurnDownRate'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectMonthDto
+     */
+    'actualTotalWorkPm'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectMonthDto
+     */
+    'actualMonthSpending'?: number;
+    /**
+     * 
+     * @type {Array<PersonWorkDto>}
+     * @memberof ProjectMonthDto
+     */
+    'personWork'?: Array<PersonWorkDto>;
 }
 /**
  * 
@@ -658,6 +745,12 @@ export interface ResourceCreatedResponse {
      * @memberof ResourceCreatedResponse
      */
     'id'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ResourceCreatedResponse
+     */
+    'ids'?: Array<string>;
 }
 /**
  * 
@@ -751,6 +844,25 @@ export interface TaskDto {
      * @memberof TaskDto
      */
     'workPackageId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateOccupancyRequest
+ */
+export interface UpdateOccupancyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateOccupancyRequest
+     */
+    'occupancyId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateOccupancyRequest
+     */
+    'value'?: number;
 }
 /**
  * 
@@ -874,6 +986,244 @@ export interface WorkPackageWithStatisticsDto {
      */
     'pmBurnDownRatePerTask'?: number;
 }
+
+/**
+ * OccupancyControllerApi - axios parameter creator
+ * @export
+ */
+export const OccupancyControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {CreateOccupancyRequest} createOccupancyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addOccupancy: async (createOccupancyRequest: CreateOccupancyRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createOccupancyRequest' is not null or undefined
+            assertParamExists('addOccupancy', 'createOccupancyRequest', createOccupancyRequest)
+            const localVarPath = `/occupancy`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createOccupancyRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} occupancyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteOccupancy: async (occupancyId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'occupancyId' is not null or undefined
+            assertParamExists('deleteOccupancy', 'occupancyId', occupancyId)
+            const localVarPath = `/occupancy/{occupancyId}`
+                .replace(`{${"occupancyId"}}`, encodeURIComponent(String(occupancyId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdateOccupancyRequest} updateOccupancyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateOccupancy: async (updateOccupancyRequest: UpdateOccupancyRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateOccupancyRequest' is not null or undefined
+            assertParamExists('updateOccupancy', 'updateOccupancyRequest', updateOccupancyRequest)
+            const localVarPath = `/occupancy`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateOccupancyRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * OccupancyControllerApi - functional programming interface
+ * @export
+ */
+export const OccupancyControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = OccupancyControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateOccupancyRequest} createOccupancyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addOccupancy(createOccupancyRequest: CreateOccupancyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceCreatedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addOccupancy(createOccupancyRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OccupancyControllerApi.addOccupancy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} occupancyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteOccupancy(occupancyId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteOccupancy(occupancyId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OccupancyControllerApi.deleteOccupancy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {UpdateOccupancyRequest} updateOccupancyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateOccupancy(updateOccupancyRequest: UpdateOccupancyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateOccupancy(updateOccupancyRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OccupancyControllerApi.updateOccupancy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * OccupancyControllerApi - factory interface
+ * @export
+ */
+export const OccupancyControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = OccupancyControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateOccupancyRequest} createOccupancyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addOccupancy(createOccupancyRequest: CreateOccupancyRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
+            return localVarFp.addOccupancy(createOccupancyRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} occupancyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteOccupancy(occupancyId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteOccupancy(occupancyId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateOccupancyRequest} updateOccupancyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateOccupancy(updateOccupancyRequest: UpdateOccupancyRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateOccupancy(updateOccupancyRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * OccupancyControllerApi - object-oriented interface
+ * @export
+ * @class OccupancyControllerApi
+ * @extends {BaseAPI}
+ */
+export class OccupancyControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {CreateOccupancyRequest} createOccupancyRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OccupancyControllerApi
+     */
+    public addOccupancy(createOccupancyRequest: CreateOccupancyRequest, options?: RawAxiosRequestConfig) {
+        return OccupancyControllerApiFp(this.configuration).addOccupancy(createOccupancyRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} occupancyId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OccupancyControllerApi
+     */
+    public deleteOccupancy(occupancyId: string, options?: RawAxiosRequestConfig) {
+        return OccupancyControllerApiFp(this.configuration).deleteOccupancy(occupancyId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UpdateOccupancyRequest} updateOccupancyRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OccupancyControllerApi
+     */
+    public updateOccupancy(updateOccupancyRequest: UpdateOccupancyRequest, options?: RawAxiosRequestConfig) {
+        return OccupancyControllerApiFp(this.configuration).updateOccupancy(updateOccupancyRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
 
 /**
  * PersonControllerApi - axios parameter creator

@@ -137,3 +137,9 @@ export interface CustomPaginationProps {
   currentPage: number,
   totalElements?: number
 }
+
+export interface GridTaskProps {
+  id: string,
+  startCol: number,
+  endCol: number
+}
