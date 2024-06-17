@@ -13,6 +13,7 @@ export const ProjectDashboardPage = () => {
     const {projectId} = useParams();
     const requestArgs = useRequestArgs();
 
+
     useEffect(() => {
         const getStatistics = async (): Promise<void> => {
             if (!projectId)
@@ -40,14 +41,35 @@ export const ProjectDashboardPage = () => {
                 {
                     isLoading ? "loading" :
                         <OverviewChart monthsPerPage={monthsPerPage}>
-                            <OverviewChartHeader months={statistics.months} currentPage={currentPage} monthsPerPage={monthsPerPage}>
+                            <OverviewChartHeader months={statistics.months} currentPage={currentPage}
+                                                 monthsPerPage={monthsPerPage}>
 
                             </OverviewChartHeader>
-                            <OverviewChartBody statistics={statistics}>
+                            <OverviewChartBody statistics={statistics} currentPage={currentPage}
+                                               monthsPerPage={monthsPerPage}>
 
                             </OverviewChartBody>
+
                         </OverviewChart>
                 }
+            </div>
+            <div className="flex justify-between">
+                <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+                    prev
+                </button>
+                <button onClick={() => setMonthsPerPage(6)}>
+                    set 6 months
+                </button>
+                <button onClick={() => setMonthsPerPage(12)}>
+                    set 12 months
+                </button>
+                <button onClick={() => setMonthsPerPage(4)}>
+                    set 4 months
+                </button>
+                <button disabled={currentPage + 1 > (statistics.months?.length ?? monthsPerPage) / monthsPerPage}
+                        onClick={() => setCurrentPage(currentPage + 1)}>
+                    next
+                </button>
             </div>
         </div>
     )
@@ -78,9 +100,12 @@ export interface OverviewChartHeaderProps {
     monthsPerPage: number
 }
 
-const OverviewChartHeader = ({months}: OverviewChartHeaderProps) => {
+const OverviewChartHeader = ({months, currentPage, monthsPerPage}: OverviewChartHeaderProps) => {
     if (!months)
         return;
+
+    const startIndex = (currentPage - 1) * monthsPerPage;
+    const shownMonths = months.slice(startIndex, startIndex + monthsPerPage);
 
     return (
         <React.Fragment>
@@ -88,7 +113,7 @@ const OverviewChartHeader = ({months}: OverviewChartHeaderProps) => {
                 PM
             </div>
             {
-                months.map(month => {
+                shownMonths.map(month => {
                     return (
                         <div key={month.monthNumber}
                              className={`${month.monthNumber && month.monthNumber % 2 === 0 ? "bg-blue-200" : "bg-transparent"} justify-center items-center justify-center flex items-center`}>
@@ -112,14 +137,25 @@ const OverviewChartHeader = ({months}: OverviewChartHeaderProps) => {
 export interface OverviewChartBodyProps {
     statistics: ProjectStatisticsResponse,
     children?: ReactNode,
+    currentPage: number,
+    monthsPerPage: number
 }
 
-const OverviewChartBody = ({statistics}: OverviewChartBodyProps) => {
-    const startMonth = statistics.months?.[0];
+const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: OverviewChartBodyProps) => {
+    const startIndex = (currentPage - 1) * monthsPerPage;
+    console.log("index", startIndex)
+    console.log("current page", currentPage)
+    const shownMonths = statistics.months?.slice(startIndex, startIndex + monthsPerPage);
+    //const shownWorkPackages = TextUtil.returnShownWorkpackages(statistics.workPackages ?? [], shownMonths)
+    const startMonth = statistics.months?.[(currentPage - 1) * monthsPerPage];
+    console.log("shownmonths", shownMonths, "startmonth", startMonth)
     return (
         <>
             {
                 statistics.workPackages?.map(workPackage => {
+                    //const shownTasks = TextUtil.returnShownTasks(workPackage, shownMonths);
+                    const wpLimit = TextUtil.returnWorkpackageLimit(currentPage, workPackage, shownMonths);
+                    console.log(wpLimit)
                     return (
                         <React.Fragment key={workPackage.id}>
                             <div className="col-start-1 col-span-2">
@@ -128,12 +164,13 @@ const OverviewChartBody = ({statistics}: OverviewChartBodyProps) => {
                             {
                                 workPackage.tasks?.map(task => {
                                     return (
+                                        wpLimit &&
                                         <React.Fragment key={task.id}>
                                             <div className="grid grid-cols-subgrid bg-red-200 p-2"
                                                  key={workPackage.id}
                                                  style={{
-                                                     gridColumnStart: TextUtil.getMonthNumber(workPackage.startDate, startMonth) + 3,
-                                                     gridColumnEnd: TextUtil.getMonthNumber(workPackage.endDate, startMonth) + 4
+                                                     gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, statistics.months?.[(currentPage - 1) * monthsPerPage], currentPage, monthsPerPage) + 3,
+                                                     gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, statistics.months?.[currentPage * monthsPerPage], currentPage, monthsPerPage) + 4
                                                  }}
                                             >
                                                 <div className="bg-blue-200"

@@ -143,3 +143,8 @@ export interface GridTaskProps {
   startCol: number,
   endCol: number
 }
+export interface WorkpackageLimitProps {
+  id: string,
+  startDate: string,
+  endDate: string
+}
