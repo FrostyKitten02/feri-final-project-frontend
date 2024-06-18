@@ -1,4 +1,4 @@
-import {ProjectDto, ProjectMonthDto, TaskDto, WorkPackageDto} from "../../temp_ts";
+import {ProjectDto, ProjectMonthDto, WorkPackageDto} from "../../temp_ts";
 import {ProgressObject, WorkpackageLimitProps} from "../interfaces";
 
 export default class TextUtil {
@@ -98,7 +98,6 @@ export default class TextUtil {
     }
 
     static getMonthNumber(value: string | undefined, startMonth: ProjectMonthDto | undefined, currentPage: number, monthsPerPage: number): number {
-        console.log(startMonth)
         if (!value || !startMonth || !startMonth.date || !startMonth.monthNumber)
             return 0;
         const diff = new Date(startMonth.date).getMonth() + 1 - startMonth.monthNumber;
@@ -107,7 +106,8 @@ export default class TextUtil {
         const wpMonths = wpDate.getMonth() + 1;
         const startMonthYear = new Date(startMonth.date).getFullYear();
         const monthDiff = (wpYear - startMonthYear) * 12;
-        return (monthDiff - diff + wpMonths);
+        const paginationDiff = (currentPage - 1) * monthsPerPage;
+        return (monthDiff - diff + wpMonths - paginationDiff);
     }
 
     static calculateSubgridNumber(workPackage: WorkPackageDto, date: string | undefined): number {
@@ -125,55 +125,10 @@ export default class TextUtil {
 
         return yearDiff + monthsDiff + 1;
     }
-
-    /*
-    static returnShownTasks = (workpackage: WorkPackageDto, shownMonths: Array<ProjectMonthDto> | undefined): Array<TaskDto> => {
-        if (!shownMonths || !shownMonths[0] || !shownMonths[0].date || !workpackage.tasks) {
-            return [];
-        }
-        const startMonthDateStr = shownMonths[0].date;
-        const endMonthDateStr = shownMonths[shownMonths.length - 1].date;
-        if (!startMonthDateStr || !endMonthDateStr)
-            return [];
-        const startMonthDate = new Date(startMonthDateStr);
-        const endMonthDate = new Date(endMonthDateStr);
-
-        const chosenTasks = workpackage.tasks.filter(task => {
-            const taskStartDate = task.startDate ? new Date(task.startDate) : null;
-            const taskEndDate = task.endDate ? new Date(task.endDate) : null;
-            if (!taskStartDate || isNaN(taskStartDate.getTime()) || !taskEndDate || isNaN(taskEndDate.getTime())) {
-                return false;
-            }
-            return (taskStartDate <= endMonthDate && taskEndDate >= startMonthDate);
-        }).map(task => {
-                const taskStartDate = task.startDate ? new Date(task.startDate) : null;
-                const taskEndDate = task.endDate ? new Date(task.endDate) : null;
-
-                // Adjust the start date if it's before the start of the shown months
-                const adjustedStartDate = taskStartDate && taskStartDate < startMonthDate
-                    ? startMonthDate.toISOString().split('T')[0]
-                    : task.startDate;
-
-                // Adjust the end date if it goes beyond the end of the shown months
-                const adjustedEndDate = taskEndDate && taskEndDate > endMonthDate
-                    ? endMonthDate.toISOString().split('T')[0]
-                    : task.endDate;
-
-                return {
-                    ...task,
-                    startDate: adjustedStartDate,
-                    endDate: adjustedEndDate
-                };
-            })
-        return chosenTasks;
-    }
-
-     */
-    static returnWorkpackageLimit = (currentPage:number, workpackage: WorkPackageDto, shownMonths: Array<ProjectMonthDto> | undefined): WorkpackageLimitProps | null => {
+    static returnWorkpackageLimit = (workpackage: WorkPackageDto, shownMonths: Array<ProjectMonthDto> | undefined): WorkpackageLimitProps | null => {
         if (!shownMonths || shownMonths.length === 0 || !shownMonths[0].date) {
             return null;
         }
-        console.log("shownmonths", shownMonths)
         //month values
         const startMonthDateStr = shownMonths[0].date;
         const endMonthDateStr = shownMonths[shownMonths.length - 1].date;
@@ -208,5 +163,15 @@ export default class TextUtil {
             })
         }
         return null;
+    }
+
+    static isCurrentMonth(month: ProjectMonthDto): boolean {
+        if(!month.date)
+            return false;
+        const dateMonth = new Date(month.date).getMonth() + 1;
+        const currentMonth = new Date().getMonth() + 1;
+        if(dateMonth === currentMonth)
+            return true
+        return false;
     }
 }
