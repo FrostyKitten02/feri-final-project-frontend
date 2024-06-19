@@ -84,7 +84,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                             <ModalTitle>
                                 Create a project
                             </ModalTitle>
-                            <ModalText showInfoIcon={true}>
+                            <ModalText showInfoIcon={true} showWarningIcon={false} contentColor="muted">
                                 Information provided in the form can be changed later on.
                             </ModalText>
                         </CustomModalHeader>
