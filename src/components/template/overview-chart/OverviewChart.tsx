@@ -3,13 +3,13 @@ import TextUtil from "../../../util/TextUtil";
 import {OverviewChartBodyProps, OverviewChartHeaderProps, OverviewChartProps} from "./chartInterfaces";
 
 export const OverviewChart = ({monthsPerPage, workpackageCount, children}: OverviewChartProps) => {
-    if(workpackageCount === 0)
+    if (workpackageCount === 0)
         return;
     return (
         <div className="p-5">
             <div className={`grid flex`}
                  style={{
-                     gridTemplateColumns: `repeat(${monthsPerPage + 2}, minmax(0, 1fr))`
+                     gridTemplateColumns: `repeat(${monthsPerPage + 3}, minmax(0, 1fr))`
                  }}
             >
                 {children}
@@ -28,13 +28,17 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
 
     return (
         <React.Fragment>
-            <div className="col-start-1 col-span-2 h-14" />
+            <div className="col-start-1 col-span-2 h-14"/>
+            <div className="h-14 justify-center flex items-center uppercase text-xl font-mono pl-2">
+                PM
+            </div>
             {
                 shownMonths.map(month => {
                     return (
                         <div key={month.monthNumber}
                              className={`h-14 justify-center flex items-center`}>
-                            <div className={`${TextUtil.isCurrentMonth(month) && currentMonthClass} justify-center flex items-center`}>
+                            <div
+                                className={`${TextUtil.isCurrentMonth(month) && currentMonthClass} justify-center flex items-center`}>
                                 <div className="text-xs font-mono">
                                     M{month.monthNumber}
                                 </div>
@@ -62,8 +66,17 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                     const wpLimit = TextUtil.returnWorkpackageLimit(workPackage, shownMonths);
                     return (
                         <React.Fragment key={workPackage.id}>
-                            <div className="col-start-1 col-span-2 h-14 bg-blue-200">
-                                {workPackage.title}
+                            <div className="flex justify-between items-center col-start-1 col-span-2 h-14">
+                                <div className="flex-grow flex items-center justify-center text-lg font-bold">
+                                    <span>
+                                        {TextUtil.truncateString(workPackage.title, 40)}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-center h-full px-3">
+                                    <span className="text-xl font-mono flex justify-center items-center h-full">
+                                       {workPackage.assignedPM}
+                                    </span>
                             </div>
                             {
                                 workPackage.tasks?.map(task => {
@@ -71,20 +84,22 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                                     return (
                                         wpLimit &&
                                         <React.Fragment key={task.id}>
-                                            <div className="grid grid-cols-subgrid bg-red-200 h-14"
+                                            <div className="grid grid-cols-subgrid bg-gray-50 h-14"
                                                  key={workPackage.id}
                                                  style={{
-                                                     gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, startMonth, currentPage, monthsPerPage) + 2,
-                                                     gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, endMonth, currentPage, monthsPerPage) + 3
+                                                     gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, startMonth, currentPage, monthsPerPage) + 3,
+                                                     gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, endMonth, currentPage, monthsPerPage) + 4
                                                  }}
                                             >{
                                                 subgridNumbers &&
-                                                <div className="bg-blue-200"
+                                                <div className="flex p-2"
                                                      style={{
                                                          gridColumnStart: subgridNumbers.start,
                                                          gridColumnEnd: subgridNumbers.end
                                                      }}>
-                                                    {task.title}
+                                                    <div className="flex justify-center items-center bg-red-200 flex-grow rounded-lg">
+                                                        {task.title}
+                                                    </div>
                                                 </div>
                                             }
                                             </div>

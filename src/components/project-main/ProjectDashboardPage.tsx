@@ -39,10 +39,7 @@ export const ProjectDashboardPage = () => {
     }, [])
     return (
         <div className="flex flex-col w-full p-5">
-            <div>
-                PROJECT DASHBOARD
-            </div>
-            <div>
+            <div className="flex-grow">
                 {
                     isLoading ? "loading" :
                         <OverviewChart monthsPerPage={monthsPerPage}
@@ -59,21 +56,6 @@ export const ProjectDashboardPage = () => {
                 }
             </div>
             <div className="flex justify-between p-5">
-                {
-                    /*
-                     <div className="flex flex-row">
-                        <input type="number"
-                               placeholder="12"
-                               onChange={handleChange}
-                               value={inputValue}
-                               className={`rounded-lg w-[80px] bg-gray-50 pr-10 border-gray-300 no-arrows`}
-                        />
-                    <button onClick={() => setMonthsPerPage(inputValue)}>
-                        set shown months
-                    </button>
-                </div>
-                     */
-                }
                 <div className="flex flex-row space-x-2">
                     <div className="flex pr-1 items-center font-mono uppercase">
                         Shown months:
@@ -97,9 +79,9 @@ export const ProjectDashboardPage = () => {
                         12
                     </button>
                 </div>
-
                 <CustomPagination totalPages={(statistics.months?.length ?? monthsPerPage) / monthsPerPage}
-                                  onPageChange={setCurrentPage} currentPage={currentPage}/>
+                                  onPageChange={setCurrentPage} currentPage={currentPage}
+                />
             </div>
         </div>
     )
