@@ -3,6 +3,7 @@ import {ProjectMonthDto, ProjectStatisticsResponse} from "../../../../temp_ts";
 
 export interface OverviewChartProps {
     monthsPerPage: number,
+    workpackageCount: number,
     children?: ReactNode,
 }
 

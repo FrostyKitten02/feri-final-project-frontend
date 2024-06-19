@@ -135,14 +135,11 @@ export interface CustomPaginationProps {
   totalPages: number,
   onPageChange:  (page: number) => void,
   currentPage: number,
-  totalElements?: number
+  totalElements?: number,
+  backLabelText?: string,
+  nextLabelText?: string
 }
 
-export interface GridTaskProps {
-  id: string,
-  startCol: number,
-  endCol: number
-}
 export interface WorkpackageLimitProps {
   id: string,
   startDate: string,

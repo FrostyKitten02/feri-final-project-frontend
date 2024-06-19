@@ -2,7 +2,9 @@ import React from "react";
 import TextUtil from "../../../util/TextUtil";
 import {OverviewChartBodyProps, OverviewChartHeaderProps, OverviewChartProps} from "./chartInterfaces";
 
-export const OverviewChart = ({monthsPerPage, children}: OverviewChartProps) => {
+export const OverviewChart = ({monthsPerPage, workpackageCount, children}: OverviewChartProps) => {
+    if(workpackageCount === 0)
+        return;
     return (
         <div className="p-5">
             <div className={`grid flex`}
@@ -65,6 +67,7 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                             </div>
                             {
                                 workPackage.tasks?.map(task => {
+                                    const subgridNumbers = TextUtil.calculateSubgridNumbers(task, wpLimit);
                                     return (
                                         wpLimit &&
                                         <React.Fragment key={task.id}>
@@ -74,14 +77,16 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                                                      gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, startMonth, currentPage, monthsPerPage) + 2,
                                                      gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, endMonth, currentPage, monthsPerPage) + 3
                                                  }}
-                                            >
+                                            >{
+                                                subgridNumbers &&
                                                 <div className="bg-blue-200"
                                                      style={{
-                                                         gridColumnStart: TextUtil.calculateSubgridNumber(workPackage, task.startDate),
-                                                         gridColumnEnd: TextUtil.calculateSubgridNumber(workPackage, task.endDate) + 1
+                                                         gridColumnStart: subgridNumbers.start,
+                                                         gridColumnEnd: subgridNumbers.end
                                                      }}>
                                                     {task.title}
                                                 </div>
+                                            }
                                             </div>
                                         </React.Fragment>
                                     )

@@ -1,4 +1,4 @@
-import {ProjectDto, ProjectMonthDto, WorkPackageDto} from "../../temp_ts";
+import {ProjectDto, ProjectMonthDto, TaskDto, WorkPackageDto} from "../../temp_ts";
 import {ProgressObject, WorkpackageLimitProps} from "../interfaces";
 
 export default class TextUtil {
@@ -110,68 +110,123 @@ export default class TextUtil {
         return (monthDiff - diff + wpMonths - paginationDiff);
     }
 
-    static calculateSubgridNumber(workPackage: WorkPackageDto, date: string | undefined): number {
-        if (!workPackage || !workPackage.startDate || !date)
-            return 0;
-        const wpDate = new Date(workPackage.startDate);
-        const wpYear = wpDate.getFullYear();
-        const wpMonth = wpDate.getMonth() + 1;
-        const taskDate = new Date(date);
-        const taskYear = taskDate.getFullYear();
-        const taskMonth = taskDate.getMonth() + 1;
+    static calculateSubgridNumbers(task: TaskDto, wpLimit: WorkpackageLimitProps | null): { start: number, end: number } | undefined {
+        if (!task || !wpLimit || !task.startDate || !task.endDate)
+            return undefined;
+        const taskStartDateTmp = new Date(new Date(task.startDate).setDate(1));
+        const taskEndDateTmp =new Date(new Date(task.endDate).setDate(1));
+        const taskStartString = `${taskStartDateTmp.getFullYear()}-${taskStartDateTmp.getMonth() + 1}-${taskStartDateTmp.getDate()}`;
+        const taskEndString = `${taskEndDateTmp.getFullYear()}-${taskEndDateTmp.getMonth() + 1}-${taskEndDateTmp.getDate()}`;
+        const taskEndDate = new Date(taskEndString);
+        const taskStartDate = new Date(taskStartString);
+        const limitStartDate = new Date(wpLimit.startDate);
+        const limitEndDate = new Date(wpLimit.endDate);
+        if (taskStartDate <= limitEndDate && taskEndDate >= limitStartDate) {
+            const adjustedStartDate = taskStartDate && taskStartDate < limitStartDate
+                ? limitStartDate
+                : taskStartDate;
 
-        const yearDiff = (taskYear - wpYear) * 12;
-        const monthsDiff = taskMonth - wpMonth;
+            const adjustedEndDate = taskEndDate && taskStartDate > limitEndDate
+                ? limitEndDate
+                : taskEndDate;
 
-        return yearDiff + monthsDiff + 1;
+            const start = new Date(adjustedStartDate);
+            const end = new Date(adjustedEndDate);
+
+            const taskStartYear = start.getFullYear();
+            const taskStartMonth = start.getMonth() + 1;
+            const taskEndYear = end.getFullYear();
+            const taskEndMonth = end.getMonth() + 1;
+
+            const monthsBetween = (taskEndYear - taskStartYear) * 12 + (taskEndMonth - taskStartMonth + 1);
+
+            const limitStartYear = limitStartDate.getFullYear();
+            const limiStartMonth = limitStartDate.getMonth() + 1;
+
+            const yearDiff = (taskStartYear - limitStartYear) * 12;
+            const monthDiff = (taskStartMonth - limiStartMonth);
+
+            const startNum = monthDiff + yearDiff;
+            const endNum = startNum + monthsBetween;
+
+            return ({
+                start: startNum + 1,
+                end: endNum + 1
+            })
+        }
+        return undefined;
     }
+
     static returnWorkpackageLimit = (workpackage: WorkPackageDto, shownMonths: Array<ProjectMonthDto> | undefined): WorkpackageLimitProps | null => {
         if (!shownMonths || shownMonths.length === 0 || !shownMonths[0].date) {
             return null;
         }
-        //month values
         const startMonthDateStr = shownMonths[0].date;
         const endMonthDateStr = shownMonths[shownMonths.length - 1].date;
+
         const startMonthDate = startMonthDateStr ? new Date(startMonthDateStr) : null;
         const endMonthDate = endMonthDateStr ? new Date(endMonthDateStr) : null;
 
-        //wp values
-        const wpStartDate = workpackage.startDate ? new Date(workpackage.startDate) : null;
-        const wpEndDate = workpackage.endDate ? new Date(workpackage.endDate) : null;
+        const tempStartDate = workpackage.startDate ? new Date(workpackage.startDate) : null;
+        const tempEndDate = workpackage.endDate ? new Date(workpackage.endDate) : null;
 
-        if (!wpStartDate || isNaN(wpStartDate.getTime()) || !wpEndDate || isNaN(wpEndDate.getTime())) {
+        const wpStartDate = tempStartDate && new Date(tempStartDate?.getFullYear(), tempStartDate?.getMonth(), 1);
+        const wpEndDate = tempEndDate && new Date(tempEndDate.getFullYear(), tempEndDate.getMonth(), 1);
+
+        if (!wpStartDate || !wpEndDate) {
             return null;
         }
-        if(!endMonthDate || !startMonthDate)
+        if (!endMonthDate || !startMonthDate)
             return null;
 
-        if (wpStartDate <= endMonthDate && wpEndDate >= startMonthDate){
-
+        if (wpStartDate <= endMonthDate && wpEndDate >= startMonthDate) {
             const adjustedStartDate = wpStartDate && wpStartDate < startMonthDate
-                ? startMonthDate.toISOString().split('T')[0]
-                : wpStartDate.toISOString().split('T')[0];
+                ? startMonthDate
+                : wpStartDate;
 
 
             const adjustedEndDate = wpEndDate && wpEndDate > endMonthDate
-                ? endMonthDate.toISOString().split('T')[0]
-                : wpEndDate.toISOString().split('T')[0];
+                ? endMonthDate
+                : wpEndDate;
 
+            const startDateString = `${adjustedStartDate.getFullYear()}-${adjustedStartDate.getMonth() + 1}-${adjustedStartDate.getDate()}`;
+            const endDateString = `${adjustedEndDate.getFullYear()}-${adjustedEndDate.getMonth() + 1}-${adjustedEndDate.getDate()}`;
             return ({
                 id: workpackage.id ?? "",
-                startDate: adjustedStartDate.toString(),
-                endDate: adjustedEndDate.toString()
+                startDate: startDateString,
+                endDate: endDateString,
             })
         }
         return null;
     }
 
     static isCurrentMonth(month: ProjectMonthDto): boolean {
-        if(!month.date)
+        if (!month.date)
             return false;
         const dateMonth = new Date(month.date).getMonth() + 1;
         const currentMonth = new Date().getMonth() + 1;
-        if(dateMonth === currentMonth)
+        if (dateMonth === currentMonth)
             return true
         return false;
     }
+
+    static getPageNumbers = (currentPage: number, totalPages: number): Array<number> => {
+        const shownPages = 5;
+        const pages: number[] = [];
+
+        let startPage = Math.max(currentPage - Math.floor(shownPages / 2), 1);
+        let endPage = startPage + shownPages - 1;
+
+        if (endPage > totalPages) {
+            endPage = totalPages;
+            startPage = Math.max(endPage - shownPages + 1, 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+
+        return pages;
+    };
+
 }

@@ -7,6 +7,7 @@ export default {
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
         "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
+        "./src/index.css",
         flowbite.content(),
     ],
     theme: {
