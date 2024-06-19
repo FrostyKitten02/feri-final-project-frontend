@@ -71,7 +71,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   </div>
                 </div>
                 <div className="flex-grow ml-4 p-0">
-                  <ProgressBar value={progress} color="primary" />
+                  <ProgressBar value={progress} />
                 </div>
               </div>
             </div>
