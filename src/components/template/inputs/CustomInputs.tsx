@@ -10,7 +10,7 @@ export const TextInput = () => {
 }
 
 
-export const NumberInput = ({showArrows, color, register, name, icon, placeholderText}: NumberInputProps) => {
+export const NumberInput = ({showArrows, register, name, icon, placeholderText}: NumberInputProps) => {
     const showArrowsClass = !showArrows ? `no-arrows` : ``;
     //const colorClass = color ?? `bg-blue-50;`
     return (
