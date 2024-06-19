@@ -8,6 +8,7 @@ import {
 } from "../../../interfaces";
 import Backdrop from "./Backdrop";
 import {IoMdClose, IoMdInformationCircleOutline} from "react-icons/io";
+import { IoWarningOutline } from "react-icons/io5";
 import {Label} from "flowbite-react";
 
 export const CustomModal = ({children, closeModal, modalWidth}: CustomModalProps) => {
@@ -44,11 +45,19 @@ export const ModalTitle = ({children}: ModalTitleProps) => {
     )
 }
 
-export const ModalText = ({children, showInfoIcon}: ModalTextProps) => {
+export const ModalText = ({children, showInfoIcon, showWarningIcon, contentColor}: ModalTextProps) => {
+    const textColorVariants: { [key: string]: string } = {
+        warning: 'text-warning_modal',
+        muted: 'text-muted'
+    };
+
     return (
-        <div className="flex items-center text-muted pt-1">
+        <div className={`flex items-center ${textColorVariants[contentColor]} pt-1`}>
             {
                 showInfoIcon && <IoMdInformationCircleOutline/>
+            }
+            { 
+                showWarningIcon && <IoWarningOutline />
             }
             <div className="px-1 text-sm">
                 {children}
