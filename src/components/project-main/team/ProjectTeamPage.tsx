@@ -5,8 +5,6 @@ import { useParams } from "react-router-dom";
 import { toastError } from "../../toast-modals/ToastFunctions";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import { FaUser } from "react-icons/fa6";
-import { MdEmail } from "react-icons/md";
 import { BsPersonDash } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 
