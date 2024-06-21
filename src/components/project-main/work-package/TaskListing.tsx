@@ -1,13 +1,10 @@
 import { FC, useContext, useState } from "react";
 import { TaskItemProps, TaskListingProps } from "../../../interfaces";
 //import { useParams } from "react-router-dom";
-import AssignPersonModalForm from "./AssignPersonModalForm";
 import { TaskContext } from "../../../contexts";
 import TextUtil from "../../../util/TextUtil";
-import { GoPersonAdd } from "react-icons/go";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { FiEdit3 } from "react-icons/fi";
-import { GoPeople } from "react-icons/go";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
@@ -15,10 +12,6 @@ import { AnimatePresence, motion } from "framer-motion";
 export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
   //const { projectId } = useParams();
 
-  const [assignPersonModalOpen, setAssignPersonModalOpen] =
-    useState<boolean>(false);
-  const [taskId, setTaskId] = useState<string>("");
-  const [taskTitle, setTaskTitle] = useState<string>("");
   const [showIrrelevant, setShowIrrelevant] = useState<boolean>(false);
 
   // CONTEXT
@@ -42,31 +35,8 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
   }, [projectId]);
   */
 
-  const openAsignPersonModal = (id?: string, title?: string): void => {
-    if (id && title) {
-      setTaskId(id);
-      setTaskTitle(title);
-    }
-    setAssignPersonModalOpen(true);
-  };
-
-  const closeAssignPersonModal = (): void => {
-    setTaskId("");
-    setTaskTitle("");
-    setAssignPersonModalOpen(false);
-  };
-
   return (
-    <div className="h-full">
-      <div>
-        {assignPersonModalOpen && (
-          <AssignPersonModalForm
-            handleClose={closeAssignPersonModal}
-            taskId={taskId}
-            taskTitle={taskTitle}
-          />
-        )}
-      </div>
+    <div>
       {showIrrelevant ? (
         <div className="flex justify-end pb-6 gap-x-2">
           <button
@@ -106,7 +76,6 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
               key={task.id}
               task={task}
               showIrrelevant={showIrrelevant}
-              onAssignClick={openAsignPersonModal}
             />
           ))}
         </div>
@@ -115,16 +84,12 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
   );
 };
 
-const TaskItem: FC<TaskItemProps> = ({
-  task,
-  showIrrelevant,
-  onAssignClick,
-}) => {
+const TaskItem: FC<TaskItemProps> = ({ task, showIrrelevant }) => {
   return (
     <AnimatePresence>
       {(showIrrelevant || task?.isRelevant) && (
         <motion.div
-          className={`grid grid-cols-[5px_1fr_2fr_2fr] items-center border-b border-gray-200 border-solid mb-[-1px]`}
+          className={`grid grid-cols-[5px_2fr_2fr_2fr] items-center border-b border-gray-200 border-solid mb-[-1px]`}
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
@@ -140,24 +105,7 @@ const TaskItem: FC<TaskItemProps> = ({
             {TextUtil.refactorDate(task?.startDate)} -{" "}
             {TextUtil.refactorDate(task?.endDate)}
           </motion.div>
-          <motion.div className="flex items-center justify-center gap-x-6 py-4">
-            <button
-              disabled={!task?.isRelevant}
-              onClick={() => onAssignClick(task?.id, task?.title)}
-            >
-              <GoPersonAdd
-                className={`${
-                  task?.isRelevant ? `fill-gray-700` : `fill-gray-300`
-                } size-8`}
-              />
-            </button>
-            <button disabled={!task?.isRelevant}>
-              <GoPeople
-                className={`${
-                  task?.isRelevant ? `fill-gray-700` : `fill-gray-300`
-                } size-7`}
-              />
-            </button>
+          <motion.div className="flex items-center justify-center gap-x-4 py-4">
             <button>
               <FiEdit3 className="size-6 stroke-gray-700" />
             </button>

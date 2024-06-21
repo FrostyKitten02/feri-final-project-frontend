@@ -24,6 +24,7 @@ export default {
                 border: '',
                 placeholder: '#a0aec0',
                 muted: '#718096',
+                warning_modal: '#f59e0b',
                 tremor: {
                     brand: {
                         faint: colors.blue[50],
