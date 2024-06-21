@@ -22,7 +22,7 @@ export default function WorkPackagePage() {
           <button
             onClick={() => setWorkPackageModalOpen(true)}
           >
-            <PackagePlusIcon className="stroke-black size-12"/>
+            <PackagePlusIcon className="stroke-black size-12 hover:stroke-primary transition delay-50"/>
           </button>
         </div>
       </div>

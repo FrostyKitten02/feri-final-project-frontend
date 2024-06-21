@@ -9,7 +9,7 @@ export type AddProjectFormFields = {
   travelBudget: number;
   equipmentBudget: number;
   subcontractingBudget: number;
-}
+};
 
 export type WorkPackageFormFields = {
   title: string;
@@ -28,9 +28,6 @@ export type TaskFormFields = {
 
 export type AssignPersonFormFields = {
   person: PersonDto;
-  occupancy: number;
-  startDate: string;
-  endDate: string;
 };
 
 export type CustomPersonTypeFormFields = {

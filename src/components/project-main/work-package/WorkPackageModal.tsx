@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { CreateWorkPackageRequest, ProjectDto } from "../../../../temp_ts";
+import { CreateWorkPackageRequest } from "../../../../temp_ts";
 import { WorkPackageModalProps } from "../../../interfaces";
 import { WorkPackageFormFields } from "../../../types/forms/formTypes";
-import { projectAPI, workPackageAPI } from "../../../util/ApiDeclarations";
+import { workPackageAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";
 import {
@@ -26,14 +26,10 @@ export default function WorkPackageModal({
   handleClose,
   handleAddWorkPackage,
   setIsFormOpen,
+  projectDetails
 }: WorkPackageModalProps) {
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
-  const [projectDetails, setProjectDetails] = useState<ProjectDto>();
-
-  useEffect(() => {
-    fetchProjectDetails();
-  }, [projectId]);
 
   const {
     register,
@@ -50,21 +46,6 @@ export default function WorkPackageModal({
   const toggleSwitch = (): void => {
     setIsOn(!isOn);
     setValue("isRelevant", !isOn);
-  };
-
-  const fetchProjectDetails = async (): Promise<void> => {
-    try {
-      if (projectId) {
-        const response = await projectAPI.getProject(projectId, requestArgs);
-        if (response.status === 200) {
-          setProjectDetails(response.data.projectDto);
-        }
-      } else {
-        toastError("Project id not found");
-      }
-    } catch (error: any) {
-      toastError(error.message);
-    }
   };
 
   const onSubmit: SubmitHandler<WorkPackageFormFields> = async (

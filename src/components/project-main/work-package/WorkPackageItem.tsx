@@ -19,9 +19,9 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
 
   return (
     workPackage && (
-      <div key={workPackage.id} className="p-5 h-fit">
+      <div key={workPackage.id} className="py-5 h-fit">
         <div className="flex rounded-xl h-full border border-gray-200 border-solid shadow-xl">
-          <div className="flex flex-col w-1/3">
+          <div className="flex flex-col w-1/3 rounded-l-xl">
             <div className="flex flex-col flex-grow p-5">
               <div className="flex justify-between items-center">
                 <div className="flex flex-row items-center">
@@ -85,7 +85,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
               </button>
             </div>
           </div>
-          <div className="flex flex-col w-2/3 bg-gray-200 p-5">
+          <div className="flex flex-col w-2/3 bg-gray-200 rounded-r-xl p-5">
             {workPackage.tasks?.length && workPackage.tasks.length > 0 ? (
               <div>
                 <div className="flex w-full pb-12">
