@@ -1,6 +1,6 @@
 import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
 import App from "../App";
-import ErrorPage from "../components/template/ErrorPage";
+import ErrorPage from "../components/template/pages/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
@@ -12,7 +12,7 @@ import WorkPackagePage from "../components/project-main/work-package/Workpackage
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import AccountSettingsPage from "../components/account-settings/AccountSettingsPage";
-import InProgressPage from "../components/template/InProgressPage";
+import InProgressPage from "../components/template/pages/InProgressPage";
 import {MainDashboardPage} from "../components/app-main/MainDashboardPage";
 import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
 import ValidateProjectId from "../components/ValidateProjectId";

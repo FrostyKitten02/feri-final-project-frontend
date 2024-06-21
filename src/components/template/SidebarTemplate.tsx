@@ -57,7 +57,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) =>
                             initial={{visibility: "hidden", opacity: 0}}
                             animate={{visibility: "visible", opacity: 1}}
                             transition={{delay: 0.2, duration: 0.7}}
-                            onClick={() => handleSidebarSelect('')}
+                            onClick={() => handleSidebarSelect('dashboard')}
                             >
                             PROJECT MANAGER
                         </motion.button>

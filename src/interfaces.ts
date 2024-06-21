@@ -137,8 +137,16 @@ export interface BackdropProps {
 }
 
 export interface CustomPaginationProps {
-  totalPages: number;
-  onPageChange: (page: number) => void;
-  currentPage: number;
-  totalElements?: number;
+  totalPages: number,
+  onPageChange:  (page: number) => void,
+  currentPage: number,
+  totalElements?: number,
+  backLabelText?: string,
+  nextLabelText?: string
+}
+
+export interface WorkpackageLimitProps {
+  id: string,
+  startDate: string,
+  endDate: string
 }
