@@ -8,17 +8,17 @@ import {ProjectModal} from "./ProjectModal";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {ProjectFilter} from "./ProjectFilter";
 
-
 export default function MyProjectsPage() {
 
     const [projects, setProjects] = useState<ListProjectResponse | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [pageNumber, setPageNumber] = useState<number>(1);
+    const [elementsPerPage, setElementsPerPage] = useState<number>(6);
 
     useEffect(() => {
         setIsLoading(true);
-        fetchProjects(pageNumber /*, ascending, fields*/)
+        fetchProjects(pageNumber, elementsPerPage)
             .then(() => setIsLoading(false))
             .catch((error) => {
                 setIsLoading(false);
@@ -36,9 +36,9 @@ export default function MyProjectsPage() {
     };
     const requestArgs = useRequestArgs();
 
-    const fetchProjects = async (pageNum: number): Promise<void> => {
+    const fetchProjects = async (pageNum: number, elementsNum: number): Promise<void> => {
         const pageInfo: PageInfoRequest = {
-            elementsPerPage: 6,
+            elementsPerPage: elementsNum,
             pageNumber: pageNum,
         };
         try {
@@ -68,14 +68,14 @@ export default function MyProjectsPage() {
     };
 
     return (
-        <div className="flex flex-col flex-grow py-10 px-20">
-            <div className="h-28 flex flex-grow justify-between items-center">
+        <div className="flex flex-col flex-grow py-10">
+            <div className="h-28 px-20 flex flex-grow justify-between items-center">
                 <div>
                     {/* todo add filters*/}
                     <ProjectFilter/>
                 </div>
                 <div>
-                    <ProjectModal handleAddProject={() => fetchProjects(pageNumber)}/>
+                    <ProjectModal handleAddProject={() => fetchProjects(pageNumber, elementsPerPage)}/>
                 </div>
             </div>
             <div className="flex flex-row w-full">
