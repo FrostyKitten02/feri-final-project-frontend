@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { WorkPackageListingProps } from "../../../interfaces";
-import { TaskDto, WorkPackageDto } from "../../../../temp_ts";
+import { ProjectDto, TaskDto, WorkPackageDto } from "../../../../temp_ts";
 import { useParams } from "react-router-dom";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { toastError } from "../../toast-modals/ToastFunctions";
@@ -18,6 +18,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
 
   const [workPackages, setWorkPackages] = useState<WorkPackageDto[]>([]);
   const [tasks, setTasks] = useState<TaskDto[]>([]);
+  const [projectDetails, setProjectDetails] = useState<ProjectDto>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -84,6 +85,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
         if (response.status === 200) {
           if (response.data.projectDto?.workPackages) {
             setWorkPackages(response.data.projectDto.workPackages);
+            setProjectDetails(response.data.projectDto);
             const allTasks = response.data.projectDto.workPackages.flatMap(
               (wp) => wp.tasks || []
             );
@@ -108,6 +110,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
             setIsFormOpen={setIsFormOpen}
             handleAddWorkPackage={handleAddWorkPackage}
             handleClose={closeWorkPackageModal}
+            projectDetails={projectDetails}
           />
         )}
       </div>
@@ -130,7 +133,7 @@ export const WorkPackageListing: FC<WorkPackageListingProps> = ({
               <h1>Loading work packages...</h1>
             </div>
           ) : workPackages && workPackages.length > 0 ? (
-            <div className="flex-col flex-grow gap-y-10 ">
+            <div className="flex-col flex-grow gap-y-10">
               {workPackages.map((workPackage) => (
                 <div key={workPackage.id}>
                   <WorkPackageItem

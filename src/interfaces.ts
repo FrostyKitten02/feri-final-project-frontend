@@ -59,6 +59,7 @@ export interface WorkPackageModalProps {
   handleClose: () => void;
   handleAddWorkPackage: () => void;
   setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  projectDetails?: ProjectDto;
 }
 
 export interface TaskModalProps {
@@ -68,6 +69,10 @@ export interface TaskModalProps {
   workPackageTitle: string;
   workPackageStartDate: string;
   workPackageEndDate: string;
+}
+
+export interface TeamModalProps {
+  handleAddPerson: () => void;
 }
 
 export interface AssignPersonModalProps {
