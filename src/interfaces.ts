@@ -1,11 +1,6 @@
 import { FC } from "react";
-import { ProjectDto, TaskDto, WorkPackageDto } from "../temp_ts";
-import { SubmitHandler } from "react-hook-form";
-import {
-  CustomPersonTypeFormFields,
-  //SelectTypeFormFields,
-  PersonType,
-} from "./types/forms/formTypes";
+import { PersonDto, ProjectDto, TaskDto, WorkPackageDto } from "../temp_ts";
+import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
 
 export interface SidebarTemplateProps {
@@ -37,7 +32,12 @@ export interface WorkPackageListingProps {
 
 export interface WorkPackageItemProps {
   workPackage?: WorkPackageDto;
-  onClick: (id?: string, title?: string, startDate?: string, endDate?: string) => void;
+  onClick: (
+    id?: string,
+    title?: string,
+    startDate?: string,
+    endDate?: string
+  ) => void;
 }
 
 export interface TaskListingProps {
@@ -81,13 +81,18 @@ export interface AssignPersonModalProps {
   taskTitle: string;
 }
 
-export interface CustomPersonTypeFormProps {
-  onSubmit: SubmitHandler<CustomPersonTypeFormFields>;
+export interface PersonTypeModalProps {
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface SelectTypeFormProps {
-  //onSubmit: SubmitHandler<SelectTypeFormFields>;
-  typeList: PersonType;
+export interface SalaryModalProps {
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface PopoverMenuProps {
+  setAdminPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPersonTypeModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSalaryModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ProgressObject {
@@ -142,16 +147,31 @@ export interface BackdropProps {
 }
 
 export interface CustomPaginationProps {
-  totalPages: number,
-  onPageChange:  (page: number) => void,
-  currentPage: number,
-  totalElements?: number,
-  backLabelText?: string,
-  nextLabelText?: string
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  currentPage: number;
+  totalElements?: number;
+  backLabelText?: string;
+  nextLabelText?: string;
 }
 
 export interface WorkpackageLimitProps {
-  id: string,
-  startDate: string,
-  endDate: string
+  id: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface UserSearchInputProps<
+  T extends FieldValues,
+  K extends Path<T>
+> {
+  setListOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  field: ControllerRenderProps<T, K>;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  inputValue: string;
+  listOpen: boolean;
+  filteredPeople: PersonDto[];
+  handleSelectPerson: (person: PersonDto) => void;
+  inputWidth?: number;
 }
