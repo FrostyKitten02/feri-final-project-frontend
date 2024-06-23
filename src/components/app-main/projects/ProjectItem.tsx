@@ -31,11 +31,11 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                         <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
                             <HiCalendar className="h-4 w-4 fill-primary"/>
                         </div>
-                        <div className="italic pl-2 text-xs text-muted">
+                        <div className="pl-2 text-xs text-muted">
                             {TextUtil.refactorDate(project.startDate)}
                         </div>
                         <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
-                        <div className="italic pr-2 text-xs text-muted">
+                        <div className="pr-2 text-xs text-muted">
                             {TextUtil.refactorDate(project.endDate)}
                         </div>
                         <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
