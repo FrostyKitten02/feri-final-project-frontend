@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BsPersonAdd } from "react-icons/bs";
 import {
   CustomModal,
@@ -14,15 +14,13 @@ import {
 } from "../../template/modal/CustomModal";
 import { Label } from "flowbite-react";
 import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
-import { TextInput } from "flowbite-react";
 import { personAPI, projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import { IoSearch } from "react-icons/io5";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AssignPersonFormFields } from "../../../types/forms/formTypes";
 import { useParams } from "react-router-dom";
-import { IoPersonCircle } from "react-icons/io5";
 import { TeamModalProps } from "../../../interfaces";
+import UserSearchInput from "../../template/search-user/UserSearchInput";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -33,24 +31,10 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
 
   const requestArgs = useRequestArgs();
   const { projectId } = useParams();
-  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchAllPeople();
   }, []);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent): void {
-      if (listRef.current && !listRef.current.contains(e.target as Node)) {
-        setListOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [listRef]);
 
   const fetchAllPeople = async (): Promise<void> => {
     try {
@@ -95,7 +79,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   };
 
   const handleClose = (): void => {
-    reset({ person: undefined });
+    reset();
     setSearchQuery("");
     setInputValue("");
     setModalOpen(false);
@@ -168,48 +152,17 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                   }}
                   name="person"
                   render={({ field }) => (
-                    <>
-                      <TextInput
-                        className="w-[700px]"
-                        placeholder="Search employee"
-                        onChange={(e) => {
-                          setInputValue(e.target.value);
-                          setSearchQuery(e.target.value);
-                          field.onChange(e);
-                        }}
-                        value={inputValue}
-                        icon={IoSearch}
-                      />
-                      {listOpen && (
-                        <div className="relative w-[700px]" ref={listRef}>
-                          <div className="absolute z-10 w-full bg-white shadow-md max-h-60 overflow-auto rounded-lg">
-                            {filteredPeople.slice(0, 5).map((person) => (
-                              <div
-                                key={person.id}
-                                className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-b border-gray-200"
-                                onClick={() => {
-                                  handleSelectPerson(person);
-                                }}
-                              >
-                                <div className="flex justify-center">
-                                  <IoPersonCircle className="size-6 fill-black" />
-                                </div>
-                                <div className="flex justify-center">
-                                  {person.name && person.lastname ? (
-                                    <p>
-                                      {person.name} {person.lastname}
-                                    </p>
-                                  ) : null}
-                                </div>
-                                <div className="flex justify-center">
-                                  <p>{person.email}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </>
+                    <UserSearchInput<AssignPersonFormFields, "person">
+                      setListOpen={setListOpen}
+                      field={field}
+                      setInputValue={setInputValue}
+                      setSearchQuery={setSearchQuery}
+                      inputValue={inputValue}
+                      listOpen={listOpen}
+                      filteredPeople={filteredPeople}
+                      handleSelectPerson={handleSelectPerson}
+                      inputWidth={700}
+                    />
                   )}
                 />
                 <CustomModalError error={errors.person?.message} />

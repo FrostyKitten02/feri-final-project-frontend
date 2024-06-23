@@ -14,7 +14,7 @@ import {Label} from "flowbite-react";
 export const CustomModal = ({children, closeModal, modalWidth}: CustomModalProps) => {
     return (
         <Backdrop closeModal={closeModal}>
-            <div className="bg-white rounded-xl"
+            <div className="bg-white rounded-xl text-black"
                  style={{width: modalWidth}}
                  onClick={(e) => e.stopPropagation()}
             >

@@ -1,144 +1,201 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {UserButton, useUser} from "@clerk/clerk-react";
-import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserButton, useUser } from "@clerk/clerk-react";
+import { SidebarItemProps, SidebarTemplateProps } from "../../interfaces";
 import HamburgerIcon from "../../assets/icons/hamburger-icon.svg?react";
 import ReturnIcon from "../../assets/icons/return.svg?react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
+import { BsPersonFillGear } from "react-icons/bs";
+import PersonTypeModal from "../admin-modal/PersonTypeModal";
+import PopoverMenu from "../admin-modal/PopoverMenu";
+import SalaryModal from "../admin-modal/SalaryModal";
 
-const SidebarTemplate: React.FC<SidebarTemplateProps> = ({items, showReturn}) => {
-    const [selected, setSelected] = useState<string>('');
-    const [opened, setOpened] = useState<boolean>(true);
-    const navigate = useNavigate();
-    const { user } = useUser();
+const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
+  items,
+  showReturn,
+}) => {
+  const [selected, setSelected] = useState<string>("");
+  const [opened, setOpened] = useState<boolean>(true);
 
-    useEffect(() => {
-        const sidebarSelect: string | undefined = SessionUtil.getSidebarSelect();
-        const sidebarStatus: boolean | undefined = SessionUtil.getSidebarStatus();
-        if(sidebarSelect === undefined)
-            SessionUtil.setSidebarSelect('');
-        setSelected(sidebarSelect || '');
-        if (sidebarStatus === undefined) {
-            SessionUtil.setSidebarStatus(true);
-            setOpened(true);
-        } else
-            setOpened(sidebarStatus);
-    }, [])
-  
-    const toggle = (): void => {
-        const newStatus: boolean = !opened;
-        SessionUtil.setSidebarStatus(!SessionUtil.getSidebarStatus || newStatus);
-        setOpened(newStatus);
-    };
-    const handleSidebarSelect = (value: string): void => {
-       setSelected(value);
-       SessionUtil.setSidebarSelect(value);
-    }
-    const handleReturn = () => {
-        navigate(Paths.HOME);
-        SessionUtil.setSidebarSelect("");
-    }
+  const [adminPopoverOpen, setAdminPopoverOpen] = useState<boolean>(false);
+  const [personTypeModalOpen, setPersonTypeModalOpen] =
+    useState<boolean>(false);
+  const [salaryModalOpen, setSalaryModalOpen] = useState<boolean>(false);
 
-    return (
-        <motion.div
-            animate={{width: opened ? "18%" : "6%"}}
-            initial={{width: opened ? "18%" : "6%"}}
-            transition={{duration: 0.3}}
-            className={`h-full text-white pb-3 flex items-center flex-col flex-wrap bg-transparent`}
-        >
-            <div
-                className={opened ? `h-28 w-full py-5 flex flex-row items-center justify-around` : `h-28 w-full py-5 flex flex-row items-center justify-center`}>
-                {opened && (
-                    <Link to={Paths.HOME} className="text-xl">
-                        <motion.button
-                            initial={{visibility: "hidden", opacity: 0}}
-                            animate={{visibility: "visible", opacity: 1}}
-                            transition={{delay: 0.2, duration: 0.7}}
-                            onClick={() => handleSidebarSelect('dashboard')}
-                            >
-                            PROJECT MANAGER
-                        </motion.button>
-                    </Link>
-                )}
-                <button onClick={toggle}>
-                    <HamburgerIcon className="h-10 w-10 fill-white"/>
-                </button>
-            </div>
-            <div className={`${opened ? "pl-6" : "pl-[20%]"} w-full flex-grow`}>
-                {
-                    items.map(item => (
-                        <SidebarItem
-                            key={item.name}
-                            item={item}
-                            handleSelect={handleSidebarSelect}
-                            selected={selected}
-                            opened={opened}
-                        />
-                    ))
-                }
-            </div>
-            <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
-                <div className="flex px-3 items-center justify-center ">
-                    <UserButton userProfileMode='navigation' userProfileUrl="/account-settings" />
-                </div>
-                {
-                    opened &&
-                    <motion.div
-                        initial={{visibility: "hidden", opacity: 0}}
-                        animate={{visibility: "visible", opacity: 1}}
-                        transition={{delay: 0.2, duration: 0.7}}
-                        className="flex px-3 flex-col items-center justify-center">
-                        <div>
-                            {user?.fullName}
-                        </div>
-                        <div>
-                            {user?.primaryEmailAddress?.emailAddress}
-                        </div>
-                    </motion.div>
-                }
-            </div>
-            {
-                showReturn &&
-                <button onClick={() => handleReturn()} className="w-full py-6">
-                    <div className="flex flex-row items-center justify-around w-full">
-                        <ReturnIcon className="h-10 w-10 fill-white" />
-                    </div>
-                </button>
+  const navigate = useNavigate();
+  const { user } = useUser();
+
+  useEffect(() => {
+    const sidebarSelect: string | undefined = SessionUtil.getSidebarSelect();
+    const sidebarStatus: boolean | undefined = SessionUtil.getSidebarStatus();
+    if (sidebarSelect === undefined) SessionUtil.setSidebarSelect("");
+    setSelected(sidebarSelect || "");
+    if (sidebarStatus === undefined) {
+      SessionUtil.setSidebarStatus(true);
+      setOpened(true);
+    } else setOpened(sidebarStatus);
+  }, []);
+
+  const toggle = (): void => {
+    const newStatus: boolean = !opened;
+    SessionUtil.setSidebarStatus(!SessionUtil.getSidebarStatus || newStatus);
+    setOpened(newStatus);
+  };
+  const handleSidebarSelect = (value: string): void => {
+    setSelected(value);
+    SessionUtil.setSidebarSelect(value);
+  };
+  const handleReturn = () => {
+    navigate(Paths.HOME);
+    SessionUtil.setSidebarSelect("");
+  };
+
+  return (
+    <motion.div
+      animate={{ width: opened ? "18%" : "6%" }}
+      initial={{ width: opened ? "18%" : "6%" }}
+      transition={{ duration: 0.3 }}
+      className={`h-full text-white pb-3 flex items-center flex-col flex-wrap bg-transparent`}
+    >
+      <div
+        className={
+          opened
+            ? `h-28 w-full py-5 flex flex-row items-center justify-around`
+            : `h-28 w-full py-5 flex flex-row items-center justify-center`
+        }
+      >
+        {opened && (
+          <Link to={Paths.HOME} className="text-xl">
+            <motion.button
+              initial={{ visibility: "hidden", opacity: 0 }}
+              animate={{ visibility: "visible", opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.7 }}
+              onClick={() => handleSidebarSelect("dashboard")}
+            >
+              PROJECT MANAGER
+            </motion.button>
+          </Link>
+        )}
+        <button onClick={toggle}>
+          <HamburgerIcon className="h-10 w-10 fill-white" />
+        </button>
+      </div>
+      <div className={`${opened ? "pl-6" : "pl-[20%]"} w-full flex-grow`}>
+        {items.map((item) => (
+          <SidebarItem
+            key={item.name}
+            item={item}
+            handleSelect={handleSidebarSelect}
+            selected={selected}
+            opened={opened}
+          />
+        ))}
+      </div>
+      {user?.id === "user_2fg086sprrUABqywjpB9n31enB2" && (
+        <>
+          <div className="py-2 relative">
+            <button
+              onClick={() => setAdminPopoverOpen(true)}
+              className="flex flex-row justify-center items-center gap-x-3"
+            >
+              <BsPersonFillGear className="fill-white size-7" />
+              {opened && (
+                <motion.span
+                  initial={{ visibility: "hidden", opacity: 0 }}
+                  animate={{ visibility: "visible", opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.7 }}
+                  className="font-semibold"
+                >
+                  MANAGE USERS
+                </motion.span>
+              )}
+            </button>
+            {adminPopoverOpen && (
+              <PopoverMenu
+                setAdminPopoverOpen={setAdminPopoverOpen}
+                setPersonTypeModalOpen={setPersonTypeModalOpen}
+                setSalaryModalOpen={setSalaryModalOpen}
+              />
+            )}
+          </div>
+          {personTypeModalOpen && (
+            <PersonTypeModal setModalOpen={setPersonTypeModalOpen} />
+          )}
+          {salaryModalOpen && <SalaryModal setModalOpen={setSalaryModalOpen} />}
+        </>
+      )}
+      <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
+        <div className="flex px-3 items-center justify-center ">
+          <UserButton />
+        </div>
+        {opened && (
+          <motion.div
+            initial={{ visibility: "hidden", opacity: 0 }}
+            animate={{ visibility: "visible", opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.7 }}
+            className="flex px-3 flex-col items-center justify-center"
+          >
+            <div>{user?.fullName}</div>
+            <div>{user?.primaryEmailAddress?.emailAddress}</div>
+          </motion.div>
+        )}
+      </div>
+      {showReturn && (
+        <button onClick={() => handleReturn()} className="w-full py-6">
+          <div className="flex flex-row items-center justify-around w-full">
+            <ReturnIcon className="h-10 w-10 fill-white" />
+          </div>
+        </button>
+      )}
+    </motion.div>
+  );
+};
+
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  item,
+  handleSelect,
+  selected,
+  opened,
+}) => {
+  const select = (): void => {
+    handleSelect(item.name);
+  };
+  const IconComponent = item.iconComponent;
+
+  return (
+    <Link onClick={select} to={item.linkPath} className="group">
+      <div
+        className={
+          selected === item.name
+            ? "flex flex-row items-center tracking-wider text-black bg-white py-3 rounded-l-full h-20"
+            : "h-20 flex flex-row items-center hover:fill-black tracking-wider bg-transparent py-3 hover:text-black hover:bg-white hover:rounded-l-full"
+        }
+      >
+        {IconComponent && (
+          <IconComponent
+            className={
+              selected === item.name
+                ? "h-10 w-10 fill-black ml-3"
+                : "h-10 w-10 fill-white group-hover:fill-black ml-3"
             }
-        </motion.div>
-    )
-}
-
-const SidebarItem: React.FC<SidebarItemProps> = ({item, handleSelect, selected, opened}) => {
-    const select = (): void => {
-        handleSelect(item.name);
-    }
-    const IconComponent = item.iconComponent;
-
-    return (
-        <Link onClick={select} to={item.linkPath} className="group">
-            <div
-                className={selected === item.name ? "flex flex-row items-center tracking-wider text-black bg-white py-3 rounded-l-full h-20" : "h-20 flex flex-row items-center hover:fill-black tracking-wider bg-transparent py-3 hover:text-black hover:bg-white hover:rounded-l-full"}>
-                {
-                    IconComponent &&
-                    <IconComponent
-                        className={selected === item.name ? "h-10 w-10 fill-black ml-3" : "h-10 w-10 fill-white group-hover:fill-black ml-3"}/>}
-                {
-                    opened &&
-                    <motion.div
-                        initial={{visibility: "hidden", opacity: 0}}
-                        animate={{visibility: "visible", opacity: 1}}
-                        transition={{delay: 0.2, duration: 0.7}}
-                        className="pl-3 text-xl uppercase">
-                        {item.name}
-                    </motion.div>
-                }
-            </div>
-        </Link>
-    )
-}
+          />
+        )}
+        {opened && (
+          <motion.div
+            initial={{ visibility: "hidden", opacity: 0 }}
+            animate={{ visibility: "visible", opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.7 }}
+            className="pl-3 text-xl uppercase"
+          >
+            {item.name}
+          </motion.div>
+        )}
+      </div>
+    </Link>
+  );
+};
 
 export default SidebarTemplate;

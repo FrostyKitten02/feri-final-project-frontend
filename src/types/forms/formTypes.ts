@@ -30,17 +30,18 @@ export type AssignPersonFormFields = {
   person: PersonDto;
 };
 
-export type CustomPersonTypeFormFields = {
+export type PersonTypeFormFields = {
   name: string;
-  researchAvailability: number;
-  educateAvailability: number;
+  research: number;
+  educate: number;
+  startDate: string;
+  endDate: string;
+  personId: PersonDto;
+};
+
+export type SalaryFormFields = {
+  personId: PersonDto;
+  amount: number;
   startDate: string;
   endDate: string;
 };
-
-export type SelectTypeFormFields = {
-  name: string;
-};
-
-// placeholder type for props until we have client interface; won't be present in this file
-export type PersonType = { id: string; name: string }[];

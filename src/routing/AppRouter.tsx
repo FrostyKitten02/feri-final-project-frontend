@@ -10,7 +10,6 @@ import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
-import AccountSettingsPage from "../components/account-settings/AccountSettingsPage";
 import InProgressPage from "../components/template/pages/InProgressPage";
 import {MainDashboardPage} from "../components/app-main/MainDashboardPage";
 import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
@@ -93,11 +92,6 @@ function AppRouter() {
                     ]
                 }
             ]
-        },
-        {
-            path: "account-settings",
-            element: <AccountSettingsPage/>,
-            errorElement: <ErrorPage/>
         },
         {
             path: "/",
