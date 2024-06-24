@@ -28,7 +28,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                 <div
                     className="flex flex-col w-full h-full hover:bg-gray-100 transition delay-50 border border-gray-200 border-solid rounded-xl">
                     <div className="flex px-4 pt-4 pb-2 flex-row items-center">
-                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
                             <HiCalendar className="h-4 w-4 fill-primary"/>
                         </div>
                         <div className="pl-2 text-xs text-muted">
@@ -38,7 +38,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                         <div className="pr-2 text-xs text-muted">
                             {TextUtil.refactorDate(project.endDate)}
                         </div>
-                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
                             <HiCalendar className="h-4 w-4 fill-primary"/>
                         </div>
                     </div>
