@@ -28,17 +28,17 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                 <div
                     className="flex flex-col w-full h-full hover:bg-gray-100 transition delay-50 border border-gray-200 border-solid rounded-xl">
                     <div className="flex px-4 pt-4 pb-2 flex-row items-center">
-                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
                             <HiCalendar className="h-4 w-4 fill-primary"/>
                         </div>
-                        <div className="italic pl-2 text-xs text-muted">
+                        <div className="pl-2 text-xs text-muted">
                             {TextUtil.refactorDate(project.startDate)}
                         </div>
                         <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
-                        <div className="italic pr-2 text-xs text-muted">
+                        <div className="pr-2 text-xs text-muted">
                             {TextUtil.refactorDate(project.endDate)}
                         </div>
-                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                        <div className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
                             <HiCalendar className="h-4 w-4 fill-primary"/>
                         </div>
                     </div>
@@ -53,7 +53,33 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                                     %
                                 </span>
                             </ProgressCircle>
-                            <div className="flex flex-row space-x-5 pb-3">
+                            { /*
+
+                                <div className="flex flex-row space-x-5 pb-3">
+                                    <div className="flex flex-row items-center">
+                                        <LuPackage size="22"/>
+                                        <span className="pl-1 text-lg font-mono">
+                                        {project.workPackageCount}
+                                    </span>
+                                    </div>
+                                    <div className="flex flex-row items-center">
+                                        <IoPeopleOutline size="22"/>
+                                        <span className="pl-1 text-lg font-mono">
+                                        {project.peopleCount}
+                                    </span>
+                                    </div>
+                                </div>
+                                */
+                            }
+                        </div>
+                        <div className="flex flex-grow justify-center items-center text-xl uppercase font-bold pr-6">
+                            {TextUtil.truncateString(project.title, 60)}
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
+                        <div className="flex flex-row justify-between">
+                            <div className="pl-4 flex flex-row space-x-3">
                                 <div className="flex flex-row items-center">
                                     <LuPackage size="22"/>
                                     <span className="pl-1 text-lg font-mono">
@@ -67,26 +93,20 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                                     </span>
                                 </div>
                             </div>
-                        </div>
-                        <div className="flex flex-grow justify-center items-center text-xl uppercase font-bold pr-6">
-                            {TextUtil.truncateString(project.title, 60)}
-                        </div>
-                    </div>
-                    <div className="flex flex-col">
-                        <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
-                        <div className="px-4 py-2 flex flex-row items-center justify-end">
-                            <div
-                                className="flex bg-blue-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
-                                <p className="font-semibold italic text-sm uppercase">
-                                    {project.ownerId === userId ? "owned" : "assigned"}
-                                </p>
-                            </div>
-                            <div
-                                className={`flex ${color} w-fit px-2 rounded-lg ml-2 justify-start items-center`}>
-                                <p className="font-semibold italic text-sm uppercase">
-                                    {text}
-                                    {project.workPackages?.length}
-                                </p>
+                            <div className="px-4 py-2 flex flex-row items-center justify-end">
+                                <div
+                                    className="flex bg-blue-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
+                                    <p className="font-semibold italic text-sm uppercase">
+                                        {project.ownerId === userId ? "owned" : "assigned"}
+                                    </p>
+                                </div>
+                                <div
+                                    className={`flex ${color} w-fit px-2 rounded-lg ml-2 justify-start items-center`}>
+                                    <p className="font-semibold italic text-sm uppercase">
+                                        {text}
+                                        {project.workPackages?.length}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

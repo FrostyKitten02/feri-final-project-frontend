@@ -12,7 +12,7 @@ export const CustomPagination = ({currentPage, onPageChange, totalPages, backLab
                     disabled={currentPage === 1}
             >
                 <MdChevronLeft/>
-                <span className="uppercase font-mono">
+                <span className="uppercase">
                    {backLabelText ?? "previous page"}
                 </span>
             </button>
@@ -34,7 +34,7 @@ export const CustomPagination = ({currentPage, onPageChange, totalPages, backLab
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
             >
-                <span className="uppercase font-mono">
+                <span className="uppercase">
                     {nextLabelText ?? "next page"}
                 </span>
                 <MdNavigateNext/>
