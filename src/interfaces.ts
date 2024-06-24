@@ -7,6 +7,7 @@ import {
   PersonType,
 } from "./types/forms/formTypes";
 import * as React from "react";
+import {SelectedItemProps} from "./components/template/inputs/inputsInterface";
 
 export interface SidebarTemplateProps {
   items: ListItem[];
@@ -154,4 +155,10 @@ export interface WorkpackageLimitProps {
   id: string,
   startDate: string,
   endDate: string
+}
+
+export interface ProjectFilterProps {
+  handleProjectAdd: () => void,
+  selectedStatus: SelectedItemProps,
+  setSelectedStatus: (item: SelectedItemProps) => void
 }
