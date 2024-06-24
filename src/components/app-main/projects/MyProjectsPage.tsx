@@ -118,6 +118,8 @@ export const MyProjectsPage = () => {
                     totalPages={totalPages}
                     onPageChange={onPageChange}
                     currentPage={pageNumber}
+                    backLabelText="prev"
+                    nextLabelText="next"
                 />
             </div>
         </div>
