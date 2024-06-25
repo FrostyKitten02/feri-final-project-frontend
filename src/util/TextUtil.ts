@@ -45,12 +45,12 @@ export default class TextUtil {
         if (value === 100) {
             return ({
                 text: "finished",
-                color: "bg-green"
+                color: "bg-custom-green"
             })
         } else if (value !== 100 && value !== 0) {
             return ({
                 text: "in progress",
-                color: "bg-yellow"
+                color: "bg-custom-yellow"
             })
         } else return ({
             text: "scheduled",

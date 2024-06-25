@@ -643,6 +643,61 @@ export interface ProjectListSearchParams {
      * @memberof ProjectListSearchParams
      */
     'searchStr'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProjectListSearchParams
+     */
+    'searchOnlyOwnedProjects'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectListSearchParams
+     */
+    'startDateFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectListSearchParams
+     */
+    'startDateTo'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectListSearchParams
+     */
+    'endDateFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectListSearchParams
+     */
+    'endDateTo'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ProjectListStatusResponse
+ */
+export interface ProjectListStatusResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectListStatusResponse
+     */
+    'finishedProjects'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectListStatusResponse
+     */
+    'inProgressProjects'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectListStatusResponse
+     */
+    'scheduledProjects'?: number;
 }
 /**
  * 
@@ -709,7 +764,9 @@ export interface ProjectSortInfoRequest {
 
 export const ProjectSortInfoRequestFieldsEnum = {
     CreatedAt: 'CREATED_AT',
-    Title: 'TITLE'
+    Title: 'TITLE',
+    StartDate: 'START_DATE',
+    EndDate: 'END_DATE'
 } as const;
 
 export type ProjectSortInfoRequestFieldsEnum = typeof ProjectSortInfoRequestFieldsEnum[keyof typeof ProjectSortInfoRequestFieldsEnum];
@@ -1821,6 +1878,35 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listProjectsStatus: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/project/list/status`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1906,6 +1992,17 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.listProjects']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listProjectsStatus(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectListStatusResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listProjectsStatus(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.listProjectsStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -1972,6 +2069,14 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
          */
         listProjects(pageInfo: PageInfoRequest, sortInfo?: ProjectSortInfoRequest, searchParams?: ProjectListSearchParams, options?: any): AxiosPromise<ListProjectResponse> {
             return localVarFp.listProjects(pageInfo, sortInfo, searchParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listProjectsStatus(options?: any): AxiosPromise<ProjectListStatusResponse> {
+            return localVarFp.listProjectsStatus(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2050,6 +2155,16 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public listProjects(pageInfo: PageInfoRequest, sortInfo?: ProjectSortInfoRequest, searchParams?: ProjectListSearchParams, options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).listProjects(pageInfo, sortInfo, searchParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public listProjectsStatus(options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).listProjectsStatus(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

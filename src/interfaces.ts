@@ -2,6 +2,7 @@ import { FC } from "react";
 import { PersonDto, ProjectDto, TaskDto, WorkPackageDto } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
+import {SelectedItemProps} from "./components/template/inputs/inputsInterface";
 
 export interface SidebarTemplateProps {
   items: ListItem[];
@@ -162,4 +163,10 @@ export interface UserSearchInputProps<
   filteredPeople: PersonDto[];
   handleSelectPerson: (person: PersonDto) => void;
   inputWidth?: number;
+}
+
+export interface ProjectFilterProps {
+  handleProjectAdd: () => void,
+  selectedStatus: SelectedItemProps,
+  setSelectedStatus: (item: SelectedItemProps) => void
 }

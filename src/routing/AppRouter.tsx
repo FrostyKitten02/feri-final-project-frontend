@@ -6,7 +6,6 @@ import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
 import AppMainPage from "../components/app-main/AppMainPage";
-import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import InProgressPage from "../components/template/pages/InProgressPage";
@@ -16,6 +15,7 @@ import ValidateProjectId from "../components/ValidateProjectId";
 import {RedirectMain} from "../components/app-main/RedirectMain";
 import ProjectTeamPage from "../components/project-main/team/ProjectTeamPage";
 import { WorkPackageListing } from "../components/project-main/work-package/WorkPackageListing";
+import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
 
 function AppRouter() {
 
