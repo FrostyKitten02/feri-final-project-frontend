@@ -7,7 +7,6 @@ import ProjectMainPage from "../components/project-main/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
 import AppMainPage from "../components/app-main/AppMainPage";
 import MyProjectsPage from "../components/app-main/projects/MyProjectsPage";
-import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import InProgressPage from "../components/template/pages/InProgressPage";
@@ -16,6 +15,7 @@ import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardP
 import ValidateProjectId from "../components/ValidateProjectId";
 import {RedirectMain} from "../components/app-main/RedirectMain";
 import ProjectTeamPage from "../components/project-main/team/ProjectTeamPage";
+import { WorkPackageListing } from "../components/project-main/work-package/WorkPackageListing";
 
 function AppRouter() {
 
@@ -75,7 +75,7 @@ function AppRouter() {
                         },
                         {
                             path: "work-packages",
-                            element: <WorkPackagePage/>,
+                            element: <WorkPackageListing/>,
                             errorElement: <ErrorPage/>
                         },
                         {

@@ -37,7 +37,8 @@ export default function UserSearchInput<
   return (
     <>
       <TextInput
-        className={`w-[${inputWidth}px] pb-2`}
+        style={{ width: `${inputWidth}px` }}
+        className="pb-2"
         placeholder="Search employee"
         onChange={(e) => {
           setInputValue(e.target.value);
@@ -47,32 +48,39 @@ export default function UserSearchInput<
         value={inputValue}
         icon={IoSearch}
       />
-      {listOpen && (
-        <div className={`relative w-[${inputWidth}px]`} ref={listRef}>
-          <div className="absolute z-10 w-full shadow-lg bg-white max-h-60 overflow-auto rounded-lg border border-solid border-gray-100">
-            {filteredPeople.slice(0, 5).map((person) => (
-              <div
-                key={person.id}
-                className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-b border-gray-200"
-                onClick={() => {
-                  handleSelectPerson(person);
-                }}
-              >
-                <div className="flex justify-center">
-                  <IoPersonCircle className="size-6 fill-black" />
+      {listOpen && filteredPeople.length > 0 && (
+        <div
+          className="relative"
+          style={{ width: `${inputWidth}px` }}
+          ref={listRef}
+        >
+          <div className="absolute z-10 w-full shadow-lg bg-white max-h-70 overflow-auto rounded-lg border border-solid border-gray-200">
+            <div className="py-2 px-4 font-semibold text-lg">Results</div>
+            <div className="divide-y">
+              {filteredPeople.slice(0, 5).map((person) => (
+                <div
+                  key={person.id}
+                  className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-gray-200"
+                  onClick={() => {
+                    handleSelectPerson(person);
+                  }}
+                >
+                  <div className="flex justify-center">
+                    <IoPersonCircle className="size-6 fill-black" />
+                  </div>
+                  <div className="flex justify-center">
+                    {person.name && person.lastname ? (
+                      <p>
+                        {person.name} {person.lastname}
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="flex justify-center">
+                    <p>{person.email}</p>
+                  </div>
                 </div>
-                <div className="flex justify-center">
-                  {person.name && person.lastname ? (
-                    <p>
-                      {person.name} {person.lastname}
-                    </p>
-                  ) : null}
-                </div>
-                <div className="flex justify-center">
-                  <p>{person.email}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}

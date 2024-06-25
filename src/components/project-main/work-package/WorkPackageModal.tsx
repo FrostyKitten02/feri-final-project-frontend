@@ -21,15 +21,16 @@ import { Datepicker, Label, TextInput } from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
 import { TbCalendarUser } from "react-icons/tb";
 import { motion } from "framer-motion";
+import PackagePlusIcon from "../../../assets/icons/package-plus-svgrepo-com.svg?react";
 
 export default function WorkPackageModal({
-  handleClose,
   handleAddWorkPackage,
-  setIsFormOpen,
-  projectDetails
+  projectDetails,
 }: WorkPackageModalProps) {
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const {
     register,
@@ -37,6 +38,7 @@ export default function WorkPackageModal({
     setValue,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<WorkPackageFormFields>();
   const watchStartDate = watch("startDate");
@@ -68,6 +70,8 @@ export default function WorkPackageModal({
           requestArgs
         );
         if (response.status === 201) {
+          reset();
+          setModalOpen(false);
           handleAddWorkPackage();
           toastSuccess(
             "Work package " +
@@ -85,132 +89,155 @@ export default function WorkPackageModal({
 
   return (
     <>
-      <CustomModal closeModal={handleClose} modalWidth="700px">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <CustomModalHeader handleModalOpen={() => setIsFormOpen(false)}>
-            <ModalTitle>Add a work package</ModalTitle>
-            <ModalText showInfoIcon={true} showWarningIcon={false} contentColor="muted">
-              Information provided in the form can be changed later on.
-            </ModalText>
-          </CustomModalHeader>
-          <CustomModalBody>
-            <div>
-              <Label>Work package title</Label>
-              <TextInput
-                type="text"
-                {...register("title", {
-                  required: "Title can not be empty!",
-                })}
-              />
-              <CustomModalError error={errors.title?.message} />
-            </div>
-            <div className="flex flex-row justify-between pt-6">
-              <div className="w-[270px]">
-                <Label>Start date</Label>
-                <ModalText showInfoIcon={false} showWarningIcon={true} contentColor="warning">
-                  Project start date:{" "}
-                  {TextUtil.refactorDate(projectDetails?.startDate)}
-                </ModalText>
-                <Controller
-                  name="startDate"
-                  defaultValue={""}
-                  control={control}
-                  rules={{
-                    required: "Start date is required!",
-                    validate: (value) => {
-                      if (!value) {
-                        return "Start date is required!";
-                      }
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Datepicker
-                      {...field}
-                      placeholder="Select start date."
-                      onSelectedDateChanged={(date) =>
-                        field.onChange(TextUtil.formatFormDate(date))
-                      }
-                    />
-                  )}
-                />
-                <CustomModalError error={errors.startDate?.message} />
-              </div>
-              <div className="w-[270px]">
-                <Label>End date</Label>
-                <ModalText showInfoIcon={false} showWarningIcon={true} contentColor="warning">
-                  Project end date:{" "}
-                  {TextUtil.refactorDate(projectDetails?.endDate)}
-                </ModalText>
-                <Controller
-                  name="endDate"
-                  defaultValue={""}
-                  control={control}
-                  rules={{
-                    required: "End date is required!",
-                    validate: (value) => {
-                      if (!value) {
-                        return "End date is required!";
-                      }
-                      if (value < watchStartDate) {
-                        return "End date cannot be before start date!";
-                      }
-                      return true;
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Datepicker
-                      {...field}
-                      placeholder="Select end date."
-                      onSelectedDateChanged={(date) =>
-                        field.onChange(TextUtil.formatFormDate(date))
-                      }
-                    />
-                  )}
-                />
-                <CustomModalError error={errors.endDate?.message} />
-              </div>
-            </div>
-            <ModalDivider>details</ModalDivider>
-            <div className="flex flex-row pt-6 justify-between">
-              <div className="w-[270px]">
-                <Label>No. person months involved</Label>
+      <button onClick={() => setModalOpen(true)}>
+        <PackagePlusIcon className="stroke-black size-12 hover:stroke-primary transition delay-50" />
+      </button>
+      {modalOpen && (
+        <CustomModal closeModal={() => setModalOpen(false)} modalWidth="700px">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
+              <ModalTitle>Add a work package</ModalTitle>
+              <ModalText
+                showInfoIcon={true}
+                showWarningIcon={false}
+                contentColor="muted"
+              >
+                Information provided in the form can be changed later on.
+              </ModalText>
+            </CustomModalHeader>
+            <CustomModalBody>
+              <div>
+                <Label>Work package title</Label>
                 <TextInput
-                  type="number"
-                  min="0"
-                  rightIcon={TbCalendarUser}
-                  {...register("assignedPM", {
-                    required: "PM can not be empty!",
+                  type="text"
+                  {...register("title", {
+                    required: "Title can not be empty!",
                   })}
                 />
-                <CustomModalError error={errors.assignedPM?.message} />
+                <CustomModalError error={errors.title?.message} />
               </div>
-              <div className="w-[270px]">
-                <Label>Relevant</Label>
-                <div
-                  className={`flex ${
-                    !isOn ? "justify-start" : "justify-end"
-                  } p-1 w-10 h-6 rounded-2xl ${
-                    !isOn ? "bg-gray-300" : "bg-green"
-                  } cursor-pointer items-center`}
-                  data-ison={isOn}
-                  onClick={toggleSwitch}
-                >
-                  <motion.div
-                    className="w-4 h-4 bg-white rounded-full"
-                    layout
-                    transition={{
-                      type: "spring",
-                      stiffness: 700,
-                      damping: 30,
+              <div className="flex flex-row justify-between pt-6">
+                <div className="w-[270px]">
+                  <Label>Start date</Label>
+                  <ModalText
+                    showInfoIcon={false}
+                    showWarningIcon={true}
+                    contentColor="warning"
+                  >
+                    Project start date:{" "}
+                    {TextUtil.refactorDate(projectDetails?.startDate)}
+                  </ModalText>
+                  <Controller
+                    name="startDate"
+                    defaultValue={""}
+                    control={control}
+                    rules={{
+                      required: "Start date is required!",
+                      validate: (value) => {
+                        if (!value) {
+                          return "Start date is required!";
+                        }
+                      },
                     }}
+                    render={({ field }) => (
+                      <Datepicker
+                        minDate={
+                          new Date(projectDetails?.startDate || Date.now())
+                        }
+                        {...field}
+                        placeholder="Select start date."
+                        onSelectedDateChanged={(date) =>
+                          field.onChange(TextUtil.formatFormDate(date))
+                        }
+                      />
+                    )}
                   />
+                  <CustomModalError error={errors.startDate?.message} />
+                </div>
+                <div className="w-[270px]">
+                  <Label>End date</Label>
+                  <ModalText
+                    showInfoIcon={false}
+                    showWarningIcon={true}
+                    contentColor="warning"
+                  >
+                    Project end date:{" "}
+                    {TextUtil.refactorDate(projectDetails?.endDate)}
+                  </ModalText>
+                  <Controller
+                    name="endDate"
+                    defaultValue={""}
+                    control={control}
+                    rules={{
+                      required: "End date is required!",
+                      validate: (value) => {
+                        if (!value) {
+                          return "End date is required!";
+                        }
+                        if (value < watchStartDate) {
+                          return "End date cannot be before start date!";
+                        }
+                        return true;
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Datepicker
+                        maxDate={
+                          new Date(projectDetails?.endDate || Date.now())
+                        }
+                        {...field}
+                        placeholder="Select end date."
+                        onSelectedDateChanged={(date) =>
+                          field.onChange(TextUtil.formatFormDate(date))
+                        }
+                      />
+                    )}
+                  />
+                  <CustomModalError error={errors.endDate?.message} />
                 </div>
               </div>
-            </div>
-          </CustomModalBody>
-          <CustomModalFooter>Add</CustomModalFooter>
-        </form>
-      </CustomModal>
+              <ModalDivider>details</ModalDivider>
+              <div className="flex flex-row pt-6 justify-between">
+                <div className="w-[270px]">
+                  <Label>No. person months involved</Label>
+                  <TextInput
+                    type="number"
+                    min="0"
+                    rightIcon={TbCalendarUser}
+                    {...register("assignedPM", {
+                      required: "PM can not be empty!",
+                    })}
+                  />
+                  <CustomModalError error={errors.assignedPM?.message} />
+                </div>
+                <div className="w-[270px]">
+                  <Label>Relevant</Label>
+                  <div
+                    className={`flex ${
+                      !isOn ? "justify-start" : "justify-end"
+                    } p-1 w-10 h-6 rounded-2xl ${
+                      !isOn ? "bg-gray-300" : "bg-green"
+                    } cursor-pointer items-center`}
+                    data-ison={isOn}
+                    onClick={toggleSwitch}
+                  >
+                    <motion.div
+                      className="w-4 h-4 bg-white rounded-full"
+                      layout
+                      transition={{
+                        type: "spring",
+                        stiffness: 700,
+                        damping: 30,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CustomModalBody>
+            <CustomModalFooter>Add</CustomModalFooter>
+          </form>
+        </CustomModal>
+      )}
     </>
   );
 }
