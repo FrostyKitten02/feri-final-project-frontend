@@ -1,5 +1,5 @@
 import {ProjectDto, ProjectMonthDto, TaskDto, WorkPackageDto} from "../../temp_ts";
-import {ProgressObject, WorkpackageLimitProps} from "../interfaces";
+import {ProgressObject, WorkpackageLimitProps, YearLimitProps} from "../interfaces";
 
 export default class TextUtil {
     static replaceSpaces(value: string): string {
@@ -89,10 +89,10 @@ export default class TextUtil {
 
     static getMonthAbbreviation(value: string | undefined): string {
         if (!value)
-            return "Invalid Date";
+            return "";
         const date = new Date(value);
         if (isNaN(date.getTime()))
-            return "Invalid Date";
+            return "";
         const monthName = date.toLocaleString('default', {month: 'long'});
         return monthName.slice(0, 3);
     }
@@ -114,7 +114,7 @@ export default class TextUtil {
         if (!task || !wpLimit || !task.startDate || !task.endDate)
             return undefined;
         const taskStartDateTmp = new Date(new Date(task.startDate).setDate(1));
-        const taskEndDateTmp =new Date(new Date(task.endDate).setDate(1));
+        const taskEndDateTmp = new Date(new Date(task.endDate).setDate(1));
         const taskStartString = `${taskStartDateTmp.getFullYear()}-${taskStartDateTmp.getMonth() + 1}-${taskStartDateTmp.getDate()}`;
         const taskEndString = `${taskEndDateTmp.getFullYear()}-${taskEndDateTmp.getMonth() + 1}-${taskEndDateTmp.getDate()}`;
         const taskEndDate = new Date(taskEndString);
@@ -205,9 +205,7 @@ export default class TextUtil {
             return false;
         const dateMonth = new Date(month.date).getMonth() + 1;
         const currentMonth = new Date().getMonth() + 1;
-        if (dateMonth === currentMonth)
-            return true
-        return false;
+        return dateMonth === currentMonth;
     }
 
     static getPageNumbers = (currentPage: number, totalPages: number): Array<number> => {
@@ -229,4 +227,53 @@ export default class TextUtil {
         return pages;
     };
 
+    static constructValidRoutePath(fullPath: string, oldStr: string, newStr: string): string {
+        return fullPath.replace(oldStr, newStr);
+    }
+
+    static getYearNumber = (date: string) => {
+        return new Date(date).getFullYear();
+    }
+
+    static returnYearCount = (months: Array<ProjectMonthDto>): Record<string, number> => {
+        const countByYear: Record<string, number> = {}
+        months.forEach(month => {
+            if (month.date) {
+                const date = new Date(month.date);
+                const name = date.getFullYear().toString();
+                if (name !== "") {
+                    if (countByYear.hasOwnProperty(name)) {
+                        countByYear[name] += 1;
+                    } else {
+                        countByYear[name] = 1;
+                    }
+                }
+            }
+        });
+        return countByYear;
+    }
+
+    static yearColumnLimit = (months: Array<ProjectMonthDto>, toAdd: number): Array<YearLimitProps> => {
+        const years = this.returnYearCount(months);
+        const limitArray: Array<YearLimitProps> = [];
+        const entries = Object.entries(years);
+        entries.forEach(([year, count], index) => {
+            if (index === 0) {
+                limitArray.push({
+                    start: toAdd,
+                    end: toAdd + count,
+                    name: year
+                });
+            } else {
+                const previousEntry = limitArray[index - 1];
+                const start = previousEntry.end;
+                limitArray.push({
+                    start: start,
+                    end: start + count,
+                    name: year
+                });
+            }
+        });
+        return limitArray;
+    }
 }

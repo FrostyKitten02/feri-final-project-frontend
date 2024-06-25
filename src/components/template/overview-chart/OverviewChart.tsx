@@ -1,6 +1,7 @@
 import React from "react";
 import TextUtil from "../../../util/TextUtil";
 import {OverviewChartBodyProps, OverviewChartHeaderProps, OverviewChartProps} from "./chartInterfaces";
+import {YearLimitProps} from "../../../interfaces";
 
 export const OverviewChart = ({monthsPerPage, workpackageCount, children}: OverviewChartProps) => {
     if (workpackageCount === 0)
@@ -21,13 +22,32 @@ export const OverviewChart = ({monthsPerPage, workpackageCount, children}: Overv
 export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: OverviewChartHeaderProps) => {
     if (!months)
         return;
-
     const startIndex = (currentPage - 1) * monthsPerPage;
     const shownMonths = months.slice(startIndex, startIndex + monthsPerPage);
     const currentMonthClass = `bg-blue-200 p-2 rounded-lg`;
+    const years: Array<YearLimitProps> = TextUtil.yearColumnLimit(shownMonths, 4);
 
     return (
         <React.Fragment>
+            <div className="col-start-1 col-span-3 h-14"/>
+            {
+                years.map((year, index) => {
+                    return(
+                        <div
+                            className="p-2"
+                            key={index}
+                            style={{
+                                gridColumnStart: year.start,
+                                gridColumnEnd: year.end
+                            }}
+                        >
+                            <div className={`${index % 2 === 0 ? "bg-red-50" : "bg-blue-50"} flex rounded-lg items-center justify-center flex-grow h-full`}>
+                                {year.name}
+                            </div>
+                        </div>
+                    )
+                })
+            }
             <div className="col-start-1 col-span-2 h-14"/>
             <div className="h-14 justify-center flex items-center uppercase text-xl font-mono pl-2">
                 PM
@@ -97,7 +117,8 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                                                          gridColumnStart: subgridNumbers.start,
                                                          gridColumnEnd: subgridNumbers.end
                                                      }}>
-                                                    <div className="flex justify-center items-center bg-red-200 flex-grow rounded-lg">
+                                                    <div
+                                                        className="flex justify-center items-center bg-red-200 flex-grow rounded-lg">
                                                         {task.title}
                                                     </div>
                                                 </div>

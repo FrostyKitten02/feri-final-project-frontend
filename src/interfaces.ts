@@ -1,4 +1,4 @@
-import { FC } from "react";
+import {FC} from "react";
 import { PersonDto, ProjectDto, TaskDto, WorkPackageDto } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
@@ -12,7 +12,7 @@ export interface SidebarTemplateProps {
 export interface ListItem {
   name: string;
   linkPath: string;
-  iconComponent: FC<any>;
+  iconComponent?: FC<any>;
 }
 
 export interface SidebarItemProps {
@@ -181,4 +181,10 @@ export interface ProjectFilterProps {
   handleProjectAdd: () => void,
   selectedStatus: SelectedItemProps,
   setSelectedStatus: (item: SelectedItemProps) => void
+}
+
+export interface YearLimitProps {
+  start: number,
+  end: number,
+  name: string
 }
