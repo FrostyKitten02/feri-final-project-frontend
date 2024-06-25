@@ -1,5 +1,5 @@
 import {FC} from "react";
-import { PersonDto, ProjectDto, TaskDto, WorkPackageDto } from "../temp_ts";
+import {PersonDto, ProjectDto, ProjectStatisticsResponse, TaskDto, WorkPackageDto} from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
 import {SelectedItemProps} from "./components/template/inputs/inputsInterface";
@@ -187,4 +187,10 @@ export interface YearLimitProps {
   start: number,
   end: number,
   name: string
+}
+
+export interface WorkloadTableProps {
+  statistics: ProjectStatisticsResponse,
+  currentPage: number,
+  monthsPerPage: number
 }

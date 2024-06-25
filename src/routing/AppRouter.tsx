@@ -15,7 +15,7 @@ import ValidateProjectId from "../components/ValidateProjectId";
 import {RedirectMain} from "../components/app-main/RedirectMain";
 import ProjectTeamPage from "../components/project-main/team/ProjectTeamPage";
 import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
-import {WorkloadPage} from "../components/project-main/WorkloadPage";
+import {WorkloadPage} from "../components/project-main/workload/WorkloadPage";
 import {AppMainPage} from "../components/app-main/AppMainPage";
 
 function AppRouter() {
