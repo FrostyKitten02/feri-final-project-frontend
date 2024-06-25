@@ -1,7 +1,6 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import { TaskItemProps, TaskListingProps } from "../../../interfaces";
 //import { useParams } from "react-router-dom";
-import { TaskContext } from "../../../contexts";
 import TextUtil from "../../../util/TextUtil";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { FiEdit3 } from "react-icons/fi";
@@ -9,24 +8,10 @@ import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 
-export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
-  //const { projectId } = useParams();
-
+export const TaskListing: FC<TaskListingProps> = ({ tasks }) => {
   const [showIrrelevant, setShowIrrelevant] = useState<boolean>(false);
 
-  // CONTEXT
-  const taskContext = useContext(TaskContext);
-  if (!taskContext) {
-    throw new Error("TaskContext is not provided.");
-  }
-  const { tasks } = taskContext;
-
-  const tasksForWorkPackage = tasks?.filter(
-    (task) => task.workPackageId === workPackageId
-  ); // filter from all tasks for workpackage
-  const irrelevantTasks = tasks.filter(
-    (task) => task.workPackageId === workPackageId && !task.isRelevant
-  );
+  const irrelevantTasks = tasks.filter((task) => !task.isRelevant);
 
   /*
   useEffect(() => {
@@ -43,8 +28,8 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
             onClick={() => setShowIrrelevant(false)}
             className="flex flex-row gap-x-2"
           >
-            <FaRegEye className="size-6" />
-            <p className="font-semibold">Hide irrelevant</p>
+            <FaRegEye className="size-5" />
+            <p className="font-semibold text-sm">Hide irrelevant</p>
           </button>
         </div>
       ) : (
@@ -55,12 +40,12 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
             className="flex flex-row gap-x-2"
           >
             <FaRegEyeSlash
-              className={`size-6 ${
+              className={`size-5 ${
                 irrelevantTasks.length === 0 ? `fill-gray-400` : `fill-black`
               }`}
             />
             <p
-              className={`font-semibold ${
+              className={`font-semibold text-sm ${
                 irrelevantTasks.length === 0 ? `text-gray-400` : `text-black`
               }`}
             >
@@ -69,9 +54,9 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
           </button>
         </div>
       )}
-      {tasksForWorkPackage.length > 0 && (
+      {tasks.length > 0 && (
         <div className="h-full grid border border-solid border-gray-200 rounded-md shadow-md overflow-hidden bg-white">
-          {tasksForWorkPackage.map((task) => (
+          {tasks.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
@@ -85,7 +70,7 @@ export const TaskListing: FC<TaskListingProps> = ({ workPackageId }) => {
 };
 
 const TaskItem: FC<TaskItemProps> = ({ task, showIrrelevant }) => {
-  return (
+  return (  
     <AnimatePresence>
       {(showIrrelevant || task?.isRelevant) && (
         <motion.div

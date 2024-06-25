@@ -120,9 +120,9 @@ export default function PersonTypeModal({
   };
 
   return (
-    <CustomModal closeModal={handleClose} modalWidth="700px">
+    <CustomModal closeModal={() => setModalOpen(false)} modalWidth="700px">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CustomModalHeader handleModalOpen={handleClose}>
+        <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
           <ModalTitle>set employment type for user</ModalTitle>
           <ModalText
             showInfoIcon={true}

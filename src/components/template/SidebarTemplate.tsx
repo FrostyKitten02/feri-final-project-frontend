@@ -96,7 +96,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
       </div>
       {user?.id === "user_2fg086sprrUABqywjpB9n31enB2" && (
         <>
-          <div className="py-2 relative">
+          <div className={`py-2 relative ${opened && `justify-center`} flex`}>
             <button
               onClick={() => setAdminPopoverOpen(true)}
               className="flex flex-row justify-center items-center gap-x-3"
