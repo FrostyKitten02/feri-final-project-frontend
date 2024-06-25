@@ -3,22 +3,20 @@ import SidebarTemplate from "../template/SidebarTemplate";
 import DashboardIcon from "../../assets/icons/dashboard-icon.svg?react";
 import {ListItem} from "../../interfaces";
 import FolderIcon from "../../assets/icons/folder-icon.svg?react";
-
-
-const items: ListItem [] = [
-    {
-        name: "dashboard",
-        linkPath: "dashboard",
-        iconComponent: DashboardIcon
-    },
-    {
-        name: "all projects",
-        linkPath: "projects",
-        iconComponent: FolderIcon
-    },
-]
-export default function AppMainPage() {
-
+import Paths from "../../util/Paths";
+export const AppMainPage = () => {
+    const items: Array<ListItem> = [
+        {
+            name: "dashboard",
+            linkPath: Paths.DASHBOARD,
+            iconComponent: DashboardIcon
+        },
+        {
+            name: "all projects",
+            linkPath: Paths.PROJECTS,
+            iconComponent: FolderIcon
+        },
+    ]
     return (
         <div className="flex flex-row h-screen bg-primary">
             <SidebarTemplate items={items} showReturn={false}/>
