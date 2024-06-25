@@ -43,7 +43,7 @@ export default function ProjectTeamPage() {
           <div className="flex flex-row items-center p-10 text-2xl font-semibold border-b border-solid border-gray-200">
             <p>Employee list</p>
           </div>
-          <div className="w-full h-full px-12 bg-gray-200 rounded-bl-[20px]">
+          <div className="w-full h-full px-12 bg-gray-100 rounded-bl-[20px]">
             {peopleOnProject.length > 0 ? (
               <>
                 <div className="grid grid-cols-3 pt-8 pb-4">
@@ -62,7 +62,7 @@ export default function ProjectTeamPage() {
                 <div className="rounded-2xl border border-solid border-gray-200 overflow-hidden bg-white shadow-md divide-y divide-solid divide-gray-200">
                   {peopleOnProject?.map((person) => (
                     <div
-                      className="grid grid-cols-3 py-6 hover:bg-gray-100 transition delay-50"
+                      className="grid grid-cols-3 py-6 hover:bg-gray-200 transition delay-50"
                       key={person.id}
                     >
                       <div className="flex items-center justify-center text-sm font-semibold">

@@ -18,21 +18,25 @@ import {
   CustomModalError,
   CustomModalFooter,
 } from "../../template/modal/CustomModal";
+import { FaCirclePlus } from "react-icons/fa6";
 
 export default function TaskModal({
-  handleClose,
   handleAddTask,
   workPackageId,
   workPackageTitle,
   workPackageStartDate,
   workPackageEndDate,
+  disabled,
 }: TaskModalProps) {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
   const {
     register,
     watch,
     setValue,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<TaskFormFields>();
   const watchStartDate = watch("startDate");
@@ -60,6 +64,8 @@ export default function TaskModal({
     try {
       const response = await taskAPI.createTask(task, requestArgs);
       if (response.status === 201) {
+        reset();
+        setModalOpen(false);
         handleAddTask();
         toastSuccess("Task " + data.title + " was successfully created.");
       }
@@ -70,129 +76,143 @@ export default function TaskModal({
 
   return (
     <>
-      <CustomModal closeModal={handleClose} modalWidth="700px">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <CustomModalHeader handleModalOpen={handleClose}>
-            <ModalTitle>
-              Add a task to work package: {workPackageTitle}
-            </ModalTitle>
-            <ModalText
-              showInfoIcon={true}
-              showWarningIcon={false}
-              contentColor="muted"
-            >
-              Information provided in the form can be changed later on.
-            </ModalText>
-          </CustomModalHeader>
-          <CustomModalBody>
-            <div>
-              <Label>Task title</Label>
-              <TextInput
-                type="text"
-                {...register("title", {
-                  required: "Title can not be empty!",
-                })}
-              />
-              <CustomModalError error={errors.title?.message} />
-            </div>
-            <div className="flex flex-row justify-between pt-6">
-              <div className="w-[270px]">
-                <Label>Start date</Label>
-                <ModalText
-                  showInfoIcon={false}
-                  showWarningIcon={true}
-                  contentColor="warning"
-                >
-                  WP start date: {TextUtil.refactorDate(workPackageStartDate)}
-                </ModalText>
-                <Controller
-                  name="startDate"
-                  defaultValue={""}
-                  control={control}
-                  rules={{
-                    required: "Start date is required!",
-                    validate: (value) => {
-                      if (!value) {
-                        return "Start date is required!";
-                      }
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Datepicker
-                      {...field}
-                      placeholder="Select start date."
-                      onSelectedDateChanged={(date) =>
-                        field.onChange(TextUtil.formatFormDate(date))
-                      }
-                    />
-                  )}
-                />
-                <CustomModalError error={errors.startDate?.message} />
-              </div>
-              <div className="w-[270px]">
-                <Label>End date</Label>
-                <ModalText
-                  showInfoIcon={false}
-                  showWarningIcon={true}
-                  contentColor="warning"
-                >
-                  WP end date: {TextUtil.refactorDate(workPackageEndDate)}
-                </ModalText>
-                <Controller
-                  name="endDate"
-                  defaultValue={""}
-                  control={control}
-                  rules={{
-                    required: "End date is required!",
-                    validate: (value) => {
-                      if (!value) {
-                        return "End date is required!";
-                      }
-                      if (value < watchStartDate) {
-                        return "End date cannot be before start date!";
-                      }
-                      return true;
-                    },
-                  }}
-                  render={({ field }) => (
-                    <Datepicker
-                      {...field}
-                      placeholder="Select end date."
-                      onSelectedDateChanged={(date) =>
-                        field.onChange(TextUtil.formatFormDate(date))
-                      }
-                    />
-                  )}
-                />
-                <CustomModalError error={errors.endDate?.message} />
-              </div>
-            </div>
-            <div className="flex flex-col pt-6 items-start">
-              <Label>Relevant</Label>
-              <div
-                className={`flex ${
-                  !isOn ? "justify-start" : "justify-end"
-                } p-1 w-10 h-6 rounded-2xl ${
-                  !isOn ? "bg-gray-300" : "bg-green"
-                } cursor-pointer items-center`}
-                data-ison={isOn}
-                onClick={toggleSwitch}
+      <button
+        disabled={disabled}
+        onClick={() => setModalOpen(true)}
+        className={`flex items-center justify-center ${
+          disabled ? `bg-primary/30` : `bg-primary`
+        } rounded-lg text-white w-28 h-8 gap-x-2`}
+      >
+        <FaCirclePlus className="stroke-white size-4" />
+        <span className="text-sm">New task</span>
+      </button>
+      {modalOpen && (
+        <CustomModal closeModal={() => setModalOpen(false)} modalWidth="700px">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
+              <ModalTitle>
+                Add a task to work package: {workPackageTitle}
+              </ModalTitle>
+              <ModalText
+                showInfoIcon={true}
+                showWarningIcon={false}
+                contentColor="muted"
               >
-                <motion.div
-                  className="w-4 h-4 bg-white rounded-full"
-                  layout
-                  transition={{
-                    type: "spring",
-                    stiffness: 700,
-                    damping: 30,
-                  }}
+                Information provided in the form can be changed later on.
+              </ModalText>
+            </CustomModalHeader>
+            <CustomModalBody>
+              <div>
+                <Label>Task title</Label>
+                <TextInput
+                  type="text"
+                  {...register("title", {
+                    required: "Title can not be empty!",
+                  })}
                 />
+                <CustomModalError error={errors.title?.message} />
               </div>
-            </div>
-          </CustomModalBody>
-          <CustomModalFooter>Add task</CustomModalFooter>
-        </form>
-      </CustomModal>
+              <div className="flex flex-row justify-between pt-6">
+                <div className="w-[270px]">
+                  <Label>Start date</Label>
+                  <ModalText
+                    showInfoIcon={false}
+                    showWarningIcon={true}
+                    contentColor="warning"
+                  >
+                    WP start date: {TextUtil.refactorDate(workPackageStartDate)}
+                  </ModalText>
+                  <Controller
+                    name="startDate"
+                    defaultValue={""}
+                    control={control}
+                    rules={{
+                      required: "Start date is required!",
+                      validate: (value) => {
+                        if (!value) {
+                          return "Start date is required!";
+                        }
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Datepicker
+                        minDate={new Date(workPackageStartDate || Date.now())}
+                        {...field}
+                        placeholder="Select start date."
+                        onSelectedDateChanged={(date) =>
+                          field.onChange(TextUtil.formatFormDate(date))
+                        }
+                      />
+                    )}
+                  />
+                  <CustomModalError error={errors.startDate?.message} />
+                </div>
+                <div className="w-[270px]">
+                  <Label>End date</Label>
+                  <ModalText
+                    showInfoIcon={false}
+                    showWarningIcon={true}
+                    contentColor="warning"
+                  >
+                    WP end date: {TextUtil.refactorDate(workPackageEndDate)}
+                  </ModalText>
+                  <Controller
+                    name="endDate"
+                    defaultValue={""}
+                    control={control}
+                    rules={{
+                      required: "End date is required!",
+                      validate: (value) => {
+                        if (!value) {
+                          return "End date is required!";
+                        }
+                        if (value < watchStartDate) {
+                          return "End date cannot be before start date!";
+                        }
+                        return true;
+                      },
+                    }}
+                    render={({ field }) => (
+                      <Datepicker
+                        maxDate={new Date(workPackageEndDate || Date.now())}
+                        {...field}
+                        placeholder="Select end date."
+                        onSelectedDateChanged={(date) =>
+                          field.onChange(TextUtil.formatFormDate(date))
+                        }
+                      />
+                    )}
+                  />
+                  <CustomModalError error={errors.endDate?.message} />
+                </div>
+              </div>
+              <div className="flex flex-col pt-6 items-start">
+                <Label>Relevant</Label>
+                <div
+                  className={`flex ${
+                    !isOn ? "justify-start" : "justify-end"
+                  } p-1 w-10 h-6 rounded-2xl ${
+                    !isOn ? "bg-gray-300" : "bg-green"
+                  } cursor-pointer items-center`}
+                  data-ison={isOn}
+                  onClick={toggleSwitch}
+                >
+                  <motion.div
+                    className="w-4 h-4 bg-white rounded-full"
+                    layout
+                    transition={{
+                      type: "spring",
+                      stiffness: 700,
+                      damping: 30,
+                    }}
+                  />
+                </div>
+              </div>
+            </CustomModalBody>
+            <CustomModalFooter>Add task</CustomModalFooter>
+          </form>
+        </CustomModal>
+      )}
     </>
   );
 }
