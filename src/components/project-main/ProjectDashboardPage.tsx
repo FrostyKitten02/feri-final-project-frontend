@@ -13,12 +13,6 @@ export const ProjectDashboardPage = () => {
     const {projectId} = useParams();
     const requestArgs = useRequestArgs();
 
-
-    const handleMonthChange = (count: number) => {
-        setMonthsPerPage(count);
-        setCurrentPage(1);
-    }
-
     useEffect(() => {
         const getStatistics = async (): Promise<void> => {
             if (!projectId)
@@ -37,6 +31,12 @@ export const ProjectDashboardPage = () => {
         }
         getStatistics();
     }, [])
+
+    const handleMonthChange = (count: number) => {
+        setMonthsPerPage(count);
+        setCurrentPage(1);
+    }
+
     return (
         <div className="flex flex-col w-full p-5">
             <div className="flex-grow">
