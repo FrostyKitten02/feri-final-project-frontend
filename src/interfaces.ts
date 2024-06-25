@@ -26,23 +26,13 @@ export interface ProjectItemProps {
   project?: ProjectDto;
 }
 
-export interface WorkPackageListingProps {
-  isFormOpen: boolean;
-  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 export interface WorkPackageItemProps {
   workPackage?: WorkPackageDto;
-  onClick: (
-    id?: string,
-    title?: string,
-    startDate?: string,
-    endDate?: string
-  ) => void;
+  handleAddTask: () => void;
 }
 
 export interface TaskListingProps {
-  workPackageId?: string;
+  tasks: TaskDto[];
 }
 
 export interface TaskItemProps {
@@ -57,19 +47,17 @@ export interface WorkPackageFormProps {
 }
 
 export interface WorkPackageModalProps {
-  handleClose: () => void;
   handleAddWorkPackage: () => void;
-  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   projectDetails?: ProjectDto;
 }
 
 export interface TaskModalProps {
-  handleClose: () => void;
   handleAddTask: () => void;
-  workPackageId: string;
-  workPackageTitle: string;
-  workPackageStartDate: string;
-  workPackageEndDate: string;
+  workPackageId?: string;
+  workPackageTitle?: string;
+  workPackageStartDate?: string;
+  workPackageEndDate?: string;
+  disabled: boolean;
 }
 
 export interface TeamModalProps {

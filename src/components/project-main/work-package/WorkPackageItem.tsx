@@ -2,15 +2,15 @@ import { FC } from "react";
 import { WorkPackageItemProps } from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import { HiCalendar } from "react-icons/hi";
-import PlusIcon from "../../../assets/icons/plus-large-svgrepo-com.svg?react";
 import { TaskListing } from "./TaskListing";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { FiEdit3 } from "react-icons/fi";
 import { ProgressBar } from "@tremor/react";
+import TaskModal from "./TaskModal";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
-  onClick,
+  handleAddTask,
 }) => {
   const progress: number = TextUtil.returnProgress(
     workPackage?.startDate,
@@ -93,23 +93,17 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                     Tasks
                   </div>
                   <div className="flex w-1/2 justify-end">
-                    <button
-                      onClick={() =>
-                        onClick(
-                          workPackage.id,
-                          workPackage.title,
-                          workPackage.startDate,
-                          workPackage.endDate
-                        )
-                      }
-                      className="flex items-center justify-center bg-primary rounded-lg text-white w-28 gap-x-2"
-                    >
-                      <PlusIcon className="stroke-white size-4" />
-                      <span className="text-sm">New task</span>
-                    </button>
+                    <TaskModal
+                      handleAddTask={handleAddTask}
+                      workPackageId={workPackage.id}
+                      workPackageTitle={workPackage.title}
+                      workPackageStartDate={workPackage.startDate}
+                      workPackageEndDate={workPackage.endDate}
+                      disabled={false}
+                    />
                   </div>
                 </div>
-                <TaskListing workPackageId={workPackage.id} />
+                <TaskListing tasks={workPackage.tasks} />
               </div>
             ) : workPackage.isRelevant ? (
               <div className="flex flex-col h-full items-center gap-y-6 justify-center">
@@ -117,35 +111,28 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   No tasks found for this work package.
                 </h1>
                 <p>Once added, they will appear here.</p>
-                <div className="flex">
-                  <button
-                    onClick={() =>
-                      onClick(
-                        workPackage.id,
-                        workPackage.title,
-                        workPackage.startDate,
-                        workPackage.endDate
-                      )
-                    }
-                    className="flex items-center justify-center bg-primary rounded-lg text-white w-28 h-8 gap-x-2"
-                  >
-                    <PlusIcon className="stroke-white size-4" />
-                    <span className="text-sm">New task</span>
-                  </button>
-                </div>
+                <TaskModal
+                  handleAddTask={handleAddTask}
+                  workPackageId={workPackage.id}
+                  workPackageTitle={workPackage.title}
+                  workPackageStartDate={workPackage.startDate}
+                  workPackageEndDate={workPackage.endDate}
+                  disabled={false}
+                />
               </div>
             ) : (
               <div className="flex flex-col h-full items-center gap-y-6 justify-center">
                 <h1 className="font-semibold text-lg text-black/30">
                   Tasks are disabled for irrelevant work packages.
                 </h1>
-                <button
-                  disabled
-                  className="flex items-center justify-center bg-primary/30 rounded-lg text-white w-28 h-8 gap-x-2"
-                >
-                  <PlusIcon className="stroke-white size-4" />
-                  <span className="text-sm">New task</span>
-                </button>
+                <TaskModal
+                  handleAddTask={handleAddTask}
+                  workPackageId={workPackage.id}
+                  workPackageTitle={workPackage.title}
+                  workPackageStartDate={workPackage.startDate}
+                  workPackageEndDate={workPackage.endDate}
+                  disabled={true}
+                />
               </div>
             )}
           </div>
