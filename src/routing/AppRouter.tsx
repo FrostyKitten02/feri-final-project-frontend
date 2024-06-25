@@ -5,7 +5,6 @@ import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
 import IntroductionPage from "../components/introduction/IntroductionPage";
-import AppMainPage from "../components/app-main/AppMainPage";
 import WorkPackagePage from "../components/project-main/work-package/WorkpackagePage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
@@ -16,6 +15,8 @@ import ValidateProjectId from "../components/ValidateProjectId";
 import {RedirectMain} from "../components/app-main/RedirectMain";
 import ProjectTeamPage from "../components/project-main/team/ProjectTeamPage";
 import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
+import {WorkloadPage} from "../components/project-main/WorkloadPage";
+import {AppMainPage} from "../components/app-main/AppMainPage";
 
 function AppRouter() {
 
@@ -83,12 +84,16 @@ function AppRouter() {
                             element: <InProgressPage/>,
                             errorElement: <ErrorPage/>
                         },
-                        //this is shown initially
                         {
                             path: "",
-                            element: <Navigate to={"dashboard"}/>,
+                            element: <Navigate to={Paths.DASHBOARD}/>,
                             errorElement: <ErrorPage/>
                         },
+                        {
+                            path: "workload",
+                            element: <WorkloadPage />,
+                            errorElement: <ErrorPage />
+                        }
                     ]
                 }
             ]
@@ -104,13 +109,13 @@ function AppRouter() {
                     errorElement: <ErrorPage/>,
                 },
                 {
-                    path: "",
-                    element: <RedirectMain />,
+                    path: "dashboard",
+                    element: <MainDashboardPage/>,
                     errorElement: <ErrorPage/>
                 },
                 {
-                    path: "dashboard",
-                    element: <MainDashboardPage/>,
+                    path: "",
+                    element: <RedirectMain />,
                     errorElement: <ErrorPage/>
                 },
             ]
