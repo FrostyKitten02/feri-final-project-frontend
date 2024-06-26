@@ -192,7 +192,7 @@ export default function TaskModal({
                   className={`flex ${
                     !isOn ? "justify-start" : "justify-end"
                   } p-1 w-10 h-6 rounded-2xl ${
-                    !isOn ? "bg-gray-300" : "bg-green"
+                    !isOn ? "bg-gray-300" : "bg-custom-green"
                   } cursor-pointer items-center`}
                   data-ison={isOn}
                   onClick={toggleSwitch}

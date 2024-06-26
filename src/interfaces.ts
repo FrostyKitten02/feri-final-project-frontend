@@ -2,7 +2,7 @@ import { FC } from "react";
 import { PersonDto, ProjectDto, TaskDto, WorkPackageDto } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
-import {SelectedItemProps} from "./components/template/inputs/inputsInterface";
+import { SelectedItemProps } from "./components/template/inputs/inputsInterface";
 
 export interface SidebarTemplateProps {
   items: ListItem[];
@@ -29,6 +29,8 @@ export interface ProjectItemProps {
 export interface WorkPackageItemProps {
   workPackage?: WorkPackageDto;
   handleAddTask: () => void;
+  handleEditWorkPackage: () => void;
+  projectDetails?: ProjectDto;
 }
 
 export interface TaskListingProps {
@@ -49,6 +51,13 @@ export interface WorkPackageFormProps {
 export interface WorkPackageModalProps {
   handleAddWorkPackage: () => void;
   projectDetails?: ProjectDto;
+  edit: boolean;
+  title?: string;
+  startDate?: string;
+  endDate?: string;
+  isRelevant?: boolean;
+  assignedPM?: number;
+  workPackageId?: string;
 }
 
 export interface TaskModalProps {
@@ -166,7 +175,7 @@ export interface UserSearchInputProps<
 }
 
 export interface ProjectFilterProps {
-  handleProjectAdd: () => void,
-  selectedStatus: SelectedItemProps,
-  setSelectedStatus: (item: SelectedItemProps) => void
+  handleProjectAdd: () => void;
+  selectedStatus: SelectedItemProps;
+  setSelectedStatus: (item: SelectedItemProps) => void;
 }

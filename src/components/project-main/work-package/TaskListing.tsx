@@ -81,7 +81,7 @@ const TaskItem: FC<TaskItemProps> = ({ task, showIrrelevant }) => {
           transition={{ duration: 0.2 }}
         >
           <motion.div
-            className={`${task?.isRelevant ? `bg-green` : `bg-red-600`} h-full`}
+            className={`${task?.isRelevant ? `bg-custom-green` : `bg-red-600`} h-full`}
           />
           <motion.div className="flex items-center justify-center font-medium py-4">
             {task?.title}

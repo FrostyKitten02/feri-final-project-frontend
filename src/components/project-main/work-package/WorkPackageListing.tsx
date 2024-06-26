@@ -66,6 +66,8 @@ export const WorkPackageListing: FC = () => {
                   {workPackages.map((workPackage) => (
                     <div key={workPackage.id}>
                       <WorkPackageItem
+                        projectDetails={projectDetails}
+                        handleEditWorkPackage={handleSubmit}
                         workPackage={workPackage}
                         handleAddTask={handleSubmit}
                       />
@@ -86,6 +88,7 @@ export const WorkPackageListing: FC = () => {
         </div>
         <div className="flex px-6 items-start pt-6">
           <WorkPackageModal
+            edit={false}
             handleAddWorkPackage={handleSubmit}
             projectDetails={projectDetails}
           />
