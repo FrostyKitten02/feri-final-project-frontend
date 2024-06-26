@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ProjectDto, WorkPackageDto } from "../../../../temp_ts";
 import { useParams } from "react-router-dom";
 import { projectAPI } from "../../../util/ApiDeclarations";
@@ -23,6 +23,19 @@ export const WorkPackageListing: FC = () => {
       setIsLoading(false);
     });
   }, [projectId]);
+
+  const sortedWorkPackagesByDate = useMemo(() => {
+    return workPackages.sort((a, b) => {
+      const fallbackDate = new Date(Date.now());
+      const dateA = a.startDate
+        ? new Date(a.startDate).getTime()
+        : fallbackDate.getTime();
+      const dateB = b.startDate
+        ? new Date(b.startDate).getTime()
+        : fallbackDate.getTime();
+      return dateA - dateB;
+    });
+  }, [workPackages]);
 
   const handleSubmit = (): void => {
     fetchWorkPackagesForProject();
@@ -61,9 +74,10 @@ export const WorkPackageListing: FC = () => {
                 <div className="flex flex-col justify-center items-center font-bold text-3xl">
                   <h1>Loading work packages...</h1>
                 </div>
-              ) : workPackages && workPackages.length > 0 ? (
+              ) : sortedWorkPackagesByDate &&
+                sortedWorkPackagesByDate.length > 0 ? (
                 <div className="flex-col flex-grow gap-y-10">
-                  {workPackages.map((workPackage) => (
+                  {sortedWorkPackagesByDate.map((workPackage) => (
                     <div key={workPackage.id}>
                       <WorkPackageItem
                         projectDetails={projectDetails}

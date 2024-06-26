@@ -116,7 +116,7 @@ export default function WorkPackageModal({
           workPackage,
           requestArgs
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           reset();
           setModalOpen(false);
           handleAddWorkPackage();
@@ -213,6 +213,11 @@ export default function WorkPackageModal({
                     }}
                     render={({ field }) => (
                       <Datepicker
+                        defaultDate={
+                          !edit
+                            ? new Date(Date.now())
+                            : new Date(startDate || Date.now())
+                        }
                         minDate={
                           new Date(projectDetails?.startDate || Date.now())
                         }
@@ -254,6 +259,11 @@ export default function WorkPackageModal({
                     }}
                     render={({ field }) => (
                       <Datepicker
+                        defaultDate={
+                          !edit
+                            ? new Date(Date.now())
+                            : new Date(endDate || Date.now())
+                        }
                         maxDate={
                           new Date(projectDetails?.endDate || Date.now())
                         }
