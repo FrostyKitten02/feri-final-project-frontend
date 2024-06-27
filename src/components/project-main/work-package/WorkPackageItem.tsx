@@ -4,13 +4,15 @@ import TextUtil from "../../../util/TextUtil";
 import { HiCalendar } from "react-icons/hi";
 import { TaskListing } from "./TaskListing";
 import { HiOutlineTrash } from "react-icons/hi2";
-import { FiEdit3 } from "react-icons/fi";
 import { ProgressBar } from "@tremor/react";
 import TaskModal from "./TaskModal";
+import WorkPackageModal from "./WorkPackageModal";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
   handleAddTask,
+  handleEditWorkPackage,
+  projectDetails,
 }) => {
   const progress: number = TextUtil.returnProgress(
     workPackage?.startDate,
@@ -34,7 +36,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                 </div>
                 {workPackage.isRelevant ? (
                   <div
-                    className={`flex bg-green w-fit px-2 rounded-lg ml-2 justify-start items-center`}
+                    className={`flex bg-custom-green w-fit px-2 rounded-lg ml-2 justify-start items-center`}
                   >
                     <p className="font-semibold italic text-sm uppercase">
                       RELEVANT
@@ -77,9 +79,17 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
             </div>
             <div className="h-[1px] bg-gray-200" />
             <div className="flex flex-row justify-end gap-x-4 items-center p-5">
-              <button>
-                <FiEdit3 className="size-6 stroke-gray-700" />
-              </button>
+              <WorkPackageModal
+                edit={true}
+                handleAddWorkPackage={handleEditWorkPackage}
+                title={workPackage.title}
+                startDate={workPackage.startDate}
+                endDate={workPackage.endDate}
+                isRelevant={workPackage.isRelevant}
+                assignedPM={workPackage.assignedPM}
+                projectDetails={projectDetails}
+                workPackageId={workPackage.id}
+              />
               <button>
                 <HiOutlineTrash className="size-6 stroke-red-500" />
               </button>
@@ -100,10 +110,17 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                       workPackageStartDate={workPackage.startDate}
                       workPackageEndDate={workPackage.endDate}
                       disabled={false}
+                      edit={false}
                     />
                   </div>
                 </div>
-                <TaskListing tasks={workPackage.tasks} />
+                <TaskListing
+                  tasks={workPackage.tasks}
+                  handleEditTask={handleAddTask}
+                  workPackageTitle={workPackage.title}
+                  workPackageStartDate={workPackage.startDate}
+                  workPackageEndDate={workPackage.endDate}
+                />
               </div>
             ) : workPackage.isRelevant ? (
               <div className="flex flex-col h-full items-center gap-y-6 justify-center">
@@ -118,6 +135,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   workPackageStartDate={workPackage.startDate}
                   workPackageEndDate={workPackage.endDate}
                   disabled={false}
+                  edit={false}
                 />
               </div>
             ) : (
@@ -132,6 +150,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   workPackageStartDate={workPackage.startDate}
                   workPackageEndDate={workPackage.endDate}
                   disabled={true}
+                  edit={false}
                 />
               </div>
             )}
