@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { CreateTaskRequest } from "../../../../temp_ts";
+import { CreateTaskRequest, UpdateTaskRequest } from "../../../../temp_ts";
 import { TaskModalProps } from "../../../interfaces";
 import { TaskFormFields } from "../../../types/forms/formTypes";
 import { taskAPI } from "../../../util/ApiDeclarations";
@@ -19,6 +19,7 @@ import {
   CustomModalFooter,
 } from "../../template/modal/CustomModal";
 import { FaCirclePlus } from "react-icons/fa6";
+import { FiEdit3 } from "react-icons/fi";
 
 export default function TaskModal({
   handleAddTask,
@@ -27,8 +28,15 @@ export default function TaskModal({
   workPackageStartDate,
   workPackageEndDate,
   disabled,
+  edit,
+  taskTitle,
+  taskStartDate,
+  taskEndDate,
+  taskIsRelevant,
+  taskId,
 }: TaskModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const requestArgs = useRequestArgs();
 
   const {
     register,
@@ -40,15 +48,18 @@ export default function TaskModal({
     formState: { errors },
   } = useForm<TaskFormFields>();
   const watchStartDate = watch("startDate");
-  register("isRelevant", { value: true });
+  register("isRelevant", { value: !edit ? true : taskIsRelevant });
 
-  const [isOn, setIsOn] = useState(true);
+  const [isOn, setIsOn] = useState(!edit ? true : taskIsRelevant);
   const toggleSwitch = (): void => {
     setIsOn(!isOn);
     setValue("isRelevant", !isOn);
   };
 
-  const requestArgs = useRequestArgs();
+  const handleCloseEdit = (): void => {
+    reset();
+    setModalOpen(false);
+  };
 
   const onSubmit: SubmitHandler<TaskFormFields> = async (
     data
@@ -74,24 +85,68 @@ export default function TaskModal({
     }
   };
 
+  const onEdit: SubmitHandler<TaskFormFields> = async (data): Promise<void> => {
+    const task: UpdateTaskRequest = {
+      title: data.title,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      isRelevant: data.isRelevant,
+    };
+
+    try {
+      if (taskId) {
+        const response = await taskAPI.updateTask(taskId, task, requestArgs);
+        if (response.status === 200) {
+          reset();
+          setModalOpen(false);
+          handleAddTask();
+          toastSuccess("Task " + data.title + " was successfully updated.");
+        }
+      } else {
+        toastError("Task id not found.");
+      }
+    } catch (error: any) {
+      toastError(error.message);
+    }
+  };
+
   return (
     <>
-      <button
-        disabled={disabled}
-        onClick={() => setModalOpen(true)}
-        className={`flex items-center justify-center ${
-          disabled ? `bg-primary/30` : `bg-primary`
-        } rounded-lg text-white w-28 h-8 gap-x-2`}
-      >
-        <FaCirclePlus className="stroke-white size-4" />
-        <span className="text-sm">New task</span>
-      </button>
+      {edit ? (
+        <button onClick={() => setModalOpen(true)}>
+          <FiEdit3 className="size-6 stroke-gray-700 hover:stroke-primary transition delay-50" />
+        </button>
+      ) : (
+        <button
+          disabled={disabled}
+          onClick={() => setModalOpen(true)}
+          className={`flex items-center justify-center ${
+            disabled ? `bg-primary/30` : `bg-primary`
+          } rounded-lg text-white w-28 h-8 gap-x-2`}
+        >
+          <FaCirclePlus className="stroke-white size-4" />
+          <span className="text-sm">New task</span>
+        </button>
+      )}
       {modalOpen && (
-        <CustomModal closeModal={() => setModalOpen(false)} modalWidth="700px">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
+        <CustomModal
+          closeModal={!edit ? () => setModalOpen(false) : handleCloseEdit}
+          modalWidth="700px"
+        >
+          <form
+            onSubmit={!edit ? handleSubmit(onSubmit) : handleSubmit(onEdit)}
+          >
+            <CustomModalHeader
+              handleModalOpen={
+                !edit ? () => setModalOpen(false) : handleCloseEdit
+              }
+            >
               <ModalTitle>
-                Add a task to work package: {workPackageTitle}
+                {!edit ? (
+                  <span>Add a task to work package: {workPackageTitle}</span>
+                ) : (
+                  <span>Edit task: {taskTitle}</span>
+                )}
               </ModalTitle>
               <ModalText
                 showInfoIcon={true}
@@ -105,6 +160,7 @@ export default function TaskModal({
               <div>
                 <Label>Task title</Label>
                 <TextInput
+                  defaultValue={!edit ? "" : taskTitle}
                   type="text"
                   {...register("title", {
                     required: "Title can not be empty!",
@@ -124,7 +180,7 @@ export default function TaskModal({
                   </ModalText>
                   <Controller
                     name="startDate"
-                    defaultValue={""}
+                    defaultValue={!edit ? "" : taskStartDate}
                     control={control}
                     rules={{
                       required: "Start date is required!",
@@ -136,7 +192,13 @@ export default function TaskModal({
                     }}
                     render={({ field }) => (
                       <Datepicker
+                        defaultDate={
+                          !edit
+                            ? new Date(Date.now())
+                            : new Date(taskStartDate || Date.now())
+                        }
                         minDate={new Date(workPackageStartDate || Date.now())}
+                        maxDate={new Date(workPackageEndDate || Date.now())}
                         {...field}
                         placeholder="Select start date."
                         onSelectedDateChanged={(date) =>
@@ -158,7 +220,7 @@ export default function TaskModal({
                   </ModalText>
                   <Controller
                     name="endDate"
-                    defaultValue={""}
+                    defaultValue={!edit ? "" : taskEndDate}
                     control={control}
                     rules={{
                       required: "End date is required!",
@@ -174,6 +236,12 @@ export default function TaskModal({
                     }}
                     render={({ field }) => (
                       <Datepicker
+                        defaultDate={
+                          !edit
+                            ? new Date(Date.now())
+                            : new Date(taskEndDate || Date.now())
+                        }
+                        minDate={new Date(workPackageStartDate || Date.now())}
                         maxDate={new Date(workPackageEndDate || Date.now())}
                         {...field}
                         placeholder="Select end date."
@@ -209,7 +277,9 @@ export default function TaskModal({
                 </div>
               </div>
             </CustomModalBody>
-            <CustomModalFooter>Add task</CustomModalFooter>
+            <CustomModalFooter>
+              {!edit ? <span>Add task</span> : <span>confirm</span>}
+            </CustomModalFooter>
           </form>
         </CustomModal>
       )}

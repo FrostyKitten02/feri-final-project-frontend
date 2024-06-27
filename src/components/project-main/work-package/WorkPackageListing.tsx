@@ -26,13 +26,13 @@ export const WorkPackageListing: FC = () => {
 
   const sortedWorkPackagesByDate = useMemo(() => {
     return workPackages.sort((a, b) => {
-      const fallbackDate = new Date(Date.now());
-      const dateA = a.startDate
+      const fallbackDate = new Date(Date.now()).getTime();
+      const dateA = a.startDate 
         ? new Date(a.startDate).getTime()
-        : fallbackDate.getTime();
+        : fallbackDate;
       const dateB = b.startDate
         ? new Date(b.startDate).getTime()
-        : fallbackDate.getTime();
+        : fallbackDate;
       return dateA - dateB;
     });
   }, [workPackages]);

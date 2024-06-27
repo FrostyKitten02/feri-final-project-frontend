@@ -110,10 +110,17 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                       workPackageStartDate={workPackage.startDate}
                       workPackageEndDate={workPackage.endDate}
                       disabled={false}
+                      edit={false}
                     />
                   </div>
                 </div>
-                <TaskListing tasks={workPackage.tasks} />
+                <TaskListing
+                  tasks={workPackage.tasks}
+                  handleEditTask={handleAddTask}
+                  workPackageTitle={workPackage.title}
+                  workPackageStartDate={workPackage.startDate}
+                  workPackageEndDate={workPackage.endDate}
+                />
               </div>
             ) : workPackage.isRelevant ? (
               <div className="flex flex-col h-full items-center gap-y-6 justify-center">
@@ -128,6 +135,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   workPackageStartDate={workPackage.startDate}
                   workPackageEndDate={workPackage.endDate}
                   disabled={false}
+                  edit={false}
                 />
               </div>
             ) : (
@@ -142,6 +150,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   workPackageStartDate={workPackage.startDate}
                   workPackageEndDate={workPackage.endDate}
                   disabled={true}
+                  edit={false}
                 />
               </div>
             )}

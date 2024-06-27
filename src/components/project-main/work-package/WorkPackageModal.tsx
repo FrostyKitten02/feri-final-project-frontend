@@ -221,6 +221,9 @@ export default function WorkPackageModal({
                         minDate={
                           new Date(projectDetails?.startDate || Date.now())
                         }
+                        maxDate={
+                          new Date(projectDetails?.endDate || Date.now())
+                        }
                         {...field}
                         placeholder="Select start date."
                         onSelectedDateChanged={(date) =>
@@ -263,6 +266,9 @@ export default function WorkPackageModal({
                           !edit
                             ? new Date(Date.now())
                             : new Date(endDate || Date.now())
+                        }
+                        minDate={
+                          new Date(projectDetails?.startDate || Date.now())
                         }
                         maxDate={
                           new Date(projectDetails?.endDate || Date.now())

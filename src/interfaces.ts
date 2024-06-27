@@ -35,11 +35,19 @@ export interface WorkPackageItemProps {
 
 export interface TaskListingProps {
   tasks: TaskDto[];
+  handleEditTask: () => void;
+  workPackageTitle?: string;
+  workPackageStartDate?: string;
+  workPackageEndDate?: string;
 }
 
 export interface TaskItemProps {
   task?: TaskDto;
   showIrrelevant: boolean;
+  handleEditTask: () => void;
+  workPackageTitle?: string;
+  workPackageStartDate?: string;
+  workPackageEndDate?: string;
 }
 
 export interface WorkPackageFormProps {
@@ -67,6 +75,12 @@ export interface TaskModalProps {
   workPackageStartDate?: string;
   workPackageEndDate?: string;
   disabled: boolean;
+  edit: boolean;
+  taskTitle?: string;
+  taskStartDate?: string;
+  taskEndDate?: string;
+  taskIsRelevant?: boolean;
+  taskId?: string;
 }
 
 export interface TeamModalProps {
