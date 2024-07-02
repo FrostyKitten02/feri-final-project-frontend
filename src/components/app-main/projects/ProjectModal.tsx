@@ -6,7 +6,7 @@ import {AddProjectFormFields} from "../../../types/forms/formTypes";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
 import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
-import {CreateProjectRequest, ProjectBudgetSchemaDto} from "../../../../temp_ts";
+import {CreateProjectRequest, GetProjectResponse, ProjectBudgetSchemaDto, UpdateProjectRequest} from "../../../../temp_ts";
 import {LuEuro} from "react-icons/lu";
 import {ProjectModalProps} from "../../../interfaces";
 import {
@@ -17,11 +17,13 @@ import {
     ModalTitle
 } from "../../template/modal/CustomModal";
 import TextUtil from "../../../util/TextUtil";
+import { FiEdit3 } from "react-icons/fi";
 
-export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
+export const ProjectModal = ({handleAddProject, edit, projectId}: ProjectModalProps) => {
     const [modalOpen, setModalOpen] = useState<boolean>();
     const {register, watch, control, reset, handleSubmit, formState: {errors}} = useForm<AddProjectFormFields>();
     const [budgetSchemas, setBudgetSchemas] = useState<ProjectBudgetSchemaDto[]>([]);
+    const [projectDetails, setProjectDetails] = useState<GetProjectResponse>();
     const watchStartDate = watch("startDate");
     const requestArgs = useRequestArgs();
 
@@ -40,7 +42,32 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
             }
         };
         fetchBudgetSchemas();
+        fetchProjectById();
     }, []);
+
+    useEffect(() => {
+        fetchProjectById();
+    }, [handleAddProject])
+
+    const handleCloseEdit = (): void => {
+        reset();
+        setModalOpen(false);
+    };
+
+    const fetchProjectById = async (): Promise<void> => {
+        try {
+            if (projectId) {
+                const response = await projectAPI.getProject(projectId, requestArgs)
+                if (response.status === 200) {
+                    setProjectDetails(response.data)
+                } else {
+                    toastError("Project id not found.")
+                }
+            }
+        } catch (error: any) {
+            toastError(error.message);
+        }
+    }
 
     const onSubmit: SubmitHandler<AddProjectFormFields> = async (
         data
@@ -70,19 +97,55 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
         }
     };
 
+    const onEdit: SubmitHandler<AddProjectFormFields> = async (data): Promise<void> => {
+        const project: UpdateProjectRequest = {
+            title: data.title,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            projectBudgetSchemaId: data.projectBudgetSchemaId,
+            staffBudget: data.staffBudget,
+            travelBudget: data.travelBudget,
+            equipmentBudget: data.equipmentBudget,
+            subcontractingBudget: data.subcontractingBudget
+        }
+        try {
+            if (projectId) {
+                console.log(project);
+                const response = await projectAPI.updateProject(projectId, project, requestArgs);
+                if (response.status === 200) {
+                    reset();
+                    handleAddProject();
+                    setModalOpen(false);
+                    toastSuccess("Project " + projectDetails?.projectDto?.title + " was successfully updated.");
+                }
+            } else {
+                toastError("Project id not found.")
+            }
+        } catch (error: any) {
+            toastError(error.message);
+        }
+    }
+
     return (
         <>
-            <button onClick={() => setModalOpen(true)}>
-                <AddProjectIcon className="h-12 w-12 fill-black hover:fill-primary transition delay-50"/>
-            </button>
+            {edit ? (
+                <button onClick={() => setModalOpen(true)}>
+                    <FiEdit3 className="size-6 stroke-gray-700 hover:stroke-primary transition delay-50"/>
+                </button>
+            ) : (
+                <button onClick={() => setModalOpen(true)}>
+                    <AddProjectIcon className="h-12 w-12 fill-black hover:fill-primary transition delay-50"/>
+                </button> 
+            )}
+            
             {
                 modalOpen &&
-                <CustomModal closeModal={() => setModalOpen(false)}
+                <CustomModal closeModal={!edit ? () => setModalOpen(false) : handleCloseEdit}
                              modalWidth="700px">
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
+                    <form onSubmit={!edit ? handleSubmit(onSubmit) : handleSubmit(onEdit)}>
+                        <CustomModalHeader handleModalOpen={!edit ? () => setModalOpen(false) : handleCloseEdit}>
                             <ModalTitle>
-                                Create a project
+                                {!edit ? <span>Create a project</span> : <span>Edit project: {projectDetails?.projectDto?.title}</span>}
                             </ModalTitle>
                             <ModalText showInfoIcon={true} showWarningIcon={false} contentColor="muted">
                                 Information provided in the form can be changed later on.
@@ -95,6 +158,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                 </Label>
                                 <TextInput helperText="Aim to keep your project title brief and concise."
                                            type="text"
+                                           defaultValue={!edit ? "" : projectDetails?.projectDto?.title}
                                            {...register("title", {
                                                required: "Title can not be empty!",
                                            })}
@@ -108,7 +172,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                         Start date
                                     </Label>
                                     <Controller name="startDate"
-                                                defaultValue={''}
+                                                defaultValue={!edit ? '' : projectDetails?.projectDto?.startDate}
                                                 control={control}
                                                 rules={{
                                                     required: "Start date is required!",
@@ -122,6 +186,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                                     <Datepicker
                                                         {...field}
                                                         placeholder="Select start date."
+                                                        defaultDate={!edit ? new Date(Date.now()) : new Date(projectDetails?.projectDto?.startDate || Date.now())}
                                                         onSelectedDateChanged={(date) => field.onChange(TextUtil.formatFormDate(date))}/>
                                                 )}/>
                                     <CustomModalError error={errors.startDate?.message}/>
@@ -131,7 +196,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                         End date
                                     </Label>
                                     <Controller name="endDate"
-                                                defaultValue={''}
+                                                defaultValue={!edit ? '' : projectDetails?.projectDto?.endDate}
                                                 control={control}
                                                 rules={{
                                                     required: "End date is required!",
@@ -149,6 +214,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                                     <Datepicker
                                                         {...field}
                                                         placeholder="Select end date."
+                                                        defaultDate={!edit ? new Date(Date.now()) : new Date(projectDetails?.projectDto?.endDate || Date.now())}
                                                         onSelectedDateChanged={(date) => field.onChange(TextUtil.formatFormDate(date))}/>
                                                 )}/>
                                     <CustomModalError error={errors.endDate?.message}/>
@@ -165,7 +231,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                     <Controller
                                         name="projectBudgetSchemaId"
                                         control={control}
-                                        defaultValue={undefined}
+                                        defaultValue={!edit ? undefined : projectDetails?.projectDto?.projectBudgetSchemaId}
                                         rules={{
                                             required: "Schema must be defined!",
                                             validate: value => {
@@ -178,7 +244,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                         render={({field}) => (
                                             <Select
                                                 {...field}
-                                                onChange={(e) => field.onChange(e.target.value)}
+                                                onChange={(e) => {field.onChange(e.target.value), console.log(e.target.value)}}
                                                 value={field.value ? field.value : ""}
                                             >
                                                 <option value="" disabled>Select a budget schema</option>
@@ -200,6 +266,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                     </Label>
                                     <TextInput type="number"
                                                min="0"
+                                               defaultValue={!edit ? "" : projectDetails?.projectDto?.staffBudget}
                                                rightIcon={LuEuro}
                                                {...register("staffBudget", {
                                                    required: "Staff can not be empty!",
@@ -213,6 +280,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                     </Label>
                                     <TextInput type="number"
                                                min="0"
+                                               defaultValue={!edit ? "" : projectDetails?.projectDto?.travelBudget}
                                                rightIcon={LuEuro}
                                                {...register("travelBudget", {
                                                    required: "Travel can not be empty!",
@@ -228,6 +296,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                     </Label>
                                     <TextInput type="number"
                                                min="0"
+                                               defaultValue={!edit ? "" : projectDetails?.projectDto?.equipmentBudget}
                                                rightIcon={LuEuro}
                                                {...register("equipmentBudget", {
                                                    required: "Equipment can not be empty!",
@@ -241,6 +310,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                                     </Label>
                                     <TextInput type="number"
                                                min="0"
+                                               defaultValue={!edit ? "" : projectDetails?.projectDto?.subcontractingBudget}
                                                rightIcon={LuEuro}
                                                {...register("subcontractingBudget", {
                                                    required: "Subcontracting can not be empty!",
@@ -251,7 +321,7 @@ export const ProjectModal = ({handleAddProject}: ProjectModalProps) => {
                             </div>
                         </CustomModalBody>
                         <CustomModalFooter>
-                            Create
+                            {!edit ? <span>Create</span> : <span>Confirm</span>}
                         </CustomModalFooter>
                     </form>
                 </CustomModal>

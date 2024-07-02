@@ -97,6 +97,7 @@ export const MyProjectsPage = () => {
                                         <ProjectItem
                                             key={project.id}
                                             project={project}
+                                            handleEditProject={handleProjectAdd}
                                         />
                                     ))
                                 }

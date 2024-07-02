@@ -81,7 +81,7 @@ export const ProjectFilter = ({handleProjectAdd, setSelectedStatus, selectedStat
                     </CSelect>
                 </div>
                 <div className="px-10">
-                    <ProjectModal handleAddProject={handleProjectAdd}/>
+                    <ProjectModal edit={false} handleAddProject={handleProjectAdd}/>
                 </div>
             </div>
         </div>
