@@ -24,6 +24,7 @@ export interface SidebarItemProps {
 
 export interface ProjectItemProps {
   project?: ProjectDto;
+  handleEditProject: () => void;
 }
 
 export interface WorkPackageItemProps {
@@ -114,6 +115,8 @@ export interface ProgressObject {
 
 export interface ProjectModalProps {
   handleAddProject: () => void;
+  edit: boolean;
+  projectId?: string;
 }
 
 export interface CustomModalErrorProps {
