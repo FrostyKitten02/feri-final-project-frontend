@@ -182,3 +182,8 @@ export interface WorkloadTableProps {
   currentPage: number,
   monthsPerPage: number
 }
+
+export interface WorkloadModalProps {
+  closeModal: () => void,
+  modalWidth: string,
+}

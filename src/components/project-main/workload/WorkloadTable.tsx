@@ -1,8 +1,11 @@
 import {WorkloadTableProps, YearLimitProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import * as React from "react";
+import {useState} from "react";
+import {WorkloadModal} from "./WorkloadModal";
 
 export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: WorkloadTableProps) => {
+    const [open, setOpen] = useState<boolean>(false);
     if (!statistics.months)
         return;
     const startIndex = (currentPage - 1) * monthsPerPage;
@@ -75,8 +78,8 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: Workload
                             shownMonths.map((month, index) => {
                                 return (
                                     <div className="flex h-14 items-center justify-center border-solid" key={index}>
-                                        <button className="flex-grow text-xl h-full hover:bg-gray-100 transition delay-50">
-                                            {month.personWork?.[indexPerson].occupancyId !== null ? month.personWork?.[indexPerson].totalWorkPm : 0}
+                                        <button onClick={() => setOpen(true)} className="flex-grow text-xl h-full rounded-[15px] hover:bg-gray-100 transition delay-50">
+                                            {month.personWork?.[indexPerson].occupancyId !== null ? month.personWork?.[indexPerson].totalWorkPm : "/"}
                                         </button>
                                     </div>
                                 )
@@ -108,6 +111,13 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: Workload
                         </div>
                     )
                 })
+            }
+            {
+                open &&
+                <WorkloadModal
+                    closeModal={() => setOpen(false)}
+                    modalWidth="700px"
+                />
             }
         </div>
     )
