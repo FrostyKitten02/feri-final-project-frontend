@@ -52,24 +52,6 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                                     %
                                 </span>
                             </ProgressCircle>
-                            { /*
-
-                                <div className="flex flex-row space-x-5 pb-3">
-                                    <div className="flex flex-row items-center">
-                                        <LuPackage size="22"/>
-                                        <span className="pl-1 text-lg font-mono">
-                                        {project.workPackageCount}
-                                    </span>
-                                    </div>
-                                    <div className="flex flex-row items-center">
-                                        <IoPeopleOutline size="22"/>
-                                        <span className="pl-1 text-lg font-mono">
-                                        {project.peopleCount}
-                                    </span>
-                                    </div>
-                                </div>
-                                */
-                            }
                         </div>
                         <div className="flex flex-grow justify-center items-center text-xl uppercase font-bold pr-6">
                             {TextUtil.truncateString(project.title, 60)}

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { CreateWorkPackageRequest } from "../../../../temp_ts";
+import {
+  CreateWorkPackageRequest,
+  UpdateWorkPackageRequest,
+} from "../../../../temp_ts";
 import { WorkPackageModalProps } from "../../../interfaces";
 import { WorkPackageFormFields } from "../../../types/forms/formTypes";
 import { workPackageAPI } from "../../../util/ApiDeclarations";
@@ -22,10 +25,18 @@ import TextUtil from "../../../util/TextUtil";
 import { TbCalendarUser } from "react-icons/tb";
 import { motion } from "framer-motion";
 import PackagePlusIcon from "../../../assets/icons/package-plus-svgrepo-com.svg?react";
+import { FiEdit3 } from "react-icons/fi";
 
 export default function WorkPackageModal({
   handleAddWorkPackage,
   projectDetails,
+  edit,
+  title,
+  startDate,
+  endDate,
+  isRelevant,
+  assignedPM,
+  workPackageId,
 }: WorkPackageModalProps) {
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
@@ -42,9 +53,9 @@ export default function WorkPackageModal({
     formState: { errors },
   } = useForm<WorkPackageFormFields>();
   const watchStartDate = watch("startDate");
-  register("isRelevant", { value: true }); // register the isRelevant field here, because it's a custom component not input
+  register("isRelevant", { value: !edit ? true : isRelevant }); // register the isRelevant field here, because it's a custom component not input
 
-  const [isOn, setIsOn] = useState(true);
+  const [isOn, setIsOn] = useState(!edit ? true : isRelevant);
   const toggleSwitch = (): void => {
     setIsOn(!isOn);
     setValue("isRelevant", !isOn);
@@ -87,16 +98,76 @@ export default function WorkPackageModal({
     }
   };
 
+  const onEdit: SubmitHandler<WorkPackageFormFields> = async (
+    data
+  ): Promise<void> => {
+    const workPackage: UpdateWorkPackageRequest = {
+      title: data.title,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      isRelevant: data.isRelevant,
+      assignedPM: data.assignedPM,
+    };
+
+    try {
+      if (workPackageId) {
+        const response = await workPackageAPI.updateWorkPackage(
+          workPackageId,
+          workPackage,
+          requestArgs
+        );
+        if (response.status === 200) {
+          reset();
+          setModalOpen(false);
+          handleAddWorkPackage();
+          toastSuccess(
+            "Work package " + data.title + " was successfully edited!"
+          );
+        }
+      } else {
+        toastError("Work package id not found!");
+      }
+    } catch (error: any) {
+      toastError(error.message);
+    }
+  };
+
+  const handleCloseEdit = (): void => {
+    reset();
+    setModalOpen(false);
+  };
+
   return (
     <>
-      <button onClick={() => setModalOpen(true)}>
-        <PackagePlusIcon className="stroke-black size-12 hover:stroke-primary transition delay-50" />
-      </button>
+      {edit ? (
+        <button onClick={() => setModalOpen(true)}>
+          <FiEdit3 className="size-6 stroke-gray-700 hover:stroke-primary transition delay-50" />
+        </button>
+      ) : (
+        <button onClick={() => setModalOpen(true)}>
+          <PackagePlusIcon className="stroke-black size-12 hover:stroke-primary transition delay-50" />
+        </button>
+      )}
       {modalOpen && (
-        <CustomModal closeModal={() => setModalOpen(false)} modalWidth="700px">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <CustomModalHeader handleModalOpen={() => setModalOpen(false)}>
-              <ModalTitle>Add a work package</ModalTitle>
+        <CustomModal
+          closeModal={!edit ? () => setModalOpen(false) : handleCloseEdit}
+          modalWidth="700px"
+        >
+          <form
+            onSubmit={!edit ? handleSubmit(onSubmit) : handleSubmit(onEdit)}
+          >
+            <CustomModalHeader
+              handleModalOpen={
+                !edit ? () => setModalOpen(false) : handleCloseEdit
+              }
+            >
+              <ModalTitle>
+                {!edit ? (
+                  <span>Add a work package</span>
+                ) : (
+                  <span>Edit work package: {title}</span>
+                )}
+              </ModalTitle>
               <ModalText
                 showInfoIcon={true}
                 showWarningIcon={false}
@@ -109,6 +180,7 @@ export default function WorkPackageModal({
               <div>
                 <Label>Work package title</Label>
                 <TextInput
+                  defaultValue={!edit ? "" : title}
                   type="text"
                   {...register("title", {
                     required: "Title can not be empty!",
@@ -129,7 +201,7 @@ export default function WorkPackageModal({
                   </ModalText>
                   <Controller
                     name="startDate"
-                    defaultValue={""}
+                    defaultValue={!edit ? "" : startDate}
                     control={control}
                     rules={{
                       required: "Start date is required!",
@@ -141,8 +213,16 @@ export default function WorkPackageModal({
                     }}
                     render={({ field }) => (
                       <Datepicker
+                        defaultDate={
+                          !edit
+                            ? new Date(Date.now())
+                            : new Date(startDate || Date.now())
+                        }
                         minDate={
                           new Date(projectDetails?.startDate || Date.now())
+                        }
+                        maxDate={
+                          new Date(projectDetails?.endDate || Date.now())
                         }
                         {...field}
                         placeholder="Select start date."
@@ -166,7 +246,7 @@ export default function WorkPackageModal({
                   </ModalText>
                   <Controller
                     name="endDate"
-                    defaultValue={""}
+                    defaultValue={!edit ? "" : endDate}
                     control={control}
                     rules={{
                       required: "End date is required!",
@@ -182,6 +262,14 @@ export default function WorkPackageModal({
                     }}
                     render={({ field }) => (
                       <Datepicker
+                        defaultDate={
+                          !edit
+                            ? new Date(Date.now())
+                            : new Date(endDate || Date.now())
+                        }
+                        minDate={
+                          new Date(projectDetails?.startDate || Date.now())
+                        }
                         maxDate={
                           new Date(projectDetails?.endDate || Date.now())
                         }
@@ -201,6 +289,7 @@ export default function WorkPackageModal({
                 <div className="w-[270px]">
                   <Label>No. person months involved</Label>
                   <TextInput
+                    defaultValue={!edit ? "" : assignedPM}
                     type="number"
                     min="0"
                     rightIcon={TbCalendarUser}
@@ -216,7 +305,7 @@ export default function WorkPackageModal({
                     className={`flex ${
                       !isOn ? "justify-start" : "justify-end"
                     } p-1 w-10 h-6 rounded-2xl ${
-                      !isOn ? "bg-gray-300" : "bg-green"
+                      !isOn ? "bg-gray-300" : "bg-custom-green"
                     } cursor-pointer items-center`}
                     data-ison={isOn}
                     onClick={toggleSwitch}
@@ -234,7 +323,9 @@ export default function WorkPackageModal({
                 </div>
               </div>
             </CustomModalBody>
-            <CustomModalFooter>Add</CustomModalFooter>
+            <CustomModalFooter>
+              {!edit ? <span>add</span> : <>confirm</>}
+            </CustomModalFooter>
           </form>
         </CustomModal>
       )}

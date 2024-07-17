@@ -98,6 +98,18 @@ export interface CreateOccupancyRequest {
      * @memberof CreateOccupancyRequest
      */
     'value'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOccupancyRequest
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateOccupancyRequest
+     */
+    'startDate'?: string;
 }
 /**
  * 
@@ -920,6 +932,142 @@ export interface UpdateOccupancyRequest {
      * @memberof UpdateOccupancyRequest
      */
     'value'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateProjectRequest
+ */
+export interface UpdateProjectRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProjectRequest
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProjectRequest
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProjectRequest
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProjectRequest
+     */
+    'projectBudgetSchemaId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateProjectRequest
+     */
+    'staffBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateProjectRequest
+     */
+    'travelBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateProjectRequest
+     */
+    'equipmentBudget'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateProjectRequest
+     */
+    'subcontractingBudget'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateProjectResponse
+ */
+export interface UpdateProjectResponse {
+    /**
+     * 
+     * @type {ProjectDto}
+     * @memberof UpdateProjectResponse
+     */
+    'project'?: ProjectDto;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateTaskRequest
+ */
+export interface UpdateTaskRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateTaskRequest
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateTaskRequest
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateTaskRequest
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateTaskRequest
+     */
+    'isRelevant'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateWorkPackageRequest
+ */
+export interface UpdateWorkPackageRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkPackageRequest
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkPackageRequest
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateWorkPackageRequest
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateWorkPackageRequest
+     */
+    'isRelevant'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateWorkPackageRequest
+     */
+    'assignedPM'?: number;
 }
 /**
  * 
@@ -1907,6 +2055,45 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {UpdateProjectRequest} updateProjectRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateProject: async (projectId: string, updateProjectRequest: UpdateProjectRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectId' is not null or undefined
+            assertParamExists('updateProject', 'projectId', projectId)
+            // verify required parameter 'updateProjectRequest' is not null or undefined
+            assertParamExists('updateProject', 'updateProjectRequest', updateProjectRequest)
+            const localVarPath = `/project/{projectId}`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateProjectRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2003,6 +2190,19 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.listProjectsStatus']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {UpdateProjectRequest} updateProjectRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateProject(projectId: string, updateProjectRequest: UpdateProjectRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateProjectResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProject(projectId, updateProjectRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.updateProject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2077,6 +2277,16 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
          */
         listProjectsStatus(options?: any): AxiosPromise<ProjectListStatusResponse> {
             return localVarFp.listProjectsStatus(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {UpdateProjectRequest} updateProjectRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateProject(projectId: string, updateProjectRequest: UpdateProjectRequest, options?: any): AxiosPromise<UpdateProjectResponse> {
+            return localVarFp.updateProject(projectId, updateProjectRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2165,6 +2375,18 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public listProjectsStatus(options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).listProjectsStatus(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectId 
+     * @param {UpdateProjectRequest} updateProjectRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public updateProject(projectId: string, updateProjectRequest: UpdateProjectRequest, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).updateProject(projectId, updateProjectRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2360,6 +2582,45 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} taskId 
+         * @param {UpdateTaskRequest} updateTaskRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateTask: async (taskId: string, updateTaskRequest: UpdateTaskRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('updateTask', 'taskId', taskId)
+            // verify required parameter 'updateTaskRequest' is not null or undefined
+            assertParamExists('updateTask', 'updateTaskRequest', updateTaskRequest)
+            const localVarPath = `/task/{taskId}`
+                .replace(`{${"taskId"}}`, encodeURIComponent(String(taskId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateTaskRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2396,6 +2657,19 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['TaskControllerApi.createTask']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} taskId 
+         * @param {UpdateTaskRequest} updateTaskRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateTask(taskId: string, updateTaskRequest: UpdateTaskRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateTask(taskId, updateTaskRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TaskControllerApi.updateTask']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2425,6 +2699,16 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
          */
         createTask(createTaskRequest: CreateTaskRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
             return localVarFp.createTask(createTaskRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} taskId 
+         * @param {UpdateTaskRequest} updateTaskRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateTask(taskId: string, updateTaskRequest: UpdateTaskRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateTask(taskId, updateTaskRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2458,6 +2742,18 @@ export class TaskControllerApi extends BaseAPI {
      */
     public createTask(createTaskRequest: CreateTaskRequest, options?: RawAxiosRequestConfig) {
         return TaskControllerApiFp(this.configuration).createTask(createTaskRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} taskId 
+     * @param {UpdateTaskRequest} updateTaskRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TaskControllerApi
+     */
+    public updateTask(taskId: string, updateTaskRequest: UpdateTaskRequest, options?: RawAxiosRequestConfig) {
+        return TaskControllerApiFp(this.configuration).updateTask(taskId, updateTaskRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2504,6 +2800,45 @@ export const WorkPackageControllerApiAxiosParamCreator = function (configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} workPackageId 
+         * @param {UpdateWorkPackageRequest} updateWorkPackageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateWorkPackage: async (workPackageId: string, updateWorkPackageRequest: UpdateWorkPackageRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workPackageId' is not null or undefined
+            assertParamExists('updateWorkPackage', 'workPackageId', workPackageId)
+            // verify required parameter 'updateWorkPackageRequest' is not null or undefined
+            assertParamExists('updateWorkPackage', 'updateWorkPackageRequest', updateWorkPackageRequest)
+            const localVarPath = `/work-package/{workPackageId}`
+                .replace(`{${"workPackageId"}}`, encodeURIComponent(String(workPackageId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateWorkPackageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2526,6 +2861,19 @@ export const WorkPackageControllerApiFp = function(configuration?: Configuration
             const localVarOperationServerBasePath = operationServerMap['WorkPackageControllerApi.createWorkPackage']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} workPackageId 
+         * @param {UpdateWorkPackageRequest} updateWorkPackageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateWorkPackage(workPackageId: string, updateWorkPackageRequest: UpdateWorkPackageRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateWorkPackage(workPackageId, updateWorkPackageRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkPackageControllerApi.updateWorkPackage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2544,6 +2892,16 @@ export const WorkPackageControllerApiFactory = function (configuration?: Configu
          */
         createWorkPackage(createWorkPackageRequest: CreateWorkPackageRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
             return localVarFp.createWorkPackage(createWorkPackageRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} workPackageId 
+         * @param {UpdateWorkPackageRequest} updateWorkPackageRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateWorkPackage(workPackageId: string, updateWorkPackageRequest: UpdateWorkPackageRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateWorkPackage(workPackageId, updateWorkPackageRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2564,6 +2922,18 @@ export class WorkPackageControllerApi extends BaseAPI {
      */
     public createWorkPackage(createWorkPackageRequest: CreateWorkPackageRequest, options?: RawAxiosRequestConfig) {
         return WorkPackageControllerApiFp(this.configuration).createWorkPackage(createWorkPackageRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} workPackageId 
+     * @param {UpdateWorkPackageRequest} updateWorkPackageRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkPackageControllerApi
+     */
+    public updateWorkPackage(workPackageId: string, updateWorkPackageRequest: UpdateWorkPackageRequest, options?: RawAxiosRequestConfig) {
+        return WorkPackageControllerApiFp(this.configuration).updateWorkPackage(workPackageId, updateWorkPackageRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -1,17 +1,33 @@
-import { FC, useState } from "react";
-import { TaskItemProps, TaskListingProps } from "../../../interfaces";
+import { FC, useMemo, useState } from "react";
+import { TaskListingProps } from "../../../interfaces";
 //import { useParams } from "react-router-dom";
-import TextUtil from "../../../util/TextUtil";
-import { HiOutlineTrash } from "react-icons/hi2";
-import { FiEdit3 } from "react-icons/fi";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
+import { TaskItem } from "./TaskItem";
 
-export const TaskListing: FC<TaskListingProps> = ({ tasks }) => {
+export const TaskListing: FC<TaskListingProps> = ({
+  tasks,
+  handleEditTask,
+  workPackageTitle,
+  workPackageStartDate,
+  workPackageEndDate,
+}) => {
   const [showIrrelevant, setShowIrrelevant] = useState<boolean>(false);
 
-  const irrelevantTasks = tasks.filter((task) => !task.isRelevant);
+  const sortedTasksByDate = useMemo(() => {
+    return tasks.sort((a, b) => {
+      const fallbackDate = new Date(Date.now()).getTime();
+      const dateA = a.startDate
+        ? new Date(a.startDate).getTime()
+        : fallbackDate;
+      const dateB = b.startDate
+        ? new Date(b.startDate).getTime()
+        : fallbackDate;
+      return dateA - dateB;
+    });
+  }, [tasks]);
+
+  const irrelevantTasks = sortedTasksByDate.filter((task) => !task.isRelevant);
 
   /*
   useEffect(() => {
@@ -54,52 +70,21 @@ export const TaskListing: FC<TaskListingProps> = ({ tasks }) => {
           </button>
         </div>
       )}
-      {tasks.length > 0 && (
+      {sortedTasksByDate.length > 0 && (
         <div className="h-full grid border border-solid border-gray-200 rounded-md shadow-md overflow-hidden bg-white">
-          {tasks.map((task) => (
+          {sortedTasksByDate.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
               showIrrelevant={showIrrelevant}
+              handleEditTask={handleEditTask}
+              workPackageTitle={workPackageTitle}
+              workPackageStartDate={workPackageStartDate}
+              workPackageEndDate={workPackageEndDate}
             />
           ))}
         </div>
       )}
     </div>
-  );
-};
-
-const TaskItem: FC<TaskItemProps> = ({ task, showIrrelevant }) => {
-  return (  
-    <AnimatePresence>
-      {(showIrrelevant || task?.isRelevant) && (
-        <motion.div
-          className={`grid grid-cols-[5px_2fr_2fr_2fr] items-center border-b border-gray-200 border-solid mb-[-1px]`}
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <motion.div
-            className={`${task?.isRelevant ? `bg-green` : `bg-red-600`} h-full`}
-          />
-          <motion.div className="flex items-center justify-center font-medium py-4">
-            {task?.title}
-          </motion.div>
-          <motion.div className="flex items-center justify-center font-medium py-4">
-            {TextUtil.refactorDate(task?.startDate)} -{" "}
-            {TextUtil.refactorDate(task?.endDate)}
-          </motion.div>
-          <motion.div className="flex items-center justify-center gap-x-4 py-4">
-            <button>
-              <FiEdit3 className="size-6 stroke-gray-700" />
-            </button>
-            <button>
-              <HiOutlineTrash className="size-6 stroke-red-500" />
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
   );
 };
