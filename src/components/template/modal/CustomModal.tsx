@@ -73,11 +73,11 @@ export const CustomModalBody = ({children}: CustomModalBodyProps) => {
         </div>
     )
 }
-export const CustomModalFooter = ({children}: CustomModalFooterProps) => {
+export const CustomModalFooter = ({children, danger}: CustomModalFooterProps) => {
     return (
         <div className="flex justify-end border-t-[1px] border-solid border-gray-300 p-6">
             <button type="submit"
-                    className="uppercase tracking-wider px-10 py-2 bg-primary transition delay-50 hover:bg-light-blue text-white rounded-xl">
+                    className={`uppercase tracking-wider px-8 py-2 ${danger ? `bg-red-600` : `bg-primary`} transition delay-50 ${danger ? `hover:bg-red-600/70` : `hover:bg-light-blue`} text-white rounded-xl`}>
                 {children}
             </button>
         </div>

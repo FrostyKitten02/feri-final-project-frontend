@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { toastError } from "../../toast-modals/ToastFunctions";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import { BsPersonDash } from "react-icons/bs";
+import DeleteModal from "../../template/modal/DeleteModal";
 
 export default function ProjectTeamPage() {
   const [peopleOnProject, setPeopleOnProject] = useState<PersonDto[]>([]);
@@ -74,9 +74,7 @@ export default function ProjectTeamPage() {
                         {person.email}
                       </div>
                       <div className="flex items-center justify-center">
-                        <button>
-                          <BsPersonDash className="size-6 fill-gray-500 hover:fill-red-500 transition delay-50" />
-                        </button>
+                        <DeleteModal title={person.email} teamPage={true}/>
                       </div>
                     </div>
                   ))}

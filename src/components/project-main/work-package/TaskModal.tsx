@@ -18,7 +18,7 @@ import {
   CustomModalError,
   CustomModalFooter,
 } from "../../template/modal/CustomModal";
-import { FaCirclePlus } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
 import { FiEdit3 } from "react-icons/fi";
 
 export default function TaskModal({
@@ -121,10 +121,10 @@ export default function TaskModal({
           disabled={disabled}
           onClick={() => setModalOpen(true)}
           className={`flex items-center justify-center ${
-            disabled ? `bg-primary/30` : `bg-primary`
+            disabled ? `bg-primary/30` : `bg-primary hover:bg-primary/80 transition delay-50`
           } rounded-lg text-white w-28 h-8 gap-x-2`}
         >
-          <FaCirclePlus className="stroke-white size-4" />
+          <FaPlus className="stroke-white size-4" />
           <span className="text-sm">New task</span>
         </button>
       )}

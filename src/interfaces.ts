@@ -1,5 +1,11 @@
-import {FC} from "react";
-import {PersonDto, ProjectDto, ProjectStatisticsResponse, TaskDto, WorkPackageDto} from "../temp_ts";
+import { FC } from "react";
+import {
+  PersonDto,
+  ProjectDto,
+  ProjectStatisticsResponse,
+  TaskDto,
+  WorkPackageDto,
+} from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
 import { SelectedItemProps } from "./components/template/inputs/inputsInterface";
@@ -155,6 +161,7 @@ export interface ModalDividerProps {
 
 export interface CustomModalFooterProps {
   children?: React.ReactNode;
+  danger?: boolean;
 }
 export interface BackdropProps {
   children?: React.ReactNode;
@@ -197,15 +204,21 @@ export interface ProjectFilterProps {
 }
 
 export interface YearLimitProps {
-  start: number,
-  end: number,
-  name: string
+  start: number;
+  end: number;
+  name: string;
 }
 
 export interface WorkloadTableProps {
-  statistics: ProjectStatisticsResponse,
-  currentPage: number,
-  monthsPerPage: number
+  statistics: ProjectStatisticsResponse;
+  currentPage: number;
+  monthsPerPage: number;
+}
+
+export interface DeleteModalProps {
+  title?: string;
+  handleDelete?: () => Promise<void>;
+  teamPage?: boolean;
 }
 
 export interface WorkloadModalProps {

@@ -324,7 +324,7 @@ export default function WorkPackageModal({
               </div>
             </CustomModalBody>
             <CustomModalFooter>
-              {!edit ? <span>add</span> : <>confirm</>}
+              {!edit ? <span>add work package</span> : <>confirm</>}
             </CustomModalFooter>
           </form>
         </CustomModal>
