@@ -99,6 +99,7 @@ export const MyProjectsPage = () => {
                                                 <ProjectItem
                                                     key={project.id}
                                                     project={project}
+                                                 handleEditProject={handleProjectAdd}
                                                 />
                                             ))
                                         }
@@ -148,7 +149,7 @@ export const MyProjectsPage = () => {
                 )
             }
             <div className="w-24 flex items-center justify-center py-4 flex-col bg-gray-100 rounded-r-[20px] border-solid border-l-[2px] border-gray-100">
-                    <ProjectModal handleAddProject={handleProjectAdd}/>
+                    <ProjectModal handleAddProject={handleProjectAdd} edit={false}/>
             </div>
         </div>
     );
