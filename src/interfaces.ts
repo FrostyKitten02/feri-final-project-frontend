@@ -199,9 +199,8 @@ export interface UserSearchInputProps<
 }
 
 export interface ProjectFilterProps {
-  handleProjectAdd: () => void;
-  selectedStatus: SelectedItemProps;
-  setSelectedStatus: (item: SelectedItemProps) => void;
+  selectedStatus: SelectedItemProps,
+  setSelectedStatus: (item: SelectedItemProps) => void
 }
 
 export interface YearLimitProps {
@@ -220,4 +219,9 @@ export interface DeleteModalProps {
   title?: string;
   handleDelete?: () => Promise<void>;
   teamPage?: boolean;
+}
+
+export interface WorkloadModalProps {
+  closeModal: () => void,
+  modalWidth: string,
 }

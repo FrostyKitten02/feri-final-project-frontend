@@ -1,8 +1,11 @@
 import {WorkloadTableProps, YearLimitProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import * as React from "react";
+import {useState} from "react";
+import {WorkloadModal} from "./WorkloadModal";
 
 export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: WorkloadTableProps) => {
+    const [open, setOpen] = useState<boolean>(false);
     if (!statistics.months)
         return;
     const startIndex = (currentPage - 1) * monthsPerPage;
@@ -10,7 +13,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: Workload
     const currentMonthClass = `bg-blue-200 p-2 rounded-lg`;
     const years: Array<YearLimitProps> = TextUtil.yearColumnLimit(shownMonths, 2);
     return (
-        <div className="grid p-5 border-[1px] border-gray-200 border-solid rounded-[20px]"
+        <div className="grid"
              style={{
                  gridTemplateColumns: `repeat(${monthsPerPage + 1}, minmax(0, 1fr))`,
              }}
@@ -75,8 +78,8 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: Workload
                             shownMonths.map((month, index) => {
                                 return (
                                     <div className="flex h-14 items-center justify-center border-solid" key={index}>
-                                        <button className="flex-grow text-xl h-full hover:bg-gray-100 transition delay-50">
-                                            {month.personWork?.[indexPerson].occupancyId !== null ? month.personWork?.[indexPerson].totalWorkPm : 0}
+                                        <button onClick={() => setOpen(true)} className="flex-grow text-xl h-full rounded-[15px] hover:bg-gray-100 transition delay-50">
+                                            {month.personWork?.[indexPerson].occupancyId !== null ? month.personWork?.[indexPerson].totalWorkPm : "N/A"}
                                         </button>
                                     </div>
                                 )
@@ -108,6 +111,13 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage}: Workload
                         </div>
                     )
                 })
+            }
+            {
+                open &&
+                <WorkloadModal
+                    closeModal={() => setOpen(false)}
+                    modalWidth="700px"
+                />
             }
         </div>
     )

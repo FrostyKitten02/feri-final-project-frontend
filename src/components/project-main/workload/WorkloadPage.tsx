@@ -43,30 +43,32 @@ export const WorkloadPage = () => {
     }
     return (
         !isLoading &&
-        <div className="flex-grow">
-            <div className="p-10">
-                <div>
-                    <WorkloadTable statistics={statistics} currentPage={currentPage} monthsPerPage={monthsPerPage}/>
+        <div className="flex flex-col flex-grow">
+                <div className="m-10 flex-grow overflow-y-auto">
+                    <div className="p-5 mx-2 border-[1px] rounded-[20px] border-gray-200 border-solid ">
+                        <WorkloadTable statistics={statistics} currentPage={currentPage} monthsPerPage={monthsPerPage}/>
+                    </div>
                 </div>
+            <div>
+                <button
+                    className={`${monthsPerPage === 4 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
+                    onClick={() => handleMonthChange(4)}
+                >
+                    4
+                </button>
+                <button
+                    className={`${monthsPerPage === 6 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
+                    onClick={() => handleMonthChange(6)}
+                >
+                    6
+                </button>
+                <button
+                    className={`${monthsPerPage === 12 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
+                    onClick={() => handleMonthChange(12)}
+                >
+                    12
+                </button>
             </div>
-            <button
-                className={`${monthsPerPage === 4 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
-                onClick={() => handleMonthChange(4)}
-            >
-                4
-            </button>
-            <button
-                className={`${monthsPerPage === 6 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
-                onClick={() => handleMonthChange(6)}
-            >
-                6
-            </button>
-            <button
-                className={`${monthsPerPage === 12 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
-                onClick={() => handleMonthChange(12)}
-            >
-                12
-            </button>
             <CustomPagination totalPages={(statistics.months?.length ?? monthsPerPage) / monthsPerPage}
                               onPageChange={setCurrentPage} currentPage={currentPage}
             />
