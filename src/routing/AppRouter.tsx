@@ -8,7 +8,6 @@ import IntroductionPage from "../components/introduction/IntroductionPage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import InProgressPage from "../components/template/pages/InProgressPage";
-import {MainDashboardPage} from "../components/app-main/MainDashboardPage";
 import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
 import ValidateProjectId from "../components/ValidateProjectId";
 import {RedirectMain} from "../components/app-main/RedirectMain";
@@ -17,6 +16,7 @@ import { WorkPackageListing } from "../components/project-main/work-package/Work
 import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
 import {WorkloadPage} from "../components/project-main/workload/WorkloadPage";
 import {AppMainPage} from "../components/app-main/AppMainPage";
+import {DashboardPage} from "../components/app-main/DashboardPage";
 
 function AppRouter() {
 
@@ -110,7 +110,7 @@ function AppRouter() {
                 },
                 {
                     path: "dashboard",
-                    element: <MainDashboardPage/>,
+                    element: <DashboardPage />,
                     errorElement: <ErrorPage/>
                 },
                 {

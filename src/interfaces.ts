@@ -192,9 +192,8 @@ export interface UserSearchInputProps<
 }
 
 export interface ProjectFilterProps {
-  handleProjectAdd: () => void;
-  selectedStatus: SelectedItemProps;
-  setSelectedStatus: (item: SelectedItemProps) => void;
+  selectedStatus: SelectedItemProps,
+  setSelectedStatus: (item: SelectedItemProps) => void
 }
 
 export interface YearLimitProps {
@@ -207,4 +206,9 @@ export interface WorkloadTableProps {
   statistics: ProjectStatisticsResponse,
   currentPage: number,
   monthsPerPage: number
+}
+
+export interface WorkloadModalProps {
+  closeModal: () => void,
+  modalWidth: string,
 }
