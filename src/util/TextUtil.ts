@@ -56,7 +56,11 @@ export default class TextUtil {
             const now = new Date(Date.now()).getTime();
             const end = new Date(endDate).getTime();
             const daysLeft = (end - now) / 86400000;
-            return daysLeft.toFixed(0);
+            if (daysLeft > 0) {
+                return daysLeft.toFixed(0)
+            } else {
+                return "0";
+            }
         }   
         return "0"
     }
