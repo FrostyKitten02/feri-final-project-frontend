@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { toastError } from "../../toast-modals/ToastFunctions";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import { BsPersonDash } from "react-icons/bs";
 import DeleteModal from "../../template/modal/DeleteModal";
 
 export default function ProjectTeamPage() {

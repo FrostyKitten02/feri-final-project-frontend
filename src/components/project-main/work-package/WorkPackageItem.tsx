@@ -7,7 +7,6 @@ import { ProgressBar } from "@tremor/react";
 import TaskModal from "./TaskModal";
 import WorkPackageModal from "./WorkPackageModal";
 import { LuClipboardEdit } from "react-icons/lu";
-import { FaRegClock } from "react-icons/fa6";
 import DeleteModal from "../../template/modal/DeleteModal";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
@@ -20,10 +19,10 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
     workPackage?.startDate,
     workPackage?.endDate
   );
-  const duration: number = TextUtil.returnDuration(
+  /*const duration: number = TextUtil.returnDuration(
     workPackage?.startDate,
     workPackage?.endDate
-  );
+  );*/
   const daysLeft: string = TextUtil.returnDaysLeft(workPackage?.endDate);
   const { text, color } = TextUtil.returnProgressText(progress);
 
