@@ -166,7 +166,6 @@ export interface UserSearchInputProps<
 }
 
 export interface ProjectFilterProps {
-  handleProjectAdd: () => void,
   selectedStatus: SelectedItemProps,
   setSelectedStatus: (item: SelectedItemProps) => void
 }

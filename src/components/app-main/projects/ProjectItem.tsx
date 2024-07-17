@@ -20,8 +20,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
     }
     return (
         project &&
-        <div
-            className="p-5 h-72 w-[450px]">
+        <div className="p-5 h-72 w-[450px]">
             <button
                 className="w-full h-full rounded-xl"
                 onClick={() => handleNavigate()}>
