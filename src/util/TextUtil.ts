@@ -41,6 +41,26 @@ export default class TextUtil {
         return 0;
     }
 
+    static returnDuration(startDate: string | undefined, endDate: string | undefined): number {
+        if (startDate && endDate) {
+            const start = new Date(startDate).getTime();
+            const end = new Date(endDate).getTime();
+            const duration = end - start;
+            return duration / 86400000;
+        }
+        return 0;
+    }
+
+    static returnDaysLeft(endDate: string | undefined): string {
+        if (endDate) {
+            const now = new Date(Date.now()).getTime();
+            const end = new Date(endDate).getTime();
+            const daysLeft = (end - now) / 86400000;
+            return daysLeft.toFixed(0);
+        }   
+        return "0"
+    }
+
     static returnProgressText(value: number): ProgressObject {
         if (value === 100) {
             return ({

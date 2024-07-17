@@ -3,10 +3,12 @@ import { WorkPackageItemProps } from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import { HiCalendar } from "react-icons/hi";
 import { TaskListing } from "./TaskListing";
-import { HiOutlineTrash } from "react-icons/hi2";
 import { ProgressBar } from "@tremor/react";
 import TaskModal from "./TaskModal";
 import WorkPackageModal from "./WorkPackageModal";
+import { LuClipboardEdit } from "react-icons/lu";
+import { FaRegClock } from "react-icons/fa6";
+import DeleteModal from "../../template/modal/DeleteModal";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
@@ -18,6 +20,12 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
     workPackage?.startDate,
     workPackage?.endDate
   );
+  const duration: number = TextUtil.returnDuration(
+    workPackage?.startDate,
+    workPackage?.endDate
+  );
+  const daysLeft: string = TextUtil.returnDaysLeft(workPackage?.endDate);
+  const { text, color } = TextUtil.returnProgressText(progress);
 
   return (
     workPackage && (
@@ -27,45 +35,38 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
             <div className="flex flex-col flex-grow p-5">
               <div className="flex justify-between items-center">
                 <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                  <div className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
                     <HiCalendar className="h-4 w-4 fill-primary" />
                   </div>
                   <div className="px-2 italic text-xs text-muted">
                     {TextUtil.refactorDate(workPackage.startDate)}
                   </div>
                 </div>
-                {workPackage.isRelevant ? (
-                  <div
-                    className={`flex bg-custom-green w-fit px-2 rounded-lg ml-2 justify-start items-center`}
-                  >
-                    <p className="font-semibold italic text-sm uppercase">
-                      RELEVANT
+                <div className="flex flex-row gap-x-1 items-center">
+                  <LuClipboardEdit className="size-5 stroke-black" />
+                  {workPackage.tasks?.length === undefined || 0 ? (
+                    <p className="text-lg font-mono">0</p>
+                  ) : (
+                    <p className="text-lg font-mono">
+                      {workPackage.tasks?.length}
                     </p>
-                  </div>
-                ) : (
-                  <div
-                    className={`flex bg-red-500 w-fit px-2 rounded-lg ml-2 justify-start items-center`}
-                  >
-                    <p className="font-semibold italic text-sm uppercase">
-                      IRRELEVANT
-                    </p>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
               <div className="flex flex-grow">
                 <div className="w-[1px] bg-gray-200 mx-[12px] my-2" />
                 <div className="flex flex-col flex-grow">
-                  <div className="flex items-center justify-center font-bold text-2xl flex-grow">
+                  <div className="flex items-center justify-center font-bold text-2xl flex-grow py-6">
                     {workPackage.title}
                   </div>
                   <div className="text-end font-bold font-mono">
-                    {progress.toFixed(0) + `%`}
+                    <span>{daysLeft} days left</span>
                   </div>
                 </div>
               </div>
               <div className="flex flex-row items-center">
                 <div className="flex flex-row items-center">
-                  <div className="flex items-center justify-center rounded-full w-6 h-6 bg-blue-200">
+                  <div className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
                     <HiCalendar className="h-4 w-4 fill-primary" />
                   </div>
                   <div className="px-2 italic text-xs text-muted">
@@ -78,21 +79,49 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
               </div>
             </div>
             <div className="h-[1px] bg-gray-200" />
-            <div className="flex flex-row justify-end gap-x-4 items-center p-5">
-              <WorkPackageModal
-                edit={true}
-                handleAddWorkPackage={handleEditWorkPackage}
-                title={workPackage.title}
-                startDate={workPackage.startDate}
-                endDate={workPackage.endDate}
-                isRelevant={workPackage.isRelevant}
-                assignedPM={workPackage.assignedPM}
-                projectDetails={projectDetails}
-                workPackageId={workPackage.id}
-              />
-              <button>
-                <HiOutlineTrash className="size-6 stroke-red-500" />
-              </button>
+            <div className="flex flex-row items-center px-5 py-4">
+              <div className="flex flex-row items-center gap-x-2 w-2/3">
+                <div>
+                  {workPackage.isRelevant ? (
+                    <div
+                      className={`flex bg-custom-green w-fit px-2 rounded-lg ml-2 justify-start items-center`}
+                    >
+                      <p className="font-semibold italic text-sm uppercase">
+                        RELEVANT
+                      </p>
+                    </div>
+                  ) : (
+                    <div
+                      className={`flex bg-red-500 w-fit px-2 rounded-lg ml-2 justify-start items-center`}
+                    >
+                      <p className="font-semibold italic text-sm uppercase">
+                        IRRELEVANT
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div
+                  className={`flex ${color} w-fit px-2 rounded-lg justify-start items-center`}
+                >
+                  <p className="font-semibold italic text-sm uppercase">
+                    {text}
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-row justify-end w-1/3 gap-x-4">
+                <WorkPackageModal
+                  edit={true}
+                  handleAddWorkPackage={handleEditWorkPackage}
+                  title={workPackage.title}
+                  startDate={workPackage.startDate}
+                  endDate={workPackage.endDate}
+                  isRelevant={workPackage.isRelevant}
+                  assignedPM={workPackage.assignedPM}
+                  projectDetails={projectDetails}
+                  workPackageId={workPackage.id}
+                />
+                <DeleteModal title={workPackage.title} />
+              </div>
             </div>
           </div>
           <div className="flex flex-col w-2/3 bg-gray-200 rounded-r-xl p-5">
@@ -143,15 +172,6 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                 <h1 className="font-semibold text-lg text-black/30">
                   Tasks are disabled for irrelevant work packages.
                 </h1>
-                <TaskModal
-                  handleAddTask={handleAddTask}
-                  workPackageId={workPackage.id}
-                  workPackageTitle={workPackage.title}
-                  workPackageStartDate={workPackage.startDate}
-                  workPackageEndDate={workPackage.endDate}
-                  disabled={true}
-                  edit={false}
-                />
               </div>
             )}
           </div>

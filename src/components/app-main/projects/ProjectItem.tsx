@@ -90,7 +90,6 @@ export const ProjectItem: FC<ProjectItemProps> = ({
               </div>
             </div>
           </button>
-
           <div className="flex flex-col">
             <div className="flex-grow mx-2 h-[1px] bg-gray-200" />
             <div className="flex flex-row justify-between">

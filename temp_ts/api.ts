@@ -103,13 +103,13 @@ export interface CreateOccupancyRequest {
      * @type {string}
      * @memberof CreateOccupancyRequest
      */
-    'endDate'?: string;
+    'startDate'?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOccupancyRequest
      */
-    'startDate'?: string;
+    'endDate'?: string;
 }
 /**
  * 
