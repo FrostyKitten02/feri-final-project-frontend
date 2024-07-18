@@ -13,6 +13,6 @@ export default class Paths {
     public static readonly TEAM = Paths.PROJECT + "/team"
     public static readonly WORK_PACKAGES = Paths.PROJECT + "/work-packages"
     public static readonly PROJECT_DASHBOARD = Paths.PROJECT + "/project-dashboard"
-    public static readonly PROJECT_OVERVIEW = Paths.PROJECT + "/project-overview"
+    public static readonly PROJECT_OVERVIEW = Paths.PROJECT + "/overview"
     public static readonly WORKLOAD =  Paths.PROJECT + "/workload";
 }

@@ -23,15 +23,6 @@ export const MyProjectsPage = () => {
     const [selectedStatus, setSelectedStatus] = useState<SelectedItemProps>({value: "", text: ""});
     const requestArgs = useRequestArgs();
 
-    useEffect(() => {
-        setIsLoading(true);
-        fetchProjects(pageNumber, elementsPerPage, selectedStatus)
-            .then(() => setIsLoading(false))
-            .catch(() => {
-                setIsLoading(false);
-            });
-    }, [pageNumber, selectedStatus]);
-
     const onPageChange = (page: number) => {
         setPageNumber(page);
     }
@@ -75,6 +66,15 @@ export const MyProjectsPage = () => {
         }
     };
 
+    useEffect(() => {
+        setIsLoading(true);
+        fetchProjects(pageNumber, elementsPerPage, selectedStatus)
+            .then(() => setIsLoading(false))
+            .catch(() => {
+                setIsLoading(false);
+            });
+    }, [pageNumber, selectedStatus]);
+
     return (
         <div className="flex flex-grow">
             {
@@ -99,7 +99,7 @@ export const MyProjectsPage = () => {
                                                 <ProjectItem
                                                     key={project.id}
                                                     project={project}
-                                                 handleEditProject={handleProjectAdd}
+                                                    handleEditProject={handleProjectAdd}
                                                 />
                                             ))
                                         }
@@ -148,8 +148,9 @@ export const MyProjectsPage = () => {
                     </div>
                 )
             }
-            <div className="w-24 flex items-center justify-center py-4 flex-col bg-gray-100 rounded-r-[20px] border-solid border-l-[2px] border-gray-100">
-                    <ProjectModal handleAddProject={handleProjectAdd} edit={false}/>
+            <div
+                className="w-24 flex items-center justify-center py-4 flex-col bg-gray-100 rounded-r-[20px] border-solid border-l-[2px] border-gray-100">
+                <ProjectModal handleAddProject={handleProjectAdd} edit={false}/>
             </div>
         </div>
     );

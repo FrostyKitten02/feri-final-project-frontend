@@ -1,14 +1,14 @@
 import SidebarTemplate from "../template/SidebarTemplate";
 import {Outlet, useParams} from "react-router-dom";
 import {ListItem} from "../../interfaces";
-//import { LuLayoutDashboard } from "react-icons/lu";
 //import { IoPeopleOutline } from "react-icons/io5";
 //import { LuPackage } from "react-icons/lu";
-import BoxOpenIcon from "../../assets/icons/box-open-icon.svg?react";
-import FolderIcon from "../../assets/icons/folder-icon.svg?react";
-import UsersIcon from "../../assets/icons/users-icon.svg?react";
 import Paths from "../../util/Paths";
 import TextUtil from "../../util/TextUtil";
+import {LuLayoutDashboard, LuPackageOpen} from "react-icons/lu";
+import {FaChartBar} from "react-icons/fa6";
+import {IoPeopleOutline} from "react-icons/io5";
+import {MdOutlineWorkOutline} from "react-icons/md";
 
 function ProjectMainPage() {
     const {projectId} = useParams();
@@ -16,26 +16,27 @@ function ProjectMainPage() {
         {
             name: "project dashboard",
             linkPath: TextUtil.constructValidRoutePath(Paths.PROJECT_DASHBOARD, ":projectId", projectId ?? ""),
+            iconComponent: (props) => <LuLayoutDashboard {...props}/>
         },
         {
-            name: "project overview",
+            name: "overview chart",
             linkPath: TextUtil.constructValidRoutePath(Paths.PROJECT_OVERVIEW, ":projectId", projectId ?? ""),
-            iconComponent: FolderIcon,
+            iconComponent: (props) => <FaChartBar {...props}/>,
         },
         {
             name: "work packages & tasks",
             linkPath: TextUtil.constructValidRoutePath(Paths.WORK_PACKAGES, ":projectId", projectId ?? ""),
-            iconComponent: BoxOpenIcon,
+            iconComponent: (props) => <LuPackageOpen {...props}/>,
         },
         {
             name: "team",
             linkPath: TextUtil.constructValidRoutePath(Paths.TEAM, ":projectId", projectId ?? ""),
-            iconComponent: UsersIcon,
+            iconComponent: (props) => <IoPeopleOutline {...props}/>,
         },
         {
             name: "workload",
             linkPath: TextUtil.constructValidRoutePath(Paths.WORKLOAD, ":projectId", projectId ?? ""),
-            iconComponent: UsersIcon
+            iconComponent: (props) => <MdOutlineWorkOutline {...props}/>
         }
     ]
 

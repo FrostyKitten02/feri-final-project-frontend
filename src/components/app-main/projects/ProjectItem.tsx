@@ -66,23 +66,6 @@ export const ProjectItem: FC<ProjectItemProps> = ({
                       %
                     </span>
                   </ProgressCircle>
-                  {/*
-
-                                <div className="flex flex-row space-x-5 pb-3">
-                                    <div className="flex flex-row items-center">
-                                        <LuPackage size="22"/>
-                                        <span className="pl-1 text-lg font-mono">
-                                        {project.workPackageCount}
-                                    </span>
-                                    </div>
-                                    <div className="flex flex-row items-center">
-                                        <IoPeopleOutline size="22"/>
-                                        <span className="pl-1 text-lg font-mono">
-                                        {project.peopleCount}
-                                    </span>
-                                    </div>
-                                </div>
-                                */}
                 </div>
                 <div className="flex flex-grow justify-center items-center text-xl uppercase font-bold pr-6">
                   {TextUtil.truncateString(project.title, 60)}
@@ -106,27 +89,27 @@ export const ProjectItem: FC<ProjectItemProps> = ({
                     {project.peopleCount}
                   </span>
                 </div>
-                <div className="flex flex-row items-center">
-                  <ProjectModal
-                    edit={true}
-                    handleAddProject={handleEditProject}
-                    projectId={project.id}
-                  />
-                </div>
               </div>
-              <div className="px-4 py-2 flex flex-row items-center justify-end">
-                <div className="flex bg-blue-200 w-fit px-2 rounded-lg ml-2 justify-start items-center">
+              <div className="px-4 py-2 flex flex-row items-center space-x-2 justify-end">
+                <div className="flex bg-blue-200 w-fit px-2 rounded-lg justify-start items-center">
                   <p className="font-semibold italic text-sm uppercase">
                     {project.ownerId === userId ? "owned" : "assigned"}
                   </p>
                 </div>
                 <div
-                  className={`flex ${color} w-fit px-2 rounded-lg ml-2 justify-start items-center`}
+                  className={`flex ${color} w-fit px-2 rounded-lg  justify-start items-center`}
                 >
                   <p className="font-semibold italic text-sm uppercase">
                     {text}
                     {project.workPackages?.length}
                   </p>
+                </div>
+                <div className="flex flex-row items-center">
+                  <ProjectModal
+                      edit={true}
+                      handleAddProject={handleEditProject}
+                      projectId={project.id}
+                  />
                 </div>
               </div>
             </div>
