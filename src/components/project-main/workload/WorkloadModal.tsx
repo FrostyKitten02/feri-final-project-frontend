@@ -15,11 +15,13 @@ export const WorkloadModal = ({closeModal, modalWidth}: WorkloadModalProps) => {
                     Edit workload
                 </ModalTitle>
                 <ModalText showInfoIcon={true} showWarningIcon={false} contentColor="muted">
-                    You are currently editing person's workload for Month, YEar.
+                    You are currently editing person's workload for Month, Year.
                 </ModalText>
             </CustomModalHeader>
             <CustomModalBody>
-                modal body
+                <div className="italic">
+                    Still in progress.
+                </div>
             </CustomModalBody>
             <CustomModalFooter>
                 edit

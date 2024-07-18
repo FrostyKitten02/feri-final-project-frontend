@@ -1,4 +1,3 @@
-import { FC } from "react";
 import {
   PersonDto,
   ProjectDto,
@@ -9,6 +8,7 @@ import {
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
 import { SelectedItemProps } from "./components/template/inputs/inputsInterface";
+import {ReactElement} from "react";
 
 export interface SidebarTemplateProps {
   items: ListItem[];
@@ -18,7 +18,7 @@ export interface SidebarTemplateProps {
 export interface ListItem {
   name: string;
   linkPath: string;
-  iconComponent?: FC<any>;
+  iconComponent: (props: { className: string }) => ReactElement;
 }
 
 export interface SidebarItemProps {

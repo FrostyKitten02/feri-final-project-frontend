@@ -1,20 +1,20 @@
 import {Outlet} from "react-router-dom";
 import SidebarTemplate from "../template/SidebarTemplate";
-import DashboardIcon from "../../assets/icons/dashboard-icon.svg?react";
+import { LuLayoutDashboard } from "react-icons/lu";
 import {ListItem} from "../../interfaces";
-import FolderIcon from "../../assets/icons/folder-icon.svg?react";
+import { IoFolderOutline } from "react-icons/io5";
 import Paths from "../../util/Paths";
 export const AppMainPage = () => {
     const items: Array<ListItem> = [
         {
             name: "dashboard",
             linkPath: Paths.DASHBOARD,
-            iconComponent: DashboardIcon
+            iconComponent:(props) => <LuLayoutDashboard {...props}/>
         },
         {
             name: "all projects",
             linkPath: Paths.PROJECTS,
-            iconComponent: FolderIcon
+            iconComponent: (props) => <IoFolderOutline {...props}/>
         },
     ]
     return (
