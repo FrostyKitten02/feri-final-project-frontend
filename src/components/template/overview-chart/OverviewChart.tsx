@@ -5,7 +5,16 @@ import {YearLimitProps} from "../../../interfaces";
 
 export const OverviewChart = ({monthsPerPage, workpackageCount, children}: OverviewChartProps) => {
     if (workpackageCount === 0)
-        return;
+        return (
+            <div className="h-full flex flex-col justify-center items-center">
+                <p className="text-2xl font-bold">
+                    There are currently no work packages included in this project.
+                </p>
+                <p>
+                    Navigate to work packages & tasks to add them to the project.
+                </p>
+            </div>
+        )
     return (
         <div className="p-5">
             <div className={`grid flex`}
@@ -26,13 +35,14 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
     const shownMonths = months.slice(startIndex, startIndex + monthsPerPage);
     const currentMonthClass = `bg-blue-200 p-2 rounded-lg`;
     const years: Array<YearLimitProps> = TextUtil.yearColumnLimit(shownMonths, 4);
+    const emptyColumnsCount = monthsPerPage - shownMonths.length;
 
     return (
         <React.Fragment>
             <div className="col-start-1 col-span-3 h-14"/>
             {
                 years.map((year, index) => {
-                    return(
+                    return (
                         <div
                             className="p-2"
                             key={index}
@@ -41,12 +51,19 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
                                 gridColumnEnd: year.end
                             }}
                         >
-                            <div className={`${index % 2 === 0 ? "bg-red-50" : "bg-blue-50"} flex rounded-lg items-center justify-center flex-grow h-full`}>
+                            <div
+                                className={`${index % 2 === 0 ? "bg-red-50" : "bg-blue-50"} flex rounded-lg items-center justify-center flex-grow h-full`}>
                                 {year.name}
                             </div>
                         </div>
                     )
                 })
+            }
+            {
+                emptyColumnsCount > 0 &&
+                Array.from({length: emptyColumnsCount}).map((_, index) => (
+                    <div key={index}/>
+                ))
             }
             <div className="col-start-1 col-span-2 h-14"/>
             <div className="h-14 justify-center flex items-center uppercase text-xl font-mono pl-2">
@@ -58,7 +75,7 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
                         <div key={month.monthNumber}
                              className={`h-14 justify-center flex items-center`}>
                             <div
-                                className={`${TextUtil.isCurrentMonth(month) && currentMonthClass} justify-center flex items-center`}>
+                                className={`${TextUtil.isCurrentMonthYear(month) && currentMonthClass} justify-center flex items-center`}>
                                 <div className="text-xs font-mono">
                                     M{month.monthNumber}
                                 </div>
@@ -70,15 +87,24 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
                     )
                 })
             }
+            {
+                emptyColumnsCount > 0 &&
+                Array.from({length: emptyColumnsCount}).map((_, index) => (
+                    <div key={index} />
+                ))
+            }
         </React.Fragment>
     )
 }
 
 export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: OverviewChartBodyProps) => {
     const startIndex = (currentPage - 1) * monthsPerPage;
-    const shownMonths = statistics.months?.slice(startIndex, startIndex + monthsPerPage);
+    const shownMonths = statistics.months ? statistics.months.slice(startIndex, startIndex + monthsPerPage) : [];
     const startMonth = shownMonths && shownMonths[0];
     const endMonth = shownMonths && shownMonths[shownMonths.length - 1];
+    const emptyColumnsCount = monthsPerPage - shownMonths.length;
+    const startEmptyColumn = shownMonths.length + 4;
+    console.log(shownMonths.length, emptyColumnsCount, startEmptyColumn)
     return (
         <React.Fragment>
             {
@@ -99,34 +125,58 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                                     </span>
                             </div>
                             {
-                                workPackage.tasks?.map(task => {
-                                    const subgridNumbers = TextUtil.calculateSubgridNumbers(task, wpLimit);
-                                    return (
-                                        wpLimit &&
-                                        <React.Fragment key={task.id}>
-                                            <div className="grid grid-cols-subgrid bg-gray-50 h-14"
-                                                 key={workPackage.id}
-                                                 style={{
-                                                     gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, startMonth, currentPage, monthsPerPage) + 3,
-                                                     gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, endMonth, currentPage, monthsPerPage) + 4
-                                                 }}
-                                            >{
-                                                subgridNumbers &&
-                                                <div className="flex p-2"
+                                workPackage.tasks ?
+                                    workPackage.tasks.map(task => {
+                                        const subgridNumbers = TextUtil.calculateSubgridNumbers(task, wpLimit);
+                                        return (
+                                            wpLimit &&
+                                            <React.Fragment key={task.id}>
+                                                <div className="grid grid-cols-subgrid bg-gray-50 h-14"
+                                                     key={workPackage.id}
                                                      style={{
-                                                         gridColumnStart: subgridNumbers.start,
-                                                         gridColumnEnd: subgridNumbers.end
-                                                     }}>
-                                                    <div
-                                                        className="flex justify-center items-center bg-red-200 flex-grow rounded-lg">
-                                                        {task.title}
+                                                         gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, startMonth, currentPage, monthsPerPage) + 3,
+                                                         gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, endMonth, currentPage, monthsPerPage) + 4
+                                                     }}
+                                                >{
+                                                    subgridNumbers &&
+                                                    <div className="flex p-2"
+                                                         style={{
+                                                             gridColumnStart: subgridNumbers.start,
+                                                             gridColumnEnd: subgridNumbers.end
+                                                         }}>
+                                                        <div
+                                                            className="flex justify-center items-center bg-red-200 flex-grow rounded-lg">
+                                                            {task.title}
+                                                        </div>
                                                     </div>
+                                                }
                                                 </div>
-                                            }
-                                            </div>
-                                        </React.Fragment>
-                                    )
-                                })
+                                            </React.Fragment>
+                                        )
+                                    }) :
+                                    <>
+                                        {
+                                            wpLimit &&
+                                            <React.Fragment key={workPackage.id}>
+                                                <div className="grid grid-cols-subgrid bg-gray-50 h-14"
+                                                     key={workPackage.id}
+                                                     style={{
+                                                         gridColumnStart: TextUtil.getMonthNumber(wpLimit.startDate, startMonth, currentPage, monthsPerPage) + 3,
+                                                         gridColumnEnd: TextUtil.getMonthNumber(wpLimit.endDate, endMonth, currentPage, monthsPerPage) + 4
+                                                     }}
+                                                />
+                                            </React.Fragment>
+                                        }
+                                    </>
+                            }
+                            {
+                                emptyColumnsCount > 0 &&
+                                Array.from({length: emptyColumnsCount}).map((_, index) => (
+                                    <div key={index} style={{
+                                        gridColumnStart: startEmptyColumn,
+                                        gridColumnEnd: startEmptyColumn + emptyColumnsCount
+                                    }}/>
+                                ))
                             }
                         </React.Fragment>
                     )

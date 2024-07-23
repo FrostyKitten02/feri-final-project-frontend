@@ -136,15 +136,6 @@ export const MyProjectsPage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex justify-center">
-                            <CustomPagination
-                                totalPages={totalPages}
-                                onPageChange={onPageChange}
-                                currentPage={pageNumber}
-                                backLabelText="prev"
-                                nextLabelText="next"
-                            />
-                        </div>
                     </div>
                 )
             }

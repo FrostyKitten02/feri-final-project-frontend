@@ -16,7 +16,7 @@ import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
 import {WorkloadPage} from "../components/project-main/workload/WorkloadPage";
 import {AppMainPage} from "../components/app-main/AppMainPage";
 import {DashboardPage} from "../components/app-main/DashboardPage";
-import {ProjectDashboardPage} from "../components/project-main/ProjectDashboardPage";
+import {OverviewChartPage} from "../components/project-main/OverviewChartPage";
 
 function AppRouter() {
 
@@ -81,7 +81,7 @@ function AppRouter() {
                         },
                         {
                             path: "overview",
-                            element: <ProjectDashboardPage />,
+                            element: <OverviewChartPage />,
                             errorElement: <ErrorPage/>
                         },
                         {

@@ -3,13 +3,22 @@ import {MdNavigateNext} from "react-icons/md";
 import {MdChevronLeft} from "react-icons/md";
 import TextUtil from "../../../util/TextUtil";
 
-export const CustomPagination = ({currentPage, onPageChange, totalPages, backLabelText, nextLabelText}: CustomPaginationProps) => {
+export const CustomPagination = ({
+                                     currentPage,
+                                     onPageChange,
+                                     totalPages,
+                                     backLabelText,
+                                     nextLabelText
+                                 }: CustomPaginationProps) => {
     const pageNumbers = TextUtil.getPageNumbers(currentPage, Math.ceil(totalPages));
+    const allPages = Math.ceil(totalPages);
+    console.log(totalPages)
     return (
         <div className="flex flex-row items-center space-x-2">
-            <button className={`${currentPage === 1 ? "text-placeholder" : "hover:bg-gray-200 delay-50 transition"} flex py-1 items-center px-4 rounded-lg`}
-                    onClick={() => onPageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
+            <button
+                className={`${currentPage === 1 ? "text-placeholder" : "hover:bg-gray-200 delay-50 transition"} flex py-1 items-center px-4 rounded-lg`}
+                onClick={() => onPageChange(currentPage - 1)}
+                disabled={currentPage === 1}
             >
                 <MdChevronLeft/>
                 <span className="uppercase">
@@ -30,9 +39,10 @@ export const CustomPagination = ({currentPage, onPageChange, totalPages, backLab
                     })
                 }
             </div>
-            <button className={`${currentPage === totalPages ? "text-placeholder" : "hover:bg-gray-200 delay-50 transition"} flex items-center px-4 py-1 rounded-lg`}
-                    onClick={() => onPageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
+            <button
+                className={`${currentPage === allPages ? "text-placeholder" : "hover:bg-gray-200 delay-50 transition"} flex items-center px-4 py-1 rounded-lg`}
+                onClick={() => onPageChange(currentPage + 1)}
+                disabled={currentPage === allPages}
             >
                 <span className="uppercase">
                     {nextLabelText ?? "next page"}
