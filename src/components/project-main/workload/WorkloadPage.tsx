@@ -14,7 +14,7 @@ const StatisticsInitialState = {
 export const WorkloadPage = () => {
     const [statistics, setStatistics] = useState<ProjectStatisticsResponse>(StatisticsInitialState);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [monthsPerPage, setMonthsPerPage] = useState<number>(12);
+    const [monthsPerPage, setMonthsPerPage] = useState<number>(6);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const requestArgs = useRequestArgs();
     const {projectId} = useParams();
@@ -45,7 +45,7 @@ export const WorkloadPage = () => {
         !isLoading &&
         <div className="flex flex-col flex-grow">
                 <div className="m-10 flex-grow overflow-y-auto">
-                    <div className="p-5 mx-2 border-[1px] rounded-[20px] border-gray-200 border-solid ">
+                    <div>
                         <WorkloadTable statistics={statistics} currentPage={currentPage} monthsPerPage={monthsPerPage}/>
                     </div>
                 </div>

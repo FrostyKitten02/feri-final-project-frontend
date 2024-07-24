@@ -224,12 +224,15 @@ export default class TextUtil {
         return null;
     }
 
-    static isCurrentMonth(month: ProjectMonthDto): boolean {
+    static isCurrentMonthYear(month: ProjectMonthDto): boolean {
         if (!month.date)
             return false;
-        const dateMonth = new Date(month.date).getMonth() + 1;
+        const date = new Date(month.date);
+        const dateMonth = date.getMonth() + 1;
+        const dateYear = date.getFullYear();
         const currentMonth = new Date().getMonth() + 1;
-        return dateMonth === currentMonth;
+        const currentYear = new Date().getFullYear();
+        return ((dateMonth === currentMonth) && (dateYear === currentYear));
     }
 
     static getPageNumbers = (currentPage: number, totalPages: number): Array<number> => {
