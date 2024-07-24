@@ -1,8 +1,6 @@
 import SidebarTemplate from "../template/SidebarTemplate";
 import {Outlet, useParams} from "react-router-dom";
 import {ListItem} from "../../interfaces";
-//import { IoPeopleOutline } from "react-icons/io5";
-//import { LuPackage } from "react-icons/lu";
 import Paths from "../../util/Paths";
 import TextUtil from "../../util/TextUtil";
 import {LuLayoutDashboard, LuPackageOpen} from "react-icons/lu";

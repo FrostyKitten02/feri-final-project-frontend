@@ -33,7 +33,7 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
         return;
     const startIndex = (currentPage - 1) * monthsPerPage;
     const shownMonths = months.slice(startIndex, startIndex + monthsPerPage);
-    const currentMonthClass = `bg-blue-200 p-2 rounded-lg`;
+    const currentMonthClass = `bg-blue-200 w-28 rounded-lg`;
     const years: Array<YearLimitProps> = TextUtil.yearColumnLimit(shownMonths, 4);
     const emptyColumnsCount = monthsPerPage - shownMonths.length;
 
@@ -51,9 +51,13 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
                                 gridColumnEnd: year.end
                             }}
                         >
-                            <div
-                                className={`${index % 2 === 0 ? "bg-red-50" : "bg-blue-50"} flex rounded-lg items-center justify-center flex-grow h-full`}>
-                                {year.name}
+                            <div className="relative flex-grow h-full">
+                                <div className="absolute mt-[4px] flex w-full justify-center items-center rounded-lg border-[1px] h-full border-solid z-10">
+                                    <div className="bg-white rounded-lg px-2 font-medium">
+                                        {year.name}
+                                    </div>
+                                </div>
+                                <div className={`${index % 2 === 0 ? "bg-red-50" : "bg-blue-50"} absolute ml-[4px] w-full h-full rounded-lg z-5`} />
                             </div>
                         </div>
                     )
@@ -66,23 +70,28 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
                 ))
             }
             <div className="col-start-1 col-span-2 h-14"/>
-            <div className="h-14 justify-center flex items-center uppercase text-xl font-mono pl-2">
+            <div className="h-20 justify-center flex items-center uppercase text-xl font-mono pl-2">
                 PM
             </div>
             {
                 shownMonths.map(month => {
                     return (
                         <div key={month.monthNumber}
-                             className={`h-14 justify-center flex items-center`}>
+                             className={`h-20 relative justify-center flex items-center`}>
                             <div
-                                className={`${TextUtil.isCurrentMonthYear(month) && currentMonthClass} justify-center flex items-center`}>
+                                className={`${TextUtil.isCurrentMonthYear(month) && currentMonthClass} justify-center h-12 absolute flex items-center`}>
                                 <div className="text-xs font-mono">
                                     M{month.monthNumber}
                                 </div>
-                                <div className="uppercase text-xl font-mono pl-2">
+                                <div className="uppercase text-xl font-mono mx-2">
                                     {TextUtil.getMonthAbbreviation(month?.date)}
                                 </div>
+                                <div className="text-xs font-mono rounded-lg bg-white px-2">
+                                    {month.pmBurnDownRate}PM
+                                </div>
                             </div>
+                            <div className={`${TextUtil.isCurrentMonthYear(month) && "absolute h-12 border-[1px] mr-1 mt-1 border-solid rounded-lg w-28"}`} />
+                            <button className="absolute h-12 w-28" />
                         </div>
                     )
                 })
@@ -104,7 +113,6 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
     const endMonth = shownMonths && shownMonths[shownMonths.length - 1];
     const emptyColumnsCount = monthsPerPage - shownMonths.length;
     const startEmptyColumn = shownMonths.length + 4;
-    console.log(shownMonths.length, emptyColumnsCount, startEmptyColumn)
     return (
         <React.Fragment>
             {

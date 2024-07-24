@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
-import {ProjectStatisticsResponse} from "../../../temp_ts";
-import {projectAPI} from "../../util/ApiDeclarations";
-import {useRequestArgs} from "../../util/CustomHooks";
+import {ProjectStatisticsResponse} from "../../../../temp_ts";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
 import {useParams} from "react-router-dom";
-import {OverviewChart, OverviewChartBody, OverviewChartHeader} from "../template/overview-chart/OverviewChart";
-import {CustomPagination} from "../template/pagination/CustomPagination";
+import {OverviewChart, OverviewChartBody, OverviewChartHeader} from "../../template/overview-chart/OverviewChart";
+import {CustomPagination} from "../../template/pagination/CustomPagination";
 export const OverviewChartPage = () => {
     const [statistics, setStatistics] = useState<ProjectStatisticsResponse>({workPackages: [], months: []})
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [monthsPerPage, setMonthsPerPage] = useState<number>(12);
+    const [monthsPerPage, setMonthsPerPage] = useState<number>(6);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const {projectId} = useParams();
     const requestArgs = useRequestArgs();
@@ -39,6 +39,13 @@ export const OverviewChartPage = () => {
 
     return (
         <div className="flex flex-col w-full p-5">
+            <div className="flex justify-end">
+                <CustomPagination totalPages={totalPages}
+                                  backLabelText=""
+                                  nextLabelText=""
+                                  onPageChange={setCurrentPage} currentPage={currentPage}
+                />
+            </div>
             <div className="flex-grow">
                 {
                     isLoading ? "loading" :
@@ -81,9 +88,6 @@ export const OverviewChartPage = () => {
                                 12
                             </button>
                         </div>
-                        <CustomPagination totalPages={totalPages}
-                                          onPageChange={setCurrentPage} currentPage={currentPage}
-                        />
                     </div> :
                     <></>
             }

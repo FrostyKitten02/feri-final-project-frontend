@@ -51,7 +51,6 @@ export const WorkPackageListing: FC = () => {
           }
           if (response.data.projectDto?.workPackages) {
             setWorkPackages(response.data.projectDto.workPackages);
-            console.log(response.data.projectDto);
           }
         }
       } else {

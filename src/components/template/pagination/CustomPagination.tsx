@@ -12,7 +12,6 @@ export const CustomPagination = ({
                                  }: CustomPaginationProps) => {
     const pageNumbers = TextUtil.getPageNumbers(currentPage, Math.ceil(totalPages));
     const allPages = Math.ceil(totalPages);
-    console.log(totalPages)
     return (
         <div className="flex flex-row items-center space-x-2">
             <button
