@@ -303,4 +303,17 @@ export default class TextUtil {
         });
         return limitArray;
     }
+
+    static numberFormatter = (number: number | undefined): string => {
+        if(number === undefined)
+            return "";
+        return (`${Intl.NumberFormat('eu').format(number).toString()}€`);
+    }
+
+    static numberToPercantage = (number: number | undefined): string => {
+        if(number === undefined)
+            return "";
+        return (`${number * 100}%`);
+    }
+
 }

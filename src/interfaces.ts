@@ -1,5 +1,5 @@
 import {
-  PersonDto,
+  PersonDto, ProjectBudgetSchemaDto,
   ProjectDto,
   ProjectStatisticsResponse,
   TaskDto,
@@ -224,4 +224,12 @@ export interface DeleteModalProps {
 export interface WorkloadModalProps {
   closeModal: () => void,
   modalWidth: string,
+}
+export interface DonutGraphData {
+  name: string,
+  value: number
+}
+export interface ProjectDetailsProps {
+  project: ProjectDto,
+  chosenSchema: ProjectBudgetSchemaDto,
 }
