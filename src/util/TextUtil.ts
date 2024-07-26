@@ -1,5 +1,5 @@
 import {ProjectDto, ProjectMonthDto, TaskDto, WorkPackageDto} from "../../temp_ts";
-import {ProgressObject, WorkpackageLimitProps, YearLimitProps} from "../interfaces";
+import {ProgressObject, WorkDetailsLineChartProps, WorkpackageLimitProps, YearLimitProps} from "../interfaces";
 
 export default class TextUtil {
     static replaceSpaces(value: string): string {
@@ -314,6 +314,34 @@ export default class TextUtil {
         if(number === undefined)
             return "";
         return (`${number * 100}%`);
+    }
+
+    static getFirstOfCurrentYearMonth = (): Date => {
+        const currentDate = new Date();
+        return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    }
+
+    static returnLineChartData = (months: ProjectMonthDto [] | undefined): WorkDetailsLineChartProps[] => {
+        if(months === undefined)
+            return [];
+        const currDate = this.getFirstOfCurrentYearMonth();
+        const relevantMonths: ProjectMonthDto[] = [];
+
+        for (let i = 6; i <= months.length; i += 6) {
+            const monthDateStr = months[i - 1]?.date;
+            if (monthDateStr) {
+                const monthDate = new Date(monthDateStr);
+                if (currDate <= monthDate) {
+                    relevantMonths.push(...months.slice(i - 6, i));
+                }
+            }
+        }
+        return (relevantMonths.map(month => {
+            return({
+                "date": month.date ?? "",
+                "pmPerMonth": month.pmBurnDownRate ?? 0
+            })
+        }));
     }
 
 }

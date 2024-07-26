@@ -5,7 +5,7 @@ import {Label} from "flowbite-react";
 import {DonutGraphData, ProjectDetailsProps} from "../../../interfaces";
 
 export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => {
-    const graphArray2: DonutGraphData[] = [
+    const graphArray: DonutGraphData[] = [
         {
             name: "Staff",
             value: project.staffBudget ?? 0
@@ -59,26 +59,26 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                 <div className="flex flex-row items-center py-2">
                     <div className="w-[7%] h-[1px] bg-gray-300"/>
                     <Label className="px-2 uppercase text-muted">
-                        budget breakdown
+                        budget
                     </Label>
                     <div className="flex-grow h-[1px] bg-gray-300"/>
                 </div>
                 <div className="items-end justify-between flex space-x-2">
                     <div className="flex space-x-1 items-center">
-                                        <span className="uppercase text-xs">
-                                            indirect budget:
-                                        </span>
+                        <span className="uppercase text-xs">
+                            indirect budget:
+                        </span>
                         <span className="text-xl font-medium">
-                                          {TextUtil.numberToPercantage(chosenSchema?.indirectBudget)}
-                                        </span>
+                            {TextUtil.numberToPercantage(chosenSchema?.indirectBudget)}
+                        </span>
                     </div>
                     <div className="flex space-x-1 items-center">
-                                        <span className="uppercase text-xs">
-                                           sofinancing:
-                                        </span>
+                        <span className="uppercase text-xs">
+                            sofinancing:
+                        </span>
                         <span className="text-xl font-medium">
-                                            {TextUtil.numberToPercantage(chosenSchema?.sofinancing)}
-                                        </span>
+                            {TextUtil.numberToPercantage(chosenSchema?.sofinancing)}
+                        </span>
                     </div>
                     <span className="uppercase font-medium text-xl">
                                  {chosenSchema?.name}
@@ -121,7 +121,7 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                     </div>
                     <div className="flex w-[40%] justify-end">
                         <DonutChart
-                            data={graphArray2}
+                            data={graphArray}
                             variant="donut"
                             valueFormatter={valueFormatter}
                         />

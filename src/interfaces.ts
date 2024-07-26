@@ -233,3 +233,12 @@ export interface ProjectDetailsProps {
   project: ProjectDto,
   chosenSchema: ProjectBudgetSchemaDto,
 }
+export interface WorkDetailsProps {
+  project: ProjectDto,
+  statistics: ProjectStatisticsResponse
+}
+
+export interface WorkDetailsLineChartProps {
+  date: string,
+  pmPerMonth: number
+}
