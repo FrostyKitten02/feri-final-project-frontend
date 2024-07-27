@@ -1,23 +1,26 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PopoverMenuProps } from "../../interfaces";
 import { motion } from "framer-motion";
-import { FaEuroSign } from "react-icons/fa6";
-import { BsFillPersonVcardFill } from "react-icons/bs";
+import { BsThreeDots } from "react-icons/bs";
+import PersonTypeModal from "./PersonTypeModal";
+import SalaryModal from "./SalaryModal";
 
 export default function PopoverMenu({
-  setAdminPopoverOpen,
-  setPersonTypeModalOpen,
-  setSalaryModalOpen,
+  userId,
+  userEmail,
 }: PopoverMenuProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
+  const ignoreClickOutside = useRef<boolean>(false);
+  const [actionPopoverOpen, setActionPopoverOpen] = useState<boolean>(false);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (
         popoverRef.current &&
-        !popoverRef.current.contains(e.target as Node)
+        !popoverRef.current.contains(e.target as Node) &&
+        !ignoreClickOutside.current
       ) {
-        setAdminPopoverOpen(false);
+        setActionPopoverOpen(false);
       }
     }
 
@@ -27,36 +30,46 @@ export default function PopoverMenu({
     };
   }, [popoverRef]);
 
+  const handlePopoverButtonClick = (): void => {
+    ignoreClickOutside.current = true;
+  };
+
+  const handleModalClose = (): void => {
+    ignoreClickOutside.current = false;
+  };
+
   return (
     <>
-      <motion.div
-        animate={{ opacity: 1, y: -10 }}
-        initial={{ opacity: 0 }}
-        exit={{
-          opacity: 0,
-        }}
-        className="flex flex-col absolute bg-white bottom-full w-64 h-32 rounded-xl shadow-xl border border-solid border-gray-200 divide-y"
-        ref={popoverRef}
-      >
-        <button
-          onClick={() => {
-            setPersonTypeModalOpen(true), setAdminPopoverOpen(false);
+      <button onClick={() => setActionPopoverOpen(true)}>
+        <BsThreeDots className="size-6 fill-gray-700 hover:fill-primary transition delay-50" />
+      </button>
+      {actionPopoverOpen && (
+        <motion.div
+          animate={{ opacity: 1, y: -10 }}
+          initial={{ opacity: 0 }}
+          exit={{
+            opacity: 0,
           }}
-          className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4"
+          className="flex flex-col absolute bg-white bottom-full w-64 h-32 rounded-xl shadow-xl border border-solid border-gray-200 divide-y"
+          ref={popoverRef}
         >
-          <BsFillPersonVcardFill className="size-4" />
-          <span>Manage employment type</span>
-        </button>
-        <button
-          onClick={() => {
-            setSalaryModalOpen(true), setAdminPopoverOpen(false);
-          }}
-          className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4"
-        >
-          <FaEuroSign className="size-4" />
-          <span>Manage salary</span>
-        </button>
-      </motion.div>
+          <div className="px-2 py-2 font-medium">Actions</div>
+          <PersonTypeModal
+            setActionPopoverOpen={setActionPopoverOpen}
+            onButtonClick={handlePopoverButtonClick}
+            onModalClose={handleModalClose}
+            userId={userId}
+            userEmail={userEmail}
+          />
+          <SalaryModal
+            setActionPopoverOpen={setActionPopoverOpen}
+            onButtonClick={handlePopoverButtonClick}
+            onModalClose={handleModalClose}
+            userId={userId}
+            userEmail={userEmail}
+          />
+        </motion.div>
+      )}
     </>
   );
 }

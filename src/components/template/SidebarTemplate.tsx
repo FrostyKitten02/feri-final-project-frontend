@@ -8,10 +8,7 @@ import ReturnIcon from "../../assets/icons/return.svg?react";
 import {motion} from "framer-motion";
 import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
-import {BsPersonFillGear} from "react-icons/bs";
-import PersonTypeModal from "../admin-modal/PersonTypeModal";
-import PopoverMenu from "../admin-modal/PopoverMenu";
-import SalaryModal from "../admin-modal/SalaryModal";
+import ManageUsersModal from "../admin-modal/ManageUsersModal";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
                                                              items,
@@ -19,9 +16,6 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
                                                          }) => {
     const [selected, setSelected] = useState<string>("");
     const [opened, setOpened] = useState<boolean>(true);
-    const [adminPopoverOpen, setAdminPopoverOpen] = useState<boolean>(false);
-    const [personTypeModalOpen, setPersonTypeModalOpen] = useState<boolean>(false);
-    const [salaryModalOpen, setSalaryModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
     const {user} = useUser();
 
@@ -92,37 +86,9 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
                 ))}
             </div>
             {user?.id === "user_2fg086sprrUABqywjpB9n31enB2" && (
-                <>
-                    <div className={`py-2 relative ${opened && `justify-center`} flex`}>
-                        <button
-                            onClick={() => setAdminPopoverOpen(true)}
-                            className="flex flex-row justify-center items-center gap-x-3"
-                        >
-                            <BsPersonFillGear className="fill-white size-7"/>
-                            {opened && (
-                                <motion.span
-                                    initial={{visibility: "hidden", opacity: 0}}
-                                    animate={{visibility: "visible", opacity: 1}}
-                                    transition={{delay: 0.2, duration: 0.7}}
-                                    className="font-semibold"
-                                >
-                                    MANAGE USERS
-                                </motion.span>
-                            )}
-                        </button>
-                        {adminPopoverOpen && (
-                            <PopoverMenu
-                                setAdminPopoverOpen={setAdminPopoverOpen}
-                                setPersonTypeModalOpen={setPersonTypeModalOpen}
-                                setSalaryModalOpen={setSalaryModalOpen}
-                            />
-                        )}
-                    </div>
-                    {personTypeModalOpen && (
-                        <PersonTypeModal setModalOpen={setPersonTypeModalOpen}/>
-                    )}
-                    {salaryModalOpen && <SalaryModal setModalOpen={setSalaryModalOpen}/>}
-                </>
+                <div className={`py-2 ${opened && `justify-center`} flex`}>
+                    <ManageUsersModal sidebarOpened={opened}/>
+                </div>
             )}
             <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
                 <div className="flex px-3 items-center justify-center ">

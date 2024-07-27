@@ -39,32 +39,6 @@ export interface AddPersonToProjectRequest {
 /**
  * 
  * @export
- * @interface AddPersonToTaskRequest
- */
-export interface AddPersonToTaskRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AddPersonToTaskRequest
-     * @deprecated
-     */
-    'occupancy'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof AddPersonToTaskRequest
-     */
-    'startDate'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AddPersonToTaskRequest
-     */
-    'endDate'?: string;
-}
-/**
- * 
- * @export
  * @interface CreateOccupancyRequest
  */
 export interface CreateOccupancyRequest {
@@ -103,13 +77,13 @@ export interface CreateOccupancyRequest {
      * @type {string}
      * @memberof CreateOccupancyRequest
      */
-    'startDate'?: string;
+    'endDate'?: string;
     /**
      * 
      * @type {string}
      * @memberof CreateOccupancyRequest
      */
-    'endDate'?: string;
+    'startDate'?: string;
 }
 /**
  * 
@@ -328,10 +302,10 @@ export interface CreateWorkPackageRequest {
 export interface GetPeopleResponse {
     /**
      * 
-     * @type {Array<PersonDto>}
+     * @type {Array<PersonDtoImpl>}
      * @memberof GetPeopleResponse
      */
-    'people'?: Array<PersonDto>;
+    'people'?: Array<PersonDtoImpl>;
     /**
      * 
      * @type {string}
@@ -347,10 +321,10 @@ export interface GetPeopleResponse {
 export interface GetPersonResponse {
     /**
      * 
-     * @type {PersonDto}
+     * @type {PersonDtoImpl}
      * @memberof GetPersonResponse
      */
-    'person'?: PersonDto;
+    'person'?: PersonDtoImpl;
     /**
      * 
      * @type {SalaryDto}
@@ -370,6 +344,31 @@ export interface GetProjectResponse {
      * @memberof GetProjectResponse
      */
     'projectDto'?: ProjectDto;
+}
+/**
+ * 
+ * @export
+ * @interface ListPersonResponse
+ */
+export interface ListPersonResponse {
+    /**
+     * 
+     * @type {Array<PersonListDto>}
+     * @memberof ListPersonResponse
+     */
+    'people'?: Array<PersonListDto>;
+    /**
+     * 
+     * @type {PageInfo}
+     * @memberof ListPersonResponse
+     */
+    'pageInfo'?: PageInfo;
+    /**
+     * 
+     * @type {SortInfoResponseObject}
+     * @memberof ListPersonResponse
+     */
+    'sortInfo'?: SortInfoResponseObject;
 }
 /**
  * 
@@ -462,34 +461,130 @@ export interface PageInfoRequest {
 /**
  * 
  * @export
- * @interface PersonDto
+ * @interface PersonDtoImpl
  */
-export interface PersonDto {
+export interface PersonDtoImpl {
     /**
      * 
      * @type {string}
-     * @memberof PersonDto
+     * @memberof PersonDtoImpl
      */
     'id'?: string;
     /**
      * 
      * @type {string}
-     * @memberof PersonDto
+     * @memberof PersonDtoImpl
      */
     'name'?: string;
     /**
      * 
      * @type {string}
-     * @memberof PersonDto
+     * @memberof PersonDtoImpl
      */
     'lastname'?: string;
     /**
      * 
      * @type {string}
-     * @memberof PersonDto
+     * @memberof PersonDtoImpl
      */
     'email'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonDtoImpl
+     */
+    'salary'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonDtoImpl
+     */
+    'availability'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface PersonListDto
+ */
+export interface PersonListDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonListDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonListDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonListDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonListDto
+     */
+    'salary'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonListDto
+     */
+    'availability'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonListDto
+     */
+    'lastname'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PersonListSearchParams
+ */
+export interface PersonListSearchParams {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonListSearchParams
+     */
+    'searchStr'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PersonSortInfoRequest
+ */
+export interface PersonSortInfoRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PersonSortInfoRequest
+     */
+    'ascending'?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof PersonSortInfoRequest
+     */
+    'fields'?: Array<PersonSortInfoRequestFieldsEnum>;
+}
+
+export const PersonSortInfoRequestFieldsEnum = {
+    Name: 'NAME',
+    Lastname: 'LASTNAME',
+    Email: 'EMAIL'
+} as const;
+
+export type PersonSortInfoRequestFieldsEnum = typeof PersonSortInfoRequestFieldsEnum[keyof typeof PersonSortInfoRequestFieldsEnum];
+
 /**
  * 
  * @export
@@ -1438,35 +1533,6 @@ export const PersonControllerApiAxiosParamCreator = function (configuration?: Co
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllPeople: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/person/all`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {string} personId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1498,6 +1564,58 @@ export const PersonControllerApiAxiosParamCreator = function (configuration?: Co
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {PersonSortInfoRequest} [sortInfo] 
+         * @param {PersonListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listPeople: async (pageInfo: PageInfoRequest, sortInfo?: PersonSortInfoRequest, searchParams?: PersonListSearchParams, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageInfo' is not null or undefined
+            assertParamExists('listPeople', 'pageInfo', pageInfo)
+            const localVarPath = `/person/list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageInfo !== undefined) {
+                for (const [key, value] of Object.entries(pageInfo)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (sortInfo !== undefined) {
+                for (const [key, value] of Object.entries(sortInfo)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (searchParams !== undefined) {
+                for (const [key, value] of Object.entries(searchParams)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1510,17 +1628,6 @@ export const PersonControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAllPeople(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<PersonDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPeople(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['PersonControllerApi.getAllPeople']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @param {string} personId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1529,6 +1636,20 @@ export const PersonControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPersonById(personId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PersonControllerApi.getPersonById']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {PersonSortInfoRequest} [sortInfo] 
+         * @param {PersonListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listPeople(pageInfo: PageInfoRequest, sortInfo?: PersonSortInfoRequest, searchParams?: PersonListSearchParams, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListPersonResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listPeople(pageInfo, sortInfo, searchParams, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PersonControllerApi.listPeople']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -1543,20 +1664,23 @@ export const PersonControllerApiFactory = function (configuration?: Configuratio
     return {
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllPeople(options?: any): AxiosPromise<Array<PersonDto>> {
-            return localVarFp.getAllPeople(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {string} personId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getPersonById(personId: string, options?: any): AxiosPromise<GetPersonResponse> {
             return localVarFp.getPersonById(personId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {PersonSortInfoRequest} [sortInfo] 
+         * @param {PersonListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listPeople(pageInfo: PageInfoRequest, sortInfo?: PersonSortInfoRequest, searchParams?: PersonListSearchParams, options?: any): AxiosPromise<ListPersonResponse> {
+            return localVarFp.listPeople(pageInfo, sortInfo, searchParams, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1570,16 +1694,6 @@ export const PersonControllerApiFactory = function (configuration?: Configuratio
 export class PersonControllerApi extends BaseAPI {
     /**
      * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof PersonControllerApi
-     */
-    public getAllPeople(options?: RawAxiosRequestConfig) {
-        return PersonControllerApiFp(this.configuration).getAllPeople(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {string} personId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1587,6 +1701,19 @@ export class PersonControllerApi extends BaseAPI {
      */
     public getPersonById(personId: string, options?: RawAxiosRequestConfig) {
         return PersonControllerApiFp(this.configuration).getPersonById(personId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {PageInfoRequest} pageInfo 
+     * @param {PersonSortInfoRequest} [sortInfo] 
+     * @param {PersonListSearchParams} [searchParams] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PersonControllerApi
+     */
+    public listPeople(pageInfo: PageInfoRequest, sortInfo?: PersonSortInfoRequest, searchParams?: PersonListSearchParams, options?: RawAxiosRequestConfig) {
+        return PersonControllerApiFp(this.configuration).listPeople(pageInfo, sortInfo, searchParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -1881,6 +2008,39 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        deleteProject: async (projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectId' is not null or undefined
+            assertParamExists('deleteProject', 'projectId', projectId)
+            const localVarPath = `/project/{projectId}`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         getPeopleOnProjectByProjectId: async (projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('getPeopleOnProjectByProjectId', 'projectId', projectId)
@@ -2135,6 +2295,18 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async deleteProject(projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProject(projectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.deleteProject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async getPeopleOnProjectByProjectId(projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPeopleResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPeopleOnProjectByProjectId(projectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -2238,6 +2410,15 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        deleteProject(projectId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteProject(projectId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         getPeopleOnProjectByProjectId(projectId: string, options?: any): AxiosPromise<GetPeopleResponse> {
             return localVarFp.getPeopleOnProjectByProjectId(projectId, options).then((request) => request(axios, basePath));
         },
@@ -2319,6 +2500,17 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public createProject(createProjectRequest: CreateProjectRequest, options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).createProject(createProjectRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public deleteProject(projectId: string, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).deleteProject(projectId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2506,49 +2698,6 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
-         * @param {string} taskId 
-         * @param {string} personId 
-         * @param {AddPersonToTaskRequest} addPersonToTaskRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        assignPersonToTask: async (taskId: string, personId: string, addPersonToTaskRequest: AddPersonToTaskRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'taskId' is not null or undefined
-            assertParamExists('assignPersonToTask', 'taskId', taskId)
-            // verify required parameter 'personId' is not null or undefined
-            assertParamExists('assignPersonToTask', 'personId', personId)
-            // verify required parameter 'addPersonToTaskRequest' is not null or undefined
-            assertParamExists('assignPersonToTask', 'addPersonToTaskRequest', addPersonToTaskRequest)
-            const localVarPath = `/task/{taskId}/assign-person/{personId}`
-                .replace(`{${"taskId"}}`, encodeURIComponent(String(taskId)))
-                .replace(`{${"personId"}}`, encodeURIComponent(String(personId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(addPersonToTaskRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {CreateTaskRequest} createTaskRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2576,6 +2725,39 @@ export const TaskControllerApiAxiosParamCreator = function (configuration?: Conf
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createTaskRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteTask: async (taskId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'taskId' is not null or undefined
+            assertParamExists('deleteTask', 'taskId', taskId)
+            const localVarPath = `/task/{taskId}`
+                .replace(`{${"taskId"}}`, encodeURIComponent(String(taskId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2633,20 +2815,6 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {string} taskId 
-         * @param {string} personId 
-         * @param {AddPersonToTaskRequest} addPersonToTaskRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async assignPersonToTask(taskId: string, personId: string, addPersonToTaskRequest: AddPersonToTaskRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.assignPersonToTask(taskId, personId, addPersonToTaskRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['TaskControllerApi.assignPersonToTask']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @param {CreateTaskRequest} createTaskRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2655,6 +2823,18 @@ export const TaskControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createTask(createTaskRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['TaskControllerApi.createTask']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteTask(taskId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTask(taskId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['TaskControllerApi.deleteTask']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -2682,23 +2862,21 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
-         * @param {string} taskId 
-         * @param {string} personId 
-         * @param {AddPersonToTaskRequest} addPersonToTaskRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        assignPersonToTask(taskId: string, personId: string, addPersonToTaskRequest: AddPersonToTaskRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.assignPersonToTask(taskId, personId, addPersonToTaskRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {CreateTaskRequest} createTaskRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         createTask(createTaskRequest: CreateTaskRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
             return localVarFp.createTask(createTaskRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} taskId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteTask(taskId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteTask(taskId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2722,19 +2900,6 @@ export const TaskControllerApiFactory = function (configuration?: Configuration,
 export class TaskControllerApi extends BaseAPI {
     /**
      * 
-     * @param {string} taskId 
-     * @param {string} personId 
-     * @param {AddPersonToTaskRequest} addPersonToTaskRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof TaskControllerApi
-     */
-    public assignPersonToTask(taskId: string, personId: string, addPersonToTaskRequest: AddPersonToTaskRequest, options?: RawAxiosRequestConfig) {
-        return TaskControllerApiFp(this.configuration).assignPersonToTask(taskId, personId, addPersonToTaskRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {CreateTaskRequest} createTaskRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2742,6 +2907,17 @@ export class TaskControllerApi extends BaseAPI {
      */
     public createTask(createTaskRequest: CreateTaskRequest, options?: RawAxiosRequestConfig) {
         return TaskControllerApiFp(this.configuration).createTask(createTaskRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} taskId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TaskControllerApi
+     */
+    public deleteTask(taskId: string, options?: RawAxiosRequestConfig) {
+        return TaskControllerApiFp(this.configuration).deleteTask(taskId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2794,6 +2970,39 @@ export const WorkPackageControllerApiAxiosParamCreator = function (configuration
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createWorkPackageRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} workPackageId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteWorkPackage: async (workPackageId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'workPackageId' is not null or undefined
+            assertParamExists('deleteWorkPackage', 'workPackageId', workPackageId)
+            const localVarPath = `/work-package/{workPackageId}`
+                .replace(`{${"workPackageId"}}`, encodeURIComponent(String(workPackageId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2864,6 +3073,18 @@ export const WorkPackageControllerApiFp = function(configuration?: Configuration
         /**
          * 
          * @param {string} workPackageId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteWorkPackage(workPackageId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteWorkPackage(workPackageId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['WorkPackageControllerApi.deleteWorkPackage']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} workPackageId 
          * @param {UpdateWorkPackageRequest} updateWorkPackageRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2896,6 +3117,15 @@ export const WorkPackageControllerApiFactory = function (configuration?: Configu
         /**
          * 
          * @param {string} workPackageId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteWorkPackage(workPackageId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteWorkPackage(workPackageId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} workPackageId 
          * @param {UpdateWorkPackageRequest} updateWorkPackageRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2922,6 +3152,17 @@ export class WorkPackageControllerApi extends BaseAPI {
      */
     public createWorkPackage(createWorkPackageRequest: CreateWorkPackageRequest, options?: RawAxiosRequestConfig) {
         return WorkPackageControllerApiFp(this.configuration).createWorkPackage(createWorkPackageRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} workPackageId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkPackageControllerApi
+     */
+    public deleteWorkPackage(workPackageId: string, options?: RawAxiosRequestConfig) {
+        return WorkPackageControllerApiFp(this.configuration).deleteWorkPackage(workPackageId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

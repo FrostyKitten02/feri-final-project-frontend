@@ -7,7 +7,7 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { AddPersonToProjectRequest, PersonDto } from "../../../../temp_ts";
+import { AddPersonToProjectRequest, ListPersonResponse, PageInfoRequest, PersonDtoImpl, PersonListSearchParams, PersonSortInfoRequest } from "../../../../temp_ts";
 import {
   CustomModalBody,
   CustomModalFooter,
@@ -24,40 +24,66 @@ import UserSearchInput from "../../template/search-user/UserSearchInput";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [allPeople, setAllPeople] = useState<PersonDto[]>([]);
+  const [allPeople, setAllPeople] = useState<ListPersonResponse>();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>(searchQuery);
   const [inputValue, setInputValue] = useState<string>("");
   const [listOpen, setListOpen] = useState<boolean>(false);
 
   const requestArgs = useRequestArgs();
   const { projectId } = useParams();
 
+  // DEBOUNCE HOOK SO THE USER CAN'T SPAM API CALLS
   useEffect(() => {
-    fetchAllPeople();
-  }, []);
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300)
+
+    return () => {
+      clearTimeout(handler);
+    }
+  }, [searchQuery])
+  
+  useEffect(() => {
+    if (modalOpen) {
+      fetchAllPeople();
+    }
+  }, [debouncedSearchQuery]);
 
   const fetchAllPeople = async (): Promise<void> => {
+    const pageInfo: PageInfoRequest = {
+      elementsPerPage: 3,
+      pageNumber: 1,
+    };
+    const sortInfo: PersonSortInfoRequest = {
+      ascending: true,
+      fields: ["NAME"]
+    };
+    const searchParams: PersonListSearchParams = {
+      searchStr: debouncedSearchQuery,
+    };
+
     try {
-      const response = await personAPI.getAllPeople(requestArgs);
+      const response = await personAPI.listPeople(pageInfo, sortInfo, searchParams, requestArgs);
       if (response.status === 200) setAllPeople(response.data);
     } catch (error: any) {
       toastError(error.message);
     }
   };
 
-  const filteredPeople = useMemo((): PersonDto[] => {
-    if (searchQuery.trim() === "") {
+  const filteredPeople = useMemo((): PersonDtoImpl[] => {
+    if (debouncedSearchQuery.trim() === "") {
       setListOpen(false);
       return [];
     } else {
       setListOpen(true);
-      return allPeople.filter((person) =>
+      return (allPeople?.people ?? []).filter((person) =>
         `${person.name} ${person.lastname} ${person.email}`
           .toLowerCase()
-          .includes(searchQuery.toLowerCase())
+          .includes(debouncedSearchQuery.toLowerCase())
       );
     }
-  }, [searchQuery, allPeople]);
+  }, [debouncedSearchQuery, allPeople]);
 
   const {
     handleSubmit,
@@ -67,7 +93,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     formState: { errors },
   } = useForm<AssignPersonFormFields>();
 
-  const handleSelectPerson = (person: PersonDto): void => {
+  const handleSelectPerson = (person: PersonDtoImpl): void => {
     setValue("person", person);
     if (person.name && person.lastname) {
       setInputValue(`${person.name} ${person.lastname}`);
