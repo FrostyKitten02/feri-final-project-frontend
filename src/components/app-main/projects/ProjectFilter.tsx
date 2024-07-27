@@ -34,7 +34,7 @@ export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilter
                             <MdOutlineDone size={30}/>
                         </div>
                         <div className="text-4xl pl-3 font-medium">
-                            {projectStatusCount?.finishedProjects}
+                            {projectStatusCount?.finishedProjects ?? 0}
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@ export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilter
                             <RiProgress3Line size={30}/>
                         </div>
                         <div className="text-4xl pl-3 font-medium">
-                            {projectStatusCount?.inProgressProjects}
+                            {projectStatusCount?.inProgressProjects ?? 0}
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@ export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilter
                             <MdSchedule size={30} />
                         </div>
                         <div className="text-4xl pl-3 font-medium">
-                            {projectStatusCount?.scheduledProjects}
+                            {projectStatusCount?.scheduledProjects ?? 0}
                         </div>
                     </div>
                 </div>
