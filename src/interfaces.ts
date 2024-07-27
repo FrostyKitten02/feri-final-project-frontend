@@ -242,3 +242,7 @@ export interface WorkDetailsLineChartProps {
   date: string,
   pmPerMonth: number
 }
+
+export interface CurrentMonthProps {
+  statistics: ProjectStatisticsResponse
+}

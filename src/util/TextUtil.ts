@@ -1,5 +1,5 @@
 import {ProjectDto, ProjectMonthDto, TaskDto, WorkPackageDto} from "../../temp_ts";
-import {ProgressObject, WorkDetailsLineChartProps, WorkpackageLimitProps, YearLimitProps} from "../interfaces";
+import {ProgressObject, WorkpackageLimitProps, YearLimitProps} from "../interfaces";
 
 export default class TextUtil {
     static replaceSpaces(value: string): string {
@@ -316,32 +316,30 @@ export default class TextUtil {
         return (`${number * 100}%`);
     }
 
-    static getFirstOfCurrentYearMonth = (): Date => {
-        const currentDate = new Date();
+    static getFirstOfYearMonth = (date: Date = new Date()): Date => {
+        const currentDate = new Date(date);
         return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     }
 
-    static returnLineChartData = (months: ProjectMonthDto [] | undefined): WorkDetailsLineChartProps[] => {
-        if(months === undefined)
-            return [];
-        const currDate = this.getFirstOfCurrentYearMonth();
-        const relevantMonths: ProjectMonthDto[] = [];
-
-        for (let i = 6; i <= months.length; i += 6) {
-            const monthDateStr = months[i - 1]?.date;
-            if (monthDateStr) {
-                const monthDate = new Date(monthDateStr);
-                if (currDate <= monthDate) {
-                    relevantMonths.push(...months.slice(i - 6, i));
-                }
-            }
-        }
-        return (relevantMonths.map(month => {
-            return({
-                "date": month.date ?? "",
-                "pmPerMonth": month.pmBurnDownRate ?? 0
-            })
-        }));
+    static getMonthYearCurrentDate = (): string => {
+        const date = new Date();
+        return date.toLocaleDateString('en-US', {month: 'long', year: 'numeric'});
     }
 
+    static getRelevantTasks = (workpackages: WorkPackageDto[] | undefined): TaskDto[] => {
+        const currDate = this.getFirstOfYearMonth();
+        let tasks: TaskDto[] = [];
+        workpackages?.forEach(workpackage => {
+            workpackage.tasks?.forEach(task => {
+                if (task.startDate && task.endDate) {
+                    const start = this.getFirstOfYearMonth(new Date(task.startDate));
+                    const end = this.getFirstOfYearMonth(new Date(task.endDate));
+                    if (start <= currDate && currDate <= end) {
+                        tasks.push(task);
+                    }
+                }
+            });
+        });
+        return tasks;
+    }
 }

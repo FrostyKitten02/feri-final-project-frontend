@@ -1,6 +1,6 @@
 import {DonutGraphData, WorkDetailsLineChartProps, WorkDetailsProps} from "../../../interfaces";
 import {DonutChart, LineChart, ProgressBar} from "@tremor/react";
-import TextUtil from "../../../util/TextUtil";
+import ChartUtil from "../../../util/ChartUtil";
 export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
     const graphData: DonutGraphData[] = project.workPackages
         ? project.workPackages.map(workpackage => ({
@@ -12,9 +12,9 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
         return (workpackage.tasks?.length ?? 0)
     }) : [];
     const totalTasks = taskArray.reduce((sum, current) => sum + current, 0);
-    const {totalPm, actualPm, pmPercentValue, tooltipValue} = TextUtil.getWorkDetailsLineChartPm(statistics);
+    const {totalPm, actualPm, pmPercentValue, tooltipValue} = ChartUtil.getWorkDetailsLineChartPm(statistics);
     const valueFormatter = (number: number) => `${number}PM`;
-    const lineChartData: WorkDetailsLineChartProps [] = TextUtil.returnLineChartData(statistics.months);
+    const lineChartData: WorkDetailsLineChartProps [] = ChartUtil.returnLineChartData(statistics.months);
 
     // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
     // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALFA VERSIONS
@@ -55,7 +55,7 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
                                         <div>
                                             <div className="py-1">
                                                 <div className="text-xs uppercase text-muted">
-                                                    Done {actualPm}PM out of {totalPm}PM - 30%
+                                                    Done {actualPm}PM out of {totalPm}PM - {pmPercentValue}%
                                                 </div>
                                             </div>
                                             <ProgressBar

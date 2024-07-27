@@ -132,14 +132,6 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                 className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
                 project details
             </div>
-            {
-                /*
-               <button
-                className="absolute bg-red-50 top-2 right-0">
-                edit
-            </button>
-                 */
-            }
         </div>
     )
 }

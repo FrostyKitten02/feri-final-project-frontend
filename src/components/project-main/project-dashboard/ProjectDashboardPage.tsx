@@ -5,6 +5,7 @@ import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {ProjectDetails} from "./ProjectDetails";
 import {WorkDetails} from "./WorkDetails";
+import {CurrentMonth} from "./CurrentMonth";
 
 export default function ProjectDashboardPage() {
     const {projectId} = useParams<{ projectId: string }>();
@@ -60,8 +61,8 @@ export default function ProjectDashboardPage() {
                     }
                 </div>
                 <div className="flex flex-grow">
-                    <div className="relative p-5">
-                        <div className="border-gray-200 w-[700px] h-full rounded-[20px] p-5 border-solid border-[1px]">
+                    <div className="relative p-5 z-0">
+                        <div className="border-gray-200 w-[700px] h-full  rounded-[20px] p-5 border-solid border-[1px]">
                             <div>
                                 budget spent; kolko je ze porabljeno od tega kolko je na voljo
                                 staff budget po mesecih kolko je blo porabljeno / kolko se je
@@ -74,7 +75,14 @@ export default function ProjectDashboardPage() {
                     </div>
                     <div className="relative p-5 flex-grow">
                         <div className="p-5 border-solid border-[1px] rounded-[20px] border-gray-200 h-full">
-                            section
+                            TRENUTNO POMEMBNO (TA MESEC)
+                            side analytics here
+                            <div>
+                                kolko se je delalo ta mesec - kolko je kdo delal ta mesec
+                            </div>
+                            <div>
+                                na cem se je delalo ta mesec; kolko PM so naredli, kolko se je moglo
+                            </div>
                         </div>
                         <div className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
                             N/A
@@ -82,15 +90,10 @@ export default function ProjectDashboardPage() {
                     </div>
                 </div>
             </div>
-            <div className="w-[350px] bg-gray-100 rounded-[20px] p-5">
-                TRENUTNO POMEMBNO (TA MESEC)
-                side analytics here
-                <div>
-                    kolko se je delalo ta mesec - kolko je kdo delal ta mesec
-                </div>
-                <div>
-                    na cem se je delalo ta mesec; kolko PM so naredli, kolko se je moglo
-                </div>
+            <div className="w-[350px] bg-gray-100 flex flex-col rounded-[20px] p-5">
+                {
+                    statistics && <CurrentMonth statistics={statistics} />
+                }
             </div>
         </div>
     )
