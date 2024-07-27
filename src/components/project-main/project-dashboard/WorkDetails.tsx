@@ -12,6 +12,7 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
         return (workpackage.tasks?.length ?? 0)
     }) : [];
     const totalTasks = taskArray.reduce((sum, current) => sum + current, 0);
+    const {totalPm, actualPm, pmPercentValue, tooltipValue} = TextUtil.getWorkDetailsLineChartPm(statistics);
     const valueFormatter = (number: number) => `${number}PM`;
     const lineChartData: WorkDetailsLineChartProps [] = TextUtil.returnLineChartData(statistics.months);
 
@@ -54,14 +55,14 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
                                         <div>
                                             <div className="py-1">
                                                 <div className="text-xs uppercase text-muted">
-                                                    Done 5 out of 11PM - 30%
+                                                    Done {actualPm}PM out of {totalPm}PM - 30%
                                                 </div>
                                             </div>
                                             <ProgressBar
-                                                value={90}
+                                                value={pmPercentValue}
                                                 color="blue"
                                                 showAnimation={true}
-                                                tooltip="You are over assigned PM."
+                                                tooltip={tooltipValue}
                                             />
                                         </div>
                                     </div>
