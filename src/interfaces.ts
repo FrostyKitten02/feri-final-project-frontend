@@ -1,5 +1,6 @@
 import {
-  PersonDto, ProjectBudgetSchemaDto,
+  ProjectBudgetSchemaDto,
+  PersonDtoImpl,
   ProjectDto,
   ProjectStatisticsResponse,
   TaskDto,
@@ -100,18 +101,27 @@ export interface AssignPersonModalProps {
   taskTitle: string;
 }
 
-export interface PersonTypeModalProps {
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface AdminModalProps {
+  setActionPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onButtonClick: () => void;
+  onModalClose: () => void;
+  userId?: string;
+  userEmail?: string;
+  refetchUserList: () => void;
 }
 
 export interface SalaryModalProps {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface ManageUsersModalProps {
+  sidebarOpened: boolean;
+}
+
 export interface PopoverMenuProps {
-  setAdminPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setPersonTypeModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSalaryModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  userId?: string;
+  userEmail?: string;
+  refetchUserList: () => void;
 }
 
 export interface ProgressObject {
@@ -127,6 +137,10 @@ export interface ProjectModalProps {
 
 export interface CustomModalErrorProps {
   error: string | undefined;
+}
+
+export interface ModalPortalProps {
+  children: React.ReactNode;
 }
 
 export interface CustomModalProps {
@@ -187,15 +201,16 @@ export interface UserSearchInputProps<
   T extends FieldValues,
   K extends Path<T>
 > {
-  setListOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  field: ControllerRenderProps<T, K>;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  setListOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  field?: ControllerRenderProps<T, K>;
+  setInputValue?: React.Dispatch<React.SetStateAction<string>>;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  inputValue: string;
-  listOpen: boolean;
-  filteredPeople: PersonDto[];
-  handleSelectPerson: (person: PersonDto) => void;
+  inputValue?: string;
+  listOpen?: boolean;
+  filteredPeople?: PersonDtoImpl[];
+  handleSelectPerson?: (person: PersonDtoImpl) => void;
   inputWidth?: number;
+  showResults: boolean;
 }
 
 export interface ProjectFilterProps {
