@@ -27,7 +27,8 @@ export default function PersonTypeModal({
   onButtonClick,
   onModalClose,
   userId,
-  userEmail
+  userEmail,
+  refetchUserList
 }: AdminModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -84,6 +85,7 @@ export default function PersonTypeModal({
           data.name +
             " was successfully assigned to " + userEmail
         );
+        refetchUserList();
       }
     } catch (error: any) {
       toastError(error.message);

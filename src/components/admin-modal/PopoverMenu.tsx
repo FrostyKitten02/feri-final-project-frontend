@@ -8,6 +8,7 @@ import SalaryModal from "./SalaryModal";
 export default function PopoverMenu({
   userId,
   userEmail,
+  refetchUserList
 }: PopoverMenuProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const ignoreClickOutside = useRef<boolean>(false);
@@ -60,6 +61,7 @@ export default function PopoverMenu({
             onModalClose={handleModalClose}
             userId={userId}
             userEmail={userEmail}
+            refetchUserList={refetchUserList}
           />
           <SalaryModal
             setActionPopoverOpen={setActionPopoverOpen}
@@ -67,6 +69,7 @@ export default function PopoverMenu({
             onModalClose={handleModalClose}
             userId={userId}
             userEmail={userEmail}
+            refetchUserList={refetchUserList}
           />
         </motion.div>
       )}

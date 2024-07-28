@@ -106,6 +106,7 @@ export interface AdminModalProps {
   onModalClose: () => void;
   userId?: string;
   userEmail?: string;
+  refetchUserList: () => void;
 }
 
 export interface SalaryModalProps {
@@ -119,6 +120,7 @@ export interface ManageUsersModalProps {
 export interface PopoverMenuProps {
   userId?: string;
   userEmail?: string;
+  refetchUserList: () => void;
 }
 
 export interface ProgressObject {
@@ -198,15 +200,16 @@ export interface UserSearchInputProps<
   T extends FieldValues,
   K extends Path<T>
 > {
-  setListOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  field: ControllerRenderProps<T, K>;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  setListOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  field?: ControllerRenderProps<T, K>;
+  setInputValue?: React.Dispatch<React.SetStateAction<string>>;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  inputValue: string;
-  listOpen: boolean;
-  filteredPeople: PersonDtoImpl[];
-  handleSelectPerson: (person: PersonDtoImpl) => void;
+  inputValue?: string;
+  listOpen?: boolean;
+  filteredPeople?: PersonDtoImpl[];
+  handleSelectPerson?: (person: PersonDtoImpl) => void;
   inputWidth?: number;
+  showResults: boolean;
 }
 
 export interface ProjectFilterProps {

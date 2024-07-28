@@ -27,6 +27,7 @@ export default function SalaryModal({
   onModalClose,
   userId,
   userEmail,
+  refetchUserList
 }: AdminModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -84,6 +85,7 @@ export default function SalaryModal({
             " was succesfully set for " +
             userEmail
         );
+        refetchUserList();
       }
     } catch (error: any) {
       toastError(error.message);

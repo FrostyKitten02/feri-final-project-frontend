@@ -19,6 +19,7 @@ export default function UserSearchInput<
   filteredPeople,
   handleSelectPerson,
   inputWidth,
+  showResults,
 }: UserSearchInputProps<T, K>) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +28,7 @@ export default function UserSearchInput<
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (listRef.current && !listRef.current.contains(e.target as Node)) {
-        setListOpen(false);
+        if (setListOpen) setListOpen(false);
       }
     }
 
@@ -44,15 +45,15 @@ export default function UserSearchInput<
         className="pb-2"
         placeholder="Search employee"
         onChange={(e) => {
-          setInputValue(e.target.value);
+          if (setInputValue) setInputValue(e.target.value);
           setQuery(e.target.value);
           setSearchQuery(e.target.value);
-          field.onChange(e);
+          field?.onChange(e);
         }}
         value={inputValue}
         icon={IoSearch}
       />
-      {listOpen && (
+      {listOpen && showResults && (
         <div
           className="relative"
           style={{ width: `${inputWidth}px` }}
@@ -63,16 +64,16 @@ export default function UserSearchInput<
               <GrSearch className="size-6 stroke-black" />
               <p className="font-semibold text-lg">Search for "{query}"</p>
             </div>
-            {filteredPeople.length > 0 && (
+            {(filteredPeople?.length ?? 0) > 0 && (
               <>
                 <div className="py-2 px-4 font-semibold text-lg">Results</div>
                 <div className="divide-y">
-                  {filteredPeople.map((person) => (
+                  {filteredPeople?.map((person) => (
                     <div
                       key={person.id}
                       className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-gray-200"
                       onClick={() => {
-                        handleSelectPerson(person);
+                        if (handleSelectPerson) handleSelectPerson(person);
                       }}
                     >
                       <div className="flex justify-center">

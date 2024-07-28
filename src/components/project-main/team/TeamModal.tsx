@@ -188,6 +188,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                       filteredPeople={filteredPeople}
                       handleSelectPerson={handleSelectPerson}
                       inputWidth={700}
+                      showResults={true}
                     />
                   )}
                 />
