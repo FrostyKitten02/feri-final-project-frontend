@@ -6,6 +6,7 @@ import {useRequestArgs} from "../../../util/CustomHooks";
 import {ProjectDetails} from "./ProjectDetails";
 import {WorkDetails} from "./WorkDetails";
 import {CurrentMonth} from "./CurrentMonth";
+import {CostTimeline} from "./CostTimeline";
 
 export default function ProjectDashboardPage() {
     const {projectId} = useParams<{ projectId: string }>();
@@ -61,31 +62,24 @@ export default function ProjectDashboardPage() {
                     }
                 </div>
                 <div className="flex flex-grow">
-                    <div className="relative p-5 z-0">
-                        <div className="border-gray-200 w-[700px] h-full  rounded-[20px] p-5 border-solid border-[1px]">
-                            <div>
-                                budget spent; kolko je ze porabljeno od tega kolko je na voljo
-                                staff budget po mesecih kolko je blo porabljeno / kolko se je
-                                zaracunalo povprečno da bi se naj porablo
-                            </div>
+                    { statistics &&
+                        <CostTimeline stats={statistics} />
+                    }
+                    <div className="relative p-5 flex-grow">
+                        <div className="p-5 border-solid border-[1px] rounded-[20px] border-gray-200 h-full">
+                                <div className="w-[300px]">
+                                    <span>
+                                        budget spent; kolko je ze porabljeno od tega kolko je na voljo
+                                    </span>
+                                    <span>
+                                         staff budget po mesecih kolko je blo porabljeno / kolko se je
+                                    zaracunalo povprečno da bi se naj porablo - 6 aktualnih mescev
+                                    </span>
+
+                                </div>
                         </div>
                         <div className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
                             budget breakdown
-                        </div>
-                    </div>
-                    <div className="relative p-5 flex-grow">
-                        <div className="p-5 border-solid border-[1px] rounded-[20px] border-gray-200 h-full">
-                            TRENUTNO POMEMBNO (TA MESEC)
-                            side analytics here
-                            <div>
-                                kolko se je delalo ta mesec - kolko je kdo delal ta mesec
-                            </div>
-                            <div>
-                                na cem se je delalo ta mesec; kolko PM so naredli, kolko se je moglo
-                            </div>
-                        </div>
-                        <div className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
-                            N/A
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 import {ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
-import {WorkDetailsLineChartProps} from "../interfaces";
+import {CostTimelineChartProps, WorkDetailsLineChartProps} from "../interfaces";
 import TextUtil from "./TextUtil";
 
 export default class ChartUtil {
@@ -79,5 +79,30 @@ export default class ChartUtil {
             barColor: ["blue", color],
             foundMonth: foundMonth
         })
+    }
+
+    static getCostTimelineChartData = (months: Array<ProjectMonthDto>) => {
+        const chartData: Array<CostTimelineChartProps> = [];
+        const currDate = TextUtil.getFirstOfYearMonth();
+        const relevantMonths: ProjectMonthDto[] = [];
+        for (let i = 6; i <= months.length; i += 6) {
+            const monthDateStr = months[i - 1]?.date;
+            if (monthDateStr) {
+                const monthDate = new Date(monthDateStr);
+                if (currDate <= monthDate) {
+                    relevantMonths.push(...months.slice(i - 6, i));
+                    break;
+                }
+            }
+        }
+        relevantMonths.forEach(month => {
+            chartData.push({
+                date: month.date ?? "",
+                "Predicted cost": 2000,
+                "Actual cost": month.actualMonthSpending ?? 0
+
+            })
+        })
+        return chartData;
     }
 }

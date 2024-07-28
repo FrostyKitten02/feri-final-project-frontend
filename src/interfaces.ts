@@ -246,3 +246,13 @@ export interface WorkDetailsLineChartProps {
 export interface CurrentMonthProps {
   statistics: ProjectStatisticsResponse
 }
+
+export interface CostTimelineChartProps {
+  date: string,
+  "Actual cost": number,
+  "Predicted cost": number
+}
+
+export interface CostTimelineProps {
+  stats: ProjectStatisticsResponse
+}

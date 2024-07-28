@@ -1,6 +1,9 @@
+
 export const BudgetBreakdown = () => {
-  return(
-      <>
-      </>
+
+    return(
+      <div className="relative p-5 z-0">
+
+      </div>
   )
 }

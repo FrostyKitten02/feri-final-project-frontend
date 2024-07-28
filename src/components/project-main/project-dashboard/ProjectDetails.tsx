@@ -45,9 +45,9 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                     </div>
                 </div>
                 <div className="uppercase text-end text-2xl pb-2 font-medium tracking-wider">
-                                <span>
-                                    {project?.title}
-                                </span>
+                    <div>
+                        {project?.title}
+                    </div>
                 </div>
                 <ProgressBar
                     value={TextUtil.returnProgress(project?.startDate, project?.endDate)}
@@ -65,58 +65,58 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                 </div>
                 <div className="items-end justify-between flex space-x-2">
                     <div className="flex space-x-1 items-center">
-                        <span className="uppercase text-xs">
+                        <div className="uppercase text-xs">
                             indirect budget:
-                        </span>
-                        <span className="text-xl font-medium">
+                        </div>
+                        <div className="text-xl font-medium">
                             {TextUtil.numberToPercantage(chosenSchema?.indirectBudget)}
-                        </span>
+                        </div>
                     </div>
                     <div className="flex space-x-1 items-center">
-                        <span className="uppercase text-xs">
+                        <div className="uppercase text-xs">
                             sofinancing:
-                        </span>
-                        <span className="text-xl font-medium">
+                        </div>
+                        <div className="text-xl font-medium">
                             {TextUtil.numberToPercantage(chosenSchema?.sofinancing)}
-                        </span>
+                        </div>
                     </div>
-                    <span className="uppercase font-medium text-xl">
-                                 {chosenSchema?.name}
-                                </span>
+                    <div className="uppercase font-medium text-xl">
+                        {chosenSchema?.name}
+                    </div>
                 </div>
                 <div className="flex justify-between pt-4 pb-5">
                     <div className="uppercase justify-center flex flex-col space-y-1 tracking-wider">
                         <div className="flex space-x-1 items-center">
-                                        <span className="uppercase text-xs">
-                                           staff:
-                                        </span>
-                            <span className="text-xl font-medium">
-                                            {TextUtil.numberFormatter(project?.staffBudget)}
-                                        </span>
+                            <div className="uppercase text-xs">
+                                staff:
+                            </div>
+                            <div className="text-xl font-medium">
+                                {TextUtil.numberFormatter(project?.staffBudget)}
+                            </div>
                         </div>
                         <div className="flex space-x-1 items-center">
-                                        <span className="uppercase text-xs">
-                                           equipment:
-                                        </span>
-                            <span className="text-xl font-medium">
-                                            {TextUtil.numberFormatter(project?.equipmentBudget)}
-                                        </span>
+                            <div className="uppercase text-xs">
+                                equipment:
+                            </div>
+                            <div className="text-xl font-medium">
+                                {TextUtil.numberFormatter(project?.equipmentBudget)}
+                            </div>
                         </div>
                         <div className="flex space-x-1 items-center">
-                                        <span className="uppercase text-xs">
-                                           indirect:
-                                        </span>
-                            <span className="text-xl font-medium">
-                                            {TextUtil.numberFormatter(project?.indirectBudget)}
-                                        </span>
+                            <div className="uppercase text-xs">
+                                indirect:
+                            </div>
+                            <div className="text-xl font-medium">
+                                {TextUtil.numberFormatter(project?.indirectBudget)}
+                            </div>
                         </div>
                         <div className="flex space-x-1 items-center">
-                                        <span className="uppercase text-xs">
-                                           subcontracting:
-                                        </span>
-                            <span className="text-xl font-medium">
-                                             {TextUtil.numberFormatter(project?.subcontractingBudget)}
-                                        </span>
+                            <div className="uppercase text-xs">
+                                subcontracting:
+                            </div>
+                            <div className="text-xl font-medium">
+                                {TextUtil.numberFormatter(project?.subcontractingBudget)}
+                            </div>
                         </div>
                     </div>
                     <div className="flex w-[40%] justify-end">
