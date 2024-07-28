@@ -14,14 +14,6 @@ export const CurrentMonth = ({statistics}: CurrentMonthProps) => {
     const [currDate, setCurrDate] = useState<string>('');
     const [relevantTasks, setRelevantTasks] = useState<Array<TaskDto>>([]);
 
-    // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
-    // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALFA VERSIONS
-    // WAITING FOR TREMOR FIX
-    const error = console.error;
-    console.error = (...args: any) => {
-        if (/defaultProps/.test(args[0])) return;
-        error(...args);
-    };
     useEffect(() => {
         const {chartData, barColor, foundMonth} = ChartUtil.returnCurrentMonthBarChartData(statistics);
         setChartData(chartData);
@@ -32,6 +24,18 @@ export const CurrentMonth = ({statistics}: CurrentMonthProps) => {
         const tasks = TextUtil.getRelevantTasks(statistics.workPackages);
         setRelevantTasks(tasks);
     }, [statistics]);
+
+    useEffect(() => {
+        // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
+        // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALFA VERSIONS
+        // WAITING FOR TREMOR FIX
+        const error = console.error;
+        console.error = (...args: any) => {
+            if (/defaultProps/.test(args[0])) return;
+            error(...args);
+        };
+    }, []);
+
     return (
         <div className="flex flex-col flex-grow space-y-3">
             <div className="flex flex-row items-center">

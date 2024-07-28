@@ -15,7 +15,8 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
             setChartData(chartData);
         }
 
-    }, [stats])
+    }, [stats]);
+
     return (
         <div className="relative p-5 z-0">
             <div className="border-gray-200 w-[700px] h-full rounded-[20px] p-5 border-solid border-[1px]">
