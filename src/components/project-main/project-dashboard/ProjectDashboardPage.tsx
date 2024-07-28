@@ -7,6 +7,7 @@ import {ProjectDetails} from "./ProjectDetails";
 import {WorkDetails} from "./WorkDetails";
 import {CurrentMonth} from "./CurrentMonth";
 import {CostTimeline} from "./CostTimeline";
+import {BudgetBreakdown} from "./BudgetBreakdown";
 
 export default function ProjectDashboardPage() {
     const {projectId} = useParams<{ projectId: string }>();
@@ -65,23 +66,9 @@ export default function ProjectDashboardPage() {
                     { statistics &&
                         <CostTimeline stats={statistics} />
                     }
-                    <div className="relative p-5 flex-grow">
-                        <div className="p-5 border-solid border-[1px] rounded-[20px] border-gray-200 h-full">
-                                <div className="w-[300px]">
-                                    <span>
-                                        budget spent; kolko je ze porabljeno od tega kolko je na voljo
-                                    </span>
-                                    <span>
-                                         staff budget po mesecih kolko je blo porabljeno / kolko se je
-                                    zaracunalo povprečno da bi se naj porablo - 6 aktualnih mescev
-                                    </span>
-
-                                </div>
-                        </div>
-                        <div className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
-                            budget breakdown
-                        </div>
-                    </div>
+                    {
+                        <BudgetBreakdown />
+                    }
                 </div>
             </div>
             <div className="w-[350px] bg-gray-100 flex flex-col rounded-[20px] p-5">
