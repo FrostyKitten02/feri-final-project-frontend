@@ -1,29 +1,50 @@
 import {DonutGraphData, WorkDetailsLineChartProps, WorkDetailsProps} from "../../../interfaces";
 import {DonutChart, LineChart, ProgressBar} from "@tremor/react";
 import ChartUtil from "../../../util/ChartUtil";
+import {useEffect, useState} from "react";
 export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
-    const graphData: DonutGraphData[] = project.workPackages
-        ? project.workPackages.map(workpackage => ({
-            name: workpackage.title ?? "",
-            value: workpackage.assignedPM ?? 0
-        }))
-        : [];
-    const taskArray: number[] = project.workPackages ? project.workPackages.map(workpackage => {
-        return (workpackage.tasks?.length ?? 0)
-    }) : [];
-    const totalTasks = taskArray.reduce((sum, current) => sum + current, 0);
-    const {totalPm, actualPm, pmPercentValue, tooltipValue} = ChartUtil.getWorkDetailsLineChartPm(statistics);
+    const [graphData, setGraphData] = useState<DonutGraphData[]>([]);
+    const [totalTasks, setTotalTasks] = useState<number>(0);
+    const [lineChartData, setLineChartData] = useState<WorkDetailsLineChartProps[]>([]);
+    const [chartDetails, setChartDetails] = useState<{totalPm: number, actualPm: number, pmPercentValue: number, tooltipValue: string | undefined}>({
+        totalPm: 0,
+        actualPm: 0,
+        pmPercentValue: 0,
+        tooltipValue: undefined
+    });
     const valueFormatter = (number: number) => `${number}PM`;
-    const lineChartData: WorkDetailsLineChartProps [] = ChartUtil.returnLineChartData(statistics.months);
+    useEffect(() => {
+        if (project && project.workPackages) {
+            const newGraphData = project.workPackages.map(workpackage => ({
+                name: workpackage.title ?? "",
+                value: workpackage.assignedPM ?? 0
+            }));
+            setGraphData(newGraphData);
+            const taskArray = project.workPackages.map(workpackage => workpackage.tasks?.length ?? 0);
+            const totalTasks = taskArray.reduce((sum, current) => sum + current, 0);
+            setTotalTasks(totalTasks);
+        }
+    }, [project]);
+
+    useEffect(() => {
+        if (statistics) {
+            const { totalPm, actualPm, pmPercentValue, tooltipValue } = ChartUtil.getWorkDetailsLineChartPm(statistics);
+            setChartDetails({ totalPm, actualPm, pmPercentValue, tooltipValue });
+            const newLineChartData = ChartUtil.returnLineChartData(statistics.months);
+            setLineChartData(newLineChartData);
+        }
+    }, [statistics]);
 
     // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
     // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALFA VERSIONS
     // WAITING FOR TREMOR FIX
-    const error = console.error;
-    console.error = (...args: any) => {
-        if (/defaultProps/.test(args[0])) return;
-        error(...args);
-    };
+    useEffect(() => {
+        const error = console.error;
+        console.error = (...args: any) => {
+            if (/defaultProps/.test(args[0])) return;
+            error(...args);
+        };
+    }, []);
 
     return (
         <div className="relative flex-grow p-5">
@@ -55,14 +76,14 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
                                         <div>
                                             <div className="py-1">
                                                 <div className="text-xs uppercase text-muted">
-                                                    Done {actualPm}PM out of {totalPm}PM - {pmPercentValue}%
+                                                    Done {chartDetails.actualPm}PM out of {chartDetails.totalPm}PM - {chartDetails.pmPercentValue}%
                                                 </div>
                                             </div>
                                             <ProgressBar
-                                                value={pmPercentValue}
+                                                value={chartDetails.pmPercentValue}
                                                 color="blue"
                                                 showAnimation={true}
-                                                tooltip={tooltipValue}
+                                                tooltip={chartDetails.tooltipValue}
                                             />
                                         </div>
                                     </div>
