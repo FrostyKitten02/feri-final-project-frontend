@@ -3,28 +3,37 @@ import TextUtil from "../../../util/TextUtil";
 import {DonutChart, ProgressBar} from "@tremor/react";
 import {Label} from "flowbite-react";
 import {DonutGraphData, ProjectDetailsProps} from "../../../interfaces";
+import {useEffect, useState} from "react";
 
 export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => {
-    const graphArray: DonutGraphData[] = [
-        {
-            name: "Staff",
-            value: project.staffBudget ?? 0
-        },
-        {
-            name: "Equipment",
-            value: project.equipmentBudget ?? 0
-        },
-        {
-            name: "Indirect",
-            value: project.indirectBudget ?? 0
-        },
-        {
-            name: "Subcontracting",
-            value: project.subcontractingBudget ?? 0
+    const [graphArray, setGraphArray] = useState<DonutGraphData[]>([]);
+
+    useEffect(() => {
+        if (project) {
+            const newGraphArray: DonutGraphData[] = [
+                {
+                    name: "Staff",
+                    value: project.staffBudget ?? 0
+                },
+                {
+                    name: "Equipment",
+                    value: project.equipmentBudget ?? 0
+                },
+                {
+                    name: "Indirect",
+                    value: project.indirectBudget ?? 0
+                },
+                {
+                    name: "Subcontracting",
+                    value: project.subcontractingBudget ?? 0
+                }
+            ];
+            setGraphArray(newGraphArray);
         }
-    ]
-    const valueFormatter = (number: number) =>
-        `${Intl.NumberFormat('eu').format(number).toString()}€`;
+    }, [project]);
+
+    const valueFormatter = (number: number) => `${Intl.NumberFormat('eu').format(number).toString()}€`;
+
     return (
         <div className="relative p-5">
             <div
