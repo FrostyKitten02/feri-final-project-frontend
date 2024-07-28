@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PersonDto } from "../../../../temp_ts";
+import { PersonDtoImpl } from "../../../../temp_ts";
 import TeamModal from "./TeamModal";
 import { useParams } from "react-router-dom";
 import { toastError } from "../../toast-modals/ToastFunctions";
@@ -8,7 +8,7 @@ import { useRequestArgs } from "../../../util/CustomHooks";
 import DeleteModal from "../../template/modal/DeleteModal";
 
 export default function ProjectTeamPage() {
-  const [peopleOnProject, setPeopleOnProject] = useState<PersonDto[]>([]);
+  const [peopleOnProject, setPeopleOnProject] = useState<PersonDtoImpl[]>([]);
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
 

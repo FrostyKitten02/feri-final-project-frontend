@@ -1,4 +1,4 @@
-import { PersonDto } from "../../../temp_ts";
+import { PersonDtoImpl } from "../../../temp_ts";
 
 export type AddProjectFormFields = {
   title: string;
@@ -27,7 +27,7 @@ export type TaskFormFields = {
 };
 
 export type AssignPersonFormFields = {
-  person: PersonDto;
+  person: PersonDtoImpl;
 };
 
 export type PersonTypeFormFields = {
@@ -36,11 +36,11 @@ export type PersonTypeFormFields = {
   educate: number;
   startDate: string;
   endDate: string;
-  personId: PersonDto;
+  personId: PersonDtoImpl;
 };
 
 export type SalaryFormFields = {
-  personId: PersonDto;
+  personId: PersonDtoImpl;
   amount: number;
   startDate: string;
   endDate: string;
