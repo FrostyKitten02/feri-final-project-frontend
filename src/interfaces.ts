@@ -1,4 +1,5 @@
 import {
+  ProjectBudgetSchemaDto,
   PersonDtoImpl,
   ProjectDto,
   ProjectStatisticsResponse,
@@ -238,4 +239,35 @@ export interface DeleteModalProps {
 export interface WorkloadModalProps {
   closeModal: () => void,
   modalWidth: string,
+}
+export interface DonutGraphData {
+  name: string,
+  value: number
+}
+export interface ProjectDetailsProps {
+  project: ProjectDto,
+  chosenSchema: ProjectBudgetSchemaDto,
+}
+export interface WorkDetailsProps {
+  project: ProjectDto,
+  statistics: ProjectStatisticsResponse
+}
+
+export interface WorkDetailsLineChartProps {
+  date: string,
+  pmPerMonth: number
+}
+
+export interface CurrentMonthProps {
+  statistics: ProjectStatisticsResponse
+}
+
+export interface CostTimelineChartProps {
+  date: string,
+  "Actual cost": number,
+  "Predicted cost": number
+}
+
+export interface CostTimelineProps {
+  stats: ProjectStatisticsResponse
 }

@@ -303,4 +303,43 @@ export default class TextUtil {
         });
         return limitArray;
     }
+
+    static numberFormatter = (number: number | undefined): string => {
+        if(number === undefined)
+            return "";
+        return (`${Intl.NumberFormat('eu').format(number).toString()}€`);
+    }
+
+    static numberToPercantage = (number: number | undefined): string => {
+        if(number === undefined)
+            return "";
+        return (`${number * 100}%`);
+    }
+
+    static getFirstOfYearMonth = (date: Date = new Date()): Date => {
+        const currentDate = new Date(date);
+        return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    }
+
+    static getMonthYearCurrentDate = (): string => {
+        const date = new Date();
+        return date.toLocaleDateString('en-US', {month: 'long', year: 'numeric'});
+    }
+
+    static getRelevantTasks = (workpackages: WorkPackageDto[] | undefined): TaskDto[] => {
+        const currDate = this.getFirstOfYearMonth();
+        let tasks: TaskDto[] = [];
+        workpackages?.forEach(workpackage => {
+            workpackage.tasks?.forEach(task => {
+                if (task.startDate && task.endDate) {
+                    const start = this.getFirstOfYearMonth(new Date(task.startDate));
+                    const end = this.getFirstOfYearMonth(new Date(task.endDate));
+                    if (start <= currDate && currDate <= end) {
+                        tasks.push(task);
+                    }
+                }
+            });
+        });
+        return tasks;
+    }
 }
