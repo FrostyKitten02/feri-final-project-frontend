@@ -59,14 +59,17 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
                 }
             >
                 {opened && (
-                    <Link to={Paths.HOME} className="text-xl">
+                    <Link to={Paths.HOME}>
                         <motion.button
                             initial={{visibility: "hidden", opacity: 0}}
                             animate={{visibility: "visible", opacity: 1}}
                             transition={{delay: 0.2, duration: 0.7}}
                             onClick={() => handleSidebarSelect("dashboard")}
+                            className="flex items-center space-x-4"
                         >
-                            PROJECT MANAGER
+                            <div className="uppercase tracking-wider text-3xl ">
+                                steer
+                            </div>
                         </motion.button>
                     </Link>
                 )}

@@ -15,7 +15,7 @@ export const CustomPagination = ({
     return (
         <div className="flex flex-row items-center space-x-2">
             <button
-                className={`${currentPage === 1 ? "text-placeholder" : "hover:bg-gray-200 delay-50 transition"} flex py-1 items-center px-4 rounded-lg`}
+                className={`${currentPage === 1 ? "text-placeholder" : "hover:bg-gray-100 delay-50 transition"} flex py-1 items-center px-4 rounded-lg`}
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
             >
@@ -30,7 +30,7 @@ export const CustomPagination = ({
                         return (
                             <button
                                 key={pageNumber}
-                                className={`${pageNumber === currentPage ? "bg-blue-200 text-primary" : "hover:bg-gray-200"} px-3 py-1 rounded-lg font-mono delay-50 transition`}
+                                className={`${pageNumber === currentPage ? "bg-blue-100 text-primary" : "hover:bg-gray-100"} px-3 py-1 rounded-lg font-mono delay-50 transition`}
                                 onClick={() => onPageChange(pageNumber)}>
                                 {pageNumber}
                             </button>
@@ -39,7 +39,7 @@ export const CustomPagination = ({
                 }
             </div>
             <button
-                className={`${currentPage === allPages ? "text-placeholder" : "hover:bg-gray-200 delay-50 transition"} flex items-center px-4 py-1 rounded-lg`}
+                className={`${currentPage === allPages ? "text-placeholder" : "hover:bg-gray-100 delay-50 transition"} flex items-center px-4 py-1 rounded-lg`}
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === allPages}
             >
