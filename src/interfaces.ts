@@ -232,7 +232,7 @@ export interface WorkloadTableProps {
 export interface DeleteModalProps {
   id?: string;
   title?: string;
-  handleDelete: () => void; 
+  handleDelete?: () => void; 
   teamPage?: boolean;
   workPackage?: boolean;
 }

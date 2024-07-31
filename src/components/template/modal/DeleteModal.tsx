@@ -41,7 +41,7 @@ export default function DeleteModal({
         }
         if (response.status === 200) {
           handleClose();
-          handleDelete();
+          if (handleDelete) handleDelete();
           toastSuccess(
             `${
               workPackage ? "Work package " : "Task "
