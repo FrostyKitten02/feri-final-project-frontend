@@ -45,3 +45,7 @@ export type SalaryFormFields = {
   startDate: string;
   endDate: string;
 };
+
+export type DeleteConfirmationFields = {
+  title: string;
+}

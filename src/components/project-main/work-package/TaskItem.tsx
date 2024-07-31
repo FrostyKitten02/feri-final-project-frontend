@@ -49,7 +49,7 @@ export const TaskItem: FC<TaskItemProps> = ({
               workPackageStartDate={workPackageStartDate}
               workPackageEndDate={workPackageEndDate}
             />
-            <DeleteModal title={task?.title}/>
+            <DeleteModal id={task?.id} title={task?.title} workPackage={false} handleDelete={handleEditTask}/>
           </motion.div>
         </motion.div>
       )}
