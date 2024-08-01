@@ -13,9 +13,14 @@ import {
 import { DeleteConfirmationFields } from "../../../types/forms/formTypes";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TextInput } from "flowbite-react";
-import { taskAPI, workPackageAPI } from "../../../util/ApiDeclarations";
+import {
+  projectAPI,
+  taskAPI,
+  workPackageAPI,
+} from "../../../util/ApiDeclarations";
 import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";
 import { useRequestArgs } from "../../../util/CustomHooks";
+import { useParams } from "react-router-dom";
 
 export default function DeleteModal({
   id,
@@ -23,33 +28,54 @@ export default function DeleteModal({
   handleDelete,
   teamPage,
   workPackage,
+  personName,
+  personLastName,
+  personEmail,
 }: DeleteModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const requestArgs = useRequestArgs();
+  const { projectId } = useParams();
 
   const onDelete: SubmitHandler<
     DeleteConfirmationFields
   > = async (): Promise<void> => {
+    if (!id) {
+      toastError("Id not found.");
+      return;
+    }
+
     try {
-      if (id) {
-        let response;
-        if (workPackage) {
-          response = await workPackageAPI.deleteWorkPackage(id, requestArgs);
-        } else {
-          response = await taskAPI.deleteTask(id, requestArgs);
-        }
-        if (response.status === 200) {
-          handleClose();
-          if (handleDelete) handleDelete();
-          toastSuccess(
-            `${
-              workPackage ? "Work package " : "Task "
-            } ${title} was successfully deleted.`
-          );
-        }
+      let response;
+      if (workPackage) {
+        response = await workPackageAPI.deleteWorkPackage(id, requestArgs);
+      } else if (teamPage && projectId) {
+        response = await projectAPI.removePersonFromProject(
+          projectId,
+          id,
+          requestArgs
+        );
       } else {
-        toastError("Work package id not found.");
+        response = await taskAPI.deleteTask(id, requestArgs);
+      }
+      if (response.status === 200 || response.status === 204) {
+        handleClose();
+        if (handleDelete) handleDelete();
+        if (workPackage) {
+          toastSuccess(`Work package ${title} was successfully deleted.`);
+        } else if (teamPage) {
+          const nameOrEmail =
+            personName && personLastName
+              ? `${personName} ${personLastName}`
+              : personEmail;
+          if (nameOrEmail) {
+            toastSuccess(
+              `${nameOrEmail} was successfully removed from the project.`
+            );
+          }
+        } else {
+          toastSuccess(`Task ${title} was successfully deleted.`);
+        }
       }
     } catch (error: any) {
       toastError(error.message);
@@ -94,14 +120,43 @@ export default function DeleteModal({
                   This action{" "}
                   <span className="text-black font-semibold">CANNOT</span> be
                   undone. This will permanently delete{" "}
-                  <span className="text-black font-semibold">"{title}"</span>
-                  {workPackage ? <span> and the associated tasks.</span> : "."}
+                  {teamPage && (
+                    <>
+                      {personName && personLastName ? (
+                        <span className="text-black font-semibold">
+                          {personName} {personLastName}
+                        </span>
+                      ) : personEmail ? (
+                        <span className="text-black font-semibold">
+                          {personEmail}
+                        </span>
+                      ) : null}
+                      <span className="text-black"> from the project.</span>
+                    </>
+                  )}
+                  {!teamPage && (
+                    <>
+                      <span className="text-black font-semibold">
+                        "{title}"
+                      </span>
+                      {workPackage ? (
+                        <span> and the associated tasks.</span>
+                      ) : (
+                        "."
+                      )}
+                    </>
+                  )}
                 </p>
-                {workPackage && (
+                {(workPackage || teamPage) && (
                   <div className="flex flex-col">
                     <p className="text-md text-black font-semibold">
-                      Please type in the full title of the work package to
-                      confirm.
+                      Please type in the{" "}
+                      {workPackage
+                        ? "full title of the work package "
+                        : teamPage
+                        ? "full name of the user "
+                        : null}
+                      to confirm.
                     </p>
                     <TextInput
                       defaultValue={""}
@@ -109,8 +164,17 @@ export default function DeleteModal({
                       {...register("title", {
                         required: "This field can not be empty!",
                         validate: (value) => {
-                          if (value != title) {
+                          if (workPackage && value !== title) {
                             return "The input text and the work package title don't match.";
+                          }
+                          if (teamPage) {
+                            if (personName && personLastName) {
+                              if (value !== `${personName} ${personLastName}`) {
+                                return "The input text and the users name and last name don't match.";
+                              }
+                            } else if (personEmail && value !== personEmail) {
+                              return "The input text and the users email don't match.";
+                            }
                           }
                         },
                       })}
@@ -124,7 +188,9 @@ export default function DeleteModal({
               <span className="flex flex-row gap-x-2">
                 <HiOutlineTrash className="size-6 stroke-white" />
                 <span>
-                  {!teamPage ? "I understand, permanently delete" : "remove"}
+                  {!teamPage
+                    ? "I understand, permanently delete"
+                    : "I understand, remove"}
                 </span>
               </span>
             </CustomModalFooter>

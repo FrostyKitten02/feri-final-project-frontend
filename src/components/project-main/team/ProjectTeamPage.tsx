@@ -67,14 +67,28 @@ export default function ProjectTeamPage() {
                     >
                       <div className="flex items-center justify-center text-sm font-semibold">
                         <div>
-                          {person.name} {person.lastname}
+                          {person.name && person.lastname ? (
+                            <p>
+                              {person.name} {person.lastname}
+                            </p>
+                          ) : (
+                            <p>N/A</p>
+                          )}
+                          
                         </div>
                       </div>
                       <div className="flex items-center justify-center text-sm font-normal text-gray-500">
                         {person.email}
                       </div>
                       <div className="flex items-center justify-center">
-                        <DeleteModal title={person.email} teamPage={true}/>
+                        <DeleteModal
+                          id={person.id}
+                          teamPage={true}
+                          personName={person.name}
+                          personLastName={person.lastname}
+                          personEmail={person.email}
+                          handleDelete={fetchPeopleOnProject}
+                        />
                       </div>
                     </div>
                   ))}

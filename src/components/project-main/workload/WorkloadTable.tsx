@@ -82,7 +82,7 @@ export const WorkloadTable = ({ statistics, currentPage, monthsPerPage }: Worklo
             {Array.from({ length: shownMonths[0]?.personWork?.length || 0 }, (_, indexPerson) => (
                 <React.Fragment key={`person-${indexPerson}`}>
                     <div className="h-14 flex items-center uppercase text-sm">
-                        {TextUtil.truncateString(shownMonths[0]?.personWork?.[indexPerson]?.personId, 20)}
+                        {TextUtil.truncateString(shownMonths[0]?.personWork?.[indexPerson]?.person?.id, 20)}
                     </div>
                     {shownMonths.map((month, monthIndex) => (
                         <div key={`person-work-${indexPerson}-${monthIndex}`} className="flex h-14 items-center justify-center border-solid">
