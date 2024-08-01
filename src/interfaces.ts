@@ -236,6 +236,9 @@ export interface DeleteModalProps {
   handleDelete?: () => void; 
   teamPage?: boolean;
   workPackage?: boolean;
+  personName?: string;
+  personLastName?: string;
+  personEmail?: string;
 }
 
 export interface WorkloadModalProps {

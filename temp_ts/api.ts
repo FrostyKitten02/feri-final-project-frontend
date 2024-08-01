@@ -72,18 +72,6 @@ export interface CreateOccupancyRequest {
      * @memberof CreateOccupancyRequest
      */
     'value'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateOccupancyRequest
-     */
-    'endDate'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateOccupancyRequest
-     */
-    'startDate'?: string;
 }
 /**
  * 
@@ -461,6 +449,37 @@ export interface PageInfoRequest {
 /**
  * 
  * @export
+ * @interface PersonDto
+ */
+export interface PersonDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonDto
+     */
+    'lastname'?: string;
+}
+/**
+ * 
+ * @export
  * @interface PersonDtoImpl
  */
 export interface PersonDtoImpl {
@@ -527,10 +546,10 @@ export interface PersonListDto {
     'email'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PersonListDto
      */
-    'salary'?: number;
+    'lastname'?: string;
     /**
      * 
      * @type {number}
@@ -539,10 +558,10 @@ export interface PersonListDto {
     'availability'?: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof PersonListDto
      */
-    'lastname'?: string;
+    'salary'?: number;
 }
 /**
  * 
@@ -593,10 +612,10 @@ export type PersonSortInfoRequestFieldsEnum = typeof PersonSortInfoRequestFields
 export interface PersonWorkDto {
     /**
      * 
-     * @type {string}
+     * @type {PersonDto}
      * @memberof PersonWorkDto
      */
-    'personId'?: string;
+    'person'?: PersonDto;
     /**
      * 
      * @type {string}
@@ -2218,6 +2237,43 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @param {string} projectId 
+         * @param {string} personId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removePersonFromProject: async (projectId: string, personId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectId' is not null or undefined
+            assertParamExists('removePersonFromProject', 'projectId', projectId)
+            // verify required parameter 'personId' is not null or undefined
+            assertParamExists('removePersonFromProject', 'personId', personId)
+            const localVarPath = `/project/{projectId}/remove-person/{personId}`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)))
+                .replace(`{${"personId"}}`, encodeURIComponent(String(personId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} projectId 
          * @param {UpdateProjectRequest} updateProjectRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2365,6 +2421,19 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} projectId 
+         * @param {string} personId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async removePersonFromProject(projectId: string, personId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.removePersonFromProject(projectId, personId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.removePersonFromProject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} projectId 
          * @param {UpdateProjectRequest} updateProjectRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2458,6 +2527,16 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
          */
         listProjectsStatus(options?: any): AxiosPromise<ProjectListStatusResponse> {
             return localVarFp.listProjectsStatus(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {string} personId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        removePersonFromProject(projectId: string, personId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.removePersonFromProject(projectId, personId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2567,6 +2646,18 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public listProjectsStatus(options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).listProjectsStatus(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectId 
+     * @param {string} personId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public removePersonFromProject(projectId: string, personId: string, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).removePersonFromProject(projectId, personId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
