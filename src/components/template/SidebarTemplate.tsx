@@ -3,12 +3,11 @@ import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {UserButton, useUser} from "@clerk/clerk-react";
 import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
-import HamburgerIcon from "../../assets/icons/hamburger-icon.svg?react";
-import ReturnIcon from "../../assets/icons/return.svg?react";
 import {motion} from "framer-motion";
 import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
 import ManageUsersModal from "../admin-modal/ManageUsersModal";
+import {IoMenu, IoReturnDownBack} from "react-icons/io5";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
                                                              items,
@@ -74,7 +73,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
                     </Link>
                 )}
                 <button onClick={toggle}>
-                    <HamburgerIcon className="h-10 w-10 fill-white"/>
+                    <IoMenu className="h-10 w-10 fill-white"/>
                 </button>
             </div>
             <div className={`${opened ? "pl-6" : "pl-[20%]"} w-full flex-grow`}>
@@ -112,7 +111,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
             {showReturn && (
                 <button onClick={() => handleReturn()} className="w-full py-6">
                     <div className="flex flex-row items-center justify-around w-full">
-                        <ReturnIcon className="h-10 w-10 fill-white"/>
+                        <IoReturnDownBack className="h-10 w-10 fill-white" />
                     </div>
                 </button>
             )}

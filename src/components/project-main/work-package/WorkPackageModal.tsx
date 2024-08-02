@@ -24,8 +24,8 @@ import { Datepicker, Label, TextInput } from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
 import { TbCalendarUser } from "react-icons/tb";
 import { motion } from "framer-motion";
-import PackagePlusIcon from "../../../assets/icons/package-plus-svgrepo-com.svg?react";
 import { FiEdit3 } from "react-icons/fi";
+import { LuPackagePlus } from "react-icons/lu";
 
 export default function WorkPackageModal({
   handleAddWorkPackage,
@@ -145,7 +145,7 @@ export default function WorkPackageModal({
         </button>
       ) : (
         <button onClick={() => setModalOpen(true)}>
-          <PackagePlusIcon className="stroke-black size-12 hover:stroke-primary transition delay-50" />
+          <LuPackagePlus />
         </button>
       )}
       {modalOpen && (
