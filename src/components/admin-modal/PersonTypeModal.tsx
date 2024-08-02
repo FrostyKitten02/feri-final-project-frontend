@@ -14,7 +14,7 @@ import { useRequestArgs } from "../../util/CustomHooks";
 import { personTypeAPI } from "../../util/ApiDeclarations";
 import { toastError, toastSuccess } from "../toast-modals/ToastFunctions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { PersonTypeFormFields } from "../../types/forms/formTypes";
+import { PersonTypeFormFields } from "../../types/types";
 import { AdminModalProps } from "../../interfaces";
 import { Datepicker, Label, TextInput } from "flowbite-react";
 import { FaPercent } from "react-icons/fa6";
@@ -28,7 +28,7 @@ export default function PersonTypeModal({
   onModalClose,
   userId,
   userEmail,
-  refetchUserList
+  refetchUserList,
 }: AdminModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -39,15 +39,9 @@ export default function PersonTypeModal({
     setModalOpen(true);
   };
 
-  const handleCloseModal = (): void => {
-    onModalClose();
-    setModalOpen(false);
-    setActionPopoverOpen(false);
-  }
-
-  const handleCloseOnSubmit = (): void => {
+  const handleClose = (): void => {
     reset();
-    onModalClose()
+    onModalClose();
     setModalOpen(false);
     setActionPopoverOpen(false);
   };
@@ -80,12 +74,9 @@ export default function PersonTypeModal({
         requestArgs
       );
       if (response.status === 201) {
-        handleCloseOnSubmit();
-        toastSuccess(
-          data.name +
-            " was successfully assigned to " + userEmail
-        );
-        refetchUserList();
+        handleClose();
+        toastSuccess(data.name + " was successfully assigned to " + userEmail);
+        refetchUserList?.();
       }
     } catch (error: any) {
       toastError(error.message);
@@ -96,20 +87,19 @@ export default function PersonTypeModal({
     <>
       <button
         onClick={handleButtonClick}
-        className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4"
+        className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <BsFillPersonVcardFill className="size-4" />
         <span>Manage employment type</span>
       </button>
       {modalOpen && (
         <ModalPortal>
-          <CustomModal
-            closeModal={handleCloseModal}
-            modalWidth="700px"
-          >
+          <CustomModal closeModal={handleClose} modalWidth="700px">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <CustomModalHeader handleModalOpen={handleCloseModal}>
-                <ModalTitle>set employment type for user: {userEmail}</ModalTitle>
+              <CustomModalHeader handleModalOpen={handleClose}>
+                <ModalTitle>
+                  set employment type for user: {userEmail}
+                </ModalTitle>
                 <ModalText
                   showInfoIcon={true}
                   showWarningIcon={false}

@@ -4,11 +4,12 @@ import { motion } from "framer-motion";
 import { BsThreeDots } from "react-icons/bs";
 import PersonTypeModal from "./PersonTypeModal";
 import SalaryModal from "./SalaryModal";
+import SalaryEmploymentHistoryModal from "./SalaryEmploymentHistoryModal";
 
 export default function PopoverMenu({
   userId,
   userEmail,
-  refetchUserList
+  refetchUserList,
 }: PopoverMenuProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const ignoreClickOutside = useRef<boolean>(false);
@@ -55,6 +56,14 @@ export default function PopoverMenu({
           ref={popoverRef}
         >
           <div className="px-2 py-2 font-medium">Actions</div>
+          <SalaryModal
+            setActionPopoverOpen={setActionPopoverOpen}
+            onButtonClick={handlePopoverButtonClick}
+            onModalClose={handleModalClose}
+            userId={userId}
+            userEmail={userEmail}
+            refetchUserList={refetchUserList}
+          />
           <PersonTypeModal
             setActionPopoverOpen={setActionPopoverOpen}
             onButtonClick={handlePopoverButtonClick}
@@ -63,13 +72,13 @@ export default function PopoverMenu({
             userEmail={userEmail}
             refetchUserList={refetchUserList}
           />
-          <SalaryModal
+
+          <SalaryEmploymentHistoryModal
             setActionPopoverOpen={setActionPopoverOpen}
             onButtonClick={handlePopoverButtonClick}
             onModalClose={handleModalClose}
             userId={userId}
             userEmail={userEmail}
-            refetchUserList={refetchUserList}
           />
         </motion.div>
       )}

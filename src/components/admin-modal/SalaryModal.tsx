@@ -5,7 +5,7 @@ import { salaryApi } from "../../util/ApiDeclarations";
 import { useRequestArgs } from "../../util/CustomHooks";
 import { toastError, toastSuccess } from "../toast-modals/ToastFunctions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { SalaryFormFields } from "../../types/forms/formTypes";
+import { SalaryFormFields } from "../../types/types";
 import { Label, Datepicker, TextInput } from "flowbite-react";
 import TextUtil from "../../util/TextUtil";
 import {
@@ -27,7 +27,7 @@ export default function SalaryModal({
   onModalClose,
   userId,
   userEmail,
-  refetchUserList
+  refetchUserList,
 }: AdminModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -38,13 +38,7 @@ export default function SalaryModal({
     setModalOpen(true);
   };
 
-  const handleCloseModal = (): void => {
-    onModalClose();
-    setModalOpen(false);
-    setActionPopoverOpen(false);
-  };
-
-  const handleCloseOnSubmit = (): void => {
+  const handleClose = (): void => {
     reset();
     onModalClose();
     setModalOpen(false);
@@ -77,7 +71,7 @@ export default function SalaryModal({
         requestArgs
       );
       if (response.status === 201) {
-        handleCloseOnSubmit();
+        handleClose();
         toastSuccess(
           "Salary of " +
             data.amount +
@@ -85,7 +79,7 @@ export default function SalaryModal({
             " was succesfully set for " +
             userEmail
         );
-        refetchUserList();
+        refetchUserList?.();
       }
     } catch (error: any) {
       toastError(error.message);
@@ -96,16 +90,16 @@ export default function SalaryModal({
     <>
       <button
         onClick={handleButtonClick}
-        className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4"
+        className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <FaEuroSign className="size-4" />
         <span>Manage salary</span>
       </button>
       {modalOpen && (
         <ModalPortal>
-          <CustomModal closeModal={handleCloseModal} modalWidth="700px">
+          <CustomModal closeModal={handleClose} modalWidth="700px">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <CustomModalHeader handleModalOpen={handleCloseModal}>
+              <CustomModalHeader handleModalOpen={handleClose}>
                 <ModalTitle>set salary for user: {userEmail}</ModalTitle>
                 <ModalText
                   showInfoIcon={true}

@@ -6,7 +6,7 @@ import {
   UpdateWorkPackageRequest,
 } from "../../../../temp_ts";
 import { WorkPackageModalProps } from "../../../interfaces";
-import { WorkPackageFormFields } from "../../../types/forms/formTypes";
+import { WorkPackageFormFields } from "../../../types/types";
 import { workPackageAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";

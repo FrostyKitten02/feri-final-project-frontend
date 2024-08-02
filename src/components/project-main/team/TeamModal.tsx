@@ -7,7 +7,7 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { AddPersonToProjectRequest, ListPersonResponse, PageInfoRequest, PersonDtoImpl, PersonListSearchParams, PersonSortInfoRequest } from "../../../../temp_ts";
+import { AddPersonToProjectRequest, ListPersonResponse, PageInfoRequest, PersonDto, PersonListSearchParams, PersonSortInfoRequest } from "../../../../temp_ts";
 import {
   CustomModalBody,
   CustomModalFooter,
@@ -17,7 +17,7 @@ import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
 import { personAPI, projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { AssignPersonFormFields } from "../../../types/forms/formTypes";
+import { AssignPersonFormFields } from "../../../types/types";
 import { useParams } from "react-router-dom";
 import { TeamModalProps } from "../../../interfaces";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
@@ -71,7 +71,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     }
   };
 
-  const filteredPeople = useMemo((): PersonDtoImpl[] => {
+  const filteredPeople = useMemo((): PersonDto[] => {
     if (debouncedSearchQuery.trim() === "") {
       setListOpen(false);
       return [];
@@ -93,7 +93,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     formState: { errors },
   } = useForm<AssignPersonFormFields>();
 
-  const handleSelectPerson = (person: PersonDtoImpl): void => {
+  const handleSelectPerson = (person: PersonDto): void => {
     setValue("person", person);
     if (person.name && person.lastname) {
       setInputValue(`${person.name} ${person.lastname}`);

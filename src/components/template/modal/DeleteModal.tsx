@@ -10,7 +10,7 @@ import {
   CustomModalHeader,
   ModalTitle,
 } from "./CustomModal";
-import { DeleteConfirmationFields } from "../../../types/forms/formTypes";
+import { DeleteConfirmationFields } from "../../../types/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TextInput } from "flowbite-react";
 import {
@@ -119,7 +119,8 @@ export default function DeleteModal({
                 <p className="text-lg text-gray-600">
                   This action{" "}
                   <span className="text-black font-semibold">CANNOT</span> be
-                  undone. This will permanently delete{" "}
+                  undone. This will permanently{" "}
+                  {!teamPage ? "delete" : "remove"}{" "}
                   {teamPage && (
                     <>
                       {personName && personLastName ? (

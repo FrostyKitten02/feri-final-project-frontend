@@ -290,10 +290,10 @@ export interface CreateWorkPackageRequest {
 export interface GetPeopleResponse {
     /**
      * 
-     * @type {Array<PersonDtoImpl>}
+     * @type {Array<PersonDto>}
      * @memberof GetPeopleResponse
      */
-    'people'?: Array<PersonDtoImpl>;
+    'people'?: Array<PersonDto>;
     /**
      * 
      * @type {string}
@@ -309,10 +309,10 @@ export interface GetPeopleResponse {
 export interface GetPersonResponse {
     /**
      * 
-     * @type {PersonDtoImpl}
+     * @type {PersonDto}
      * @memberof GetPersonResponse
      */
-    'person'?: PersonDtoImpl;
+    'person'?: PersonDto;
     /**
      * 
      * @type {SalaryDto}
@@ -361,6 +361,31 @@ export interface ListPersonResponse {
 /**
  * 
  * @export
+ * @interface ListPersonTypeResponse
+ */
+export interface ListPersonTypeResponse {
+    /**
+     * 
+     * @type {Array<PersonTypeListDto>}
+     * @memberof ListPersonTypeResponse
+     */
+    'personTypes'?: Array<PersonTypeListDto>;
+    /**
+     * 
+     * @type {PageInfo}
+     * @memberof ListPersonTypeResponse
+     */
+    'pageInfo'?: PageInfo;
+    /**
+     * 
+     * @type {SortInfoResponseObject}
+     * @memberof ListPersonTypeResponse
+     */
+    'sortInfo'?: SortInfoResponseObject;
+}
+/**
+ * 
+ * @export
  * @interface ListProjectBudgetSchemaResponse
  */
 export interface ListProjectBudgetSchemaResponse {
@@ -393,6 +418,31 @@ export interface ListProjectResponse {
      * 
      * @type {SortInfoResponseObject}
      * @memberof ListProjectResponse
+     */
+    'sortInfo'?: SortInfoResponseObject;
+}
+/**
+ * 
+ * @export
+ * @interface ListSalaryResponse
+ */
+export interface ListSalaryResponse {
+    /**
+     * 
+     * @type {Array<SalaryListDto>}
+     * @memberof ListSalaryResponse
+     */
+    'salaries'?: Array<SalaryListDto>;
+    /**
+     * 
+     * @type {PageInfo}
+     * @memberof ListSalaryResponse
+     */
+    'pageInfo'?: PageInfo;
+    /**
+     * 
+     * @type {SortInfoResponseObject}
+     * @memberof ListSalaryResponse
      */
     'sortInfo'?: SortInfoResponseObject;
 }
@@ -457,68 +507,25 @@ export interface PersonDto {
      * @type {string}
      * @memberof PersonDto
      */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonDto
-     */
     'id'?: string;
     /**
      * 
      * @type {string}
      * @memberof PersonDto
      */
-    'email'?: string;
+    'name'?: string;
     /**
      * 
      * @type {string}
      * @memberof PersonDto
      */
     'lastname'?: string;
-}
-/**
- * 
- * @export
- * @interface PersonDtoImpl
- */
-export interface PersonDtoImpl {
     /**
      * 
      * @type {string}
-     * @memberof PersonDtoImpl
-     */
-    'id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonDtoImpl
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonDtoImpl
-     */
-    'lastname'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonDtoImpl
+     * @memberof PersonDto
      */
     'email'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof PersonDtoImpl
-     */
-    'salary'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PersonDtoImpl
-     */
-    'availability'?: number;
 }
 /**
  * 
@@ -531,19 +538,13 @@ export interface PersonListDto {
      * @type {string}
      * @memberof PersonListDto
      */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PersonListDto
-     */
     'id'?: string;
     /**
      * 
      * @type {string}
      * @memberof PersonListDto
      */
-    'email'?: string;
+    'name'?: string;
     /**
      * 
      * @type {string}
@@ -552,16 +553,22 @@ export interface PersonListDto {
     'lastname'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof PersonListDto
      */
-    'availability'?: number;
+    'email'?: string;
     /**
      * 
      * @type {number}
      * @memberof PersonListDto
      */
     'salary'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonListDto
+     */
+    'availability'?: number;
 }
 /**
  * 
@@ -603,6 +610,126 @@ export const PersonSortInfoRequestFieldsEnum = {
 } as const;
 
 export type PersonSortInfoRequestFieldsEnum = typeof PersonSortInfoRequestFieldsEnum[keyof typeof PersonSortInfoRequestFieldsEnum];
+
+/**
+ * 
+ * @export
+ * @interface PersonTypeListDto
+ */
+export interface PersonTypeListDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonTypeListDto
+     */
+    'research'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonTypeListDto
+     */
+    'educate'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonTypeListDto
+     */
+    'maxAvailability'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListDto
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListDto
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListDto
+     */
+    'personId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PersonTypeListSearchParams
+ */
+export interface PersonTypeListSearchParams {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListSearchParams
+     */
+    'forUser'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListSearchParams
+     */
+    'startDateFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListSearchParams
+     */
+    'startDateTo'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListSearchParams
+     */
+    'endDateFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonTypeListSearchParams
+     */
+    'endDateTo'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PersonTypeListSortInfoRequest
+ */
+export interface PersonTypeListSortInfoRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PersonTypeListSortInfoRequest
+     */
+    'ascending'?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof PersonTypeListSortInfoRequest
+     */
+    'fields'?: Array<PersonTypeListSortInfoRequestFieldsEnum>;
+}
+
+export const PersonTypeListSortInfoRequestFieldsEnum = {
+    StartDate: 'START_DATE',
+    EndDate: 'END_DATE',
+    MaxAvalibility: 'MAX_AVALIBILITY'
+} as const;
+
+export type PersonTypeListSortInfoRequestFieldsEnum = typeof PersonTypeListSortInfoRequestFieldsEnum[keyof typeof PersonTypeListSortInfoRequestFieldsEnum];
 
 /**
  * 
@@ -966,6 +1093,102 @@ export interface SalaryDto {
      */
     'endDate'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface SalaryListDto
+ */
+export interface SalaryListDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListDto
+     */
+    'personId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SalaryListDto
+     */
+    'amount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListDto
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListDto
+     */
+    'endDate'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SalaryListSearchParams
+ */
+export interface SalaryListSearchParams {
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListSearchParams
+     */
+    'forUser'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListSearchParams
+     */
+    'startDateFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListSearchParams
+     */
+    'startDateTo'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListSearchParams
+     */
+    'endDateFrom'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SalaryListSearchParams
+     */
+    'endDateTo'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SalaryListSortInfoRequest
+ */
+export interface SalaryListSortInfoRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SalaryListSortInfoRequest
+     */
+    'ascending'?: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof SalaryListSortInfoRequest
+     */
+    'fields'?: Array<SalaryListSortInfoRequestFieldsEnum>;
+}
+
+export const SalaryListSortInfoRequestFieldsEnum = {
+    StartDate: 'START_DATE',
+    EndDate: 'END_DATE',
+    Amount: 'AMOUNT'
+} as const;
+
+export type SalaryListSortInfoRequestFieldsEnum = typeof SalaryListSortInfoRequestFieldsEnum[keyof typeof SalaryListSortInfoRequestFieldsEnum];
+
 /**
  * 
  * @export
@@ -1779,6 +2002,58 @@ export const PersonTypeControllerApiAxiosParamCreator = function (configuration?
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {PersonTypeListSortInfoRequest} [sortInfo] 
+         * @param {PersonTypeListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listPersonTypes: async (pageInfo: PageInfoRequest, sortInfo?: PersonTypeListSortInfoRequest, searchParams?: PersonTypeListSearchParams, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageInfo' is not null or undefined
+            assertParamExists('listPersonTypes', 'pageInfo', pageInfo)
+            const localVarPath = `/person-type/list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageInfo !== undefined) {
+                for (const [key, value] of Object.entries(pageInfo)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (sortInfo !== undefined) {
+                for (const [key, value] of Object.entries(sortInfo)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (searchParams !== undefined) {
+                for (const [key, value] of Object.entries(searchParams)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1801,6 +2076,20 @@ export const PersonTypeControllerApiFp = function(configuration?: Configuration)
             const localVarOperationServerBasePath = operationServerMap['PersonTypeControllerApi.createPersonType']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {PersonTypeListSortInfoRequest} [sortInfo] 
+         * @param {PersonTypeListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listPersonTypes(pageInfo: PageInfoRequest, sortInfo?: PersonTypeListSortInfoRequest, searchParams?: PersonTypeListSearchParams, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListPersonTypeResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listPersonTypes(pageInfo, sortInfo, searchParams, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PersonTypeControllerApi.listPersonTypes']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -1819,6 +2108,17 @@ export const PersonTypeControllerApiFactory = function (configuration?: Configur
          */
         createPersonType(createPersonTypeRequest: CreatePersonTypeRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
             return localVarFp.createPersonType(createPersonTypeRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {PersonTypeListSortInfoRequest} [sortInfo] 
+         * @param {PersonTypeListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listPersonTypes(pageInfo: PageInfoRequest, sortInfo?: PersonTypeListSortInfoRequest, searchParams?: PersonTypeListSearchParams, options?: any): AxiosPromise<ListPersonTypeResponse> {
+            return localVarFp.listPersonTypes(pageInfo, sortInfo, searchParams, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1839,6 +2139,19 @@ export class PersonTypeControllerApi extends BaseAPI {
      */
     public createPersonType(createPersonTypeRequest: CreatePersonTypeRequest, options?: RawAxiosRequestConfig) {
         return PersonTypeControllerApiFp(this.configuration).createPersonType(createPersonTypeRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {PageInfoRequest} pageInfo 
+     * @param {PersonTypeListSortInfoRequest} [sortInfo] 
+     * @param {PersonTypeListSearchParams} [searchParams] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PersonTypeControllerApi
+     */
+    public listPersonTypes(pageInfo: PageInfoRequest, sortInfo?: PersonTypeListSortInfoRequest, searchParams?: PersonTypeListSearchParams, options?: RawAxiosRequestConfig) {
+        return PersonTypeControllerApiFp(this.configuration).listPersonTypes(pageInfo, sortInfo, searchParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2716,6 +3029,58 @@ export const SalaryControllerApiAxiosParamCreator = function (configuration?: Co
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {SalaryListSortInfoRequest} [sortInfo] 
+         * @param {SalaryListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listSalaries: async (pageInfo: PageInfoRequest, sortInfo?: SalaryListSortInfoRequest, searchParams?: SalaryListSearchParams, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageInfo' is not null or undefined
+            assertParamExists('listSalaries', 'pageInfo', pageInfo)
+            const localVarPath = `/salary/list`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageInfo !== undefined) {
+                for (const [key, value] of Object.entries(pageInfo)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (sortInfo !== undefined) {
+                for (const [key, value] of Object.entries(sortInfo)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+            if (searchParams !== undefined) {
+                for (const [key, value] of Object.entries(searchParams)) {
+                    localVarQueryParameter[key] = value;
+                }
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2738,6 +3103,20 @@ export const SalaryControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['SalaryControllerApi.createSalaryForPerson']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {SalaryListSortInfoRequest} [sortInfo] 
+         * @param {SalaryListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listSalaries(pageInfo: PageInfoRequest, sortInfo?: SalaryListSortInfoRequest, searchParams?: SalaryListSearchParams, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ListSalaryResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listSalaries(pageInfo, sortInfo, searchParams, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SalaryControllerApi.listSalaries']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -2756,6 +3135,17 @@ export const SalaryControllerApiFactory = function (configuration?: Configuratio
          */
         createSalaryForPerson(createSalaryRequest: CreateSalaryRequest, options?: any): AxiosPromise<ResourceCreatedResponse> {
             return localVarFp.createSalaryForPerson(createSalaryRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {PageInfoRequest} pageInfo 
+         * @param {SalaryListSortInfoRequest} [sortInfo] 
+         * @param {SalaryListSearchParams} [searchParams] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listSalaries(pageInfo: PageInfoRequest, sortInfo?: SalaryListSortInfoRequest, searchParams?: SalaryListSearchParams, options?: any): AxiosPromise<ListSalaryResponse> {
+            return localVarFp.listSalaries(pageInfo, sortInfo, searchParams, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2776,6 +3166,19 @@ export class SalaryControllerApi extends BaseAPI {
      */
     public createSalaryForPerson(createSalaryRequest: CreateSalaryRequest, options?: RawAxiosRequestConfig) {
         return SalaryControllerApiFp(this.configuration).createSalaryForPerson(createSalaryRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {PageInfoRequest} pageInfo 
+     * @param {SalaryListSortInfoRequest} [sortInfo] 
+     * @param {SalaryListSearchParams} [searchParams] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SalaryControllerApi
+     */
+    public listSalaries(pageInfo: PageInfoRequest, sortInfo?: SalaryListSortInfoRequest, searchParams?: SalaryListSearchParams, options?: RawAxiosRequestConfig) {
+        return SalaryControllerApiFp(this.configuration).listSalaries(pageInfo, sortInfo, searchParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

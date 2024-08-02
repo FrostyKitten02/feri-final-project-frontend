@@ -190,7 +190,13 @@ export default function ManageUsersModal({
                         >
                           <div className="flex items-center justify-center text-sm font-semibold">
                             <div>
-                              {user.name} {user.lastname}
+                              {user.name && user.lastname ? (
+                                <p>
+                                  {user.name} {user.lastname}
+                                </p>
+                              ) : (
+                                <p>N/A</p>
+                              )}
                             </div>
                           </div>
                           <div className="flex items-center justify-center text-sm font-normal text-gray-500">
