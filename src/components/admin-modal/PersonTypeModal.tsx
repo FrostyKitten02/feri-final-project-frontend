@@ -6,10 +6,9 @@ import {
   CustomModalError,
   CustomModalFooter,
   CustomModalHeader,
-  ModalDivider,
   ModalText,
   ModalTitle,
-} from "../../components/template/modal/CustomModal";
+} from "../template/modal/CustomModal";
 import { useRequestArgs } from "../../util/CustomHooks";
 import { personTypeAPI } from "../../util/ApiDeclarations";
 import { toastError, toastSuccess } from "../toast-modals/ToastFunctions";
@@ -98,18 +97,27 @@ export default function PersonTypeModal({
             <form onSubmit={handleSubmit(onSubmit)}>
               <CustomModalHeader handleModalOpen={handleClose}>
                 <ModalTitle>
-                  set employment type for user: {userEmail}
+                  set employment type
                 </ModalTitle>
                 <ModalText
                   showInfoIcon={true}
                   showWarningIcon={false}
                   contentColor="muted"
                 >
-                  Information provided in the form can be changed later on.
+                  Employment types in the same interval will be overwritten with newer values. If end date is not specified, employment interval
+                  will be ongoing and will end when newer value is added.
+                  <div className="flex items-center text-black text-md">
+                    <div>
+                      You are setting employment type for
+                    </div>
+                    <div className="font-semibold pl-[5px]">
+                      {userEmail}
+                    </div>
+                    <div>.</div>
+                  </div>
                 </ModalText>
               </CustomModalHeader>
               <CustomModalBody>
-                <ModalDivider>employment details</ModalDivider>
                 <div className="flex flex-row justify-between">
                   <div>
                     <Label>Start date</Label>
@@ -145,12 +153,8 @@ export default function PersonTypeModal({
                       defaultValue={""}
                       control={control}
                       rules={{
-                        required: "End date is required!",
                         validate: (value) => {
-                          if (!value) {
-                            return "End date is required!";
-                          }
-                          if (value < watchStartDate) {
+                          if (value && value < watchStartDate) {
                             return "End date cannot be before start date!";
                           }
                           return true;

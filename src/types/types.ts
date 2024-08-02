@@ -35,7 +35,7 @@ export type PersonTypeFormFields = {
   research: number;
   educate: number;
   startDate: string;
-  endDate: string;
+  endDate?: string;
   personId: PersonDto;
 };
 
@@ -43,7 +43,7 @@ export type SalaryFormFields = {
   personId: PersonDto;
   amount: number;
   startDate: string;
-  endDate: string;
+  endDate?: string;
 };
 
 export type DeleteConfirmationFields = {

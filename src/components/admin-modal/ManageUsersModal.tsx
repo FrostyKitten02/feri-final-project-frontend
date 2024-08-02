@@ -176,10 +176,10 @@ export default function ManageUsersModal({
                         </div>
                       </div>
                     </div>
-                    <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white shadow-md divide-y divide-solid divide-gray-200">
+                    <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
                       {allUsers?.people?.map((user, index) => (
                         <div
-                          className={`grid grid-cols-5 py-6 hover:bg-gray-200 transition delay-50 ${
+                          className={`grid grid-cols-5 py-6 hover:bg-gray-100 transition delay-50 ${
                             index === 0 ? `rounded-t-xl` : ""
                           } ${
                             index === (allUsers.people?.length ?? 0) - 1

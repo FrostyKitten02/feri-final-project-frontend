@@ -6,7 +6,7 @@ import {
   CustomModal,
   CustomModalBody,
   CustomModalHeader,
-  ModalDivider,
+  ModalDivider, ModalText,
   ModalTitle,
 } from "../template/modal/CustomModal";
 import { toastError } from "../toast-modals/ToastFunctions";
@@ -160,7 +160,7 @@ export default function SalaryEmploymentHistoryModal({
     <>
       <button
         onClick={handleButtonClick}
-        className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
+        className="flex flex-row items-center justify-start text-gray-500 h-full rounded-b-lg text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <FaHistory className="size-4" />
         <span>Salary & employment history</span>
@@ -170,11 +170,24 @@ export default function SalaryEmploymentHistoryModal({
           <CustomModal closeModal={handleClose} modalWidth="1000px">
             <CustomModalHeader handleModalOpen={handleClose}>
               <ModalTitle>
-                salary and employment history for user: {userEmail}
+                salary and employment history
               </ModalTitle>
+              <ModalText showInfoIcon={false} showWarningIcon={false} contentColor="muted">
+                <div className="flex items-center text-black text-md">
+                  <div>
+                    You are viewing salary and employment history of
+                  </div>
+                  <div className="font-semibold pl-[5px]">
+                    {userEmail}
+                  </div>
+                  <div>.</div>
+                </div>
+              </ModalText>
             </CustomModalHeader>
             <CustomModalBody>
-              <ModalDivider>salary history</ModalDivider>
+              <ModalDivider paddingTop="0px">
+                salary history
+              </ModalDivider>
               <div className="flex flex-col">
                 <div className="w-full">
                   {salaries.length > 0 ? (
@@ -196,10 +209,10 @@ export default function SalaryEmploymentHistoryModal({
                           </div>
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white shadow-md divide-y divide-solid divide-gray-200">
+                      <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
                         {salaries.map((salary, index) => (
                           <div
-                            className={`grid grid-cols-3 py-6 hover:bg-gray-200 transition delay-50 ${
+                            className={`grid grid-cols-3 py-6 hover:bg-gray-100 transition delay-50 ${
                               index === 0 ? `rounded-t-xl` : ""
                             } ${
                               index === salaries.length - 1
@@ -267,10 +280,10 @@ export default function SalaryEmploymentHistoryModal({
                           </div>
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white shadow-md divide-y divide-solid divide-gray-200">
+                      <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
                         {employments.map((employment, index) => (
                           <div
-                            className={`grid grid-cols-4 py-6 hover:bg-gray-200 transition delay-50 ${
+                            className={`grid grid-cols-4 py-6 hover:bg-gray-100 transition delay-50 ${
                               index === 0 ? `rounded-t-xl` : ""
                             } ${
                               index === salaries.length - 1

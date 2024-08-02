@@ -171,6 +171,8 @@ export interface CustomModalBodyProps {
 
 export interface ModalDividerProps {
   children?: React.ReactNode;
+  paddingTop?: string
+  paddingBottom?: string
 }
 
 export interface CustomModalFooterProps {
