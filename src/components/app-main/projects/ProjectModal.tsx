@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import AddProjectIcon from "../../../assets/icons/folder-badge-plus.svg?react";
 import {Datepicker, Label, Select, TextInput} from "flowbite-react";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {AddProjectFormFields} from "../../../types/forms/formTypes";
+import {AddProjectFormFields} from "../../../types/types";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
 import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";

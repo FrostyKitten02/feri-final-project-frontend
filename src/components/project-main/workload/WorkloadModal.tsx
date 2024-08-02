@@ -12,7 +12,7 @@ import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { WorkloadFormFields } from "../../../types/forms/formTypes";
+import { WorkloadFormFields } from "../../../types/types";
 import {
   CreateOccupancyRequest,
   UpdateOccupancyRequest,

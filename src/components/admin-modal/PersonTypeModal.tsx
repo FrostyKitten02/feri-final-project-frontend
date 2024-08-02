@@ -14,7 +14,7 @@ import { useRequestArgs } from "../../util/CustomHooks";
 import { personTypeAPI } from "../../util/ApiDeclarations";
 import { toastError, toastSuccess } from "../toast-modals/ToastFunctions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { PersonTypeFormFields } from "../../types/forms/formTypes";
+import { PersonTypeFormFields } from "../../types/types";
 import { AdminModalProps } from "../../interfaces";
 import { Datepicker, Label, TextInput } from "flowbite-react";
 import { FaPercent } from "react-icons/fa6";

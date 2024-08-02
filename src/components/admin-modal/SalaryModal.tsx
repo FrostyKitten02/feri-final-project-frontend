@@ -5,7 +5,7 @@ import { salaryApi } from "../../util/ApiDeclarations";
 import { useRequestArgs } from "../../util/CustomHooks";
 import { toastError, toastSuccess } from "../toast-modals/ToastFunctions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { SalaryFormFields } from "../../types/forms/formTypes";
+import { SalaryFormFields } from "../../types/types";
 import { Label, Datepicker, TextInput } from "flowbite-react";
 import TextUtil from "../../util/TextUtil";
 import {

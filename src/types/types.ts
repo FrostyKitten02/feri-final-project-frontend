@@ -1,4 +1,4 @@
-import { PersonDto } from "../../../temp_ts";
+import { PersonDto } from "../../temp_ts";
 
 export type AddProjectFormFields = {
   title: string;

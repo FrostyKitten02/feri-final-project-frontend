@@ -17,7 +17,7 @@ import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
 import { personAPI, projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { AssignPersonFormFields } from "../../../types/forms/formTypes";
+import { AssignPersonFormFields } from "../../../types/types";
 import { useParams } from "react-router-dom";
 import { TeamModalProps } from "../../../interfaces";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
