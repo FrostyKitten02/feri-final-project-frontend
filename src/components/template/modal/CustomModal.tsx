@@ -45,7 +45,7 @@ export const ModalTitle = ({children}: ModalTitleProps) => {
     )
 }
 
-export const ModalText = ({children, showInfoIcon, showWarningIcon, contentColor}: ModalTextProps) => {
+export const ModalText = ({children, showInfoIcon = false, showWarningIcon = false, contentColor}: ModalTextProps) => {
     const textColorVariants: { [key: string]: string } = {
         warning: 'text-warning_modal',
         muted: 'text-muted'
