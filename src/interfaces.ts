@@ -4,7 +4,7 @@ import {
   ProjectDto,
   ProjectStatisticsResponse,
   TaskDto,
-  WorkPackageDto,
+  WorkPackageDto, PersonWorkDto,
 } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
@@ -131,7 +131,7 @@ export interface ProgressObject {
 
 export interface ProjectModalProps {
   handleAddProject: () => void;
-  edit: boolean;
+  edit?: boolean;
   projectId?: string;
 }
 
@@ -160,8 +160,8 @@ export interface ModalTitleProps {
 
 export interface ModalTextProps {
   children?: React.ReactNode;
-  showInfoIcon: boolean;
-  showWarningIcon: boolean;
+  showInfoIcon?: boolean;
+  showWarningIcon?: boolean;
   contentColor: string;
 }
 
@@ -230,6 +230,7 @@ export interface WorkloadTableProps {
   statistics: ProjectStatisticsResponse;
   currentPage: number;
   monthsPerPage: number;
+  handleEdit: () => void;
 }
 
 export interface DeleteModalProps {
@@ -246,6 +247,9 @@ export interface DeleteModalProps {
 export interface WorkloadModalProps {
   closeModal: () => void,
   modalWidth: string,
+  monthDate: string,
+  person: PersonWorkDto,
+  handleEdit: () => void
 }
 export interface DonutGraphData {
   name: string,

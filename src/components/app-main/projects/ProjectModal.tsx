@@ -19,7 +19,7 @@ import {
 import TextUtil from "../../../util/TextUtil";
 import { FiEdit3 } from "react-icons/fi";
 
-export const ProjectModal = ({handleAddProject, edit, projectId}: ProjectModalProps) => {
+export const ProjectModal = ({handleAddProject, edit = false, projectId}: ProjectModalProps) => {
     const [modalOpen, setModalOpen] = useState<boolean>();
     const {register, watch, control, reset, handleSubmit, formState: {errors}} = useForm<AddProjectFormFields>();
     const [budgetSchemas, setBudgetSchemas] = useState<ProjectBudgetSchemaDto[]>([]);
@@ -42,7 +42,6 @@ export const ProjectModal = ({handleAddProject, edit, projectId}: ProjectModalPr
             }
         };
         fetchBudgetSchemas();
-        fetchProjectById();
     }, []);
 
     useEffect(() => {
@@ -147,7 +146,7 @@ export const ProjectModal = ({handleAddProject, edit, projectId}: ProjectModalPr
                             <ModalTitle>
                                 {!edit ? <span>Create a project</span> : <span>Edit project: {projectDetails?.projectDto?.title}</span>}
                             </ModalTitle>
-                            <ModalText showInfoIcon={true} showWarningIcon={false} contentColor="muted">
+                            <ModalText showInfoIcon={true} contentColor="muted">
                                 Information provided in the form can be changed later on.
                             </ModalText>
                         </CustomModalHeader>

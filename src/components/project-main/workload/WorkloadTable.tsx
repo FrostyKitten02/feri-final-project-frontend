@@ -1,17 +1,31 @@
-import { WorkloadTableProps, YearLimitProps } from "../../../interfaces";
+import { WorkloadTableProps } from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import * as React from "react";
-import { useState } from "react";
+import {useMemo, useState} from "react";
 import { WorkloadModal } from "./WorkloadModal";
-
-export const WorkloadTable = ({ statistics, currentPage, monthsPerPage }: WorkloadTableProps) => {
+import {PersonWorkDto} from "../../../../temp_ts";
+export const WorkloadTable = ({ statistics, currentPage, monthsPerPage, handleEdit }: WorkloadTableProps) => {
     const [open, setOpen] = useState<boolean>(false);
-    if (!statistics.months) return;
-    const startIndex = (currentPage - 1) * monthsPerPage;
-    const shownMonths = statistics.months.slice(startIndex, startIndex + monthsPerPage);
-    const currentMonthClass = `bg-blue-200 p-2 rounded-lg`;
-    const years: Array<YearLimitProps> = TextUtil.yearColumnLimit(shownMonths, 2);
-    const emptyColumnsCount = monthsPerPage - shownMonths.length;
+    const [selectedMonth, setSelectedMonth] = useState<string>("");
+    const [selectedPerson, setSelectedPerson] = useState<PersonWorkDto>({});
+    const handleButtonOpen = (month: string | undefined, person: PersonWorkDto | undefined) => {
+        if(month !== undefined && person !== undefined){
+            setOpen(true);
+            setSelectedMonth(month);
+            setSelectedPerson(person);
+        }
+    }
+    const { shownMonths, emptyColumnsCount, years } = useMemo(() => {
+        if (!statistics.months)
+            return { shownMonths: [], startIndex: 0, emptyColumnsCount: 0, years: [] };
+
+        const startIndex = (currentPage - 1) * monthsPerPage;
+        const shownMonths = statistics.months.slice(startIndex, startIndex + monthsPerPage);
+        const emptyColumnsCount = monthsPerPage - shownMonths.length;
+        const years = TextUtil.yearColumnLimit(shownMonths, 2);
+
+        return { shownMonths, emptyColumnsCount, years };
+    }, [statistics.months, currentPage, monthsPerPage]);
 
     return (
         <div className="grid"
@@ -46,7 +60,7 @@ export const WorkloadTable = ({ statistics, currentPage, monthsPerPage }: Worklo
 
             {shownMonths.map((month) => (
                 <div key={`month-${month.monthNumber}`} className="h-14 justify-center flex items-center border-solid">
-                    <div className={`${TextUtil.isCurrentMonthYear(month) && currentMonthClass} justify-center flex items-center`}>
+                    <div className={`${TextUtil.isCurrentMonthYear(month) && `bg-blue-200 p-2 rounded-lg`} justify-center flex items-center`}>
                         <div className="text-xs font-mono">
                             M{month.monthNumber}
                         </div>
@@ -86,7 +100,7 @@ export const WorkloadTable = ({ statistics, currentPage, monthsPerPage }: Worklo
                     </div>
                     {shownMonths.map((month, monthIndex) => (
                         <div key={`person-work-${indexPerson}-${monthIndex}`} className="flex h-14 items-center justify-center border-solid">
-                            <button onClick={() => setOpen(true)} className="flex-grow text-xl h-full rounded-[15px] hover:bg-gray-100 transition delay-50">
+                            <button onClick={() => handleButtonOpen(month.date, month.personWork?.[indexPerson])} className="flex-grow text-xl h-full rounded-[15px] hover:bg-gray-100 transition delay-50">
                                 {month.personWork?.[indexPerson].occupancyId !== null ? month.personWork?.[indexPerson].totalWorkPm : "N/A"}
                             </button>
                         </div>
@@ -129,6 +143,9 @@ export const WorkloadTable = ({ statistics, currentPage, monthsPerPage }: Worklo
                 <WorkloadModal
                     closeModal={() => setOpen(false)}
                     modalWidth="700px"
+                    monthDate={selectedMonth ?? ""}
+                    person={selectedPerson}
+                    handleEdit={handleEdit}
                 />
             )}
         </div>

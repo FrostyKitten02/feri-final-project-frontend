@@ -46,6 +46,10 @@ export type SalaryFormFields = {
   endDate?: string;
 };
 
+export type WorkloadFormFields = {
+  pmValue: number;
+}
+
 export type DeleteConfirmationFields = {
   title: string;
 };

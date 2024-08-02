@@ -316,7 +316,7 @@ export default class TextUtil {
         return (`${number * 100}%`);
     }
 
-    static getFirstOfYearMonth = (date: Date = new Date()): Date => {
+    static getFirstOfYearMonth = (date: Date | string = new Date()): Date => {
         const currentDate = new Date(date);
         return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     }

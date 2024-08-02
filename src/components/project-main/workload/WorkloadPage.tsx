@@ -19,8 +19,7 @@ export const WorkloadPage = () => {
     const requestArgs = useRequestArgs();
     const {projectId} = useParams();
 
-    useEffect(() => {
-        const getStatistics = async (): Promise<void> => {
+    const getStatistics = async (): Promise<void> => {
             if (!projectId)
                 return;
             try {
@@ -33,20 +32,31 @@ export const WorkloadPage = () => {
                     setIsLoading(false);
                 }
             } catch (error: any) {
-            }
         }
+    }
+    
+    useEffect(() => {
         getStatistics();
-    }, [])
+    }, [projectId])
+
     const handleMonthChange = (count: number) => {
         setMonthsPerPage(count);
         setCurrentPage(1);
+    }
+    const handleEdit = (): void => {
+        getStatistics();
     }
     return (
         !isLoading &&
         <div className="flex flex-col flex-grow">
                 <div className="m-10 flex-grow overflow-y-auto">
                     <div>
-                        <WorkloadTable statistics={statistics} currentPage={currentPage} monthsPerPage={monthsPerPage}/>
+                        <WorkloadTable
+                            statistics={statistics}
+                            currentPage={currentPage}
+                            monthsPerPage={monthsPerPage}
+                            handleEdit={handleEdit}
+                        />
                     </div>
                 </div>
             <div>
@@ -69,8 +79,11 @@ export const WorkloadPage = () => {
                     12
                 </button>
             </div>
-            <CustomPagination totalPages={(statistics.months?.length ?? monthsPerPage) / monthsPerPage}
-                              onPageChange={setCurrentPage} currentPage={currentPage}
+            <CustomPagination
+                totalPages={(Math.ceil((statistics.months?.length ?? 0) / monthsPerPage))}
+                onPageChange={setCurrentPage} currentPage={currentPage}
+                nextLabelText=""
+                backLabelText=""
             />
         </div>
     )
