@@ -165,7 +165,7 @@ export default function WorkPackageModal({
                 {!edit ? (
                   <span>Add a work package</span>
                 ) : (
-                  <span>Edit work package: {title}</span>
+                  <span>Edit work package</span>
                 )}
               </ModalTitle>
               <ModalText
@@ -174,6 +174,28 @@ export default function WorkPackageModal({
                 contentColor="muted"
               >
                 Information provided in the form can be changed later on.
+                <div className="flex items-center text-black text-md">
+                  <div>
+                    You are curently working on
+                  </div>
+                  <div className="font-semibold pl-[5px]">
+                    {projectDetails?.title}
+                  </div>
+                  <div>.</div>
+                </div>
+                <div className="flex items-center text-black text-md">
+                  <div>
+                    Remember that project starts on
+                  </div>
+                  <div className="font-semibold px-[5px]">
+                    {TextUtil.refactorDate(projectDetails?.startDate)}
+                  </div>
+                  <div>and ends on</div>
+                  <div className="font-semibold pl-[5px]">
+                    {TextUtil.refactorDate(projectDetails?.endDate)}
+                  </div>
+                  <div>.</div>
+                </div>
               </ModalText>
             </CustomModalHeader>
             <CustomModalBody>
@@ -191,14 +213,6 @@ export default function WorkPackageModal({
               <div className="flex flex-row justify-between pt-6">
                 <div className="w-[270px]">
                   <Label>Start date</Label>
-                  <ModalText
-                    showInfoIcon={false}
-                    showWarningIcon={true}
-                    contentColor="warning"
-                  >
-                    Project start date:{" "}
-                    {TextUtil.refactorDate(projectDetails?.startDate)}
-                  </ModalText>
                   <Controller
                     name="startDate"
                     defaultValue={!edit ? "" : startDate}
@@ -236,14 +250,6 @@ export default function WorkPackageModal({
                 </div>
                 <div className="w-[270px]">
                   <Label>End date</Label>
-                  <ModalText
-                    showInfoIcon={false}
-                    showWarningIcon={true}
-                    contentColor="warning"
-                  >
-                    Project end date:{" "}
-                    {TextUtil.refactorDate(projectDetails?.endDate)}
-                  </ModalText>
                   <Controller
                     name="endDate"
                     defaultValue={!edit ? "" : endDate}
