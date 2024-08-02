@@ -17,4 +17,4 @@ export const personAPI = new PersonControllerApi(RequestUtil.API_CONFIG);
 export const taskAPI = new TaskControllerApi(RequestUtil.API_CONFIG);
 export const projectSchemaAPI = new ProjectBudgetSchemaControllerApi(RequestUtil.API_CONFIG);
 export const salaryApi = new SalaryControllerApi(RequestUtil.API_CONFIG);
-export const occupanyAPI = new OccupancyControllerApi(RequestUtil.API_CONFIG);
+export const occupancyAPI = new OccupancyControllerApi(RequestUtil.API_CONFIG);

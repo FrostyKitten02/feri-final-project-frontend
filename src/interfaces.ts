@@ -1,6 +1,6 @@
 import {
   ProjectBudgetSchemaDto,
-  PersonDtoImpl,
+  PersonDto,
   ProjectDto,
   ProjectStatisticsResponse,
   TaskDto,
@@ -207,8 +207,8 @@ export interface UserSearchInputProps<
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   inputValue?: string;
   listOpen?: boolean;
-  filteredPeople?: PersonDtoImpl[];
-  handleSelectPerson?: (person: PersonDtoImpl) => void;
+  filteredPeople?: PersonDto[];
+  handleSelectPerson?: (person: PersonDto) => void;
   inputWidth?: number;
   showResults: boolean;
 }
@@ -228,6 +228,7 @@ export interface WorkloadTableProps {
   statistics: ProjectStatisticsResponse;
   currentPage: number;
   monthsPerPage: number;
+  handleEdit: () => void;
 }
 
 export interface DeleteModalProps {
@@ -240,7 +241,8 @@ export interface WorkloadModalProps {
   closeModal: () => void,
   modalWidth: string,
   monthDate: string,
-  person: PersonWorkDto
+  person: PersonWorkDto,
+  handleEdit: () => void
 }
 export interface DonutGraphData {
   name: string,

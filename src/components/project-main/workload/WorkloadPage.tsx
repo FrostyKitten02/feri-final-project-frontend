@@ -19,8 +19,7 @@ export const WorkloadPage = () => {
     const requestArgs = useRequestArgs();
     const {projectId} = useParams();
 
-    useEffect(() => {
-        const getStatistics = async (): Promise<void> => {
+    const getStatistics = async (): Promise<void> => {
             if (!projectId)
                 return;
             try {
@@ -33,13 +32,19 @@ export const WorkloadPage = () => {
                     setIsLoading(false);
                 }
             } catch (error: any) {
-            }
         }
+    }
+    
+    useEffect(() => {
         getStatistics();
     }, [projectId])
+
     const handleMonthChange = (count: number) => {
         setMonthsPerPage(count);
         setCurrentPage(1);
+    }
+    const handleEdit = (): void => {
+        getStatistics();
     }
     return (
         !isLoading &&
@@ -50,6 +55,7 @@ export const WorkloadPage = () => {
                             statistics={statistics}
                             currentPage={currentPage}
                             monthsPerPage={monthsPerPage}
+                            handleEdit={handleEdit}
                         />
                     </div>
                 </div>
