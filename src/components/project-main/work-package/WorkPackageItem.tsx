@@ -119,7 +119,12 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   projectDetails={projectDetails}
                   workPackageId={workPackage.id}
                 />
-                <DeleteModal title={workPackage.title} />
+                <DeleteModal
+                  id={workPackage.id}
+                  title={workPackage.title}
+                  workPackage={true}
+                  handleDelete={handleEditWorkPackage}
+                />
               </div>
             </div>
           </div>

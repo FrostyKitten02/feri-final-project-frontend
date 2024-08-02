@@ -52,13 +52,15 @@ export const ModalText = ({children, showInfoIcon = false, showWarningIcon = fal
     };
 
     return (
-        <div className={`flex items-center ${textColorVariants[contentColor]} pt-1`}>
-            {
-                showInfoIcon && <IoMdInformationCircleOutline/>
-            }
-            { 
-                showWarningIcon && <IoWarningOutline />
-            }
+        <div className={`flex ${textColorVariants[contentColor]} pt-1`}>
+            <div className="pt-[2px]">
+                {
+                    showInfoIcon && <IoMdInformationCircleOutline/>
+                }
+                {
+                    showWarningIcon && <IoWarningOutline />
+                }
+            </div>
             <div className="px-1 text-sm">
                 {children}
             </div>
@@ -83,9 +85,9 @@ export const CustomModalFooter = ({children, danger}: CustomModalFooterProps) =>
         </div>
     )
 }
-export const ModalDivider = ({children}: ModalDividerProps) => {
+export const ModalDivider = ({children, paddingTop, paddingBottom}: ModalDividerProps) => {
     return (
-        <div className="flex flex-row items-center pb-6 pt-12">
+        <div className={`flex flex-row items-center ${paddingTop ?? `pt-12`} ${paddingBottom ?? `pb-6`}`}>
             <div className="w-[7%] h-[1px] bg-muted"/>
             <Label className="px-2 uppercase text-muted">
                 {children}

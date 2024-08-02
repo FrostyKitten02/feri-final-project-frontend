@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ProjectDto, WorkPackageDto } from "../../../../temp_ts";
 import { useParams } from "react-router-dom";
 import { projectAPI } from "../../../util/ApiDeclarations";
@@ -24,19 +24,6 @@ export const WorkPackageListing: FC = () => {
     });
   }, [projectId]);
 
-  const sortedWorkPackagesByDate = useMemo(() => {
-    return workPackages.sort((a, b) => {
-      const fallbackDate = new Date(Date.now()).getTime();
-      const dateA = a.startDate 
-        ? new Date(a.startDate).getTime()
-        : fallbackDate;
-      const dateB = b.startDate
-        ? new Date(b.startDate).getTime()
-        : fallbackDate;
-      return dateA - dateB;
-    });
-  }, [workPackages]);
-
   const handleSubmit = (): void => {
     fetchWorkPackagesForProject();
   };
@@ -50,8 +37,19 @@ export const WorkPackageListing: FC = () => {
             setProjectDetails(response.data.projectDto);
           }
           if (response.data.projectDto?.workPackages) {
-            setWorkPackages(response.data.projectDto.workPackages);
-          }
+            const sortedWorkPackagesByDate =
+              response.data.projectDto?.workPackages?.sort((a, b) => {
+                const fallbackDate = new Date(Date.now()).getTime();
+                const dateA = a.startDate
+                  ? new Date(a.startDate).getTime()
+                  : fallbackDate;
+                const dateB = b.startDate
+                  ? new Date(b.startDate).getTime()
+                  : fallbackDate;
+                return dateA - dateB;
+              });
+            setWorkPackages(sortedWorkPackagesByDate);
+          } else setWorkPackages([]);
         }
       } else {
         toastError("Project id not found!");
@@ -73,10 +71,9 @@ export const WorkPackageListing: FC = () => {
                 <div className="flex flex-col justify-center items-center font-bold text-3xl">
                   <h1>Loading work packages...</h1>
                 </div>
-              ) : sortedWorkPackagesByDate &&
-                sortedWorkPackagesByDate.length > 0 ? (
+              ) : workPackages.length > 0 ? (
                 <div className="flex-col flex-grow gap-y-10">
-                  {sortedWorkPackagesByDate.map((workPackage) => (
+                  {workPackages.map((workPackage) => (
                     <div key={workPackage.id}>
                       <WorkPackageItem
                         projectDetails={projectDetails}

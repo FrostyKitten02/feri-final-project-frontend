@@ -176,10 +176,10 @@ export default function ManageUsersModal({
                         </div>
                       </div>
                     </div>
-                    <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white shadow-md divide-y divide-solid divide-gray-200">
+                    <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
                       {allUsers?.people?.map((user, index) => (
                         <div
-                          className={`grid grid-cols-5 py-6 hover:bg-gray-200 transition delay-50 ${
+                          className={`grid grid-cols-5 py-6 hover:bg-gray-100 transition delay-50 ${
                             index === 0 ? `rounded-t-xl` : ""
                           } ${
                             index === (allUsers.people?.length ?? 0) - 1
@@ -190,7 +190,13 @@ export default function ManageUsersModal({
                         >
                           <div className="flex items-center justify-center text-sm font-semibold">
                             <div>
-                              {user.name} {user.lastname}
+                              {user.name && user.lastname ? (
+                                <p>
+                                  {user.name} {user.lastname}
+                                </p>
+                              ) : (
+                                <p>N/A</p>
+                              )}
                             </div>
                           </div>
                           <div className="flex items-center justify-center text-sm font-normal text-gray-500">

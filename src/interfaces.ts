@@ -107,7 +107,7 @@ export interface AdminModalProps {
   onModalClose: () => void;
   userId?: string;
   userEmail?: string;
-  refetchUserList: () => void;
+  refetchUserList?: () => void;
 }
 
 export interface SalaryModalProps {
@@ -171,6 +171,8 @@ export interface CustomModalBodyProps {
 
 export interface ModalDividerProps {
   children?: React.ReactNode;
+  paddingTop?: string
+  paddingBottom?: string
 }
 
 export interface CustomModalFooterProps {
@@ -232,9 +234,14 @@ export interface WorkloadTableProps {
 }
 
 export interface DeleteModalProps {
+  id?: string;
   title?: string;
-  handleDelete?: () => Promise<void>;
+  handleDelete?: () => void; 
   teamPage?: boolean;
+  workPackage?: boolean;
+  personName?: string;
+  personLastName?: string;
+  personEmail?: string;
 }
 
 export interface WorkloadModalProps {
