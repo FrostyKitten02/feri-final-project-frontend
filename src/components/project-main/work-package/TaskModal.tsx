@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { CreateTaskRequest, UpdateTaskRequest } from "../../../../temp_ts";
 import { TaskModalProps } from "../../../interfaces";
-import { TaskFormFields } from "../../../types/forms/formTypes";
+import { TaskFormFields } from "../../../types/types";
 import { taskAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";

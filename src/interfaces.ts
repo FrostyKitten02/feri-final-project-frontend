@@ -1,6 +1,6 @@
 import {
   ProjectBudgetSchemaDto,
-  PersonDtoImpl,
+  PersonDto,
   ProjectDto,
   ProjectStatisticsResponse,
   TaskDto,
@@ -107,7 +107,7 @@ export interface AdminModalProps {
   onModalClose: () => void;
   userId?: string;
   userEmail?: string;
-  refetchUserList: () => void;
+  refetchUserList?: () => void;
 }
 
 export interface SalaryModalProps {
@@ -207,8 +207,8 @@ export interface UserSearchInputProps<
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   inputValue?: string;
   listOpen?: boolean;
-  filteredPeople?: PersonDtoImpl[];
-  handleSelectPerson?: (person: PersonDtoImpl) => void;
+  filteredPeople?: PersonDto[];
+  handleSelectPerson?: (person: PersonDto) => void;
   inputWidth?: number;
   showResults: boolean;
 }
