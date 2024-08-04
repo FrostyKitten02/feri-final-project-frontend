@@ -33,16 +33,11 @@ export default function PersonTypeModal({
 
   const requestArgs = useRequestArgs();
 
-  const handleButtonClick = (): void => {
-    onButtonClick();
-    setModalOpen(true);
-  };
-
   const handleClose = (): void => {
     reset();
-    onModalClose();
+    onModalClose?.();
     setModalOpen(false);
-    setActionPopoverOpen(false);
+    setActionPopoverOpen?.(false);
   };
 
   const {
@@ -85,7 +80,9 @@ export default function PersonTypeModal({
   return (
     <>
       <button
-        onClick={handleButtonClick}
+        onClick={() => {
+          onButtonClick?.(), setModalOpen(true);
+        }}
         className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <BsFillPersonVcardFill className="size-4" />
@@ -96,23 +93,19 @@ export default function PersonTypeModal({
           <CustomModal closeModal={handleClose} modalWidth="700px">
             <form onSubmit={handleSubmit(onSubmit)}>
               <CustomModalHeader handleModalOpen={handleClose}>
-                <ModalTitle>
-                  set employment type
-                </ModalTitle>
+                <ModalTitle>set employment type</ModalTitle>
                 <ModalText
                   showInfoIcon={true}
                   showWarningIcon={false}
                   contentColor="muted"
                 >
-                  Employment types in the same interval will be overwritten with newer values. If end date is not specified, employment interval
-                  will be ongoing and will end when newer value is added.
+                  Employment types in the same interval will be overwritten with
+                  newer values. If end date is not specified, employment
+                  interval will be ongoing and will end when newer value is
+                  added.
                   <div className="flex items-center text-black text-md">
-                    <div>
-                      You are setting employment type for
-                    </div>
-                    <div className="font-semibold pl-[5px]">
-                      {userEmail}
-                    </div>
+                    <div>You are setting employment type for</div>
+                    <div className="font-semibold pl-[5px]">{userEmail}</div>
                     <div>.</div>
                   </div>
                 </ModalText>

@@ -169,7 +169,7 @@ export default function TaskModal({
                                 </div>
                                 <div className="flex items-center text-black text-md">
                                     <div>
-                                        Remember that project starts on
+                                        Remember that work package starts on
                                     </div>
                                     <div className="font-semibold px-[5px]">
                                         {TextUtil.refactorDate(workPackageStartDate)}

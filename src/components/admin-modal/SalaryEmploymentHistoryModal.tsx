@@ -6,7 +6,8 @@ import {
   CustomModal,
   CustomModalBody,
   CustomModalHeader,
-  ModalDivider, ModalText,
+  ModalDivider,
+  ModalText,
   ModalTitle,
 } from "../template/modal/CustomModal";
 import { toastError } from "../toast-modals/ToastFunctions";
@@ -53,15 +54,10 @@ export default function SalaryEmploymentHistoryModal({
     }
   }, [modalOpen, pageNumberEmployment]);
 
-  const handleButtonClick = (): void => {
-    onButtonClick();
-    setModalOpen(true);
-  };
-
   const handleClose = (): void => {
-    onModalClose();
+    onModalClose?.();
     setModalOpen(false);
-    setActionPopoverOpen(false);
+    setActionPopoverOpen?.(false);
   };
 
   const onSalaryPageChange = (page: number) => {
@@ -159,7 +155,9 @@ export default function SalaryEmploymentHistoryModal({
   return (
     <>
       <button
-        onClick={handleButtonClick}
+        onClick={() => {
+          onButtonClick?.(), setModalOpen(true);
+        }}
         className="flex flex-row items-center justify-start text-gray-500 h-full rounded-b-lg text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <FaHistory className="size-4" />
@@ -169,25 +167,21 @@ export default function SalaryEmploymentHistoryModal({
         <ModalPortal>
           <CustomModal closeModal={handleClose} modalWidth="1000px">
             <CustomModalHeader handleModalOpen={handleClose}>
-              <ModalTitle>
-                salary and employment history
-              </ModalTitle>
-              <ModalText showInfoIcon={false} showWarningIcon={false} contentColor="muted">
+              <ModalTitle>salary and employment history</ModalTitle>
+              <ModalText
+                showInfoIcon={false}
+                showWarningIcon={false}
+                contentColor="muted"
+              >
                 <div className="flex items-center text-black text-md">
-                  <div>
-                    You are viewing salary and employment history of
-                  </div>
-                  <div className="font-semibold pl-[5px]">
-                    {userEmail}
-                  </div>
+                  <div>You are viewing salary and employment history of</div>
+                  <div className="font-semibold pl-[5px]">{userEmail}</div>
                   <div>.</div>
                 </div>
               </ModalText>
             </CustomModalHeader>
             <CustomModalBody>
-              <ModalDivider paddingTop="0px">
-                salary history
-              </ModalDivider>
+              <ModalDivider paddingTop="0px">salary history</ModalDivider>
               <div className="flex flex-col">
                 <div className="w-full">
                   {salaries.length > 0 ? (
@@ -219,6 +213,7 @@ export default function SalaryEmploymentHistoryModal({
                                 ? `rounded-b-xl`
                                 : ""
                             }`}
+                            key={index}
                           >
                             <div className="flex items-center justify-center font-semibold">
                               {salary.amount}
