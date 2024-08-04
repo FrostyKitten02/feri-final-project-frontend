@@ -30,7 +30,7 @@ export const CustomPagination = ({
                         return (
                             <button
                                 key={pageNumber}
-                                className={`${pageNumber === currentPage ? "bg-blue-100 text-primary" : "hover:bg-gray-100"} px-3 py-1 rounded-lg font-mono delay-50 transition`}
+                                className={`${pageNumber === currentPage ? "bg-c-sky bg-opacity-10 text-primary" : "hover:bg-gray-100"} px-3 py-1 rounded-lg delay-50 transition`}
                                 onClick={() => onPageChange(pageNumber)}>
                                 {pageNumber}
                             </button>
