@@ -151,11 +151,10 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       {modalOpen && (
         <CustomModal closeModal={handleClose} modalWidth="950px">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <CustomModalHeader handleModalOpen={handleClose}>
+            <CustomModalHeader handleModalClose={handleClose}>
               <ModalTitle>Assign person to project</ModalTitle>
               <ModalText
-                showInfoIcon={false}
-                showWarningIcon={true}
+                showIcon={true}
                 contentColor="warning"
               >
                 Only available employees can be assigned to the project.

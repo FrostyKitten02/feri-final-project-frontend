@@ -141,11 +141,11 @@ export const ProjectModal = ({handleAddProject, edit = false, projectId}: Projec
                 <CustomModal closeModal={!edit ? () => setModalOpen(false) : handleCloseEdit}
                              modalWidth="700px">
                     <form onSubmit={!edit ? handleSubmit(onSubmit) : handleSubmit(onEdit)}>
-                        <CustomModalHeader handleModalOpen={!edit ? () => setModalOpen(false) : handleCloseEdit}>
+                        <CustomModalHeader handleModalClose={!edit ? () => setModalOpen(false) : handleCloseEdit}>
                             <ModalTitle>
                                 {!edit ? <span>Create a project</span> : <span>Edit project: {projectDetails?.projectDto?.title}</span>}
                             </ModalTitle>
-                            <ModalText showInfoIcon={true} contentColor="muted">
+                            <ModalText showIcon={true} contentColor="muted">
                                 Information provided in the form can be changed later on.
                             </ModalText>
                         </CustomModalHeader>

@@ -9,12 +9,9 @@ import WorkPackageModal from "./WorkPackageModal";
 
 export const WorkPackageListing: FC = () => {
   const { projectId } = useParams();
-
   const [workPackages, setWorkPackages] = useState<WorkPackageDto[]>([]);
   const [projectDetails, setProjectDetails] = useState<ProjectDto>();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const requestArgs = useRequestArgs();
 
   useEffect(() => {
@@ -24,10 +21,9 @@ export const WorkPackageListing: FC = () => {
     });
   }, [projectId]);
 
-  const handleSubmit = (): void => {
+  const onSuccess = (): void => {
     fetchWorkPackagesForProject();
   };
-
   const fetchWorkPackagesForProject = async (): Promise<void> => {
     try {
       if (projectId) {
@@ -38,16 +34,16 @@ export const WorkPackageListing: FC = () => {
           }
           if (response.data.projectDto?.workPackages) {
             const sortedWorkPackagesByDate =
-              response.data.projectDto?.workPackages?.sort((a, b) => {
-                const fallbackDate = new Date(Date.now()).getTime();
-                const dateA = a.startDate
-                  ? new Date(a.startDate).getTime()
-                  : fallbackDate;
-                const dateB = b.startDate
-                  ? new Date(b.startDate).getTime()
-                  : fallbackDate;
-                return dateA - dateB;
-              });
+                response.data.projectDto?.workPackages?.sort((a, b) => {
+                  const fallbackDate = new Date(Date.now()).getTime();
+                  const dateA = a.startDate
+                      ? new Date(a.startDate).getTime()
+                      : fallbackDate;
+                  const dateB = b.startDate
+                      ? new Date(b.startDate).getTime()
+                      : fallbackDate;
+                  return dateA - dateB;
+                });
             setWorkPackages(sortedWorkPackagesByDate);
           } else setWorkPackages([]);
         }
@@ -58,6 +54,7 @@ export const WorkPackageListing: FC = () => {
       toastError(error.message);
     }
   };
+
 
   return (
     <div className="flex w-full h-full">
@@ -77,9 +74,8 @@ export const WorkPackageListing: FC = () => {
                     <div key={workPackage.id}>
                       <WorkPackageItem
                         projectDetails={projectDetails}
-                        handleEditWorkPackage={handleSubmit}
+                        onSuccess={onSuccess}
                         workPackage={workPackage}
-                        handleAddTask={handleSubmit}
                       />
                     </div>
                   ))}
@@ -98,8 +94,7 @@ export const WorkPackageListing: FC = () => {
         </div>
         <div className="flex px-6 items-start pt-6">
           <WorkPackageModal
-            edit={false}
-            handleAddWorkPackage={handleSubmit}
+            onSuccess={onSuccess}
             projectDetails={projectDetails}
           />
         </div>

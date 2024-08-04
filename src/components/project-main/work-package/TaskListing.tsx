@@ -1,51 +1,39 @@
 import { FC, useMemo, useState } from "react";
 import { TaskListingProps } from "../../../interfaces";
-//import { useParams } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { TaskItem } from "./TaskItem";
 
-export const TaskListing: FC<TaskListingProps> = ({
-  tasks,
-  handleEditTask,
-  workPackageTitle,
-  workPackageStartDate,
-  workPackageEndDate,
-}) => {
+export const TaskListing: FC<TaskListingProps> = ({workpackage, onSuccess}) => {
   const [showIrrelevant, setShowIrrelevant] = useState<boolean>(false);
-
   const sortedTasksByDate = useMemo(() => {
-    return tasks.sort((a, b) => {
-      const fallbackDate = new Date(Date.now()).getTime();
-      const dateA = a.startDate
-        ? new Date(a.startDate).getTime()
-        : fallbackDate;
-      const dateB = b.startDate
-        ? new Date(b.startDate).getTime()
-        : fallbackDate;
-      return dateA - dateB;
-    });
-  }, [tasks]);
+    if(workpackage.tasks){
+        return workpackage?.tasks.slice().sort((a, b) => {
+            const fallbackDate = new Date().getTime();
+            const dateA = a.startDate ? new Date(a.startDate).getTime() : fallbackDate;
+            const dateB = b.startDate ? new Date(b.startDate).getTime() : fallbackDate;
+            return dateA - dateB;
+        });
+    } else return [];
 
-  const irrelevantTasks = sortedTasksByDate.filter((task) => !task.isRelevant);
+  }, [workpackage.tasks]);
+  const irrelevantTasks = sortedTasksByDate.filter(task => !task.isRelevant);
 
-  /*
-  useEffect(() => {
-    //setIsLoading(true);
-    fetchWorkPackagesAndTasksForProject(); //.then(() => setIsLoading(false));
-  }, [projectId]);
-  */
-
+  const handleToggleIrrelevant = () => {
+    setShowIrrelevant(prev => !prev);
+  };
   return (
     <div>
       {showIrrelevant ? (
         <div className="flex justify-end pb-6 gap-x-2">
           <button
-            onClick={() => setShowIrrelevant(false)}
+            onClick={handleToggleIrrelevant}
             className="flex flex-row gap-x-2"
           >
             <FaRegEye className="size-5" />
-            <p className="font-semibold text-sm">Hide irrelevant</p>
+            <p className="font-semibold text-sm">
+                Hide irrelevant
+            </p>
           </button>
         </div>
       ) : (
@@ -77,10 +65,8 @@ export const TaskListing: FC<TaskListingProps> = ({
               key={task.id}
               task={task}
               showIrrelevant={showIrrelevant}
-              handleEditTask={handleEditTask}
-              workPackageTitle={workPackageTitle}
-              workPackageStartDate={workPackageStartDate}
-              workPackageEndDate={workPackageEndDate}
+              onSuccess={onSuccess}
+              workpackage={workpackage}
             />
           ))}
         </div>
