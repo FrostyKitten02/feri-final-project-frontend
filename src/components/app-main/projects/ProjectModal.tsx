@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import AddProjectIcon from "../../../assets/icons/folder-badge-plus.svg?react";
 import { Datepicker, Label, Select, TextInput } from "flowbite-react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AddProjectFormFields } from "../../../types/types";
@@ -26,7 +25,7 @@ import {
 } from "../../template/modal/CustomModal";
 import TextUtil from "../../../util/TextUtil";
 import ModalPortal from "../../template/modal/ModalPortal";
-import {FiEdit3, FiFolderPlus} from "react-icons/fi";
+import { FiEdit3, FiFolderPlus } from "react-icons/fi";
 
 export const ProjectModal = ({
   handleProjectSubmit,
@@ -166,12 +165,12 @@ export const ProjectModal = ({
           </button>
         ) : (
           <button onClick={() => setModalOpen(true)}>
-                    <FiFolderPlus className="h-12 w-12 transition delay-50" />
-           </button> 
+            <FiEdit3 className="h-12 w-12 transition delay-50" />
+          </button>
         )
       ) : (
         <button onClick={() => setModalOpen(true)}>
-          <AddProjectIcon className="h-12 w-12 fill-black hover:fill-primary transition delay-50" />
+          <FiFolderPlus className="h-12 w-12 fill-black hover:fill-primary transition delay-50" />
         </button>
       )}
       {modalOpen && (
