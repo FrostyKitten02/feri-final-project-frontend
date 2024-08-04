@@ -22,7 +22,7 @@ function ProjectMainPage() {
             iconComponent: (props) => <FaChartBar {...props}/>,
         },
         {
-            name: "work packages & tasks",
+            name: "work packages",
             linkPath: TextUtil.constructValidRoutePath(Paths.WORK_PACKAGES, ":projectId", projectId ?? ""),
             iconComponent: (props) => <LuPackageOpen {...props}/>,
         },
