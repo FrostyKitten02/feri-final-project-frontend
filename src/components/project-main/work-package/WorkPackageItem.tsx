@@ -29,7 +29,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   return (
     workPackage && (
       <div key={workPackage.id} className="py-5 h-fit">
-        <div className="flex rounded-xl h-full border border-gray-200 border-solid shadow-xl">
+        <div className="flex rounded-xl h-full border border-gray-200 border-solid">
           <div className="flex flex-col w-1/3 rounded-l-xl">
             <div className="flex flex-col flex-grow p-5">
               <div className="flex justify-between items-center">

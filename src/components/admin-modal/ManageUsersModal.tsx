@@ -24,6 +24,7 @@ import SalaryModal from "./SalaryModal";
 import PersonTypeModal from "./PersonTypeModal";
 import SalaryEmploymentHistoryModal from "./SalaryEmploymentHistoryModal";
 import { BsThreeDots } from "react-icons/bs";
+import { Spinner } from "flowbite-react";
 
 export default function ManageUsersModal({
   sidebarOpened,
@@ -37,11 +38,13 @@ export default function ManageUsersModal({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] =
     useState<string>(searchQuery);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const requestArgs = useRequestArgs();
 
   useEffect(() => {
     if (modalOpen) {
+      setLoading(true);
       fetchAllUsers(pageNumber, elementsPerPage);
     }
     if (userUpdated) {
@@ -50,6 +53,7 @@ export default function ManageUsersModal({
   }, [modalOpen, pageNumber, userUpdated, debouncedSearchQuery]);
 
   useEffect(() => {
+    setLoading(true);
     const handler = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
     }, 300);
@@ -113,6 +117,8 @@ export default function ManageUsersModal({
       }
     } catch (error: any) {
       toastError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,13 +151,18 @@ export default function ManageUsersModal({
                 <div className="flex flex-col items-end w-[400px]">
                   <UserSearchInput
                     showResults={true}
-                    inputWidth={400}
+                    inputWidth={250}
                     setSearchQuery={setSearchQuery}
+                    inputValue={searchQuery}
                   />
                 </div>
               </div>
               <div className="w-full h-[400px]">
-                {(allUsers?.people?.length ?? 0) > 0 ? (
+                {loading ? (
+                  <div className="flex justify-center items-center h-full">
+                    <Spinner size="xl" />
+                  </div>
+                ) : (allUsers?.people?.length ?? 0) > 0 ? (
                   <>
                     <div className="grid grid-cols-5 pt-8 pb-4">
                       <div className="flex justify-center items-center gap-x-4">
@@ -214,7 +225,7 @@ export default function ManageUsersModal({
 
                         return (
                           <div
-                            className={`grid grid-cols-5 py-6 hover:bg-gray-100 transition delay-50 ${
+                            className={`grid grid-cols-5 py-6 ${
                               index === 0 ? `rounded-t-xl` : ""
                             } ${
                               index === (allUsers.people?.length ?? 0) - 1
@@ -260,10 +271,17 @@ export default function ManageUsersModal({
                     </div>
                   </>
                 ) : (
-                  <div className="flex flex-col h-full items-center justify-center">
-                    <p className="text-2xl font-semibold">
-                      There is no users in the database.
+                  <div className="flex flex-col h-full items-center justify-center gap-y-4">
+                    <p className="text-2xl font-semibold">No users found.</p>
+                    <p className="text-lg text-gray-500">
+                      "{searchQuery}" does not match any users in the database.
                     </p>
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="px-4 py-2 rounded-xl border-solid border-2 border-gray-300 flex items-center justify-center hover:bg-gray-100 transition delay-50"
+                    >
+                      <span className="font-semibold">Clear search</span>
+                    </button>
                   </div>
                 )}
               </div>

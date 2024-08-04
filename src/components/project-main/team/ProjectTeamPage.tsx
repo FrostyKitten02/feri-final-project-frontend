@@ -6,9 +6,11 @@ import { toastError } from "../../toast-modals/ToastFunctions";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import DeleteModal from "../../template/modal/DeleteModal";
+import { Spinner } from "flowbite-react";
 
 export default function ProjectTeamPage() {
   const [peopleOnProject, setPeopleOnProject] = useState<PersonDto[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
 
@@ -31,6 +33,8 @@ export default function ProjectTeamPage() {
       }
     } catch (error: any) {
       toastError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,7 +45,11 @@ export default function ProjectTeamPage() {
           className={`flex flex-col border-r-2 border-solid border-gray-200 w-full h-full`}
         >
           <div className="w-full h-full px-12 rounded-bl-[20px]">
-            {peopleOnProject.length > 0 ? (
+            {loading ? (
+              <div className="flex justify-center items-center h-full">
+                <Spinner size="xl" />
+              </div>
+            ) : peopleOnProject.length > 0 ? (
               <>
                 <div className="grid grid-cols-3 pt-8 pb-4">
                   <div className="flex justify-center items-center gap-x-4">
@@ -58,10 +66,7 @@ export default function ProjectTeamPage() {
                 </div>
                 <div className="rounded-2xl border border-solid border-gray-200 overflow-hidden bg-white divide-y divide-solid divide-gray-200">
                   {peopleOnProject?.map((person) => (
-                    <div
-                      className="grid grid-cols-3 py-6 hover:bg-gray-100 transition delay-50"
-                      key={person.id}
-                    >
+                    <div className="grid grid-cols-3 py-6" key={person.id}>
                       <div className="flex items-center justify-center text-sm font-semibold">
                         <div>
                           {person.name && person.lastname ? (
@@ -92,7 +97,7 @@ export default function ProjectTeamPage() {
               </>
             ) : (
               <div className="flex flex-col h-full items-center justify-center">
-                <p className="text-2xl font-semibold">
+                <p className="text-2xl font-bold">
                   There is no one currently assigned to this project.
                 </p>
                 <p>
