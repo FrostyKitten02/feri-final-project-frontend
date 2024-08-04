@@ -133,7 +133,7 @@ export interface ProgressObject {
 }
 
 export interface ProjectModalProps {
-  handleAddProject?: () => void;
+  handleProjectSubmit?: () => void;
   edit?: boolean;
   popoverEdit?: boolean;
   projectId?: string;

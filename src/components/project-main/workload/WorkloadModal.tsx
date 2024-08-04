@@ -19,7 +19,7 @@ import {
 } from "../../../../temp_ts";
 import { occupancyAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import { toastError } from "../../toast-modals/ToastFunctions";
 
 export const WorkloadModal = ({
   closeModal,
@@ -52,7 +52,7 @@ export const WorkloadModal = ({
       if (person.occupancyId === null) {
         const workload: CreateOccupancyRequest = {
           projectId: projectId,
-          personId: person.person?.id,
+          personId: person.personId,
           toMonth: monthDate,
           fromMonth: monthDate,
           value: data.pmValue,
@@ -60,18 +60,6 @@ export const WorkloadModal = ({
         const response = await occupancyAPI.addOccupancy(workload, requestArgs);
         if (response.status === 201) {
           handleFormSubmit();
-          toastSuccess(
-            "Succesfully added occupancy of " +
-              data.pmValue +
-              " PM to " +
-              person.person?.name +
-              " " +
-              person.person?.lastname +
-              ", for " +
-              monthName +
-              ", " +
-              year
-          );
         }
       } else {
         const workload: UpdateOccupancyRequest = {
@@ -84,18 +72,6 @@ export const WorkloadModal = ({
         );
         if (response.status === 200) {
           handleFormSubmit();
-          toastSuccess(
-            "Succesfully updated the occupancy of " +
-              person.person?.name +
-              " " +
-              person.person?.lastname +
-              " to " +
-              data.pmValue +
-              " PM, for " +
-              monthName +
-              ", " +
-              year
-          );
         }
       }
     } catch (error: any) {
@@ -118,8 +94,7 @@ export const WorkloadModal = ({
         <CustomModalBody>
           <div className="">
             <div>
-              You are currently editing {person.person?.name}{" "}
-              {person.person?.lastname}'s workload for {monthName}, {year}.
+              You are currently editing workload for {monthName}, {year}.
             </div>
             <div className="flex">
               <div>PM:</div>

@@ -29,7 +29,7 @@ import { FiEdit3 } from "react-icons/fi";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export const ProjectModal = ({
-  handleAddProject,
+  handleProjectSubmit,
   edit = false,
   popoverEdit = false,
   projectId,
@@ -72,7 +72,7 @@ export const ProjectModal = ({
 
   useEffect(() => {
     fetchProjectById();
-  }, [handleAddProject]);
+  }, [handleProjectSubmit]);
 
   const handleCloseEdit = (): void => {
     reset();
@@ -84,7 +84,7 @@ export const ProjectModal = ({
   const handleFormSubmit = (): void => {
     reset();
     onModalClose?.();
-    handleAddProject?.();
+    handleProjectSubmit?.();
     setModalOpen(false);
     setActionPopoverOpen?.(false);
   };

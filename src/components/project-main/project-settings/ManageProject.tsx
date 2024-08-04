@@ -13,7 +13,11 @@ export default function ManageProjectModal({
   const popoverItems: PopoverItem[] = [
     {
       component: (
-        <ProjectModal projectId={projectId} edit={true} popoverEdit={true} />
+        <ProjectModal
+          projectId={projectId}
+          edit={true}
+          popoverEdit={true}
+        />
       ),
     },
   ];
@@ -28,7 +32,7 @@ export default function ManageProjectModal({
         height={20}
         items={popoverItems}
         triggerIcon={
-          <div className="flex flex-row justify-center items-center gap-x-3">
+          <span className="flex flex-row justify-center items-center gap-x-3">
             <FaCog className="fill-white size-7" />
             {sidebarOpened && (
               <motion.span
@@ -40,7 +44,7 @@ export default function ManageProjectModal({
                 MANAGE PROJECT
               </motion.span>
             )}
-          </div>
+          </span>
         }
       />
     </div>
