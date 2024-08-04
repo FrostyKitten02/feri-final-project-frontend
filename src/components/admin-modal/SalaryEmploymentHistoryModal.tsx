@@ -167,12 +167,18 @@ export default function SalaryEmploymentHistoryModal({
       </button>
       {modalOpen && (
         <ModalPortal>
-          <CustomModal closeModal={handleClose} modalWidth="1000px">
-            <CustomModalHeader handleModalOpen={handleClose}>
+          <CustomModal
+              closeModal={handleClose}
+              modalWidth="1000px"
+          >
+            <CustomModalHeader handleModalClose={handleClose}>
               <ModalTitle>
                 salary and employment history
               </ModalTitle>
-              <ModalText showInfoIcon={false} showWarningIcon={false} contentColor="muted">
+              <ModalText
+                  showIcon={false}
+                  contentColor="muted"
+              >
                 <div className="flex items-center text-black text-md">
                   <div>
                     You are viewing salary and employment history of

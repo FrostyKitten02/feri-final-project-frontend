@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { toastError } from "../../toast-modals/ToastFunctions";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import DeleteModal from "../../template/modal/DeleteModal";
+import {DeleteTeamModal} from "./DeleteTeamModal";
 
 export default function ProjectTeamPage() {
   const [peopleOnProject, setPeopleOnProject] = useState<PersonDto[]>([]);
@@ -81,14 +81,9 @@ export default function ProjectTeamPage() {
                         {person.email}
                       </div>
                       <div className="flex items-center justify-center">
-                        <DeleteModal
-                          id={person.id}
-                          teamPage={true}
-                          personName={person.name}
-                          personLastName={person.lastname}
-                          personEmail={person.email}
-                          handleDelete={fetchPeopleOnProject}
-                        />
+                        <DeleteTeamModal
+                            person={person}
+                            onSuccess={fetchPeopleOnProject} />
                       </div>
                     </div>
                   ))}

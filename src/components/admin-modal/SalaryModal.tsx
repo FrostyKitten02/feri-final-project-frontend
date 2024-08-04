@@ -97,9 +97,9 @@ export default function SalaryModal({
                 <ModalPortal>
                     <CustomModal closeModal={handleClose} modalWidth="700px">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <CustomModalHeader handleModalOpen={handleClose}>
+                            <CustomModalHeader handleModalClose={handleClose}>
                                 <ModalTitle>set salary</ModalTitle>
-                                <ModalText showInfoIcon={true} showWarningIcon={false} contentColor="muted">
+                                <ModalText showIcon={true} contentColor="muted">
                                     Salaries in the same interval will be overwritten with newer values. If end date is not specified, salary interval
                                     will be ongoing and will end when newer value is added.
                                     <div className="flex items-center text-black text-md">

@@ -10,8 +10,10 @@ import Backdrop from "./Backdrop";
 import {IoMdClose, IoMdInformationCircleOutline} from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
 import {Label} from "flowbite-react";
+import ColorVariants from "../../../util/ColorVariants";
+import {CgDanger} from "react-icons/cg";
 
-export const CustomModal = ({children, closeModal, modalWidth}: CustomModalProps) => {
+export const CustomModal = ({children, closeModal, modalWidth = "600px"}: CustomModalProps) => {
     return (
         <Backdrop closeModal={closeModal}>
             <div className="bg-white rounded-xl text-black"
@@ -23,14 +25,14 @@ export const CustomModal = ({children, closeModal, modalWidth}: CustomModalProps
         </Backdrop>
     )
 }
-export const CustomModalHeader = ({handleModalOpen, children}: CustomModalHeaderProps) => {
+export const CustomModalHeader = ({handleModalClose, children}: CustomModalHeaderProps) => {
     return (
         <div className="flex flex-row p-6 border-gray-300 border-b-[1px] border-solid">
             <div className="flex-grow">
                 {children}
             </div>
             <div>
-                <button onClick={handleModalOpen}>
+                <button onClick={handleModalClose}>
                     <IoMdClose/>
                 </button>
             </div>
@@ -45,20 +47,19 @@ export const ModalTitle = ({children}: ModalTitleProps) => {
     )
 }
 
-export const ModalText = ({children, showInfoIcon = false, showWarningIcon = false, contentColor}: ModalTextProps) => {
-    const textColorVariants: { [key: string]: string } = {
-        warning: 'text-warning_modal',
-        muted: 'text-muted'
-    };
-
+export const ModalText = ({children, showIcon = false, contentColor = "muted"}: ModalTextProps) => {
     return (
-        <div className={`flex ${textColorVariants[contentColor]} pt-1`}>
+        <div className={`flex ${ColorVariants.getText(contentColor)} pt-1`}>
             <div className="pt-[2px]">
                 {
-                    showInfoIcon && <IoMdInformationCircleOutline/>
-                }
-                {
-                    showWarningIcon && <IoWarningOutline />
+                    showIcon && (
+                        contentColor === "muted" ?
+                        <IoMdInformationCircleOutline/> :
+                        contentColor === "warning" ?
+                        <IoWarningOutline /> :
+                        contentColor === "danger" &&
+                        <CgDanger />
+                    )
                 }
             </div>
             <div className="px-1 text-sm">
@@ -75,11 +76,13 @@ export const CustomModalBody = ({children}: CustomModalBodyProps) => {
         </div>
     )
 }
-export const CustomModalFooter = ({children, danger}: CustomModalFooterProps) => {
+export const CustomModalFooter = ({children, danger = false}: CustomModalFooterProps) => {
     return (
         <div className="flex justify-end border-t-[1px] border-solid border-gray-300 p-6">
-            <button type="submit"
-                    className={`uppercase tracking-wider px-8 py-2 ${danger ? `bg-red-600` : `bg-primary`} transition delay-50 ${danger ? `hover:bg-red-600/70` : `hover:bg-light-blue`} text-white rounded-xl`}>
+            <button
+                type="submit"
+                className={`uppercase tracking-wider px-8 py-2 ${danger ? `bg-danger` : `bg-primary`} transition delay-50 text-white rounded-xl`}
+            >
                 {children}
             </button>
         </div>

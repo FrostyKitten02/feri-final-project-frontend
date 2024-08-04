@@ -53,3 +53,7 @@ export type WorkloadFormFields = {
 export type DeleteConfirmationFields = {
   title: string;
 };
+
+export type DeleteTeamModalFields = {
+  email: string
+}

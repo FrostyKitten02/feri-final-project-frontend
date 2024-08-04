@@ -95,13 +95,12 @@ export default function PersonTypeModal({
         <ModalPortal>
           <CustomModal closeModal={handleClose} modalWidth="700px">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <CustomModalHeader handleModalOpen={handleClose}>
+              <CustomModalHeader handleModalClose={handleClose}>
                 <ModalTitle>
                   set employment type
                 </ModalTitle>
                 <ModalText
-                  showInfoIcon={true}
-                  showWarningIcon={false}
+                  showIcon={true}
                   contentColor="muted"
                 >
                   Employment types in the same interval will be overwritten with newer values. If end date is not specified, employment interval

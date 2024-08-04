@@ -132,7 +132,7 @@ export default function ManageUsersModal({
       </button>
       {modalOpen && (
         <CustomModal closeModal={handleClose} modalWidth="1500px">
-          <CustomModalHeader handleModalOpen={handleClose}>
+          <CustomModalHeader handleModalClose={handleClose}>
             <ModalTitle>manage users</ModalTitle>
           </CustomModalHeader>
           <CustomModalBody>

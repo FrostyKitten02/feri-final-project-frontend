@@ -26,6 +26,7 @@ export default {
                 "custom-yellow": '#FFD166',
                 "custom-green": '#06D6A0',
                 warning: '#f59e0b',
+                danger: '#ef4444',
                 placeholder: '#a0aec0',
                 muted: '#718096',
                 warning_modal: '#f59e0b',
