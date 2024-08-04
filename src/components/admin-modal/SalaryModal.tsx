@@ -82,7 +82,7 @@ export default function SalaryModal({
     return (
         <>
             <button
-                onClick={handleButtonClick}
+                onClick={onButtonClick}
                 className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
             >
                 <FaEuroSign className="size-4"/>

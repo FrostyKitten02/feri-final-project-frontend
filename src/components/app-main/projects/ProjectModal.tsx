@@ -195,7 +195,7 @@ export const ProjectModal = ({
                     </span>
                   )}
                 </ModalTitle>
-                <ModalText showInfoIcon={true} contentColor="muted">
+                <ModalText showIcon={true} contentColor="muted">
                   Information provided in the form can be changed later on.
                 </ModalText>
               </CustomModalHeader>
