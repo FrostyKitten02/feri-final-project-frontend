@@ -25,8 +25,8 @@ import {
   ModalTitle,
 } from "../../template/modal/CustomModal";
 import TextUtil from "../../../util/TextUtil";
-import { FiEdit3 } from "react-icons/fi";
 import ModalPortal from "../../template/modal/ModalPortal";
+import {FiEdit3, FiFolderPlus} from "react-icons/fi";
 
 export const ProjectModal = ({
   handleProjectSubmit,
@@ -166,8 +166,8 @@ export const ProjectModal = ({
           </button>
         ) : (
           <button onClick={() => setModalOpen(true)}>
-            <FiEdit3 className="size-6 stroke-gray-700 hover:stroke-primary transition delay-50" />
-          </button>
+                    <FiFolderPlus className="h-12 w-12 transition delay-50" />
+           </button> 
         )
       ) : (
         <button onClick={() => setModalOpen(true)}>
@@ -182,7 +182,7 @@ export const ProjectModal = ({
           >
             <form onSubmit={handleSubmit(onSubmit)}>
               <CustomModalHeader
-                handleModalOpen={
+                handleModalClose={
                   !edit ? () => setModalOpen(false) : handleCloseEdit
                 }
               >

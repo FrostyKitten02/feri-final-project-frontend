@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { CreateTaskRequest, UpdateTaskRequest } from "../../../../temp_ts";
-import { TaskModalProps } from "../../../interfaces";
-import { TaskFormFields } from "../../../types/types";
-import { taskAPI } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";
-import { Label, TextInput, Datepicker } from "flowbite-react";
-import { motion } from "framer-motion";
+import {useState} from "react";
+import {useForm, SubmitHandler, Controller} from "react-hook-form";
+import {CreateTaskRequest, UpdateTaskRequest} from "../../../../temp_ts";
+import {TaskModalProps} from "../../../interfaces";
+import {TaskFormFields} from "../../../types/types";
+import {taskAPI} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {toastSuccess, toastError} from "../../toast-modals/ToastFunctions";
+import {Label, TextInput, Datepicker} from "flowbite-react";
+import {motion} from "framer-motion";
 import TextUtil from "../../../util/TextUtil";
 import {
     CustomModal,
@@ -22,22 +22,13 @@ import {FaPlus} from "react-icons/fa6";
 import {FiEdit3} from "react-icons/fi";
 
 export default function TaskModal({
-                                      handleAddTask,
-                                      workPackageId,
-                                      workPackageTitle,
-                                      workPackageStartDate,
-                                      workPackageEndDate,
-                                      disabled,
-                                      edit,
-                                      taskTitle,
-                                      taskStartDate,
-                                      taskEndDate,
-                                      taskIsRelevant,
-                                      taskId,
+                                      onSuccess,
+                                      workpackage,
+                                      task
                                   }: TaskModalProps) {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [isOn, setIsOn] = useState(task && task.isRelevant);
     const requestArgs = useRequestArgs();
-
     const {
         register,
         watch,
@@ -48,63 +39,50 @@ export default function TaskModal({
         formState: {errors},
     } = useForm<TaskFormFields>();
     const watchStartDate = watch("startDate");
-    register("isRelevant", {value: !edit ? true : taskIsRelevant});
-
-    const [isOn, setIsOn] = useState(!edit ? true : taskIsRelevant);
+    register("isRelevant", {value: task && task.isRelevant});
     const toggleSwitch = (): void => {
-        setIsOn(!isOn);
+        setIsOn(prev => !prev);
         setValue("isRelevant", !isOn);
     };
-
-    const handleCloseEdit = (): void => {
-        reset();
+    const handleClose = (): void => {
+        if (task) {
+            reset();
+        }
         setModalOpen(false);
     };
-
-    const onSubmit: SubmitHandler<TaskFormFields> = async (
-        data
-    ): Promise<void> => {
-        const task: CreateTaskRequest = {
-            title: data.title,
-            startDate: data.startDate,
-            endDate: data.endDate,
-            isRelevant: data.isRelevant,
-            workPackageId: workPackageId,
-        };
-
+    const onSubmit: SubmitHandler<TaskFormFields> = async (data): Promise<void> => {
         try {
-            const response = await taskAPI.createTask(task, requestArgs);
-            if (response.status === 201) {
-                reset();
-                setModalOpen(false);
-                handleAddTask();
-                toastSuccess("Task " + data.title + " was successfully created.");
-            }
-        } catch (error: any) {
-            toastError(error.message);
-        }
-    };
-
-    const onEdit: SubmitHandler<TaskFormFields> = async (data): Promise<void> => {
-        const task: UpdateTaskRequest = {
-            title: data.title,
-            startDate: data.startDate,
-            endDate: data.endDate,
-            isRelevant: data.isRelevant,
-        };
-
-        try {
-            if (taskId) {
-                const response = await taskAPI.updateTask(taskId, task, requestArgs);
+            if (task?.id) {
+                const updateTask: UpdateTaskRequest = {
+                    title: data.title,
+                    startDate: data.startDate,
+                    endDate: data.endDate,
+                    isRelevant: data.isRelevant,
+                };
+                const response = await taskAPI.updateTask(task.id, updateTask, requestArgs);
                 if (response.status === 200) {
                     reset();
-                    setModalOpen(false);
-                    handleAddTask();
+                    handleClose();
+                    onSuccess();
                     toastSuccess("Task " + data.title + " was successfully updated.");
                 }
             } else {
-                toastError("Task id not found.");
+                const createTask: CreateTaskRequest = {
+                    title: data.title,
+                    startDate: data.startDate,
+                    endDate: data.endDate,
+                    isRelevant: data.isRelevant,
+                    workPackageId: workpackage?.id,
+                };
+                const response = await taskAPI.createTask(createTask, requestArgs);
+                if (response.status === 201) {
+                    reset();
+                    handleClose();
+                    onSuccess();
+                    toastSuccess("Task " + data.title + " was successfully created.");
+                }
             }
+
         } catch (error: any) {
             toastError(error.message);
         }
@@ -112,17 +90,14 @@ export default function TaskModal({
 
     return (
         <>
-            {edit ? (
+            {task ? (
                 <button onClick={() => setModalOpen(true)}>
                     <FiEdit3 className="size-6 stroke-gray-700 hover:stroke-primary transition delay-50"/>
                 </button>
             ) : (
                 <button
-                    disabled={disabled}
                     onClick={() => setModalOpen(true)}
-                    className={`flex items-center justify-center ${
-                        disabled ? `bg-primary/30` : `bg-primary hover:bg-primary/80 transition delay-50`
-                    } rounded-lg text-white w-28 h-8 gap-x-2`}
+                    className={`flex items-center justify-center bg-primary rounded-lg text-white w-28 h-8 gap-x-2`}
                 >
                     <FaPlus className="stroke-white size-4"/>
                     <span className="text-sm">New task</span>
@@ -130,19 +105,15 @@ export default function TaskModal({
             )}
             {modalOpen && (
                 <CustomModal
-                    closeModal={!edit ? () => setModalOpen(false) : handleCloseEdit}
+                    closeModal={handleClose}
                     modalWidth="700px"
                 >
-                    <form
-                        onSubmit={!edit ? handleSubmit(onSubmit) : handleSubmit(onEdit)}
-                    >
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <CustomModalHeader
-                            handleModalOpen={
-                                !edit ? () => setModalOpen(false) : handleCloseEdit
-                            }
+                            handleModalClose={handleClose}
                         >
                             <ModalTitle>
-                                {!edit ?
+                                {!task ?
                                     <div>
                                         Add a task to work package
                                     </div>
@@ -153,8 +124,7 @@ export default function TaskModal({
                                 }
                             </ModalTitle>
                             <ModalText
-                                showInfoIcon={true}
-                                showWarningIcon={false}
+                                showIcon={true}
                                 contentColor="muted"
                             >
                                 Information provided in the form can be changed later on.
@@ -163,7 +133,7 @@ export default function TaskModal({
                                         You are curently working on
                                     </div>
                                     <div className="font-semibold pl-[5px]">
-                                        {workPackageTitle}
+                                        {workpackage?.title}
                                     </div>
                                     <div>.</div>
                                 </div>
@@ -172,11 +142,11 @@ export default function TaskModal({
                                         Remember that work package starts on
                                     </div>
                                     <div className="font-semibold px-[5px]">
-                                        {TextUtil.refactorDate(workPackageStartDate)}
+                                        {TextUtil.refactorDate(workpackage?.startDate)}
                                     </div>
                                     <div>and ends on</div>
                                     <div className="font-semibold pl-[5px]">
-                                        {TextUtil.refactorDate(workPackageEndDate)}
+                                        {TextUtil.refactorDate(workpackage?.endDate)}
                                     </div>
                                     <div>.</div>
                                 </div>
@@ -186,7 +156,7 @@ export default function TaskModal({
                             <div>
                                 <Label>Task title</Label>
                                 <TextInput
-                                    defaultValue={!edit ? "" : taskTitle}
+                                    defaultValue={task && task.title}
                                     type="text"
                                     {...register("title", {
                                         required: "Title can not be empty!",
@@ -199,7 +169,7 @@ export default function TaskModal({
                                     <Label>Start date</Label>
                                     <Controller
                                         name="startDate"
-                                        defaultValue={!edit ? "" : taskStartDate}
+                                        defaultValue={task && task.startDate}
                                         control={control}
                                         rules={{
                                             required: "Start date is required!",
@@ -212,12 +182,12 @@ export default function TaskModal({
                                         render={({field}) => (
                                             <Datepicker
                                                 defaultDate={
-                                                    !edit
+                                                    !task
                                                         ? new Date(Date.now())
-                                                        : new Date(taskStartDate || Date.now())
+                                                        : new Date(task.startDate || Date.now())
                                                 }
-                                                minDate={new Date(workPackageStartDate || Date.now())}
-                                                maxDate={new Date(workPackageEndDate || Date.now())}
+                                                minDate={new Date(workpackage?.startDate || Date.now())}
+                                                maxDate={new Date(workpackage?.endDate || Date.now())}
                                                 {...field}
                                                 placeholder="Select start date."
                                                 onSelectedDateChanged={(date) =>
@@ -232,7 +202,7 @@ export default function TaskModal({
                                     <Label>End date</Label>
                                     <Controller
                                         name="endDate"
-                                        defaultValue={!edit ? "" : taskEndDate}
+                                        defaultValue={task && task.endDate}
                                         control={control}
                                         rules={{
                                             required: "End date is required!",
@@ -249,12 +219,12 @@ export default function TaskModal({
                                         render={({field}) => (
                                             <Datepicker
                                                 defaultDate={
-                                                    !edit
+                                                    !task
                                                         ? new Date(Date.now())
-                                                        : new Date(taskEndDate || Date.now())
+                                                        : new Date(task.endDate || Date.now())
                                                 }
-                                                minDate={new Date(workPackageStartDate || Date.now())}
-                                                maxDate={new Date(workPackageEndDate || Date.now())}
+                                                minDate={new Date(workpackage?.startDate || Date.now())}
+                                                maxDate={new Date(workpackage?.endDate || Date.now())}
                                                 {...field}
                                                 placeholder="Select end date."
                                                 onSelectedDateChanged={(date) =>
@@ -290,7 +260,7 @@ export default function TaskModal({
                             </div>
                         </CustomModalBody>
                         <CustomModalFooter>
-                            {!edit ? <span>Add task</span> : <span>confirm</span>}
+                            {!task ? <span>Add task</span> : <span>confirm</span>}
                         </CustomModalFooter>
                     </form>
                 </CustomModal>

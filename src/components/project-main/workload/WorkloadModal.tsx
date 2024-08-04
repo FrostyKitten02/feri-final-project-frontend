@@ -80,11 +80,10 @@ export const WorkloadModal = ({
   };
   return (
     <CustomModal closeModal={closeModal} modalWidth={modalWidth}>
-      <CustomModalHeader handleModalOpen={closeModal}>
+      <CustomModalHeader handleModalClose={closeModal}>
         <ModalTitle>Edit workload</ModalTitle>
         <ModalText
-          showInfoIcon={true}
-          showWarningIcon={false}
+          showIcon={true}
           contentColor="muted"
         >
           Information provided in the form can be changed later on.

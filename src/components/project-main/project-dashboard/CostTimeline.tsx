@@ -28,7 +28,7 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
                             index="date"
                             valueFormatter={valueFormatter}
                         /> :
-                        <div className="h-full flex justify-center items-center text-muted">
+                        <div className="h-full flex flex-grow justify-center items-center text-muted">
                             There is currently no data to display.
                         </div>
                 }

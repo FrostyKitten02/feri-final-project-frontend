@@ -37,71 +37,37 @@ export interface ProjectItemProps {
 
 export interface WorkPackageItemProps {
   workPackage?: WorkPackageDto;
-  handleAddTask: () => void;
-  handleEditWorkPackage: () => void;
+  onSuccess: () => void;
   projectDetails?: ProjectDto;
 }
 
 export interface TaskListingProps {
-  tasks: TaskDto[];
-  handleEditTask: () => void;
-  workPackageTitle?: string;
-  workPackageStartDate?: string;
-  workPackageEndDate?: string;
+  workpackage: WorkPackageDto
+  onSuccess: () => void;
 }
 
 export interface TaskItemProps {
   task?: TaskDto;
+  workpackage?: WorkPackageDto
   showIrrelevant: boolean;
-  handleEditTask: () => void;
-  workPackageTitle?: string;
-  workPackageStartDate?: string;
-  workPackageEndDate?: string;
-}
-
-export interface WorkPackageFormProps {
-  handleClose: () => void;
-  handleAddWorkPackage: () => void;
-  setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccess: () => void;
 }
 
 export interface WorkPackageModalProps {
-  handleAddWorkPackage: () => void;
+  onSuccess: () => void;
   projectDetails?: ProjectDto;
-  edit: boolean;
-  title?: string;
-  startDate?: string;
-  endDate?: string;
-  isRelevant?: boolean;
-  assignedPM?: number;
-  workPackageId?: string;
+  workpackage?: WorkPackageDto
 }
 
 export interface TaskModalProps {
-  handleAddTask: () => void;
-  workPackageId?: string;
-  workPackageTitle?: string;
-  workPackageStartDate?: string;
-  workPackageEndDate?: string;
-  disabled: boolean;
-  edit: boolean;
-  taskTitle?: string;
-  taskStartDate?: string;
-  taskEndDate?: string;
-  taskIsRelevant?: boolean;
-  taskId?: string;
+  onSuccess: () => void;
+  workpackage?: WorkPackageDto,
+  task?: TaskDto
 }
 
 export interface TeamModalProps {
   handleAddPerson: () => void;
 }
-
-export interface AssignPersonModalProps {
-  handleClose: () => void;
-  taskId: string;
-  taskTitle: string;
-}
-
 export interface AdminModalProps {
   setActionPopoverOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   onButtonClick?: () => void;
@@ -110,11 +76,6 @@ export interface AdminModalProps {
   userEmail?: string;
   refetchUserList?: () => void;
 }
-
-export interface SalaryModalProps {
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 export interface ManageUsersModalProps {
   sidebarOpened: boolean;
 }
@@ -152,12 +113,12 @@ export interface ModalPortalProps {
 
 export interface CustomModalProps {
   closeModal: () => void;
-  modalWidth: string;
+  modalWidth?: string;
   children?: React.ReactNode;
 }
 
 export interface CustomModalHeaderProps {
-  handleModalOpen: () => void;
+  handleModalClose: () => void;
   children?: React.ReactNode;
 }
 
@@ -167,9 +128,8 @@ export interface ModalTitleProps {
 
 export interface ModalTextProps {
   children?: React.ReactNode;
-  showInfoIcon?: boolean;
-  showWarningIcon?: boolean;
-  contentColor: string;
+  showIcon?: boolean;
+  contentColor?: string;
 }
 
 export interface CustomModalBodyProps {
@@ -302,4 +262,19 @@ export interface PopoverProps {
   items: PopoverItem[];
   triggerIcon: React.ReactNode;
   height?: number;
+}
+
+export interface DeleteWorkPackageModalProps {
+  workpackage: WorkPackageDto,
+  onSuccess: () => void
+}
+
+export interface DeleteTaskModalProps {
+  task: TaskDto,
+  onSuccess: () => void
+}
+
+export interface DeleteTeamModalProps {
+  person: PersonDto,
+  onSuccess: () => void
 }

@@ -12,7 +12,10 @@ export default class ColorVariants {
         const colorVariants: Record<string, string> = {
             DEFAULT: 'text-teal-500',
             primary: 'text-primary',
-            secondary: 'text-secondary'
+            secondary: 'text-secondary',
+            warning: 'text-warning',
+            danger: 'text-danger',
+            muted: 'text-muted'
         }
         return colorVariants[color ?? "DEFAULT"]
     }
