@@ -72,8 +72,10 @@ export const CurrentMonth = ({statistics}: CurrentMonthProps) => {
                                         {
                                             relevantTasks.map((task, index) => {
                                                 return (
-                                                    <div key={index} className="flex items-center">
-                                                        <BsDot />
+                                                    <div key={index} className="flex">
+                                                        <div className="pt-[5px]">
+                                                            <BsDot />
+                                                        </div>
                                                         <div className="font-medium">
                                                             {task.title}
                                                         </div>

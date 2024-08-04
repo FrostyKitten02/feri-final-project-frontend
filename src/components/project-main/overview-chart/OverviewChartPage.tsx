@@ -5,6 +5,7 @@ import {useRequestArgs} from "../../../util/CustomHooks";
 import {useParams} from "react-router-dom";
 import {OverviewChart, OverviewChartBody, OverviewChartHeader} from "../../template/overview-chart/OverviewChart";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
+
 export const OverviewChartPage = () => {
     const [statistics, setStatistics] = useState<ProjectStatisticsResponse>({workPackages: [], months: []})
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -28,7 +29,21 @@ export const OverviewChartPage = () => {
                     requestArgs
                 )
                 if (response.status === 200) {
-                    setStatistics(response.data);
+                    const sortedWp = response.data.workPackages?.sort((a, b) => {
+                        const fallbackDate = new Date(Date.now()).getTime();
+                        const dateA = a.startDate
+                            ? new Date(a.startDate).getTime()
+                            : fallbackDate;
+                        const dateB = b.startDate
+                            ? new Date(b.startDate).getTime()
+                            : fallbackDate;
+                        return dateA - dateB;
+                    });
+                    const sortedStatitics: ProjectStatisticsResponse = {
+                        workPackages: sortedWp,
+                        months: response.data.months
+                    }
+                    setStatistics(sortedStatitics);
                     setIsLoading(false);
                 }
             } catch (error: any) {
@@ -38,58 +53,63 @@ export const OverviewChartPage = () => {
     }, [])
 
     return (
-        <div className="flex flex-col w-full p-5">
-            <div className="flex justify-end">
-                <CustomPagination totalPages={totalPages}
-                                  backLabelText=""
-                                  nextLabelText=""
-                                  onPageChange={setCurrentPage} currentPage={currentPage}
-                />
-            </div>
-            <div className="flex-grow">
-                {
-                    isLoading ? "loading" :
-                        <OverviewChart monthsPerPage={monthsPerPage}
-                                       workpackageCount={statistics.workPackages?.length ?? 0}>
-                            <OverviewChartHeader months={statistics.months}
-                                                 currentPage={currentPage}
-                                                 monthsPerPage={monthsPerPage}
-                            />
-                            <OverviewChartBody statistics={statistics}
-                                               currentPage={currentPage}
-                                               monthsPerPage={monthsPerPage}
-                            />
-                        </OverviewChart>
-                }
-            </div>
+        <div className="w-full h-full p-10">
             {
-                statistics.workPackages?.length ?
-                    <div className="flex justify-between p-5">
-                        <div className="flex flex-row space-x-2">
-                            <div className="flex pr-1 items-center font-mono uppercase">
-                                Shown months:
+                isLoading ? "loading" :
+                    <div className="relative py-6 flex flex-col h-full border-[1px] border-gray-200 border-solid rounded-[20px] px-5">
+                        {(statistics.workPackages?.length ?? 0) > 0 &&
+                            <div className="absolute top-[-25px] bg-white rounded-[20px] right-20 flex justify-end p-2 uppercase space-x-4 items-center">
+                                <div className="flex space-x-2 font-semibold">
+                                    <button
+                                        className={`${monthsPerPage === 4 ? "bg-c-sky bg-opacity-10 text-primary" : "hover:bg-gray-100"} px-3 delay-50 transition py-1 rounded-lg`}
+                                        onClick={() => handleMonthChange(4)}
+                                    >
+                                        4
+                                    </button>
+                                    <button
+                                        className={`${monthsPerPage === 6 ? "bg-c-sky bg-opacity-10 text-primary" : "hover:bg-gray-100"} px-3 py-1 delay-50 transition rounded-lg`}
+                                        onClick={() => handleMonthChange(6)}
+                                    >
+                                        6
+                                    </button>
+                                    <button
+                                        className={`${monthsPerPage === 12 ? "bg-c-sky bg-opacity-10 text-primary" : "hover:bg-gray-100"} px-3 py-1 delay-50 transition rounded-lg`}
+                                        onClick={() => handleMonthChange(12)}
+                                    >
+                                        12
+                                    </button>
+                                </div>
                             </div>
-                            <button
-                                className={`${monthsPerPage === 4 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
-                                onClick={() => handleMonthChange(4)}
-                            >
-                                4
-                            </button>
-                            <button
-                                className={`${monthsPerPage === 6 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
-                                onClick={() => handleMonthChange(6)}
-                            >
-                                6
-                            </button>
-                            <button
-                                className={`${monthsPerPage === 12 ? "bg-blue-200" : "hover:bg-gray-50"} px-3 border-[1px] rounded-lg`}
-                                onClick={() => handleMonthChange(12)}
-                            >
-                                12
-                            </button>
+                        }
+                        <div className="flex-grow overflow-y-auto">
+                            <OverviewChart monthsPerPage={monthsPerPage}
+                                           workpackageCount={statistics.workPackages?.length ?? 0}>
+                                <OverviewChartHeader months={statistics.months}
+                                                     currentPage={currentPage}
+                                                     monthsPerPage={monthsPerPage}
+                                />
+                                <OverviewChartBody statistics={statistics}
+                                                   currentPage={currentPage}
+                                                   monthsPerPage={monthsPerPage}
+                                />
+                            </OverviewChart>
                         </div>
-                    </div> :
-                    <></>
+                        <div
+                            className="absolute rounded-[20px] text-center text-muted bg-white top-[-12px] font-medium left-20 uppercase flex px-2">
+                            Gantt overview
+                        </div>
+                        <div
+                            className="absolute rounded-[20px] text-center text-muted bg-white bottom-[-16px] font-medium right-20 uppercase flex px-2">
+                            {
+                                (statistics.workPackages?.length ?? 0) > 0 &&
+                                <CustomPagination totalPages={totalPages}
+                                                  backLabelText=""
+                                                  nextLabelText=""
+                                                  onPageChange={setCurrentPage} currentPage={currentPage}
+                                />
+                            }
+                        </div>
+                    </div>
             }
         </div>
     )

@@ -25,9 +25,9 @@ export default class ChartUtil {
         else if (0 < percentage && percentage <= 100)
             tooltip = tooltipOptions.ok;
         return ({
-            totalPm: total,
-            actualPm: actual,
-            pmPercentValue: percentage,
+            totalPm: TextUtil.roundDownToTwoDecimalPlaces(total),
+            actualPm: TextUtil.roundDownToTwoDecimalPlaces(actual),
+            pmPercentValue: TextUtil.roundDownToTwoDecimalPlaces(percentage),
             tooltipValue: tooltip
         })
     }
