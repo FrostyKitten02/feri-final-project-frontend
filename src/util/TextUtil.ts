@@ -342,4 +342,8 @@ export default class TextUtil {
         });
         return tasks;
     }
+
+    static roundDownToTwoDecimalPlaces(num: number) {
+        return Math.floor(num * 100) / 100;
+    }
 }
