@@ -6,19 +6,18 @@ import { toastError } from "../../toast-modals/ToastFunctions";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { WorkPackageItem } from "./WorkPackageItem";
 import WorkPackageModal from "./WorkPackageModal";
+import { Spinner } from "flowbite-react";
 
 export const WorkPackageListing: FC = () => {
   const { projectId } = useParams();
   const [workPackages, setWorkPackages] = useState<WorkPackageDto[]>([]);
   const [projectDetails, setProjectDetails] = useState<ProjectDto>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const requestArgs = useRequestArgs();
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchWorkPackagesForProject().then(() => {
-      setIsLoading(false);
-    });
+    setLoading(true);
+    fetchWorkPackagesForProject();
   }, [projectId]);
 
   const onSuccess = (): void => {
@@ -34,16 +33,16 @@ export const WorkPackageListing: FC = () => {
           }
           if (response.data.projectDto?.workPackages) {
             const sortedWorkPackagesByDate =
-                response.data.projectDto?.workPackages?.sort((a, b) => {
-                  const fallbackDate = new Date(Date.now()).getTime();
-                  const dateA = a.startDate
-                      ? new Date(a.startDate).getTime()
-                      : fallbackDate;
-                  const dateB = b.startDate
-                      ? new Date(b.startDate).getTime()
-                      : fallbackDate;
-                  return dateA - dateB;
-                });
+              response.data.projectDto?.workPackages?.sort((a, b) => {
+                const fallbackDate = new Date(Date.now()).getTime();
+                const dateA = a.startDate
+                  ? new Date(a.startDate).getTime()
+                  : fallbackDate;
+                const dateB = b.startDate
+                  ? new Date(b.startDate).getTime()
+                  : fallbackDate;
+                return dateA - dateB;
+              });
             setWorkPackages(sortedWorkPackagesByDate);
           } else setWorkPackages([]);
         }
@@ -52,9 +51,10 @@ export const WorkPackageListing: FC = () => {
       }
     } catch (error: any) {
       toastError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
-
 
   return (
     <div className="flex w-full h-full">
@@ -64,9 +64,9 @@ export const WorkPackageListing: FC = () => {
         >
           <div className="flex-grow">
             <div className="flex flex-col h-full">
-              {isLoading ? (
-                <div className="flex flex-col justify-center items-center font-bold text-3xl">
-                  <h1>Loading work packages...</h1>
+              {loading ? (
+                <div className="flex justify-center items-center h-full">
+                  <Spinner size="xl" />
                 </div>
               ) : workPackages.length > 0 ? (
                 <div className="flex-col flex-grow gap-y-10">
@@ -81,12 +81,9 @@ export const WorkPackageListing: FC = () => {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col w-full justify-center items-center font-bold text-3xl space-y-4">
-                  <h1>No work packages found...</h1>
-                  <p className="text-base text-gray-700">
-                    Click the "Add work package" button to add a new work
-                    package.
-                  </p>
+                <div className="flex flex-col h-full items-center justify-center">
+                  <p className="text-2xl font-bold">No work packages found.</p>
+                  <p>Navigate to the top right to create a work package.</p>
                 </div>
               )}
             </div>

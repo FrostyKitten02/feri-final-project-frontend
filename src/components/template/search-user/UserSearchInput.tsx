@@ -21,6 +21,7 @@ export default function UserSearchInput<
   handleSelectPerson,
   inputWidth,
   showResults,
+  setHookFormValue
 }: UserSearchInputProps<T, K>) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +49,7 @@ export default function UserSearchInput<
               className="flex w-full h-full items-center justify-center"
               type="button"
               onClick={() => {
-                setSearchQuery(""), setInputValue?.(""), setQuery("");
+                setSearchQuery(""), setInputValue?.(""), setQuery(""), setHookFormValue?.();
               }}
             >
               <MdClear className="size-6 stroke-black" />

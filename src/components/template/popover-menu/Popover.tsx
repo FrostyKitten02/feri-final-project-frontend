@@ -3,7 +3,13 @@ import { useRef, useState, useEffect } from "react";
 import { PopoverProps } from "../../../interfaces";
 import React from "react";
 
-export default function Popover({ items, triggerIcon, height }: PopoverProps) {
+export default function Popover({
+  items,
+  triggerIcon,
+  height,
+  width,
+  position,
+}: PopoverProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
   const ignoreClickOutside = useRef<boolean>(false);
   const [actionPopoverOpen, setActionPopoverOpen] = useState<boolean>(false);
@@ -43,7 +49,13 @@ export default function Popover({ items, triggerIcon, height }: PopoverProps) {
           exit={{
             opacity: 0,
           }}
-          className={`flex flex-col absolute bg-white bottom-full w-64 h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}
+          className={`flex z-10 flex-col absolute bg-white ${
+            position == `bottom`
+              ? `top-full`
+              : position == "top"
+              ? `bottom-full`
+              : `bottom-full`
+          } mt-4 ${width ? `w-${width}` : `w-64`} h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}
           ref={popoverRef}
         >
           <div className="px-3 py-1 font-medium text-black">Actions</div>

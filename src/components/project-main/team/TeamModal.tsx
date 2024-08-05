@@ -7,7 +7,14 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { AddPersonToProjectRequest, ListPersonResponse, PageInfoRequest, PersonDto, PersonListSearchParams, PersonSortInfoRequest } from "../../../../temp_ts";
+import {
+  AddPersonToProjectRequest,
+  ListPersonResponse,
+  PageInfoRequest,
+  PersonDto,
+  PersonListSearchParams,
+  PersonSortInfoRequest,
+} from "../../../../temp_ts";
 import {
   CustomModalBody,
   CustomModalFooter,
@@ -26,7 +33,8 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [allPeople, setAllPeople] = useState<ListPersonResponse>();
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>(searchQuery);
+  const [debouncedSearchQuery, setDebouncedSearchQuery] =
+    useState<string>(searchQuery);
   const [inputValue, setInputValue] = useState<string>("");
   const [listOpen, setListOpen] = useState<boolean>(false);
 
@@ -37,13 +45,13 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
-    }, 300)
+    }, 300);
 
     return () => {
       clearTimeout(handler);
-    }
-  }, [searchQuery])
-  
+    };
+  }, [searchQuery]);
+
   useEffect(() => {
     if (modalOpen) {
       fetchAllPeople();
@@ -57,14 +65,19 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     };
     const sortInfo: PersonSortInfoRequest = {
       ascending: true,
-      fields: ["NAME"]
+      fields: ["NAME"],
     };
     const searchParams: PersonListSearchParams = {
       searchStr: debouncedSearchQuery,
     };
 
     try {
-      const response = await personAPI.listPeople(pageInfo, sortInfo, searchParams, requestArgs);
+      const response = await personAPI.listPeople(
+        pageInfo,
+        sortInfo,
+        searchParams,
+        requestArgs
+      );
       if (response.status === 200) setAllPeople(response.data);
     } catch (error: any) {
       toastError(error.message);
@@ -111,6 +124,10 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     setModalOpen(false);
   };
 
+  const resetField = (): void => {
+    reset();
+  };
+
   const onSubmit: SubmitHandler<AssignPersonFormFields> = async (
     data
   ): Promise<void> => {
@@ -153,10 +170,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <CustomModalHeader handleModalClose={handleClose}>
               <ModalTitle>Assign person to project</ModalTitle>
-              <ModalText
-                showIcon={true}
-                contentColor="warning"
-              >
+              <ModalText showIcon={true} contentColor="warning">
                 Only available employees can be assigned to the project.
               </ModalText>
             </CustomModalHeader>
@@ -186,6 +200,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                       listOpen={listOpen}
                       filteredPeople={filteredPeople}
                       handleSelectPerson={handleSelectPerson}
+                      setHookFormValue={resetField}
                       inputWidth={700}
                       showResults={true}
                     />

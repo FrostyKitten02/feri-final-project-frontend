@@ -165,12 +165,12 @@ export const ProjectModal = ({
           </button>
         ) : (
           <button onClick={() => setModalOpen(true)}>
-            <FiEdit3 className="h-12 w-12 transition delay-50" />
+            <FiEdit3 className="size-5 hover:stroke-primary transition delay-50" />
           </button>
         )
       ) : (
         <button onClick={() => setModalOpen(true)}>
-          <FiFolderPlus className="h-12 w-12 fill-black hover:fill-primary transition delay-50" />
+          <FiFolderPlus className="h-12 w-12 transition delay-50" />
         </button>
       )}
       {modalOpen && (
