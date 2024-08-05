@@ -23,6 +23,7 @@ import {
 import { personTypeAPI, salaryApi } from "../../util/ApiDeclarations";
 import { useRequestArgs } from "../../util/CustomHooks";
 import { CustomPagination } from "../template/pagination/CustomPagination";
+import { Spinner } from "flowbite-react";
 
 export default function SalaryEmploymentHistoryModal({
   onButtonClick,
@@ -36,6 +37,8 @@ export default function SalaryEmploymentHistoryModal({
   const [pageNumberSalary, setPageNumberSalary] = useState<number>(1);
   const [totalPagesEmployment, setTotalPagesEmployment] = useState<number>(0);
   const [pageNumberEmployment, setPageNumberEmployment] = useState<number>(1);
+  const [loadingSalary, setLoadingSalary] = useState<boolean>(true);
+  const [loadingEmployment, setLoadingEmployment] = useState<boolean>(true);
   const [elementsPerPage] = useState<number>(2);
   const [salaries, setSalaries] = useState<Array<SalaryListDto>>([]);
   const [employments, setEmployments] = useState<Array<PersonTypeListDto>>([]);
@@ -43,14 +46,20 @@ export default function SalaryEmploymentHistoryModal({
   const requestArgs = useRequestArgs();
 
   useEffect(() => {
+    setLoadingSalary(true);
     if (modalOpen) {
-      fetchSalaryHistory(pageNumberSalary, elementsPerPage);
+      fetchSalaryHistory(pageNumberSalary, elementsPerPage).then(() =>
+        setLoadingSalary(false)
+      );
     }
   }, [modalOpen, pageNumberSalary]);
 
   useEffect(() => {
+    setLoadingEmployment(true);
     if (modalOpen) {
-      fetchEmploymentHistory(pageNumberEmployment, elementsPerPage);
+      fetchEmploymentHistory(pageNumberEmployment, elementsPerPage).then(() =>
+        setLoadingEmployment(false)
+      );
     }
   }, [modalOpen, pageNumberEmployment]);
 
@@ -165,18 +174,10 @@ export default function SalaryEmploymentHistoryModal({
       </button>
       {modalOpen && (
         <ModalPortal>
-          <CustomModal
-              closeModal={handleClose}
-              modalWidth="1000px"
-          >
+          <CustomModal closeModal={handleClose} modalWidth="1000px">
             <CustomModalHeader handleModalClose={handleClose}>
-              <ModalTitle>
-                salary and employment history
-              </ModalTitle>
-              <ModalText
-                  showIcon={false}
-                  contentColor="muted"
-              >
+              <ModalTitle>salary and employment history</ModalTitle>
+              <ModalText showIcon={false} contentColor="muted">
                 <div className="flex items-center text-black text-md">
                   <div>You are viewing salary and employment history of</div>
                   <div className="font-semibold pl-[5px]">{userEmail}</div>
@@ -188,7 +189,11 @@ export default function SalaryEmploymentHistoryModal({
               <ModalDivider paddingTop="0px">salary history</ModalDivider>
               <div className="flex flex-col">
                 <div className="w-full">
-                  {salaries.length > 0 ? (
+                  {loadingSalary ? (
+                    <div className="flex justify-center items-center h-full">
+                      <Spinner size="xl" />
+                    </div>
+                  ) : salaries.length > 0 ? (
                     <>
                       <div className="grid grid-cols-3 pt-8 pb-4">
                         <div className="flex justify-center items-center gap-x-4">
@@ -255,7 +260,11 @@ export default function SalaryEmploymentHistoryModal({
               <ModalDivider>employment history</ModalDivider>
               <div className="flex flex-col">
                 <div className="w-full">
-                  {employments.length > 0 ? (
+                  {loadingEmployment ? (
+                    <div className="flex justify-center items-center h-full">
+                      <Spinner size="xl" />
+                    </div>
+                  ) : employments.length > 0 ? (
                     <>
                       <div className="grid grid-cols-4 pt-8 pb-4">
                         <div className="flex justify-center items-center gap-x-4">

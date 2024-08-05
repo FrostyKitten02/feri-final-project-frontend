@@ -276,3 +276,5 @@ export interface DeleteTeamModalProps {
   person: PersonDto;
   onSuccess: () => void;
 }
+
+export interface DeleteProjectModalProps extends PopoverBaseProps {}

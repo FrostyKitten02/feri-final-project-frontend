@@ -49,7 +49,7 @@ export default function Popover({
           exit={{
             opacity: 0,
           }}
-          className={`flex z-10 flex-col absolute bg-white ${
+          className={`flex z-20 flex-col absolute bg-white ${
             position == `bottom`
               ? `top-full`
               : position == "top"

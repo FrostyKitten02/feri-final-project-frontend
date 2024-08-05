@@ -31,7 +31,7 @@ export default function TaskModal({
   onModalClose,
 }: TaskModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [isOn, setIsOn] = useState(task && task.isRelevant);
+  const [isOn, setIsOn] = useState<boolean>(task?.isRelevant ?? true);
   const requestArgs = useRequestArgs();
   const {
     register,
@@ -43,9 +43,9 @@ export default function TaskModal({
     formState: { errors },
   } = useForm<TaskFormFields>();
   const watchStartDate = watch("startDate");
-  register("isRelevant", { value: task && task.isRelevant });
+  register("isRelevant", { value: task?.isRelevant ?? true });
   const toggleSwitch = (): void => {
-    setIsOn((prev) => !prev);
+    setIsOn(!isOn);
     setValue("isRelevant", !isOn);
   };
   const handleClose = (): void => {

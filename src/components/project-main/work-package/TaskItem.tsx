@@ -57,7 +57,7 @@ export const TaskItem: FC<TaskItemProps> = ({
               items={popoverItems}
               height={28}
               width={36}
-              position="top"
+              position="bottom"
               triggerIcon={
                 <BsThreeDots className="size-6 fill-gray-700 hover:fill-primary transition delay-50" />
               }

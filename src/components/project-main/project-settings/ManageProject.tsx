@@ -4,6 +4,7 @@ import { ManageProjectModalProps, PopoverItem } from "../../../interfaces";
 import { useParams } from "react-router-dom";
 import { ProjectModal } from "../../app-main/projects/ProjectModal";
 import Popover from "../../template/popover-menu/Popover";
+import { DeleteProjectModal } from "../../app-main/projects/DeleteProjectModal";
 
 export default function ManageProjectModal({
   sidebarOpened,
@@ -20,6 +21,9 @@ export default function ManageProjectModal({
         />
       ),
     },
+    {
+      component: <DeleteProjectModal />
+    }
   ];
 
   return (
@@ -29,7 +33,7 @@ export default function ManageProjectModal({
       } relative z-10`}
     >
       <Popover
-        height={20}
+        height={28}
         items={popoverItems}
         triggerIcon={
           <span className="flex flex-row justify-center items-center gap-x-3">

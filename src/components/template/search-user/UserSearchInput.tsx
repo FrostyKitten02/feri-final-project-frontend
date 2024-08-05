@@ -44,7 +44,7 @@ export default function UserSearchInput<
     <>
       <TextInput
         addon={
-          <div className="h-full -mx-3 w-12 flex items-center justify-center">
+          <div className="h-full -mx-3 w-10 flex items-center justify-center">
             <button
               className="flex w-full h-full items-center justify-center"
               type="button"
@@ -52,7 +52,7 @@ export default function UserSearchInput<
                 setSearchQuery(""), setInputValue?.(""), setQuery(""), setHookFormValue?.();
               }}
             >
-              <MdClear className="size-6 stroke-black" />
+              <MdClear className="size-5 stroke-black" />
             </button>
           </div>
         }

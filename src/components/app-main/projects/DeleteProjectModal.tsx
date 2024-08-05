@@ -1,5 +1,5 @@
 import { HiOutlineTrash } from "react-icons/hi2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CustomModal,
   CustomModalBody,
@@ -11,22 +11,51 @@ import {
 } from "../../template/modal/CustomModal";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DeleteConfirmationFields } from "../../../types/types";
-import { DeleteWorkPackageModalProps } from "../../../interfaces";
+import { DeleteProjectModalProps } from "../../../interfaces";
 import { TextInput } from "flowbite-react";
-import { workPackageAPI } from "../../../util/ApiDeclarations";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import { projectAPI } from "../../../util/ApiDeclarations";
+import { toastError } from "../../toast-modals/ToastFunctions";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import ModalPortal from "../../template/modal/ModalPortal";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetProjectResponse } from "../../../../temp_ts";
+import Paths from "../../../util/Paths";
 
-export const DeleteWorkPackageModal = ({
-  workpackage,
-  onSuccess,
+export const DeleteProjectModal = ({
   setActionPopoverOpen,
   onButtonClick,
   onModalClose,
-}: DeleteWorkPackageModalProps) => {
+}: DeleteProjectModalProps) => {
+  const [projectDetails, setProjectDetails] = useState<GetProjectResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const requestArgs = useRequestArgs();
+
+  const { projectId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (open) {
+      const fetchProjectDetails = async (): Promise<void> => {
+        try {
+          if (projectId) {
+            const response = await projectAPI.getProject(
+              projectId,
+              requestArgs
+            );
+            if (response.status === 200) {
+              setProjectDetails(response.data);
+            }
+          } else {
+            toastError("Project id not found.");
+          }
+        } catch (error: any) {
+          toastError(error.message);
+        }
+      };
+      fetchProjectDetails();
+    }
+  }, [open]);
+
   const handleModalClose = (): void => {
     onModalClose?.();
     setOpen(false);
@@ -37,27 +66,20 @@ export const DeleteWorkPackageModal = ({
     handleSubmit,
     formState: { errors },
   } = useForm<DeleteConfirmationFields>();
+
   const onDelete: SubmitHandler<any> = async () => {
     try {
-      if (workpackage?.id) {
-        const response = await workPackageAPI.deleteWorkPackage(
-          workpackage.id,
-          requestArgs
-        );
+      if (projectId) {
+        const response = await projectAPI.deleteProject(projectId, requestArgs);
         if (response.status === 200 || response.status === 204) {
-          onSuccess();
-          toastSuccess(
-            `Work package ${workpackage.title} was successfully deleted.`
-          );
-          onModalClose?.();
-          setOpen(false);
-          setActionPopoverOpen?.(false);
+          navigate(Paths.HOME);
         }
       }
     } catch (error: any) {
       toastError(error.message);
     }
   };
+
   return (
     <>
       <button
@@ -67,28 +89,28 @@ export const DeleteWorkPackageModal = ({
         className="flex flex-row items-center justify-start text-red-500 h-full text-sm font-semibold hover:text-red-600 fill-red-500  hover:fill-red-600 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <HiOutlineTrash className="size-5" />
-        <span>Delete work package</span>
+        <span>Permanently delete project</span>
       </button>
       {open && (
         <ModalPortal>
           <CustomModal closeModal={handleModalClose}>
             <form onSubmit={handleSubmit(onDelete)}>
               <CustomModalHeader handleModalClose={handleModalClose}>
-                <ModalTitle>delete work package</ModalTitle>
+                <ModalTitle>delete project</ModalTitle>
                 <ModalText contentColor="danger" showIcon={true}>
                   This action <span className="font-semibold"> cannot </span> be
-                  undone!
-                  <span className="font-semibold"> {workpackage?.title} </span>
-                  and all of the associated tasks will be <span className="font-semibold">
+                  undone! Project
+                  <span className="font-semibold">
                     {" "}
-                    permanently{" "}
-                  </span>{" "}
-                  deleted.
+                    {projectDetails?.projectDto?.title}{" "}
+                  </span>
+                  and all of it's information will be{" "}
+                  <span className="font-semibold"> permanently </span> deleted.
                 </ModalText>
               </CustomModalHeader>
               <CustomModalBody>
                 <div className="font-semibold">
-                  Please type in the full title of the work package to confirm
+                  Please type in the full title of the project to confirm
                   deletion.
                 </div>
                 <TextInput
@@ -97,8 +119,8 @@ export const DeleteWorkPackageModal = ({
                   {...register("title", {
                     required: "This field can not be empty!",
                     validate: (value) => {
-                      if (workpackage && value !== workpackage.title) {
-                        return "The input text and the work package title don't match.";
+                      if (value !== projectDetails?.projectDto?.title) {
+                        return "The input text and the project title don't match.";
                       }
                     },
                   })}
