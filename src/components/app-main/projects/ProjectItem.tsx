@@ -107,7 +107,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({
                 <div className="flex flex-row items-center">
                   <ProjectModal
                       edit={true}
-                      handleAddProject={handleEditProject}
+                      handleProjectSubmit={handleEditProject}
                       projectId={project.id}
                   />
                 </div>

@@ -59,7 +59,7 @@ export const TaskListing: FC<TaskListingProps> = ({workpackage, onSuccess}) => {
         </div>
       )}
       {sortedTasksByDate.length > 0 && (
-        <div className="h-full grid border border-solid border-gray-200 rounded-md shadow-md overflow-hidden bg-white">
+        <div className="h-full grid border border-solid border-gray-200 rounded-md overflow-visible bg-white">
           {sortedTasksByDate.map((task) => (
             <TaskItem
               key={task.id}

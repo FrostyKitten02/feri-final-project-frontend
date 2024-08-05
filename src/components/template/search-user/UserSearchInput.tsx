@@ -5,6 +5,7 @@ import { IoPersonCircle } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import { UserSearchInputProps } from "../../../interfaces";
 import { GrSearch } from "react-icons/gr";
+import { MdClear } from "react-icons/md";
 
 export default function UserSearchInput<
   T extends FieldValues,
@@ -20,6 +21,7 @@ export default function UserSearchInput<
   handleSelectPerson,
   inputWidth,
   showResults,
+  setHookFormValue
 }: UserSearchInputProps<T, K>) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -28,7 +30,7 @@ export default function UserSearchInput<
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
       if (listRef.current && !listRef.current.contains(e.target as Node)) {
-        if (setListOpen) setListOpen(false);
+        setListOpen?.(false);
       }
     }
 
@@ -41,11 +43,24 @@ export default function UserSearchInput<
   return (
     <>
       <TextInput
+        addon={
+          <div className="h-full -mx-3 w-12 flex items-center justify-center">
+            <button
+              className="flex w-full h-full items-center justify-center"
+              type="button"
+              onClick={() => {
+                setSearchQuery(""), setInputValue?.(""), setQuery(""), setHookFormValue?.();
+              }}
+            >
+              <MdClear className="size-6 stroke-black" />
+            </button>
+          </div>
+        }
         style={{ width: `${inputWidth}px` }}
         className="pb-2"
-        placeholder="Search employee"
+        placeholder="Search for an employee"
         onChange={(e) => {
-          if (setInputValue) setInputValue(e.target.value);
+          setInputValue?.(e.target.value);
           setQuery(e.target.value);
           setSearchQuery(e.target.value);
           field?.onChange(e);
@@ -55,8 +70,8 @@ export default function UserSearchInput<
       />
       {listOpen && showResults && (
         <div
-          className="relative"
-          style={{ width: `${inputWidth}px` }}
+          className="relative w-full"
+          style={{ width: `${inputWidth && inputWidth + 48}px` }}
           ref={listRef}
         >
           <div className="absolute z-10 w-full shadow-lg bg-white max-h-70 overflow-auto rounded-lg border border-solid border-gray-200">
@@ -73,7 +88,7 @@ export default function UserSearchInput<
                       key={person.id}
                       className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-gray-200"
                       onClick={() => {
-                        if (handleSelectPerson) handleSelectPerson(person);
+                        handleSelectPerson?.(person);
                       }}
                     >
                       <div className="flex justify-center">

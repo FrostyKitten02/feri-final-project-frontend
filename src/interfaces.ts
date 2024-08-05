@@ -4,12 +4,14 @@ import {
   ProjectDto,
   ProjectStatisticsResponse,
   TaskDto,
-  WorkPackageDto, PersonWorkDto,
+  WorkPackageDto,
+  PersonWorkDto,
 } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
 import { SelectedItemProps } from "./components/template/inputs/inputsInterface";
-import {ReactElement} from "react";
+import { ReactElement } from "react";
+import { PopoverBaseProps } from "./components/template/popover-menu/popoverinterfaces";
 
 export interface SidebarTemplateProps {
   items: ListItem[];
@@ -41,36 +43,33 @@ export interface WorkPackageItemProps {
 }
 
 export interface TaskListingProps {
-  workpackage: WorkPackageDto
+  workpackage: WorkPackageDto;
   onSuccess: () => void;
 }
 
 export interface TaskItemProps {
   task?: TaskDto;
-  workpackage?: WorkPackageDto
+  workpackage?: WorkPackageDto;
   showIrrelevant: boolean;
   onSuccess: () => void;
 }
 
-export interface WorkPackageModalProps {
+export interface WorkPackageModalProps extends PopoverBaseProps {
   onSuccess: () => void;
   projectDetails?: ProjectDto;
-  workpackage?: WorkPackageDto
+  workpackage?: WorkPackageDto;
 }
 
-export interface TaskModalProps {
+export interface TaskModalProps extends PopoverBaseProps {
   onSuccess: () => void;
-  workpackage?: WorkPackageDto,
-  task?: TaskDto
+  workpackage?: WorkPackageDto;
+  task?: TaskDto;
 }
 
 export interface TeamModalProps {
   handleAddPerson: () => void;
 }
-export interface AdminModalProps {
-  setActionPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onButtonClick: () => void;
-  onModalClose: () => void;
+export interface AdminModalProps extends PopoverBaseProps {
   userId?: string;
   userEmail?: string;
   refetchUserList?: () => void;
@@ -82,7 +81,9 @@ export interface ManageUsersModalProps {
 export interface PopoverMenuProps {
   userId?: string;
   userEmail?: string;
-  refetchUserList: () => void;
+  refetchUserList?: () => void;
+  manageProject?: boolean;
+  sidebarOpened?: boolean;
 }
 
 export interface ProgressObject {
@@ -90,9 +91,10 @@ export interface ProgressObject {
   color: string;
 }
 
-export interface ProjectModalProps {
-  handleAddProject: () => void;
+export interface ProjectModalProps extends PopoverBaseProps {
+  handleProjectSubmit?: () => void;
   edit?: boolean;
+  popoverEdit?: boolean;
   projectId?: string;
 }
 
@@ -131,8 +133,8 @@ export interface CustomModalBodyProps {
 
 export interface ModalDividerProps {
   children?: React.ReactNode;
-  paddingTop?: string
-  paddingBottom?: string
+  paddingTop?: string;
+  paddingBottom?: string;
 }
 
 export interface CustomModalFooterProps {
@@ -173,11 +175,12 @@ export interface UserSearchInputProps<
   handleSelectPerson?: (person: PersonDto) => void;
   inputWidth?: number;
   showResults: boolean;
+  setHookFormValue?: () => void;
 }
 
 export interface ProjectFilterProps {
-  selectedStatus: SelectedItemProps,
-  setSelectedStatus: (item: SelectedItemProps) => void
+  selectedStatus: SelectedItemProps;
+  setSelectedStatus: (item: SelectedItemProps) => void;
 }
 
 export interface YearLimitProps {
@@ -196,7 +199,7 @@ export interface WorkloadTableProps {
 export interface DeleteModalProps {
   id?: string;
   title?: string;
-  handleDelete?: () => void; 
+  handleDelete?: () => void;
   teamPage?: boolean;
   workPackage?: boolean;
   personName?: string;
@@ -205,55 +208,71 @@ export interface DeleteModalProps {
 }
 
 export interface WorkloadModalProps {
-  closeModal: () => void,
-  modalWidth: string,
-  monthDate: string,
-  person: PersonWorkDto,
-  handleEdit: () => void
+  closeModal: () => void;
+  modalWidth: string;
+  monthDate: string;
+  person: PersonWorkDto;
+  handleEdit: () => void;
 }
 export interface DonutGraphData {
-  name: string,
-  value: number
+  name: string;
+  value: number;
 }
 export interface ProjectDetailsProps {
-  project: ProjectDto,
-  chosenSchema: ProjectBudgetSchemaDto,
+  project: ProjectDto;
+  chosenSchema: ProjectBudgetSchemaDto;
 }
 export interface WorkDetailsProps {
-  project: ProjectDto,
-  statistics: ProjectStatisticsResponse
+  project: ProjectDto;
+  statistics: ProjectStatisticsResponse;
 }
 
 export interface WorkDetailsLineChartProps {
-  date: string,
-  pmPerMonth: number
+  date: string;
+  pmPerMonth: number;
 }
 
 export interface CurrentMonthProps {
-  statistics: ProjectStatisticsResponse
+  statistics: ProjectStatisticsResponse;
 }
 
 export interface CostTimelineChartProps {
-  date: string,
-  "Actual cost": number,
-  "Predicted cost": number
+  date: string;
+  "Actual cost": number;
+  "Predicted cost": number;
 }
 
 export interface CostTimelineProps {
-  stats: ProjectStatisticsResponse
+  stats: ProjectStatisticsResponse;
 }
 
-export interface DeleteWorkPackageModalProps {
-  workpackage: WorkPackageDto,
-  onSuccess: () => void
+export interface ManageProjectModalProps {
+  sidebarOpened: boolean;
 }
 
-export interface DeleteTaskModalProps {
-  task: TaskDto,
-  onSuccess: () => void
+export interface PopoverItem {
+  component: React.ReactElement;
+}
+
+export interface PopoverProps {
+  items: PopoverItem[];
+  triggerIcon: React.ReactNode;
+  height?: number;
+  width?: number;
+  position?: "top" | "bottom";
+}
+
+export interface DeleteWorkPackageModalProps extends PopoverBaseProps {
+  workpackage?: WorkPackageDto;
+  onSuccess: () => void;
+}
+
+export interface DeleteTaskModalProps extends PopoverBaseProps {
+  task: TaskDto;
+  onSuccess: () => void;
 }
 
 export interface DeleteTeamModalProps {
-  person: PersonDto,
-  onSuccess: () => void
+  person: PersonDto;
+  onSuccess: () => void;
 }

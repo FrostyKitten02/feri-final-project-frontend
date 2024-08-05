@@ -739,10 +739,10 @@ export type PersonTypeListSortInfoRequestFieldsEnum = typeof PersonTypeListSortI
 export interface PersonWorkDto {
     /**
      * 
-     * @type {PersonDto}
+     * @type {string}
      * @memberof PersonWorkDto
      */
-    'person'?: PersonDto;
+    'personId'?: string;
     /**
      * 
      * @type {string}
@@ -981,6 +981,12 @@ export interface ProjectMonthDto {
      * @type {number}
      * @memberof ProjectMonthDto
      */
+    'staffBudgetBurnDownRate'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectMonthDto
+     */
     'actualTotalWorkPm'?: number;
     /**
      * 
@@ -1042,6 +1048,12 @@ export interface ProjectStatisticsResponse {
      * @memberof ProjectStatisticsResponse
      */
     'months'?: Array<ProjectMonthDto>;
+    /**
+     * 
+     * @type {{ [key: string]: PersonDto; }}
+     * @memberof ProjectStatisticsResponse
+     */
+    'people'?: { [key: string]: PersonDto; };
 }
 /**
  * 
