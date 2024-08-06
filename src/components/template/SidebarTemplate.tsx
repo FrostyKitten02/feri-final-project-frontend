@@ -90,7 +90,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
       </div>
       <div className={`py-2 ${opened && `justify-center`} flex flex-col gap-y-6`}>
         {projectId && <ManageProjectModal sidebarOpened={opened} />}
-        {user?.id === "user_2fg086sprrUABqywjpB9n31enB2" && (
+        {user?.id === import.meta.env.VITE_ADMIN_ID && (
           <ManageUsersModal sidebarOpened={opened} />
         )}
       </div>
