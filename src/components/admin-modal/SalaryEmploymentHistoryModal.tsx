@@ -215,7 +215,7 @@ export default function SalaryEmploymentHistoryModal({
                       <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
                         {salaries.map((salary, index) => (
                           <div
-                            className={`grid grid-cols-3 py-6 hover:bg-gray-100 transition delay-50 ${
+                            className={`grid grid-cols-3 py-6 ${
                               index === 0 ? `rounded-t-xl` : ""
                             } ${
                               index === salaries.length - 1
@@ -231,7 +231,7 @@ export default function SalaryEmploymentHistoryModal({
                               {salary.startDate}
                             </div>
                             <div className="flex items-center justify-center font-semibold">
-                              {salary.endDate}
+                              {salary.endDate ? salary.endDate : `N/A`}
                             </div>
                           </div>
                         ))}
@@ -291,7 +291,7 @@ export default function SalaryEmploymentHistoryModal({
                       <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
                         {employments.map((employment, index) => (
                           <div
-                            className={`grid grid-cols-4 py-6 hover:bg-gray-100 transition delay-50 ${
+                            className={`grid grid-cols-4 py-6 ${
                               index === 0 ? `rounded-t-xl` : ""
                             } ${
                               index === salaries.length - 1
@@ -312,7 +312,7 @@ export default function SalaryEmploymentHistoryModal({
                               {employment.startDate}
                             </div>
                             <div className="flex items-center justify-center font-semibold">
-                              {employment.endDate}
+                              {employment.endDate ? employment.endDate : `N/A`}
                             </div>
                           </div>
                         ))}

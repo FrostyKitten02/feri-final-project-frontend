@@ -10,6 +10,7 @@ import { DeleteWorkPackageModal } from "./DeleteWorkPackageModal";
 import TaskModal from "./TaskModal";
 import Popover from "../../template/popover-menu/Popover";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { TbCalendarUser } from "react-icons/tb";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
@@ -21,7 +22,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
     workPackage?.endDate
   );
   const daysLeft: string = TextUtil.returnDaysLeft(workPackage?.endDate);
-  const { text, color } = TextUtil.returnProgressText(progress);
+  const { text, color, animation } = TextUtil.returnProgressText(progress);
 
   const popoverItems: PopoverItem[] = [
     {
@@ -58,15 +59,23 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                     {TextUtil.refactorDate(workPackage.startDate)}
                   </div>
                 </div>
-                <div className="flex flex-row gap-x-1 items-center">
-                  <LuClipboardEdit className="size-5 stroke-black" />
-                  {workPackage.tasks?.length === undefined || 0 ? (
-                    <p className="text-lg font-mono">0</p>
-                  ) : (
+                <div className="flex flex-row gap-x-4 items-center">
+                  <div className="flex flex-row gap-x-1 items-center">
+                    <TbCalendarUser className="size-6 stroke-black" />
                     <p className="text-lg font-mono">
-                      {workPackage.tasks?.length}
+                      {workPackage.assignedPM}
                     </p>
-                  )}
+                  </div>
+                  <div className="flex flex-row gap-x-1 items-center">
+                    <LuClipboardEdit className="size-5 stroke-black" />
+                    {workPackage.tasks?.length === undefined || 0 ? (
+                      <p className="text-lg font-mono">0</p>
+                    ) : (
+                      <p className="text-lg font-mono">
+                        {workPackage.tasks?.length}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex flex-grow">
@@ -117,8 +126,11 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                   )}
                 </div>
                 <div
-                  className={`flex ${color} w-fit px-2 rounded-lg justify-start items-center`}
+                  className={`flex w-fit px-2 justify-start items-center gap-x-2`}
                 >
+                  <div
+                    className={`${color} rounded-full w-2 h-2 ${animation}`}
+                  />
                   <p className="font-semibold italic text-sm uppercase">
                     {text}
                   </p>

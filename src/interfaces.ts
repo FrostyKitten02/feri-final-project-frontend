@@ -89,6 +89,7 @@ export interface PopoverMenuProps {
 export interface ProgressObject {
   text: string;
   color: string;
+  animation?: string;
 }
 
 export interface ProjectModalProps extends PopoverBaseProps {
