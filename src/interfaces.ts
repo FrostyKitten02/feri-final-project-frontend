@@ -89,6 +89,7 @@ export interface PopoverMenuProps {
 export interface ProgressObject {
   text: string;
   color: string;
+  animation?: string;
 }
 
 export interface ProjectModalProps extends PopoverBaseProps {
@@ -234,6 +235,7 @@ export interface WorkDetailsLineChartProps {
 
 export interface CurrentMonthProps {
   statistics: ProjectStatisticsResponse;
+  handleEditProject: () => void;
 }
 
 export interface CostTimelineChartProps {
@@ -276,3 +278,5 @@ export interface DeleteTeamModalProps {
   person: PersonDto;
   onSuccess: () => void;
 }
+
+export interface DeleteProjectModalProps extends PopoverBaseProps {}

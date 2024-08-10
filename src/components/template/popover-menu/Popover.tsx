@@ -8,11 +8,13 @@ export default function Popover({
   triggerIcon,
   height,
   width,
-  position,
+  position = "bottom",
 }: PopoverProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const ignoreClickOutside = useRef<boolean>(false);
   const [actionPopoverOpen, setActionPopoverOpen] = useState<boolean>(false);
+  const [actualPosition, setActualPosition] = useState<string>(position);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
@@ -30,6 +32,33 @@ export default function Popover({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [popoverRef]);
+
+  useEffect(() => {
+    if (actionPopoverOpen && popoverRef.current && triggerRef.current) {
+      const popoverRect = popoverRef.current.getBoundingClientRect();
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      const spaceBelow = windowHeight - triggerRect.bottom;
+      const spaceAbove = triggerRect.top;
+
+      if (
+        position === "bottom" &&
+        spaceBelow < popoverRect.height &&
+        spaceAbove > spaceBelow
+      ) {
+        setActualPosition("top");
+      } else if (
+        position === "top" &&
+        spaceAbove < popoverRect.height &&
+        spaceBelow > spaceAbove
+      ) {
+        setActualPosition("bottom");
+      } else {
+        setActualPosition(position);
+      }
+    }
+  }, [actionPopoverOpen, position]);
 
   const handlePopoverButtonClick = (): void => {
     ignoreClickOutside.current = true;
@@ -49,13 +78,11 @@ export default function Popover({
           exit={{
             opacity: 0,
           }}
-          className={`flex z-10 flex-col absolute bg-white ${
-            position == `bottom`
-              ? `top-full`
-              : position == "top"
-              ? `bottom-full`
-              : `bottom-full`
-          } mt-4 ${width ? `w-${width}` : `w-64`} h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}
+          className={`flex z-20 flex-col absolute bg-white ${
+            actualPosition == `bottom` ? `top-full` : `bottom-full`
+          } mt-4 ${
+            width ? `w-${width}` : `w-64`
+          } h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}
           ref={popoverRef}
         >
           <div className="px-3 py-1 font-medium text-black">Actions</div>

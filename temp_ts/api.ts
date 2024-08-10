@@ -39,6 +39,62 @@ export interface AddPersonToProjectRequest {
 /**
  * 
  * @export
+ * @interface ClerkUser
+ */
+export interface ClerkUser {
+    /**
+     * 
+     * @type {string}
+     * @memberof ClerkUser
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClerkUser
+     */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClerkUser
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ClerkUser
+     */
+    'primary_email_address_id'?: string;
+    /**
+     * 
+     * @type {Array<EmailAddress>}
+     * @memberof ClerkUser
+     */
+    'email_addresses'?: Array<EmailAddress>;
+}
+/**
+ * 
+ * @export
+ * @interface ClerkUserDeleted
+ */
+export interface ClerkUserDeleted {
+    /**
+     * 
+     * @type {string}
+     * @memberof ClerkUserDeleted
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ClerkUserDeleted
+     */
+    'deleted'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface CreateOccupancyRequest
  */
 export interface CreateOccupancyRequest {
@@ -281,6 +337,25 @@ export interface CreateWorkPackageRequest {
      * @memberof CreateWorkPackageRequest
      */
     'projectId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface EmailAddress
+ */
+export interface EmailAddress {
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailAddress
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof EmailAddress
+     */
+    'email_address'?: string;
 }
 /**
  * 
@@ -1421,6 +1496,81 @@ export interface UpdateWorkPackageRequest {
 /**
  * 
  * @export
+ * @interface UserCreatedEvent
+ */
+export interface UserCreatedEvent {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCreatedEvent
+     */
+    'object'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCreatedEvent
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {ClerkUser}
+     * @memberof UserCreatedEvent
+     */
+    'data'?: ClerkUser;
+}
+/**
+ * 
+ * @export
+ * @interface UserDeletedEvent
+ */
+export interface UserDeletedEvent {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDeletedEvent
+     */
+    'object'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDeletedEvent
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {ClerkUserDeleted}
+     * @memberof UserDeletedEvent
+     */
+    'data'?: ClerkUserDeleted;
+}
+/**
+ * 
+ * @export
+ * @interface UserUpdatedEvent
+ */
+export interface UserUpdatedEvent {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserUpdatedEvent
+     */
+    'object'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserUpdatedEvent
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {ClerkUser}
+     * @memberof UserUpdatedEvent
+     */
+    'data'?: ClerkUser;
+}
+/**
+ * 
+ * @export
  * @interface WorkPackageDto
  */
 export interface WorkPackageDto {
@@ -1540,6 +1690,246 @@ export interface WorkPackageWithStatisticsDto {
      */
     'pmBurnDownRatePerTask'?: number;
 }
+
+/**
+ * ClerkControllerApi - axios parameter creator
+ * @export
+ */
+export const ClerkControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {UserCreatedEvent} userCreatedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userCreated: async (userCreatedEvent: UserCreatedEvent, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userCreatedEvent' is not null or undefined
+            assertParamExists('userCreated', 'userCreatedEvent', userCreatedEvent)
+            const localVarPath = `/clerk/webhook/user-created`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userCreatedEvent, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UserDeletedEvent} userDeletedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userDeleted: async (userDeletedEvent: UserDeletedEvent, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userDeletedEvent' is not null or undefined
+            assertParamExists('userDeleted', 'userDeletedEvent', userDeletedEvent)
+            const localVarPath = `/clerk/webhook/user-deleted`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userDeletedEvent, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UserUpdatedEvent} userUpdatedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userUpdated: async (userUpdatedEvent: UserUpdatedEvent, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userUpdatedEvent' is not null or undefined
+            assertParamExists('userUpdated', 'userUpdatedEvent', userUpdatedEvent)
+            const localVarPath = `/clerk/webhook/user-updated`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userUpdatedEvent, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ClerkControllerApi - functional programming interface
+ * @export
+ */
+export const ClerkControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ClerkControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {UserCreatedEvent} userCreatedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userCreated(userCreatedEvent: UserCreatedEvent, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userCreated(userCreatedEvent, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ClerkControllerApi.userCreated']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {UserDeletedEvent} userDeletedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userDeleted(userDeletedEvent: UserDeletedEvent, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userDeleted(userDeletedEvent, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ClerkControllerApi.userDeleted']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {UserUpdatedEvent} userUpdatedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userUpdated(userUpdatedEvent: UserUpdatedEvent, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userUpdated(userUpdatedEvent, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ClerkControllerApi.userUpdated']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ClerkControllerApi - factory interface
+ * @export
+ */
+export const ClerkControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ClerkControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {UserCreatedEvent} userCreatedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userCreated(userCreatedEvent: UserCreatedEvent, options?: any): AxiosPromise<void> {
+            return localVarFp.userCreated(userCreatedEvent, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UserDeletedEvent} userDeletedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userDeleted(userDeletedEvent: UserDeletedEvent, options?: any): AxiosPromise<void> {
+            return localVarFp.userDeleted(userDeletedEvent, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UserUpdatedEvent} userUpdatedEvent 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userUpdated(userUpdatedEvent: UserUpdatedEvent, options?: any): AxiosPromise<void> {
+            return localVarFp.userUpdated(userUpdatedEvent, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ClerkControllerApi - object-oriented interface
+ * @export
+ * @class ClerkControllerApi
+ * @extends {BaseAPI}
+ */
+export class ClerkControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {UserCreatedEvent} userCreatedEvent 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ClerkControllerApi
+     */
+    public userCreated(userCreatedEvent: UserCreatedEvent, options?: RawAxiosRequestConfig) {
+        return ClerkControllerApiFp(this.configuration).userCreated(userCreatedEvent, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UserDeletedEvent} userDeletedEvent 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ClerkControllerApi
+     */
+    public userDeleted(userDeletedEvent: UserDeletedEvent, options?: RawAxiosRequestConfig) {
+        return ClerkControllerApiFp(this.configuration).userDeleted(userDeletedEvent, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UserUpdatedEvent} userUpdatedEvent 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ClerkControllerApi
+     */
+    public userUpdated(userUpdatedEvent: UserUpdatedEvent, options?: RawAxiosRequestConfig) {
+        return ClerkControllerApiFp(this.configuration).userUpdated(userUpdatedEvent, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
 
 /**
  * OccupancyControllerApi - axios parameter creator

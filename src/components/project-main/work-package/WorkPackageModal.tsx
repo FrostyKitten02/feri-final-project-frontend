@@ -36,7 +36,7 @@ export default function WorkPackageModal({
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [isOn, setIsOn] = useState<boolean>(workpackage?.isRelevant ?? false);
+  const [isOn, setIsOn] = useState<boolean>(workpackage?.isRelevant ?? true);
   const {
     register,
     watch,
@@ -47,7 +47,7 @@ export default function WorkPackageModal({
     formState: { errors },
   } = useForm<WorkPackageFormFields>();
   const watchStartDate = watch("startDate");
-  register("isRelevant", { value: workpackage?.isRelevant ?? false }); // register the isRelevant field here, because it's a custom component not input
+  register("isRelevant", { value: workpackage?.isRelevant ?? true }); // register the isRelevant field here, because it's a custom component not input
   const toggleSwitch = (): void => {
     setIsOn(!isOn);
     setValue("isRelevant", !isOn);

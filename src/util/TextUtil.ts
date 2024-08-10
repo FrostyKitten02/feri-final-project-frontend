@@ -74,11 +74,12 @@ export default class TextUtil {
         } else if (value !== 100 && value !== 0) {
             return ({
                 text: "in progress",
-                color: "bg-custom-yellow"
+                color: "bg-custom-yellow",
+                animation: "animate-pulse"
             })
         } else return ({
             text: "scheduled",
-            color: "bg-secondary"
+            color: "bg-danger",
         })
     }
 

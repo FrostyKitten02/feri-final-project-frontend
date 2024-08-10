@@ -1,14 +1,13 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { SidebarItemProps, SidebarTemplateProps } from "../../interfaces";
 import { motion } from "framer-motion";
 import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
 import ManageUsersModal from "../admin-modal/ManageUsersModal";
-import ManageProjectModal from "../project-main/project-settings/ManageProject";
-import {IoMenu, IoReturnDownBack} from "react-icons/io5";
+import { IoMenu, IoReturnDownBack } from "react-icons/io5";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   items,
@@ -19,7 +18,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   const navigate = useNavigate();
   const { user } = useUser();
 
-  const { projectId } = useParams();
+  //const { projectId } = useParams();
 
   const toggle = (): void => {
     const newStatus: boolean = !opened;
@@ -74,7 +73,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
           </Link>
         )}
         <button onClick={toggle}>
-          <IoMenu className="h-10 w-10 fill-white"/>
+          <IoMenu className="h-10 w-10 fill-white" />
         </button>
       </div>
       <div className={`${opened ? "pl-6" : "pl-[20%]"} w-full flex-grow`}>
@@ -88,8 +87,9 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
           />
         ))}
       </div>
-      <div className={`py-2 ${opened && `justify-center`} flex flex-col gap-y-6`}>
-        {projectId && <ManageProjectModal sidebarOpened={opened} />}
+      <div
+        className={`py-2 ${opened && `justify-center`} flex flex-col gap-y-6`}
+      >
         {user?.id === import.meta.env.VITE_ADMIN_ID && (
           <ManageUsersModal sidebarOpened={opened} />
         )}
