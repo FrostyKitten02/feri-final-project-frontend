@@ -148,7 +148,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
               </div>
             </div>
           </div>
-          <div className="flex flex-col w-2/3 bg-gray-200 rounded-r-xl p-5">
+          <div className="flex flex-col w-2/3 bg-gray-100 rounded-r-xl p-5 border-solid border-l border-gray-200">
             {workPackage.tasks?.length && workPackage.tasks.length > 0 ? (
               <div>
                 <div className="flex w-full pb-12">

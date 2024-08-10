@@ -235,6 +235,7 @@ export interface WorkDetailsLineChartProps {
 
 export interface CurrentMonthProps {
   statistics: ProjectStatisticsResponse;
+  handleEditProject: () => void;
 }
 
 export interface CostTimelineChartProps {

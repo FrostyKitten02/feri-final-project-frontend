@@ -26,46 +26,47 @@ export default function ProjectDashboardPage() {
     return schemas.find((schema) => schema.id === id);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!projectId) return;
-      try {
-        const projectPromise = projectAPI.getProject(projectId, requestArgs);
-        const schemaPromise =
-          projectSchemaAPI.getAllProjectBudgetSchema(requestArgs);
-        const statisticsPromise = projectAPI.getProjectStatistics(
-          projectId,
-          requestArgs
-        );
-        const [projectResponse, schemaResponse, statisticsResponse] =
-          await Promise.all([projectPromise, schemaPromise, statisticsPromise]);
-        if (projectResponse.status === 200) {
-          const projectData = projectResponse.data.projectDto;
-          setProject(projectData);
-        }
-        if (schemaResponse.status === 200 && projectResponse.status === 200) {
-          const schemasData = schemaResponse.data.projectBudgetSchemaDtoList;
-          if (
-            schemasData &&
-            projectResponse.data.projectDto &&
-            projectResponse.data.projectDto.projectBudgetSchemaId
-          ) {
-            const projectSchema = getProjectSchema(
-              schemasData,
-              projectResponse.data.projectDto.projectBudgetSchemaId
-            );
-            setChosenSchema(projectSchema);
-          }
-        }
-        if (statisticsResponse.status === 200) {
-          const statisticsData = statisticsResponse.data;
-          setStatistics(statisticsData);
-        }
-      } catch (error) {
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    if (!projectId) return;
+    try {
+      const projectPromise = projectAPI.getProject(projectId, requestArgs);
+      const schemaPromise =
+        projectSchemaAPI.getAllProjectBudgetSchema(requestArgs);
+      const statisticsPromise = projectAPI.getProjectStatistics(
+        projectId,
+        requestArgs
+      );
+      const [projectResponse, schemaResponse, statisticsResponse] =
+        await Promise.all([projectPromise, schemaPromise, statisticsPromise]);
+      if (projectResponse.status === 200) {
+        const projectData = projectResponse.data.projectDto;
+        setProject(projectData);
       }
-    };
+      if (schemaResponse.status === 200 && projectResponse.status === 200) {
+        const schemasData = schemaResponse.data.projectBudgetSchemaDtoList;
+        if (
+          schemasData &&
+          projectResponse.data.projectDto &&
+          projectResponse.data.projectDto.projectBudgetSchemaId
+        ) {
+          const projectSchema = getProjectSchema(
+            schemasData,
+            projectResponse.data.projectDto.projectBudgetSchemaId
+          );
+          setChosenSchema(projectSchema);
+        }
+      }
+      if (statisticsResponse.status === 200) {
+        const statisticsData = statisticsResponse.data;
+        setStatistics(statisticsData);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, [projectId]);
 
@@ -92,7 +93,7 @@ export default function ProjectDashboardPage() {
             </div>
           </div>
           <div className="w-[350px] bg-gray-100 flex flex-col rounded-[20px] p-5">
-            {statistics && <CurrentMonth statistics={statistics} />}
+            {statistics && <CurrentMonth statistics={statistics} handleEditProject={fetchData}/>}
           </div>
         </>
       )}

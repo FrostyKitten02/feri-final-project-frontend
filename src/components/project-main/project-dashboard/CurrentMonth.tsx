@@ -6,13 +6,17 @@ import TextUtil from "../../../util/TextUtil";
 import {Fragment, useEffect, useState} from "react";
 import {ProjectMonthDto, TaskDto} from "../../../../temp_ts";
 import { BsDot } from "react-icons/bs";
+import { ProjectModal } from "../../app-main/projects/ProjectModal";
+import { useParams } from "react-router-dom";
+import { DeleteProjectModal } from "../../app-main/projects/DeleteProjectModal";
 
-export const CurrentMonth = ({statistics}: CurrentMonthProps) => {
+export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps) => {
     const [chartData, setChartData] = useState<Array<{ "name": string, "Assigned PM": number, "Actual PM": number }>>([]);
     const [barColor, setBarColor] = useState<Array<string>>([]);
     const [foundMonth, setFoundMonth] = useState<ProjectMonthDto | undefined>(undefined);
     const [currDate, setCurrDate] = useState<string>('');
     const [relevantTasks, setRelevantTasks] = useState<Array<TaskDto>>([]);
+    const {projectId} = useParams();
 
     useEffect(() => {
         const {chartData, barColor, foundMonth} = ChartUtil.returnCurrentMonthBarChartData(statistics);
@@ -68,7 +72,7 @@ export const CurrentMonth = ({statistics}: CurrentMonthProps) => {
                                         </Label>
                                         <div className="flex-grow h-[1px] bg-gray-300"/>
                                     </div>
-                                    <div className="overflow-y-auto h-[400px]">
+                                    <div className="overflow-y-auto flex flex-grow">
                                         {
                                             relevantTasks.map((task, index) => {
                                                 return (
@@ -83,6 +87,17 @@ export const CurrentMonth = ({statistics}: CurrentMonthProps) => {
                                                 )
                                             })
                                         }
+                                    </div>
+                                    <div className="flex flex-row items-center">
+                                        <div className="w-[7%] h-[1px] bg-gray-300"/>
+                                        <Label className="px-2 uppercase text-muted">
+                                            manage project
+                                        </Label>
+                                        <div className="flex-grow h-[1px] bg-gray-300"/>
+                                    </div>
+                                    <div className="flex flex-col justify-center h-[100px]">
+                                        <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
+                                        <DeleteProjectModal />
                                     </div>
                                 </Fragment> :
                                 <div className="text-muted flex items-center justify-center flex-grow">

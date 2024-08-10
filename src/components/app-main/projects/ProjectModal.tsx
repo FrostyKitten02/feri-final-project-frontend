@@ -161,7 +161,7 @@ export const ProjectModal = ({
             className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
           >
             <FiEdit3 className="size-5" />
-            <span>Edit project information</span>
+            <span className="uppercase">edit project information</span>
           </button>
         ) : (
           <button onClick={() => setModalOpen(true)}>

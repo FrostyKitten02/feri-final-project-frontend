@@ -89,7 +89,7 @@ export const DeleteProjectModal = ({
         className="flex flex-row items-center justify-start text-red-500 h-full text-sm font-semibold hover:text-red-600 fill-red-500  hover:fill-red-600 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <HiOutlineTrash className="size-5" />
-        <span>Permanently delete project</span>
+        <span className="uppercase">permanently delete project</span>
       </button>
       {open && (
         <ModalPortal>

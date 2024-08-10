@@ -4,23 +4,29 @@ import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { TaskItem } from "./TaskItem";
 
-export const TaskListing: FC<TaskListingProps> = ({workpackage, onSuccess}) => {
+export const TaskListing: FC<TaskListingProps> = ({
+  workpackage,
+  onSuccess,
+}) => {
   const [showIrrelevant, setShowIrrelevant] = useState<boolean>(false);
   const sortedTasksByDate = useMemo(() => {
-    if(workpackage.tasks){
-        return workpackage?.tasks.slice().sort((a, b) => {
-            const fallbackDate = new Date().getTime();
-            const dateA = a.startDate ? new Date(a.startDate).getTime() : fallbackDate;
-            const dateB = b.startDate ? new Date(b.startDate).getTime() : fallbackDate;
-            return dateA - dateB;
-        });
+    if (workpackage.tasks) {
+      return workpackage?.tasks.slice().sort((a, b) => {
+        const fallbackDate = new Date().getTime();
+        const dateA = a.startDate
+          ? new Date(a.startDate).getTime()
+          : fallbackDate;
+        const dateB = b.startDate
+          ? new Date(b.startDate).getTime()
+          : fallbackDate;
+        return dateA - dateB;
+      });
     } else return [];
-
   }, [workpackage.tasks]);
-  const irrelevantTasks = sortedTasksByDate.filter(task => !task.isRelevant);
+  const irrelevantTasks = sortedTasksByDate.filter((task) => !task.isRelevant);
 
   const handleToggleIrrelevant = () => {
-    setShowIrrelevant(prev => !prev);
+    setShowIrrelevant((prev) => !prev);
   };
   return (
     <div>
@@ -31,9 +37,7 @@ export const TaskListing: FC<TaskListingProps> = ({workpackage, onSuccess}) => {
             className="flex flex-row gap-x-2"
           >
             <FaRegEye className="size-5" />
-            <p className="font-semibold text-sm">
-                Hide irrelevant
-            </p>
+            <p className="font-semibold text-sm">Hide irrelevant</p>
           </button>
         </div>
       ) : (
@@ -58,7 +62,12 @@ export const TaskListing: FC<TaskListingProps> = ({workpackage, onSuccess}) => {
           </button>
         </div>
       )}
-      {sortedTasksByDate.length > 0 && (
+      {sortedTasksByDate.every((task) => !task.isRelevant) &&
+      !showIrrelevant ? (
+        <div className="flex items-center justify-center">
+          <p className="text-md font-semibold">All irrelevant tasks are hidden</p>
+        </div>
+      ) : (
         <div className="h-full grid border border-solid border-gray-200 rounded-md overflow-visible bg-white">
           {sortedTasksByDate.map((task) => (
             <TaskItem
