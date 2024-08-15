@@ -17,6 +17,7 @@ import {AppMainPage} from "../components/app-main/AppMainPage";
 import {DashboardPage} from "../components/app-main/DashboardPage";
 import {OverviewChartPage} from "../components/project-main/overview-chart/OverviewChartPage";
 import ProjectDashboardPage from "../components/project-main/project-dashboard/ProjectDashboardPage";
+import LandingPage from "../components/landing-page/LandingPage";
 
 function AppRouter() {
 
@@ -38,7 +39,7 @@ function AppRouter() {
         },
         {
             path: "introduction",
-            element: <IntroductionPage/>,
+            element: <LandingPage />,
             errorElement: <ErrorPage/>
         },
         {
