@@ -65,7 +65,7 @@ export const DeleteTeamModal = ({
   return (
     <>
       <button onClick={() => setOpen(true)}>
-        <BsPersonDash className="size-6 fill-gray-500 hover:fill-red-500 transition delay-50" />
+        <BsPersonDash className="size-6 fill-gray-500 transition delay-50" />
       </button>
       {open && (
         <ModalPortal>
@@ -93,7 +93,7 @@ export const DeleteTeamModal = ({
                 </ModalText>
               </CustomModalHeader>
               <CustomModalBody>
-                <div className="font-semibold">
+                <div className="font-semibold pb-2">
                   Please type in the full email of employee ({person.email}) to
                   confirm deletion.
                 </div>

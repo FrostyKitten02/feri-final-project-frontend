@@ -163,7 +163,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   return (
     <>
       <button onClick={() => setModalOpen(true)}>
-        <BsPersonAdd className="fill-black size-12 hover:fill-primary transition delay-50" />
+        <BsPersonAdd className="fill-black size-12 transition delay-50" />
       </button>
       {modalOpen && (
         <CustomModal closeModal={handleClose} modalWidth="950px">
