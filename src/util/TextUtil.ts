@@ -348,11 +348,21 @@ export default class TextUtil {
         return Math.floor(num * 100) / 100;
     }
 
-    static getWorkAndSpendingStatusColors = (month: ProjectMonthDto): string => {
+    static getWorkStatusColors = (month: ProjectMonthDto): string => {
         if(!month.pmBurnDownRate)
             return("")
         const pm = month.pmBurnDownRate ?? 0;
         const total = month.actualTotalWorkPm ?? 0;
+        if (total > pm)
+            return("bg-danger bg-opacity-40")
+        return("bg-c-teal bg-opacity-40")
+    }
+
+    static getSpendingStatusColors = (month: ProjectMonthDto): string => {
+        if(!month.staffBudgetBurnDownRate)
+            return("")
+        const pm = month.staffBudgetBurnDownRate ?? 0;
+        const total = month.staffBudgetBurnDownRate ?? 0;
         if (total > pm)
             return("bg-danger bg-opacity-40")
         return("bg-c-teal bg-opacity-40")
