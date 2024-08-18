@@ -137,12 +137,12 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                     return (
                         <div
                             key={month.monthNumber}
-                            className={`h-14 relative justify-center space-x-1 flex border-solid border-gray-200 items-center ${TextUtil.isCurrentMonthYear(month) && "bg-gray-100"}`}
+                            className={`h-14 relative justify-center flex border-solid border-gray-200 items-center ${TextUtil.isCurrentMonthYear(month) && "bg-gray-100"}`}
                         >
                             <div className="text-xl font-semibold">
                                 {month.staffBudgetBurnDownRate ?? 0}
                             </div>
-                            <div className="text-sm font-semibold">
+                            <div className="text-xl font-semibold">
                                 €
                             </div>
                         </div>
@@ -172,9 +172,6 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                                                     {TextUtil.truncateString(person?.email, 74)}
                                                 </div>
                                         }
-                                    </div>
-                                    <div>
-                                        {personWork?.avgSalary + "€"}
                                     </div>
                                 </div>
                                 {shownMonths.map((month, monthIndex) => (
@@ -211,8 +208,14 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 {shownMonths.map((month, index) => (
                         <div
                             key={`total-work-${index}`}
-                            className={`flex h-14 text-xl font-semibold justify-center border-solid border-gray-200 items-center ${TextUtil.getWorkStatusColors(month)}`}>
-                            {month.actualTotalWorkPm}
+                            className={`flex h-14 space-x-1 text-xl font-semibold justify-center border-solid border-gray-200 items-center ${TextUtil.getWorkStatusColors(month)}`}>
+
+                            <div>
+                                {month.actualTotalWorkPm}
+                            </div>
+                            <div className="text-xs font-semibold">
+                                PM
+                            </div>
                         </div>
                     )
                 )}
@@ -232,11 +235,11 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 {shownMonths.map((month, index) => (
                     <div
                         key={`total-spending-${index}`}
-                        className={`h-14 relative justify-center space-x-1 flex border-solid border-gray-200 items-center ${TextUtil.getSpendingStatusColors(month)}`}>
+                        className={`h-14 relative justify-center flex border-solid border-gray-200 items-center ${TextUtil.getSpendingStatusColors(month)}`}>
                         <div className="text-xl font-semibold">
                             {month.actualMonthSpending ?? 0}
                         </div>
-                        <div className="text-sm font-semibold">
+                        <div className="text-xl font-semibold">
                             €
                         </div>
                     </div>

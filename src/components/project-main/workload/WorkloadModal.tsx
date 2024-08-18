@@ -8,16 +8,16 @@ import {
 } from "../../template/modal/CustomModal";
 import {WorkloadModalProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo} from "react";
 import {useParams} from "react-router-dom";
 import {TextInput} from "flowbite-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {WorkloadFormFields} from "../../../types/types";
 import {
-    CreateOccupancyRequest, ListSalaryResponse,
+    CreateOccupancyRequest,
     UpdateOccupancyRequest,
 } from "../../../../temp_ts";
-import {occupancyAPI, salaryApi} from "../../../util/ApiDeclarations";
+import {occupancyAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {toastError} from "../../toast-modals/ToastFunctions";
 
@@ -31,7 +31,7 @@ export const WorkloadModal = ({
                               }: WorkloadModalProps) => {
     const {projectId} = useParams();
     const {register, reset, handleSubmit} = useForm<WorkloadFormFields>();
-    const [salary, setSalary] = useState<ListSalaryResponse>();
+   // const [salary, setSalary] = useState<ListSalaryResponse>();
     const {monthName, year} = useMemo(() => {
         const date = TextUtil.getFirstOfYearMonth(monthDate);
         const monthName = date.toLocaleString("default", {month: "long"});
@@ -39,7 +39,7 @@ export const WorkloadModal = ({
         return {monthName, year};
     }, [monthDate]);
     const requestArgs = useRequestArgs();
-
+/*
     useEffect(() => {
         const getSalaray = async (): Promise<void> => {
             const date = new Date().toISOString().split('T')[0];
@@ -73,6 +73,8 @@ export const WorkloadModal = ({
         }
         getSalaray();
     }, [])
+
+ */
     const handleFormSubmit = (): void => {
         reset();
         closeModal();
@@ -129,7 +131,7 @@ export const WorkloadModal = ({
                 >
                     Information provided in the form can be changed later on.
                     <div className="flex items-center text-black text-md space-x-[5px]">
-                        <div>You are curently editing workload of</div>
+                        <div>You are currently editing workload of</div>
                         {
                             (personal?.name && personal.lastname) ?
                                 <>
@@ -156,9 +158,17 @@ export const WorkloadModal = ({
             </CustomModalHeader>{" "}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CustomModalBody>
-                    <div>
+                    <div className="space-y-3">
+                        <div className="flex space-x-2">
+                            <div>
+                                This month's remaining availability:
+                            </div>
+                            <div>
+                                [availability]
+                            </div>
+                        </div>
                         <div className="flex items-center space-x-2">
-                            <div>PM:</div>
+                            <div>Assign personal months:</div>
                             <TextInput
                                 type="number"
                                 className="w-[200px]"
