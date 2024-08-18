@@ -100,6 +100,11 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
         >
           <div className="flex px-3 items-center justify-center ">
             <UserButton>
+              <UserButton.MenuItems>
+                <UserButton.Action>
+                  
+                </UserButton.Action>
+              </UserButton.MenuItems>
             </UserButton>
           </div>
           {opened && (
