@@ -280,3 +280,18 @@ export interface DeleteTeamModalProps {
 }
 
 export interface DeleteProjectModalProps extends PopoverBaseProps {}
+
+export interface BudgetBreakdownProps {
+  statistics: ProjectStatisticsResponse | undefined
+}
+
+export interface BudgetBreakdownChartProps {
+  usedBudget: number,
+  totalBudget: number,
+  percentage: number
+}
+
+export interface BudgetBreakdownTrackerData {
+  color: string,
+  tooltip: string
+}
