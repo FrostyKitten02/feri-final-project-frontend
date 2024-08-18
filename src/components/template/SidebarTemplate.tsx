@@ -87,30 +87,35 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
           />
         ))}
       </div>
-      <div
-        className={`py-2 ${opened && `justify-center`} flex flex-col gap-y-6`}
-      >
-        {user?.id === import.meta.env.VITE_ADMIN_ID && (
-          <ManageUsersModal sidebarOpened={opened} />
-        )}
+      <div className="flex flex-col gap-y-4 items-center w-full">
+        <div className={`${opened && `justify-center`} flex flex-col`}>
+          {user?.id === import.meta.env.VITE_ADMIN_ID && (
+            <ManageUsersModal sidebarOpened={opened} />
+          )}
+        </div>
+        <div
+          className={`flex flex-row justify-center px-6 w-3/4 h-16 rounded-[20px] mb-2 ${
+            opened && `bg-white`
+          }`}
+        >
+          <div className="flex px-3 items-center justify-center ">
+            <UserButton>
+            </UserButton>
+          </div>
+          {opened && (
+            <motion.div
+              initial={{ visibility: "hidden", opacity: 0 }}
+              animate={{ visibility: "visible", opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.7 }}
+              className="flex px-3 flex-col items-start justify-center text-black font-semibold"
+            >
+              <div>{user?.fullName}</div>
+              <div>{user?.primaryEmailAddress?.emailAddress}</div>
+            </motion.div>
+          )}
+        </div>
       </div>
 
-      <div className="flex flex-row justify-center px-6 w-full h-16 rounded-b-[20px]">
-        <div className="flex px-3 items-center justify-center ">
-          <UserButton />
-        </div>
-        {opened && (
-          <motion.div
-            initial={{ visibility: "hidden", opacity: 0 }}
-            animate={{ visibility: "visible", opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="flex px-3 flex-col items-center justify-center"
-          >
-            <div>{user?.fullName}</div>
-            <div>{user?.primaryEmailAddress?.emailAddress}</div>
-          </motion.div>
-        )}
-      </div>
       {showReturn && (
         <button onClick={() => handleReturn()} className="w-full py-6">
           <div className="flex flex-row items-center justify-around w-full">
