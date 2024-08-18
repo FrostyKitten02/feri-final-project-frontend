@@ -31,7 +31,7 @@ export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps)
 
     useEffect(() => {
         // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
-        // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALFA VERSIONS
+        // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALPFA VERSIONS
         // WAITING FOR TREMOR FIX
         const error = console.error;
         console.error = (...args: any) => {
@@ -72,7 +72,7 @@ export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps)
                                         </Label>
                                         <div className="flex-grow h-[1px] bg-gray-300"/>
                                     </div>
-                                    <div className="overflow-y-auto flex flex-grow">
+                                    <div className="overflow-y-auto flex flex-col flex-grow h-[290px]">
                                         {
                                             relevantTasks.map((task, index) => {
                                                 return (
@@ -88,16 +88,18 @@ export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps)
                                             })
                                         }
                                     </div>
-                                    <div className="flex flex-row items-center">
-                                        <div className="w-[7%] h-[1px] bg-gray-300"/>
-                                        <Label className="px-2 uppercase text-muted">
-                                            manage project
-                                        </Label>
-                                        <div className="flex-grow h-[1px] bg-gray-300"/>
-                                    </div>
-                                    <div className="flex flex-col justify-center h-[100px]">
-                                        <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
-                                        <DeleteProjectModal />
+                                    <div>
+                                        <div className="flex flex-row items-center">
+                                            <div className="w-[7%] h-[1px] bg-gray-300"/>
+                                            <Label className="px-2 uppercase text-muted">
+                                                manage project
+                                            </Label>
+                                            <div className="flex-grow h-[1px] bg-gray-300"/>
+                                        </div>
+                                        <div className="flex flex-col justify-center h-[100px]">
+                                            <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
+                                            <DeleteProjectModal />
+                                        </div>
                                     </div>
                                 </Fragment> :
                                 <div className="text-muted flex items-center justify-center flex-grow">
