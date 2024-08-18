@@ -40,11 +40,6 @@ export const WorkloadModal = ({
     }, [monthDate]);
     const requestArgs = useRequestArgs();
 
-    const handleFormSubmit = (): void => {
-        reset();
-        closeModal();
-        handleEdit();
-    };
     useEffect(() => {
         const getSalaray = async (): Promise<void> => {
             const date = new Date().toISOString().split('T')[0];
@@ -63,20 +58,14 @@ export const WorkloadModal = ({
                     },
                     {
                         forUser: person.personId,
-                        startDateFrom: date,
-                        startDateTo: date,
                         endDateFrom: date,
                         endDateTo: date
                     },
-                    useRequestArgs()
+                    requestArgs
                 )
                 if (response.status === 200) {
                     setSalary(response.data)
-                    console.log(salary?.salaries)
-                    console.log("correct")
-                }
-                else {
-                    console.log("error")
+                    console.log(response.data)
                 }
             } catch (error){
 
@@ -84,7 +73,11 @@ export const WorkloadModal = ({
         }
         getSalaray();
     }, [])
-
+    const handleFormSubmit = (): void => {
+        reset();
+        closeModal();
+        handleEdit();
+    };
     const onSubmit: SubmitHandler<WorkloadFormFields> = async (
         data
     ): Promise<void> => {
