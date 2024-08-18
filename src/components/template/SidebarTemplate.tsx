@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserButton, useUser } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { SidebarItemProps, SidebarTemplateProps } from "../../interfaces";
 import { motion } from "framer-motion";
 import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
-import ManageUsersModal from "../admin-modal/ManageUsersModal";
 import { IoMenu, IoReturnDownBack } from "react-icons/io5";
+import ClerkUserButton from "../account-modal/ClerkUserButton";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   items,
@@ -87,35 +87,29 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
           />
         ))}
       </div>
-      <div className="flex flex-col gap-y-4 items-center w-full">
-        <div className={`${opened && `justify-center`} flex flex-col`}>
-          {user?.id === import.meta.env.VITE_ADMIN_ID && (
-            <ManageUsersModal sidebarOpened={opened} />
-          )}
-        </div>
+      <div className="flex flex-col gap-y-4 items-center w-full mb-2">
         <div
-          className={`flex flex-row justify-center px-6 w-3/4 h-16 rounded-[20px] mb-2 ${
+          className={`flex flex-row justify-center px-4 w-[280px] h-20 rounded-[20px] gap-x-4 ${
             opened && `bg-white`
           }`}
         >
-          <div className="flex px-3 items-center justify-center ">
-            <UserButton>
-              <UserButton.MenuItems>
-                <UserButton.Action>
-                  
-                </UserButton.Action>
-              </UserButton.MenuItems>
-            </UserButton>
-          </div>
+          <ClerkUserButton />
           {opened && (
             <motion.div
               initial={{ visibility: "hidden", opacity: 0 }}
               animate={{ visibility: "visible", opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.7 }}
-              className="flex px-3 flex-col items-start justify-center text-black font-semibold"
+              className="flex flex-col items-start justify-center"
             >
-              <div>{user?.fullName}</div>
-              <div>{user?.primaryEmailAddress?.emailAddress}</div>
+              <div className="text-black font-semibold text-lg flex flex-row items-center gap-x-1">
+                <p>{user?.fullName}</p>
+                {user?.id === import.meta.env.VITE_ADMIN_ID && (
+                  <p className="text-danger text-sm">(admin)</p>
+                )}
+              </div>
+              <div className="text-gray-500 font-normal text-sm">
+                <p>{user?.primaryEmailAddress?.emailAddress}</p>
+              </div>
             </motion.div>
           )}
         </div>

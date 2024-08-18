@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { PopoverProps } from "../../../interfaces";
+import { PopoverItem, PopoverProps } from "../../../interfaces";
 import React from "react";
 
 export default function Popover({
@@ -8,13 +8,14 @@ export default function Popover({
   triggerIcon,
   height,
   width,
-  position = "bottom",
+  position,
 }: PopoverProps) {
   const popoverRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
   const ignoreClickOutside = useRef<boolean>(false);
   const [actionPopoverOpen, setActionPopoverOpen] = useState<boolean>(false);
-  const [actualPosition, setActualPosition] = useState<string>(position);
+  const [activemModalIndex, setActiveModalIndex] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
@@ -33,39 +34,13 @@ export default function Popover({
     };
   }, [popoverRef]);
 
-  useEffect(() => {
-    if (actionPopoverOpen && popoverRef.current && triggerRef.current) {
-      const popoverRect = popoverRef.current.getBoundingClientRect();
-      const triggerRect = triggerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      const spaceBelow = windowHeight - triggerRect.bottom;
-      const spaceAbove = triggerRect.top;
-
-      if (
-        position === "bottom" &&
-        spaceBelow < popoverRect.height &&
-        spaceAbove > spaceBelow
-      ) {
-        setActualPosition("top");
-      } else if (
-        position === "top" &&
-        spaceAbove < popoverRect.height &&
-        spaceBelow > spaceAbove
-      ) {
-        setActualPosition("bottom");
-      } else {
-        setActualPosition(position);
-      }
-    }
-  }, [actionPopoverOpen, position]);
-
-  const handlePopoverButtonClick = (): void => {
-    ignoreClickOutside.current = true;
+  const handleItemClick = (index: number): void => {
+    setActiveModalIndex(index);
+    setActionPopoverOpen(false);
   };
 
   const handleModalClose = (): void => {
-    ignoreClickOutside.current = false;
+    setActiveModalIndex(null);
   };
 
   return (
@@ -79,23 +54,30 @@ export default function Popover({
             opacity: 0,
           }}
           className={`flex z-20 flex-col absolute bg-white ${
-            actualPosition == `bottom` ? `top-full` : `bottom-full`
+            position == `bottom` ? `top-full` : `bottom-full`
           } mt-4 ${
             width ? `w-${width}` : `w-64`
           } h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}
           ref={popoverRef}
         >
           <div className="px-3 py-1 font-medium text-black">Actions</div>
-          {items.map((item, index) =>
-            React.cloneElement(item.component, {
-              key: index,
-              setActionPopoverOpen,
-              onButtonClick: handlePopoverButtonClick,
-              onModalClose: handleModalClose,
-            })
-          )}
+          {items.map((item: PopoverItem, index: number) => (
+            <button
+              key={index}
+              onClick={() => handleItemClick(index)}
+              className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </button>
+          ))}
         </motion.div>
       )}
+      {activemModalIndex !== null &&
+        React.cloneElement(items[activemModalIndex].component, {
+          onClose: handleModalClose,
+          isOpen: true,
+        })}
     </>
   );
 }
