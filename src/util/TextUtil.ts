@@ -362,7 +362,7 @@ export default class TextUtil {
         if(!month.staffBudgetBurnDownRate)
             return("")
         const pm = month.staffBudgetBurnDownRate ?? 0;
-        const total = month.staffBudgetBurnDownRate ?? 0;
+        const total = month.actualMonthSpending ?? 0;
         if (total > pm)
             return("bg-danger bg-opacity-40")
         return("bg-c-teal bg-opacity-40")

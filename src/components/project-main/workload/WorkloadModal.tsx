@@ -8,16 +8,16 @@ import {
 } from "../../template/modal/CustomModal";
 import {WorkloadModalProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
-import {useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useParams} from "react-router-dom";
 import {TextInput} from "flowbite-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {WorkloadFormFields} from "../../../types/types";
 import {
-    CreateOccupancyRequest,
+    CreateOccupancyRequest, ListSalaryResponse,
     UpdateOccupancyRequest,
 } from "../../../../temp_ts";
-import {occupancyAPI} from "../../../util/ApiDeclarations";
+import {occupancyAPI, salaryApi} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {toastError} from "../../toast-modals/ToastFunctions";
 
@@ -27,9 +27,11 @@ export const WorkloadModal = ({
                                   monthDate,
                                   person,
                                   handleEdit,
+                                  personal
                               }: WorkloadModalProps) => {
     const {projectId} = useParams();
     const {register, reset, handleSubmit} = useForm<WorkloadFormFields>();
+    const [salary, setSalary] = useState<ListSalaryResponse>();
     const {monthName, year} = useMemo(() => {
         const date = TextUtil.getFirstOfYearMonth(monthDate);
         const monthName = date.toLocaleString("default", {month: "long"});
@@ -43,6 +45,45 @@ export const WorkloadModal = ({
         closeModal();
         handleEdit();
     };
+    useEffect(() => {
+        const getSalaray = async (): Promise<void> => {
+            const date = new Date().toISOString().split('T')[0];
+            console.log("opened")
+            try{
+                const response = await salaryApi.listSalaries(
+                    {
+                        elementsPerPage: 1,
+                        pageNumber: 1
+                    },
+                    {
+                        ascending: true,
+                        fields: [
+                            "START_DATE"
+                        ]
+                    },
+                    {
+                        forUser: person.personId,
+                        startDateFrom: date,
+                        startDateTo: date,
+                        endDateFrom: date,
+                        endDateTo: date
+                    },
+                    useRequestArgs()
+                )
+                if (response.status === 200) {
+                    setSalary(response.data)
+                    console.log(salary?.salaries)
+                    console.log("correct")
+                }
+                else {
+                    console.log("error")
+                }
+            } catch (error){
+
+            }
+        }
+        getSalaray();
+    }, [])
 
     const onSubmit: SubmitHandler<WorkloadFormFields> = async (
         data
@@ -69,7 +110,6 @@ export const WorkloadModal = ({
                     handleFormSubmit();
                 }
             } else {
-                console.log("B")
                 const workload: UpdateOccupancyRequest = {
                     occupancyId: person.occupancyId,
                     value: data.pmValue,
@@ -95,16 +135,29 @@ export const WorkloadModal = ({
                     contentColor="muted"
                 >
                     Information provided in the form can be changed later on.
-                    <div className="flex items-center text-black text-md">
-                        <div>You are curently editing workload for</div>
-                        <div className="font-semibold pl-[5px]">
-                            {monthName}
+                    <div className="flex items-center text-black text-md space-x-[5px]">
+                        <div>You are curently editing workload of</div>
+                        {
+                            (personal?.name && personal.lastname) ?
+                                <>
+                                    <div className="font-semibold">
+                                        {personal?.name}
+                                    </div>
+                                    <div className="font-semibold">
+                                        {personal?.lastname}
+                                    </div>
+                                </> :
+                                <div className="font-semibold">
+                                    {personal?.email}
+                                </div>
+                        }
+                        <div>for</div>
+                        <div className="font-semibold">
+                            {monthName + ","}
                         </div>
-                        <div>,</div>
-                        <div className="font-semibold pl-[5px]">
-                            {year}
+                        <div className="font-semibold">
+                            {year + "."}
                         </div>
-                        <div>.</div>
                     </div>
                 </ModalText>
             </CustomModalHeader>{" "}
@@ -117,7 +170,6 @@ export const WorkloadModal = ({
                                 type="number"
                                 className="w-[200px]"
                                 min={0}
-                                max={1}
                                 step="0.01"
                                 defaultValue={person.totalWorkPm}
                                 {...register("pmValue")}

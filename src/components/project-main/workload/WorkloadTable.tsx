@@ -142,7 +142,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                             <div className="text-xl font-semibold">
                                 {month.staffBudgetBurnDownRate ?? 0}
                             </div>
-                            <div className="text-xs font-semibold">
+                            <div className="text-sm font-semibold">
                                 €
                             </div>
                         </div>
@@ -160,21 +160,21 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                         const person = personId && statistics.people ? statistics?.people[personId] : null;
                         return (
                             <React.Fragment key={`person-${indexPerson}`}>
-                                <div className="h-20 flex flex-col items-start justify-center uppercase text-sm border-solid border-l-white border-y-gray-200">
+                                <div className="h-20 flex flex-col items-start overflow-hidden justify-center uppercase text-sm border-solid border-l-white border-y-gray-200">
                                     <div>
                                         {
                                             (person?.name && person.lastname) ?
                                                 <div>
-                                                    {person?.name + " " + person.lastname}
+                                                    {TextUtil.truncateString(person?.name + " " + person.lastname, 74)}
                                                 </div>
                                                 :
                                                 <div>
-                                                    {person?.email}
+                                                    {TextUtil.truncateString(person?.email, 74)}
                                                 </div>
                                         }
                                     </div>
                                     <div>
-                                        {personWork?.avgSalary}€
+                                        {personWork?.avgSalary + "€"}
                                     </div>
                                 </div>
                                 {shownMonths.map((month, monthIndex) => (
@@ -232,8 +232,13 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 {shownMonths.map((month, index) => (
                     <div
                         key={`total-spending-${index}`}
-                        className={`flex h-14 justify-center text-xl border-solid font-semibold border-gray-200 items-center ${TextUtil.getSpendingStatusColors(month)}`}>
-                        {month.actualMonthSpending}
+                        className={`h-14 relative justify-center space-x-1 flex border-solid border-gray-200 items-center ${TextUtil.getSpendingStatusColors(month)}`}>
+                        <div className="text-xl font-semibold">
+                            {month.actualMonthSpending ?? 0}
+                        </div>
+                        <div className="text-sm font-semibold">
+                            €
+                        </div>
                     </div>
                 ))}
 
@@ -244,6 +249,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                         monthDate={selectedMonth ?? ""}
                         person={selectedPerson}
                         handleEdit={handleEdit}
+                        personal={statistics?.people?.[selectedPerson.personId ?? ""]}
                     />
                 )}
             </div>
