@@ -8,7 +8,7 @@ import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
 import { IoMenu, IoReturnDownBack } from "react-icons/io5";
 import ClerkUserButton from "../account-modal/ClerkUserButton";
-
+import steerLogoPath from "../../assets/images/steer_logo_white.png";
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   items,
   showReturn,
@@ -17,8 +17,6 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   const [opened, setOpened] = useState<boolean>(true);
   const navigate = useNavigate();
   const { user } = useUser();
-
-  //const { projectId } = useParams();
 
   const toggle = (): void => {
     const newStatus: boolean = !opened;
@@ -68,7 +66,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
               onClick={() => handleSidebarSelect("dashboard")}
               className="flex items-center space-x-4"
             >
-              <div className="uppercase tracking-wider text-3xl ">steer</div>
+              <img alt="steer" src={steerLogoPath} className="h-16" />
             </motion.button>
           </Link>
         )}
