@@ -281,3 +281,18 @@ export interface DeleteTeamModalProps {
   person: PersonDto;
   onSuccess: () => void;
 }
+
+export interface BudgetBreakdownProps {
+  statistics: ProjectStatisticsResponse | undefined
+}
+
+export interface BudgetBreakdownChartProps {
+  usedBudget: number,
+  totalBudget: number,
+  percentage: number
+}
+
+export interface BudgetBreakdownTrackerData {
+  color: string,
+  tooltip: string
+}

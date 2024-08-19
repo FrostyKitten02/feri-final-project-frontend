@@ -89,7 +89,7 @@ export default function ProjectDashboardPage() {
             </div>
             <div className="flex flex-grow">
               {statistics && <CostTimeline stats={statistics} />}
-              {<BudgetBreakdown />}
+              {<BudgetBreakdown statistics={statistics}/>}
             </div>
           </div>
           <div className="w-[350px] bg-gray-100 flex flex-col rounded-[20px] p-5">
