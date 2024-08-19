@@ -2,6 +2,7 @@ import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Paths from "../../util/Paths";
 import DashboardImage from "../../assets/images/test.png";
+import steerLogoPath from "../../assets/images/steer_logo_black.png";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -11,9 +12,8 @@ export default function LandingPage() {
       <SignedOut>
         <div className="flex flex-col w-full h-full">
           <div className="flex flex-row w-full h-[80px] items-center px-12 pt-4 justify-between bg-white">
-            <div className="flex flex-row gap-x-8 w-full">
-              <div>logo</div>
-              <div className="text-3xl font-semibold">STEER</div>
+            <div className="flex flex-row w-full">
+              <img src={steerLogoPath} className="max-w-full h-20" />
             </div>
             <div className="flex flex-row w-full gap-x-8 justify-end items-center">
               <button onClick={() => navigate(Paths.SIGN_IN)}>
