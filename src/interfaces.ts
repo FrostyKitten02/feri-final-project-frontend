@@ -230,7 +230,7 @@ export interface WorkDetailsProps {
 
 export interface WorkDetailsLineChartProps {
   date: string;
-  pmPerMonth: number;
+  "PM per month": number;
 }
 
 export interface CurrentMonthProps {

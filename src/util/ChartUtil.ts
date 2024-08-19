@@ -56,7 +56,7 @@ export default class ChartUtil {
         return (relevantMonths.map(month => {
             return ({
                 "date": month.date ?? "",
-                "pmPerMonth": month.pmBurnDownRate ?? 0
+                "PM per month": month.pmBurnDownRate ?? 0
             })
         }));
     }

@@ -98,7 +98,7 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
                                     <LineChart
                                         className="h-44"
                                         data={lineChartData}
-                                        categories={["pmPerMonth"]}
+                                        categories={["PM per month"]}
                                         index="date"
                                         color="teal"
                                     />
