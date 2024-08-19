@@ -32,9 +32,6 @@ export const ProjectModal = ({
   edit = false,
   popoverEdit = false,
   projectId,
-  setActionPopoverOpen,
-  onButtonClick,
-  onModalClose,
 }: ProjectModalProps) => {
   const [modalOpen, setModalOpen] = useState<boolean>();
   const {
@@ -75,17 +72,13 @@ export const ProjectModal = ({
 
   const handleCloseEdit = (): void => {
     reset();
-    onModalClose?.();
     setModalOpen(false);
-    setActionPopoverOpen?.(false);
   };
 
   const handleFormSubmit = (): void => {
     reset();
-    onModalClose?.();
     handleProjectSubmit?.();
     setModalOpen(false);
-    setActionPopoverOpen?.(false);
   };
 
   const fetchProjectById = async (): Promise<void> => {
@@ -155,9 +148,7 @@ export const ProjectModal = ({
       {edit ? (
         popoverEdit ? (
           <button
-            onClick={() => {
-              onButtonClick?.(), setModalOpen(true);
-            }}
+            onClick={() => setModalOpen(true)}
             className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
           >
             <FiEdit3 className="size-5" />
