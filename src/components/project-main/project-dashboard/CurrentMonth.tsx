@@ -5,10 +5,10 @@ import ChartUtil from "../../../util/ChartUtil";
 import TextUtil from "../../../util/TextUtil";
 import {Fragment, useEffect, useState} from "react";
 import {ProjectMonthDto, TaskDto} from "../../../../temp_ts";
-import { BsDot } from "react-icons/bs";
-import { ProjectModal } from "../../app-main/projects/ProjectModal";
-import { useParams } from "react-router-dom";
-import { DeleteProjectModal } from "../../app-main/projects/DeleteProjectModal";
+import {BsDot} from "react-icons/bs";
+import {ProjectModal} from "../../app-main/projects/ProjectModal";
+import {useParams} from "react-router-dom";
+import {DeleteProjectModal} from "../../app-main/projects/DeleteProjectModal";
 
 export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps) => {
     const [chartData, setChartData] = useState<Array<{ "name": string, "Assigned PM": number, "Actual PM": number }>>([]);
@@ -78,7 +78,7 @@ export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps)
                                                 return (
                                                     <div key={index} className="flex">
                                                         <div className="pt-[5px]">
-                                                            <BsDot />
+                                                            <BsDot/>
                                                         </div>
                                                         <div className="font-medium">
                                                             {task.title}
@@ -87,19 +87,6 @@ export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps)
                                                 )
                                             })
                                         }
-                                    </div>
-                                    <div>
-                                        <div className="flex flex-row items-center">
-                                            <div className="w-[7%] h-[1px] bg-gray-300"/>
-                                            <Label className="px-2 uppercase text-muted">
-                                                manage project
-                                            </Label>
-                                            <div className="flex-grow h-[1px] bg-gray-300"/>
-                                        </div>
-                                        <div className="flex flex-col justify-center h-[100px]">
-                                            <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
-                                            <DeleteProjectModal />
-                                        </div>
                                     </div>
                                 </Fragment> :
                                 <div className="text-muted flex items-center justify-center flex-grow">
@@ -111,6 +98,19 @@ export const CurrentMonth = ({statistics, handleEditProject}: CurrentMonthProps)
                         There is currently no data to display.
                     </div>
             }
+            <div>
+                <div className="flex flex-row items-center">
+                    <div className="w-[7%] h-[1px] bg-gray-300"/>
+                    <Label className="px-2 uppercase text-muted">
+                        manage project
+                    </Label>
+                    <div className="flex-grow h-[1px] bg-gray-300"/>
+                </div>
+                <div className="flex flex-col justify-center h-[100px]">
+                    <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
+                    <DeleteProjectModal />
+                </div>
+            </div>
         </div>
     )
 }
