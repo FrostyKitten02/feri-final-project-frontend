@@ -29,7 +29,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({
 
   return (
     project && (
-      <div className="p-5 h-72 w-[450px]">
+      <div className="p-5 h-80 min-w-[450px]">
         <div className="flex flex-col w-full h-full hover:bg-gray-100 transition delay-50 border border-gray-200 border-solid rounded-xl">
           <button
             className="w-full h-full rounded-xl"

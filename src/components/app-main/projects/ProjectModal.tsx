@@ -25,7 +25,8 @@ import {
 } from "../../template/modal/CustomModal";
 import TextUtil from "../../../util/TextUtil";
 import ModalPortal from "../../template/modal/ModalPortal";
-import {FiEdit3, FiFolderPlus} from "react-icons/fi";
+import {FiEdit3} from "react-icons/fi";
+import {BsFolderPlus} from "react-icons/bs";
 
 export const ProjectModal = ({
                                  handleProjectSubmit,
@@ -165,7 +166,7 @@ export const ProjectModal = ({
                 )
             ) : (
                 <button onClick={() => setModalOpen(true)}>
-                    <FiFolderPlus className="h-12 w-12 transition delay-50"/>
+                    <BsFolderPlus className="h-10 w-10 transition delay-50" />
                 </button>
             )}
             {modalOpen && (

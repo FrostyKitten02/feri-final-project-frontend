@@ -78,28 +78,28 @@ export const MyProjectsPage = () => {
     }, [pageNumber, selectedStatus]);
 
     return (
-        <div className="flex flex-col flex-grow bg-red-50 p-10">
+        <div className="flex flex-col flex-grow p-5">
             {
                 isLoading ? (
-                    <div className="flex h-full flex-col justify-center items-center font-bold text-3xl">
-                        <Spinner size="xl" />
-                    </div>
-                ) :
+                        <div className="flex h-full flex-col justify-center items-center font-bold text-3xl">
+                            <Spinner size="xl"/>
+                        </div>
+                    ) :
                     <>
                         <div className="px-20 pb-14 flex justify-center items-center">
                             <ProjectFilter
                                 setSelectedStatus={setSelectedStatus}
                                 selectedStatus={selectedStatus}
                             />
-                            <ProjectModal handleProjectSubmit={handleProjectAdd} edit={false}/>
                         </div>
                         {
                             projects?.projects && projects.projects.length > 0 ?
                                 <>
-                                    <div className="flex-grow w-full">
-                                        <div className="flex flex-col flex-grow">
+                                    <div className="relative p-5">
+                                        <div
+                                            className="border-[1px] border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
                                             <div className="flex justify-center items-center">
-                                                <div className="grid grid-cols-3">
+                                                <div className="grid grid-cols-3 w-full">
                                                     {
                                                         projects.projects.map((project) => (
                                                             <ProjectItem
@@ -112,15 +112,25 @@ export const MyProjectsPage = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="flex justify-center">
-                                        <CustomPagination
-                                            totalPages={totalPages}
-                                            onPageChange={onPageChange}
-                                            currentPage={pageNumber}
-                                            backLabelText="prev"
-                                            nextLabelText="next"
-                                        />
+                                        <div
+                                            className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
+                                            projects
+                                        </div>
+                                        <div
+                                            className="absolute rounded-[20px] text-center text-muted bg-white bottom-[4px] font-medium right-20 uppercase flex px-2">
+                                            <CustomPagination
+                                                totalPages={totalPages}
+                                                onPageChange={onPageChange}
+                                                currentPage={pageNumber}
+                                                backLabelText=""
+                                                nextLabelText=""
+                                            />
+                                        </div>
+                                        <div className="absolute right-0 top-0">
+                                            <div className="bg-white pl-3">
+                                                <ProjectModal handleProjectSubmit={handleProjectAdd}/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </> :
                                 <>
@@ -140,38 +150,6 @@ export const MyProjectsPage = () => {
 
                     </>
             }
-            {
-                /*
-                ) : (
-                    <div className="flex flex-col flex-grow py-10">
-                        <div className="px-20 pb-5 flex justify-center items-center">
-                            <ProjectFilter
-                                setSelectedStatus={setSelectedStatus}
-                                selectedStatus={selectedStatus}
-                            />
-                        </div>
-                        <div className="flex-grow w-full">
-                            <div className="flex flex-col flex-grow">
-                                <div
-                                    className="flex flex-grow h-full flex-col w-full justify-center items-center font-bold text-3xl space-y-4">
-                                    <h1>No projects found...</h1>
-                                    <p className="text-base text-gray-700">
-                                        Click the "Add new project" button to create a new project.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )
-                 */
-            }
-
-
         </div>
     );
-}
-{
-    /*
-    <ProjectModal handleProjectSubmit={handleProjectAdd} edit={false}/>
-     */
 }
