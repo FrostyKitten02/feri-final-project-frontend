@@ -2,6 +2,7 @@ import { FC } from "react";
 import { PopoverItem, WorkPackageItemProps } from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import { HiCalendar } from "react-icons/hi";
+import { HiOutlineTrash } from "react-icons/hi2";
 import { TaskListing } from "./TaskListing";
 import { ProgressBar } from "@tremor/react";
 import WorkPackageModal from "./WorkPackageModal";
@@ -11,6 +12,7 @@ import TaskModal from "./TaskModal";
 import Popover from "../../template/popover-menu/Popover";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { TbCalendarUser } from "react-icons/tb";
+import { FiEdit3 } from "react-icons/fi";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
@@ -33,6 +35,8 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           projectDetails={projectDetails}
         />
       ),
+      icon: (<FiEdit3 className="size-5" />),
+      label: "Edit work package"
     },
     {
       component: (
@@ -41,6 +45,8 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           onSuccess={onSuccess}
         />
       ),
+      icon: (<HiOutlineTrash className="size-5" />),
+      label: "Delete work package"
     },
   ];
 

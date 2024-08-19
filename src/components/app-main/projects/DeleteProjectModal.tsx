@@ -11,7 +11,6 @@ import {
 } from "../../template/modal/CustomModal";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DeleteConfirmationFields } from "../../../types/types";
-import { DeleteProjectModalProps } from "../../../interfaces";
 import { TextInput } from "flowbite-react";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { toastError } from "../../toast-modals/ToastFunctions";
@@ -21,11 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GetProjectResponse } from "../../../../temp_ts";
 import Paths from "../../../util/Paths";
 
-export const DeleteProjectModal = ({
-  setActionPopoverOpen,
-  onButtonClick,
-  onModalClose,
-}: DeleteProjectModalProps) => {
+export const DeleteProjectModal = () => {
   const [projectDetails, setProjectDetails] = useState<GetProjectResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const requestArgs = useRequestArgs();
@@ -57,13 +52,13 @@ export const DeleteProjectModal = ({
   }, [open]);
 
   const handleModalClose = (): void => {
-    onModalClose?.();
+    reset();
     setOpen(false);
-    setActionPopoverOpen?.(false);
   };
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<DeleteConfirmationFields>();
 
@@ -83,9 +78,7 @@ export const DeleteProjectModal = ({
   return (
     <>
       <button
-        onClick={() => {
-          onButtonClick?.(), setOpen(true);
-        }}
+        onClick={() => setOpen(true)}
         className="flex flex-row items-center justify-start text-red-500 h-full text-sm font-semibold hover:text-red-600 fill-red-500  hover:fill-red-600 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
       >
         <HiOutlineTrash className="size-5" />

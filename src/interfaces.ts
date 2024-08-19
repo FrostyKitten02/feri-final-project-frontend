@@ -75,7 +75,8 @@ export interface AdminModalProps extends PopoverBaseProps {
   refetchUserList?: () => void;
 }
 export interface ManageUsersModalProps {
-  sidebarOpened: boolean;
+  modalOpen: boolean;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PopoverMenuProps {
@@ -254,6 +255,8 @@ export interface ManageProjectModalProps {
 
 export interface PopoverItem {
   component: React.ReactElement;
+  icon: React.ReactNode;
+  label: string;
 }
 
 export interface PopoverProps {
@@ -278,8 +281,6 @@ export interface DeleteTeamModalProps {
   person: PersonDto;
   onSuccess: () => void;
 }
-
-export interface DeleteProjectModalProps extends PopoverBaseProps {}
 
 export interface BudgetBreakdownProps {
   statistics: ProjectStatisticsResponse | undefined
