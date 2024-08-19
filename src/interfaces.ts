@@ -295,3 +295,12 @@ export interface BudgetBreakdownTrackerData {
   color: string,
   tooltip: string
 }
+
+export interface UserDetailsChartData {
+  name: string,
+  value: number
+}
+
+export interface UserDetailsProps {
+  projectsStatus: Array<UserDetailsChartData>
+}

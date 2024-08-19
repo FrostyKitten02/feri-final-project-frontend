@@ -1,5 +1,10 @@
-import {ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
-import {BudgetBreakdownTrackerData, CostTimelineChartProps, WorkDetailsLineChartProps} from "../interfaces";
+import {ProjectListStatusResponse, ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
+import {
+    BudgetBreakdownTrackerData,
+    CostTimelineChartProps,
+    UserDetailsChartData,
+    WorkDetailsLineChartProps
+} from "../interfaces";
 import TextUtil from "./TextUtil";
 
 export default class ChartUtil {
@@ -172,5 +177,22 @@ export default class ChartUtil {
             }
         })
         return trackerData;
+    }
+
+    static returnUserDetailsChartData = (data: ProjectListStatusResponse): Array<UserDetailsChartData> => {
+        return ([
+            {
+                name: "Scheduled projects",
+                value: data.scheduledProjects ?? 0
+            },
+            {
+                name: "Ongoing projects",
+                value: data.inProgressProjects ?? 0
+            },
+            {
+                name: "Finished projects",
+                value: data.finishedProjects ?? 0
+            },
+        ])
     }
 }
