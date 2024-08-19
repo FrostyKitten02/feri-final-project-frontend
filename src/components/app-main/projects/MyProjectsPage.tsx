@@ -13,6 +13,7 @@ import {ProjectFilter} from "./ProjectFilter";
 import {SelectedItemProps} from "../../template/inputs/inputsInterface";
 import ParamUtil from "../../../util/ParamUtil";
 import {Spinner} from "flowbite-react";
+import {ProjectModal} from "./ProjectModal";
 
 export const MyProjectsPage = () => {
     const [projects, setProjects] = useState<ListProjectResponse | null>(null);
@@ -63,6 +64,7 @@ export const MyProjectsPage = () => {
                 }
             }
         } catch (error: any) {
+
         }
     };
 
@@ -89,6 +91,7 @@ export const MyProjectsPage = () => {
                                 setSelectedStatus={setSelectedStatus}
                                 selectedStatus={selectedStatus}
                             />
+                            <ProjectModal handleProjectSubmit={handleProjectAdd} edit={false}/>
                         </div>
                         {
                             projects?.projects && projects.projects.length > 0 ?
