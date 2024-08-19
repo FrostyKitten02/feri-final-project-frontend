@@ -123,17 +123,17 @@ export default class ChartUtil {
                 if (month.staffBudgetBurnDownRate < month.actualMonthSpending) {
                     return {
                         tooltip:  month.date + ": Over estimated budget.",
-                        color: "danger"
+                        color: "red"
                     };
                 } else if (month.actualMonthSpending / month.staffBudgetBurnDownRate < 0.9) {
                     return {
                         tooltip:  month.date + ": Under 90% of estimated budget.",
-                        color: "warning"
+                        color: "amber"
                     };
                 } else {
                     return {
                         tooltip: month.date + ": Right on budget.",
-                        color: "c-teal"
+                        color: "green"
                     };
                 }
             }
@@ -146,7 +146,6 @@ export default class ChartUtil {
         const currDate = TextUtil.getFirstOfYearMonth();
         const trackerData: Array<BudgetBreakdownTrackerData> = []
         if (stats.months?.length < 24) {
-            console.log("less 24")
             relevantMonths.push(...stats.months);
         } else {
             for (let i = 24; i < stats.months?.length; i += 24) {
