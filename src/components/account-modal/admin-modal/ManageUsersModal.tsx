@@ -5,6 +5,7 @@ import {
   CustomModal,
   CustomModalBody,
   CustomModalHeader,
+  ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
 import { toastError } from "../../toast-modals/ToastFunctions";
@@ -126,6 +127,12 @@ export default function ManageUsersModal({
       <CustomModal closeModal={handleClose} modalWidth="1500px">
         <CustomModalHeader handleModalClose={handleClose}>
           <ModalTitle>manage users</ModalTitle>
+          <ModalText showIcon={true}>
+            Manage employee information including salaries, employment types,
+            and view historical changes. Use the search bar to find specific
+            employees quickly. Set or update salary and availability percentage,
+            and access additional actions through the menu on each row.
+          </ModalText>
         </CustomModalHeader>
         <CustomModalBody>
           <div className="flex flex-col">
@@ -159,7 +166,7 @@ export default function ManageUsersModal({
                     </div>
                     <div className="flex justify-center items-center gap-x-4">
                       <div className="text-sm text-gray-600 font-semibold">
-                        SALARY [€]
+                        MONHTLY SALARY [€]
                       </div>
                     </div>
                     <div className="flex justify-center items-center gap-x-4">
@@ -184,8 +191,8 @@ export default function ManageUsersModal({
                               refetchUserList={refetchUserList}
                             />
                           ),
-                          icon: (<FaEuroSign className="size-4" />),
-                          label: "Manage salary"
+                          icon: <FaEuroSign className="size-4" />,
+                          label: "Manage salary",
                         },
                         {
                           component: (
@@ -195,8 +202,8 @@ export default function ManageUsersModal({
                               refetchUserList={refetchUserList}
                             />
                           ),
-                          icon: (<BsFillPersonVcardFill className="size-4" />),
-                          label: "Manage employment type"
+                          icon: <BsFillPersonVcardFill className="size-4" />,
+                          label: "Manage employment type",
                         },
                         {
                           component: (
@@ -206,8 +213,8 @@ export default function ManageUsersModal({
                               refetchUserList={refetchUserList}
                             />
                           ),
-                          icon: (<FaHistory className="size-4" />),
-                          label: "Salary & employment history"
+                          icon: <FaHistory className="size-4" />,
+                          label: "Salary & employment history",
                         },
                       ];
 

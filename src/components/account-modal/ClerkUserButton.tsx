@@ -27,7 +27,7 @@ export default function ClerkUserButton() {
             />
           )}
           <UserButton.Action
-            label="Account information"
+            label="STEER account information"
             labelIcon={<MdPerson />}
             onClick={() => console.log("test")}
           />

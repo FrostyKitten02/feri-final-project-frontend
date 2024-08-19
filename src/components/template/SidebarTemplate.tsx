@@ -89,7 +89,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
       </div>
       <div className="flex flex-col gap-y-4 items-center w-full mb-2">
         <div
-          className={`flex flex-row justify-center px-4 w-[280px] h-20 rounded-[20px] gap-x-4 ${
+          className={`flex flex-row justify-center px-4 w-[300px] h-20 rounded-[20px] gap-x-4 ${
             opened && `bg-white`
           }`}
         >
