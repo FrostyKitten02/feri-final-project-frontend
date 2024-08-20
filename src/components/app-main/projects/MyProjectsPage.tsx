@@ -95,9 +95,9 @@ export const MyProjectsPage = () => {
                         {
                             projects?.projects && projects.projects.length > 0 ?
                                 <>
-                                    <div className="relative p-5">
+                                    <div className="relative flex-grow p-5">
                                         <div
-                                            className="border-[1px] border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
+                                            className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
                                             <div className="flex justify-center items-center">
                                                 <div className="grid grid-cols-3 w-full">
                                                     {
