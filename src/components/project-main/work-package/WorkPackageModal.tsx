@@ -21,7 +21,6 @@ import { Datepicker, Label, TextInput } from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
 import { TbCalendarUser } from "react-icons/tb";
 import { motion } from "framer-motion";
-import { FiEdit3 } from "react-icons/fi";
 import { LuPackagePlus } from "react-icons/lu";
 import ModalPortal from "../../template/modal/ModalPortal";
 
@@ -29,9 +28,8 @@ export default function WorkPackageModal({
   onSuccess,
   projectDetails,
   workpackage,
-  setActionPopoverOpen,
-  onButtonClick,
-  onModalClose,
+  isOpen,
+  onClose,
 }: WorkPackageModalProps) {
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
@@ -102,16 +100,14 @@ export default function WorkPackageModal({
 
   const handleFormSubmit = (): void => {
     reset();
-    onModalClose?.();
+    onClose?.();
     setModalOpen(false);
-    setActionPopoverOpen?.(false);
     onSuccess();
   };
 
   const handleClose = (): void => {
     if (workpackage) {
-      onModalClose?.();
-      setActionPopoverOpen?.(false);
+      onClose?.();
       reset();
     }
     setModalOpen(false);
@@ -119,22 +115,12 @@ export default function WorkPackageModal({
 
   return (
     <>
-      {workpackage ? (
-        <button
-          onClick={() => {
-            onButtonClick?.(), setModalOpen(true);
-          }}
-          className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
-        >
-          <FiEdit3 className="size-5" />
-          <span>Edit work package</span>
-        </button>
-      ) : (
+      {!workpackage && (
         <button onClick={() => setModalOpen(true)}>
           <LuPackagePlus className="size-10" />
         </button>
       )}
-      {modalOpen && (
+      {(modalOpen || isOpen) && (
         <ModalPortal>
           <CustomModal closeModal={handleClose} modalWidth="700px">
             <form onSubmit={handleSubmit(onSubmit)}>
