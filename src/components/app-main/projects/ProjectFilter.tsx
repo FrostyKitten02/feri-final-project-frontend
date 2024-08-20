@@ -23,8 +23,8 @@ export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilter
     }, []);
 
     return (
-        <div className="flex flex-grow justify-between pb-5 border-solid border-gray-200 border-b-[1px]">
-            <div className="flex flex-row space-x-10">
+        <div className="flex flex-grow justify-between items-center">
+            <div className="flex flex-row space-x-10 ">
                 <div className="p-3 border-solid border-[1px] min-w-[170px] border-gray-200 rounded-lg">
                     <div className="text-sm uppercase tracking-wider">
                         finished
