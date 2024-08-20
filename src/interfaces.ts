@@ -215,6 +215,7 @@ export interface WorkloadModalProps {
   monthDate: string;
   person: PersonWorkDto;
   handleEdit: () => void;
+  personal: PersonDto | undefined
 }
 export interface DonutGraphData {
   name: string;
