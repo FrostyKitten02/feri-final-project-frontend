@@ -4,6 +4,7 @@ import {
   CustomModal,
   CustomModalError,
   CustomModalHeader,
+  ModalDivider,
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
@@ -14,6 +15,7 @@ import {
   PersonDto,
   PersonListSearchParams,
   PersonSortInfoRequest,
+  SalaryDto,
 } from "../../../../temp_ts";
 import {
   CustomModalBody,
@@ -28,6 +30,7 @@ import { AssignPersonFormFields } from "../../../types/types";
 import { useParams } from "react-router-dom";
 import { TeamModalProps } from "../../../interfaces";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
+import { motion } from "framer-motion";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -37,6 +40,9 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     useState<string>(searchQuery);
   const [inputValue, setInputValue] = useState<string>("");
   const [listOpen, setListOpen] = useState<boolean>(false);
+  const [userSalary, setUserSalary] = useState<SalaryDto>({
+    amount: undefined,
+  });
 
   const requestArgs = useRequestArgs();
   const { projectId } = useParams();
@@ -87,6 +93,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const filteredPeople = useMemo((): PersonDto[] => {
     if (debouncedSearchQuery.trim() === "") {
       setListOpen(false);
+      setUserSalary({ ...userSalary, amount: undefined });
       return [];
     } else {
       setListOpen(true);
@@ -113,19 +120,37 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     } else {
       setInputValue(`${person.email}`);
     }
-    setSearchQuery("");
     setListOpen(false);
+
+    const fetchSalaryforUser = async (): Promise<void> => {
+      if (!person.id) return;
+      try {
+        const response = await personAPI.getPersonById(person?.id, requestArgs);
+        if (response.status === 200) {
+          setUserSalary({
+            ...userSalary,
+            amount: response.data.currentSalary?.amount,
+          });
+        }
+      } catch (error: any) {
+        toastError(error.message);
+      }
+    };
+    fetchSalaryforUser();
   };
 
   const handleClose = (): void => {
     reset();
     setSearchQuery("");
     setInputValue("");
+    setUserSalary({ ...userSalary, amount: undefined });
     setModalOpen(false);
   };
 
   const resetField = (): void => {
     reset();
+
+    setUserSalary({ ...userSalary, amount: undefined });
   };
 
   const onSubmit: SubmitHandler<AssignPersonFormFields> = async (
@@ -163,7 +188,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   return (
     <>
       <button onClick={() => setModalOpen(true)}>
-        <BsPersonAdd className="fill-black size-12 hover:fill-primary transition delay-50" />
+        <BsPersonAdd className="fill-black size-12 transition delay-50" />
       </button>
       {modalOpen && (
         <CustomModal closeModal={handleClose} modalWidth="950px">
@@ -208,6 +233,30 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                 />
                 <CustomModalError error={errors.person?.message} />
               </div>
+              {userSalary.amount && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ModalDivider>user details</ModalDivider>
+                  <div className="grid grid-cols-1 pt-8 pb-4">
+                    <div className="flex justify-center items-center gap-x-4">
+                      <div className="text-sm text-gray-600 font-semibold">
+                        CURRENT MONTHLY SALARY [€]
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
+                    <div className="grid grid-cols-1 py-6">
+                      <div className="flex items-center justify-center text-sm font-semibold text-black">
+                        {userSalary.amount}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
             </CustomModalBody>
             <CustomModalFooter>assign</CustomModalFooter>
           </form>

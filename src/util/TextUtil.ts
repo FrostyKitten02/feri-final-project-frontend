@@ -1,5 +1,10 @@
-import {ProjectDto, ProjectMonthDto, TaskDto, WorkPackageDto} from "../../temp_ts";
-import {ProgressObject, WorkpackageLimitProps, YearLimitProps} from "../interfaces";
+import {ProjectDto, ProjectMonthDto, ProjectStatisticsResponse, TaskDto, WorkPackageDto} from "../../temp_ts";
+import {
+    BudgetBreakdownChartProps,
+    ProgressObject,
+    WorkpackageLimitProps,
+    YearLimitProps
+} from "../interfaces";
 
 export default class TextUtil {
     static replaceSpaces(value: string): string {
@@ -363,6 +368,35 @@ export default class TextUtil {
             return("")
         const pm = month.staffBudgetBurnDownRate ?? 0;
         const total = month.actualMonthSpending ?? 0;
+        if (total > pm)
+            return("bg-danger bg-opacity-40")
+        return("bg-c-teal bg-opacity-40")
+    }
+    static getSpentBudgetProps = (stats: ProjectStatisticsResponse | undefined): BudgetBreakdownChartProps => {
+        const chartBudget = {
+            usedBudget: 0,
+            totalBudget: 0,
+            percentage: 0
+        }
+        if(!stats || !stats.months) return chartBudget;
+        let spent = 0;
+        let total = 0;
+        stats.months.forEach((month) => {
+            spent += month.actualMonthSpending ?? 0;
+            total += month.staffBudgetBurnDownRate ?? 0;
+        });
+        const percantage = this.roundDownToTwoDecimalPlaces(spent/ total) * 100;
+        return {
+            usedBudget: this.roundDownToTwoDecimalPlaces(spent),
+            totalBudget: this.roundDownToTwoDecimalPlaces(total),
+            percentage: percantage
+        };
+    }
+    static getWorkAndSpendingStatusColors = (month: ProjectMonthDto): string => {
+        if(!month.pmBurnDownRate)
+            return("")
+        const pm = month.pmBurnDownRate ?? 0;
+        const total = month.actualTotalWorkPm ?? 0;
         if (total > pm)
             return("bg-danger bg-opacity-40")
         return("bg-c-teal bg-opacity-40")

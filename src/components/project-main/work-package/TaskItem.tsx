@@ -6,6 +6,8 @@ import TaskModal from "./TaskModal";
 import { DeleteTaskModal } from "./DeleteTaskModal";
 import { BsThreeDots } from "react-icons/bs";
 import Popover from "../../template/popover-menu/Popover";
+import { FiEdit3 } from "react-icons/fi";
+import { HiOutlineTrash } from "react-icons/hi2";
 
 export const TaskItem: FC<TaskItemProps> = ({
   task,
@@ -27,9 +29,13 @@ export const TaskItem: FC<TaskItemProps> = ({
           task={task}
         />
       ),
+      icon: <FiEdit3 className="size-5" />,
+      label: "Edit task",
     },
     {
       component: <DeleteTaskModal task={task} onSuccess={onSuccess} />,
+      icon: <HiOutlineTrash className="size-5" />,
+      label: "Delete task",
     },
   ];
 
