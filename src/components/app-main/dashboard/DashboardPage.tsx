@@ -35,8 +35,9 @@ export const DashboardPage = () => {
                         <UserDetails projectsStatus={projectsStatus}/>
                         <div className="relative p-5 z-0 flex-grow">
                             <div
-                                className="border-gray-200 flex items-center h-full rounded-[20px] p-5 border-solid border-[1px]">
-                                aktivni projekti - in progress, pokazala se posta dva - dodaj pagination
+                                className="border-gray-200 flex items-center h-full rounded-[20px] p-5 border-solid border-[1px] text-muted justify-center">
+                                {/*aktivni projekti - in progress, pokazala se posta dva - dodaj pagination*/}
+                                This section is in progress.
                             </div>
                             <div
                                 className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
