@@ -392,13 +392,4 @@ export default class TextUtil {
             percentage: percantage
         };
     }
-    static getWorkAndSpendingStatusColors = (month: ProjectMonthDto): string => {
-        if(!month.pmBurnDownRate)
-            return("")
-        const pm = month.pmBurnDownRate ?? 0;
-        const total = month.actualTotalWorkPm ?? 0;
-        if (total > pm)
-            return("bg-danger bg-opacity-40")
-        return("bg-c-teal bg-opacity-40")
-    }
 }
