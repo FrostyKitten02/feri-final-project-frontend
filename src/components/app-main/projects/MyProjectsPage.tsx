@@ -86,18 +86,24 @@ export const MyProjectsPage = () => {
                         </div>
                     ) :
                     <>
-                        <div className="px-20 pb-14 flex justify-center items-center">
-                            <ProjectFilter
-                                setSelectedStatus={setSelectedStatus}
-                                selectedStatus={selectedStatus}
-                            />
+                        <div className="relative flex-grow p-5">
+                            <div className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
+                                <ProjectFilter
+                                    setSelectedStatus={setSelectedStatus}
+                                    selectedStatus={selectedStatus}
+                                />
+                            </div>
+                            <div
+                                className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
+                                filters
+                            </div>
                         </div>
                         {
                             projects?.projects && projects.projects.length > 0 ?
                                 <>
                                     <div className="relative flex-grow p-5">
                                         <div
-                                            className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
+                                            className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow">
                                             <div className="flex justify-center items-center">
                                                 <div className="grid grid-cols-3 w-full">
                                                     {
