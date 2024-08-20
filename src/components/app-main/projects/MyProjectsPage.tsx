@@ -12,6 +12,7 @@ import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {ProjectFilter} from "./ProjectFilter";
 import {SelectedItemProps} from "../../template/inputs/inputsInterface";
 import ParamUtil from "../../../util/ParamUtil";
+import {Spinner} from "flowbite-react";
 import {ProjectModal} from "./ProjectModal";
 
 export const MyProjectsPage = () => {
@@ -63,6 +64,7 @@ export const MyProjectsPage = () => {
                 }
             }
         } catch (error: any) {
+
         }
     };
 
@@ -76,73 +78,84 @@ export const MyProjectsPage = () => {
     }, [pageNumber, selectedStatus]);
 
     return (
-        <div className="flex flex-grow">
+        <div className="flex flex-col flex-grow p-5">
             {
                 isLoading ? (
-                    <div className="flex h-full flex-col justify-center items-center font-bold text-3xl">
-                        <h1>Loading projects...</h1>
-                    </div>
-                ) : projects?.projects && projects.projects.length > 0 ? (
-                    <div className="flex flex-col flex-grow py-10">
-                        <div className="px-20 pb-14 flex justify-center items-center">
-                            <ProjectFilter
-                                setSelectedStatus={setSelectedStatus}
-                                selectedStatus={selectedStatus}
-                            />
+                        <div className="flex h-full flex-col justify-center items-center font-bold text-3xl">
+                            <Spinner size="xl"/>
                         </div>
-                        <div className="flex-grow w-full">
-                            <div className="flex flex-col flex-grow">
-                                <div className="flex justify-center items-center">
-                                    <div className="grid grid-cols-3">
-                                        {
-                                            projects.projects.map((project) => (
-                                                <ProjectItem
-                                                    key={project.id}
-                                                    project={project}
-                                                    handleEditProject={handleProjectAdd}
-                                                />
-                                            ))
-                                        }
+                    ) :
+                    <>
+                        <div className="relative flex-grow p-5">
+                            <div className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
+                                <ProjectFilter
+                                    setSelectedStatus={setSelectedStatus}
+                                    selectedStatus={selectedStatus}
+                                />
+                            </div>
+                            <div
+                                className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
+                                filters
+                            </div>
+                        </div>
+                        {
+                            projects?.projects && projects.projects.length > 0 ?
+                                <>
+                                    <div className="relative flex-grow p-5">
+                                        <div
+                                            className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow">
+                                            <div className="flex justify-center items-center">
+                                                <div className="grid grid-cols-3 w-full">
+                                                    {
+                                                        projects.projects.map((project) => (
+                                                            <ProjectItem
+                                                                key={project.id}
+                                                                project={project}
+                                                                handleEditProject={handleProjectAdd}
+                                                            />
+                                                        ))
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
+                                            projects
+                                        </div>
+                                        <div
+                                            className="absolute rounded-[20px] text-center text-muted bg-white bottom-[4px] font-medium right-20 uppercase flex px-2">
+                                            <CustomPagination
+                                                totalPages={totalPages}
+                                                onPageChange={onPageChange}
+                                                currentPage={pageNumber}
+                                                backLabelText=""
+                                                nextLabelText=""
+                                            />
+                                        </div>
+                                        <div className="absolute right-0 top-0">
+                                            <div className="bg-white pl-3">
+                                                <ProjectModal handleProjectSubmit={handleProjectAdd}/>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex justify-center">
-                            <CustomPagination
-                                totalPages={totalPages}
-                                onPageChange={onPageChange}
-                                currentPage={pageNumber}
-                                backLabelText="prev"
-                                nextLabelText="next"
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex flex-col flex-grow py-10">
-                        <div className="px-20 pb-5 flex justify-center items-center">
-                            <ProjectFilter
-                                setSelectedStatus={setSelectedStatus}
-                                selectedStatus={selectedStatus}
-                            />
-                        </div>
-                        <div className="flex-grow w-full">
-                            <div className="flex flex-col flex-grow">
-                                <div
-                                    className="flex flex-grow h-full flex-col w-full justify-center items-center font-bold text-3xl space-y-4">
-                                    <h1>No projects found...</h1>
-                                    <p className="text-base text-gray-700">
-                                        Click the "Add new project" button to create a new project.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )
+                                </> :
+                                <>
+                                    <div className="flex-grow w-full">
+                                        <div className="flex flex-col flex-grow">
+                                            <div
+                                                className="flex flex-grow h-full flex-col w-full justify-center items-center font-bold text-3xl space-y-4">
+                                                <h1>No projects found...</h1>
+                                                <p className="text-base text-gray-700">
+                                                    Click the "Add new project" button to create a new project.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                        }
+
+                    </>
             }
-            <div
-                className="w-24 flex items-center justify-center py-4 flex-col bg-gray-100 rounded-r-[20px] border-solid border-l-[2px] border-gray-100">
-                <ProjectModal handleProjectSubmit={handleProjectAdd} edit={false}/>
-            </div>
         </div>
     );
 }

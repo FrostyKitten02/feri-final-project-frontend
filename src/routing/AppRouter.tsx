@@ -4,7 +4,6 @@ import ErrorPage from "../components/template/pages/ErrorPage";
 import SignInPage from "../components/authorization/SignInPage";
 import SignUpPage from "../components/authorization/SignUpPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
-import IntroductionPage from "../components/introduction/IntroductionPage";
 import {useSession} from "@clerk/clerk-react";
 import Paths from "../util/Paths";
 import ValidateProjectId from "../components/ValidateProjectId";
@@ -17,6 +16,7 @@ import {AppMainPage} from "../components/app-main/AppMainPage";
 import {DashboardPage} from "../components/app-main/DashboardPage";
 import {OverviewChartPage} from "../components/project-main/overview-chart/OverviewChartPage";
 import ProjectDashboardPage from "../components/project-main/project-dashboard/ProjectDashboardPage";
+import LandingPage from "../components/landing-page/LandingPage";
 
 function AppRouter() {
 
@@ -38,7 +38,7 @@ function AppRouter() {
         },
         {
             path: "introduction",
-            element: <IntroductionPage/>,
+            element: <LandingPage />,
             errorElement: <ErrorPage/>
         },
         {

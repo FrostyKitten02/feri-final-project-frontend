@@ -173,6 +173,7 @@ export const WorkloadModal = ({
                                 type="number"
                                 className="w-[200px]"
                                 min={0}
+                                max={1}
                                 step="0.01"
                                 defaultValue={person.totalWorkPm}
                                 {...register("pmValue")}

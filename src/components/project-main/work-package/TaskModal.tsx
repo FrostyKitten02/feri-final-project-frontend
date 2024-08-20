@@ -19,16 +19,14 @@ import {
   CustomModalFooter,
 } from "../../template/modal/CustomModal";
 import { FaPlus } from "react-icons/fa6";
-import { FiEdit3 } from "react-icons/fi";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export default function TaskModal({
   onSuccess,
   workpackage,
   task,
-  setActionPopoverOpen,
-  onButtonClick,
-  onModalClose,
+  isOpen,
+  onClose,
 }: TaskModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [isOn, setIsOn] = useState<boolean>(task?.isRelevant ?? true);
@@ -50,8 +48,7 @@ export default function TaskModal({
   };
   const handleClose = (): void => {
     if (task) {
-      onModalClose?.();
-      setActionPopoverOpen?.(false);
+      onClose?.();
       reset();
     }
     setModalOpen(false);
@@ -101,17 +98,7 @@ export default function TaskModal({
 
   return (
     <>
-      {task ? (
-        <button
-          onClick={() => {
-            onButtonClick?.(), setModalOpen(true);
-          }}
-          className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
-        >
-          <FiEdit3 className="size-5" />
-          <span>Edit task</span>
-        </button>
-      ) : (
+      {!task && (
         <button
           onClick={() => setModalOpen(true)}
           className={`flex items-center justify-center bg-primary rounded-lg text-white w-28 h-8 gap-x-2`}
@@ -120,7 +107,7 @@ export default function TaskModal({
           <span className="text-sm">New task</span>
         </button>
       )}
-      {modalOpen && (
+      {(modalOpen || isOpen) && (
         <ModalPortal>
           <CustomModal closeModal={handleClose} modalWidth="700px">
             <form onSubmit={handleSubmit(onSubmit)}>

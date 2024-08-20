@@ -4,7 +4,7 @@ import SessionUtil from "../../../util/SessionUtil";
 import { HiCalendar } from "react-icons/hi";
 import { FC } from "react";
 import { ProjectItemProps } from "../../../interfaces";
-import { useAuth } from "@clerk/clerk-react";
+import {useAuth, useUser} from "@clerk/clerk-react";
 import { ProgressCircle } from "@tremor/react";
 import { IoPeopleOutline } from "react-icons/io5";
 import { LuPackage } from "react-icons/lu";
@@ -15,6 +15,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({
   handleEditProject,
 }) => {
   const navigate = useNavigate();
+  const {user} = useUser();
   const progress: number = TextUtil.returnProgress(
     project?.startDate,
     project?.endDate
@@ -28,7 +29,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({
 
   return (
     project && (
-      <div className="p-5 h-72 w-[450px]">
+      <div className="p-5 h-80 min-w-[450px]">
         <div className="flex flex-col w-full h-full hover:bg-gray-100 transition delay-50 border border-gray-200 border-solid rounded-xl">
           <button
             className="w-full h-full rounded-xl"
@@ -105,11 +106,14 @@ export const ProjectItem: FC<ProjectItemProps> = ({
                   </p>
                 </div>
                 <div className="flex flex-row items-center">
-                  <ProjectModal
-                      edit={true}
-                      handleProjectSubmit={handleEditProject}
-                      projectId={project.id}
-                  />
+                  {
+                    project.ownerId === user?.id &&
+                        <ProjectModal
+                            edit={true}
+                            handleProjectSubmit={handleEditProject}
+                            projectId={project.id}
+                        />
+                  }
                 </div>
               </div>
             </div>

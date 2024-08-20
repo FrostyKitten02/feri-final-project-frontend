@@ -225,7 +225,6 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                         <div key={`empty-total-work-${index}`}/>
                     ))
                 }
-
                 <div
                     className="flex h-14 uppercase text-sm font-bold items-center border-solid border-l-white border-y-gray-200">
                     <GoTriangleRight className="mr-1"/>
@@ -234,7 +233,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
 
                 {shownMonths.map((month, index) => (
                     <div
-                        key={`total-spending-${index}`}
+                        key={`total-spending-${index}`}n
                         className={`h-14 relative justify-center flex border-solid border-gray-200 items-center ${TextUtil.getSpendingStatusColors(month)}`}>
                         <div className="text-xl font-semibold">
                             {month.actualMonthSpending ?? 0}
