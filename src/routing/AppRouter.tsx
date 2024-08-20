@@ -13,7 +13,7 @@ import { WorkPackageListing } from "../components/project-main/work-package/Work
 import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
 import {WorkloadPage} from "../components/project-main/workload/WorkloadPage";
 import {AppMainPage} from "../components/app-main/AppMainPage";
-import {DashboardPage} from "../components/app-main/DashboardPage";
+import {DashboardPage} from "../components/app-main/dashboard/DashboardPage";
 import {OverviewChartPage} from "../components/project-main/overview-chart/OverviewChartPage";
 import ProjectDashboardPage from "../components/project-main/project-dashboard/ProjectDashboardPage";
 import LandingPage from "../components/landing-page/LandingPage";

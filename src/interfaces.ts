@@ -232,7 +232,7 @@ export interface WorkDetailsProps {
 
 export interface WorkDetailsLineChartProps {
   date: string;
-  pmPerMonth: number;
+  "PM per month": number;
 }
 
 export interface CurrentMonthProps {
@@ -296,4 +296,12 @@ export interface BudgetBreakdownChartProps {
 export interface BudgetBreakdownTrackerData {
   color: string,
   tooltip: string
+}
+export interface UserDetailsChartData {
+  name: string,
+  value: number
+}
+
+export interface UserDetailsProps {
+  projectsStatus: Array<UserDetailsChartData>
 }

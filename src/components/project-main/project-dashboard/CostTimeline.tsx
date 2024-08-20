@@ -5,7 +5,7 @@ import ChartUtil from "../../../util/ChartUtil";
 
 export const CostTimeline = ({stats}: CostTimelineProps) => {
     const [chartData, setChartData] = useState<Array<CostTimelineChartProps>>([]);
-    const valueFormatter=  function (number: number) {
+    const valueFormatter = function (number: number) {
         return new Intl.NumberFormat('us').format(number).toString() + '€';
     }
 
@@ -19,9 +19,10 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
 
     return (
         <div className="relative p-5 z-0">
-            <div className="border-gray-200 w-[700px] flex items-center h-full rounded-[20px] p-5 border-solid border-[1px]">
+            <div
+                className="border-gray-200 w-[700px] flex items-center h-full rounded-[20px] p-5 border-solid border-[1px]">
                 {
-                    chartData.length !== 0 ?
+                    stats.workPackages?.length !== 0 && chartData.length !== 0 ?
                         <AreaChart
                             data={chartData}
                             categories={["Actual cost", "Predicted cost"]}
