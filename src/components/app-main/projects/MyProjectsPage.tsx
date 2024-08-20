@@ -147,6 +147,7 @@ export const MyProjectsPage = () => {
                                                 <h1>No projects found...</h1>
                                                 <p className="text-base text-gray-700">
                                                     Click the "Add new project" button to create a new project.
+                                                    <ProjectModal handleProjectSubmit={handleProjectAdd}/>
                                                 </p>
                                             </div>
                                         </div>
