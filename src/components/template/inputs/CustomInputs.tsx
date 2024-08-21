@@ -101,7 +101,7 @@ export const SelectOption = ({
                     <span>
                         {icon}
                     </span>
-                    <span>
+                    <span className="text-sm tracking-wide">
                       {children}
                     </span>
                 </div>
