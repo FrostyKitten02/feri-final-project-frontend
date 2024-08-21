@@ -66,7 +66,7 @@ export default class TextUtil {
             } else {
                 return "0";
             }
-        }   
+        }
         return "0"
     }
 
@@ -311,13 +311,13 @@ export default class TextUtil {
     }
 
     static numberFormatter = (number: number | undefined): string => {
-        if(number === undefined)
+        if (number === undefined)
             return "";
         return (`${Intl.NumberFormat('eu').format(number).toString()}€`);
     }
 
     static numberToPercantage = (number: number | undefined): string => {
-        if(number === undefined)
+        if (number === undefined)
             return "";
         return (`${number * 100}%`);
     }
@@ -327,9 +327,11 @@ export default class TextUtil {
         return new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     }
 
-    static getMonthYearCurrentDate = (): string => {
+    static getMonthYearCurrentDate = (): { year: string, month: string } => {
         const date = new Date();
-        return date.toLocaleDateString('en-US', {month: 'long', year: 'numeric'});
+        const year = date.getFullYear().toString();
+        const month = date.toLocaleDateString('en-US', {month: 'long'});
+        return {year, month};
     }
 
     static getRelevantTasks = (workpackages: WorkPackageDto[] | undefined): TaskDto[] => {
@@ -354,23 +356,23 @@ export default class TextUtil {
     }
 
     static getWorkStatusColors = (month: ProjectMonthDto): string => {
-        if(!month.pmBurnDownRate)
-            return("")
+        if (!month.pmBurnDownRate)
+            return ("")
         const pm = month.pmBurnDownRate ?? 0;
         const total = month.actualTotalWorkPm ?? 0;
         if (total > pm)
-            return("bg-danger bg-opacity-40")
-        return("bg-c-teal bg-opacity-40")
+            return ("bg-danger bg-opacity-40")
+        return ("bg-c-teal bg-opacity-40")
     }
 
     static getSpendingStatusColors = (month: ProjectMonthDto): string => {
-        if(!month.staffBudgetBurnDownRate)
-            return("")
+        if (!month.staffBudgetBurnDownRate)
+            return ("")
         const pm = month.staffBudgetBurnDownRate ?? 0;
         const total = month.actualMonthSpending ?? 0;
         if (total > pm)
-            return("bg-danger bg-opacity-40")
-        return("bg-c-teal bg-opacity-40")
+            return ("bg-danger bg-opacity-40")
+        return ("bg-c-teal bg-opacity-40")
     }
     static getSpentBudgetProps = (stats: ProjectStatisticsResponse | undefined): BudgetBreakdownChartProps => {
         const chartBudget = {
@@ -378,18 +380,25 @@ export default class TextUtil {
             totalBudget: 0,
             percentage: 0
         }
-        if(!stats || !stats.months) return chartBudget;
+        if (!stats || !stats.months) return chartBudget;
         let spent = 0;
         let total = 0;
         stats.months.forEach((month) => {
             spent += month.actualMonthSpending ?? 0;
             total += month.staffBudgetBurnDownRate ?? 0;
         });
-        const percantage = this.roundDownToTwoDecimalPlaces(spent/ total) * 100;
+        const percantage = this.roundDownToTwoDecimalPlaces(spent / total) * 100;
         return {
             usedBudget: this.roundDownToTwoDecimalPlaces(spent),
             totalBudget: this.roundDownToTwoDecimalPlaces(total),
             percentage: percantage
         };
+    }
+
+    static convertDateToSI = (date: string) => {
+        const year = date.slice(0, 4);
+        const month = date.slice(5, 7);
+        const day = date.slice(8, 10);
+        return `${year}-${day}-${month}`;
     }
 }

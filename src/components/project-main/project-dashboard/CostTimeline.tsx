@@ -20,7 +20,7 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
     return (
         <div className="relative p-5 z-0">
             <div
-                className="border-gray-200 w-[700px] flex items-center h-full rounded-[20px] p-5 border-solid border-[1px]">
+                className="border-gray-200 w-[700px] h-full flex items-center justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
                 {
                     stats.workPackages?.length !== 0 && chartData.length !== 0 ?
                         <AreaChart
@@ -28,6 +28,8 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
                             categories={["Actual cost", "Predicted cost"]}
                             index="date"
                             valueFormatter={valueFormatter}
+                            showLegend={false}
+                            className="h-[280px]"
                         /> :
                         <div className="h-full flex flex-grow justify-center items-center text-muted">
                             There is currently no data to display.

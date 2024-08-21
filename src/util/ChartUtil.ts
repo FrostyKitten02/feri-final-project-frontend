@@ -1,7 +1,7 @@
 import {ProjectListStatusResponse, ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
 import {
     BudgetBreakdownTrackerData,
-    CostTimelineChartProps,
+    CostTimelineChartProps, CurrentlyRelevantData,
     UserDetailsChartData,
     WorkDetailsLineChartProps
 } from "../interfaces";
@@ -60,12 +60,12 @@ export default class ChartUtil {
         }
         return (relevantMonths.map(month => {
             return ({
-                "date": month.date ?? "",
+                "date": TextUtil.refactorDate(month.date ?? ""),
                 "PM per month": month.pmBurnDownRate ?? 0
             })
         }));
     }
-    static returnCurrentMonthBarChartData = (statistics: ProjectStatisticsResponse) => {
+    static returnCurrentMonthBarChartData = (statistics: ProjectStatisticsResponse): CurrentlyRelevantData => {
         const foundMonth = (statistics.months ?? []).find(month => TextUtil.isCurrentMonthYear(month));
         let actual: number = 0;
         let assigned: number = 0;
@@ -80,8 +80,8 @@ export default class ChartUtil {
         const chartData = [
             {
                 name: "Workload",
-                "Assigned PM": assigned,
-                "Actual PM": actual
+                "Assigned": assigned,
+                "Actual": actual
             }
         ]
         return ({
@@ -112,7 +112,7 @@ export default class ChartUtil {
         }
         relevantMonths.forEach(month => {
             chartData.push({
-                date: month.date ?? "",
+                date: TextUtil.refactorDate(month.date ?? ""),
                 "Predicted cost": month.staffBudgetBurnDownRate ?? 0,
                 "Actual cost": month.actualMonthSpending ?? 0
 
@@ -127,24 +127,24 @@ export default class ChartUtil {
             if (month.staffBudgetBurnDownRate && month.actualMonthSpending) {
                 if (month.staffBudgetBurnDownRate < month.actualMonthSpending) {
                     return {
-                        tooltip:  month.date + ": Over estimated budget.",
+                        tooltip: TextUtil.refactorDate(month.date) + ": Over estimated budget.",
                         color: "red"
                     };
                 } else if (month.actualMonthSpending / month.staffBudgetBurnDownRate < 0.9) {
                     return {
-                        tooltip:  month.date + ": Under 90% of estimated budget.",
+                        tooltip: TextUtil.refactorDate(month.date) + ": Under 90% of estimated budget.",
                         color: "amber"
                     };
                 } else {
                     return {
-                        tooltip: month.date + ": Right on budget.",
+                        tooltip: TextUtil.refactorDate(month.date) + ": Right on budget.",
                         color: "green"
                     };
                 }
             }
             return {
-                tooltip:  month.date + ": No data available.",
-                color: "gray-100"
+                tooltip: TextUtil.refactorDate(month.date) + ": No work needed.",
+                color: "green"
             };
         }
         const relevantMonths: ProjectMonthDto[] = [];
@@ -169,7 +169,7 @@ export default class ChartUtil {
         }
         relevantMonths.forEach(month => {
             const data = getChartProps(month);
-            if(data){
+            if (data) {
                 trackerData.push({
                     color: data.color,
                     tooltip: data.tooltip
@@ -194,5 +194,32 @@ export default class ChartUtil {
                 value: data.finishedProjects ?? 0
             },
         ])
+    }
+
+    static returnCurrentYearBarChartData = (statistics: ProjectStatisticsResponse): CurrentlyRelevantData => {
+        let actualPm = 0;
+        let assignedPm = 0;
+        const currentYear = new Date().getFullYear().toString();
+        statistics.months?.forEach((month) => {
+            if (month.date?.includes(currentYear)) {
+                actualPm += month.actualTotalWorkPm ?? 0;
+                assignedPm += month.pmBurnDownRate ?? 0;
+            }
+        })
+        let color: string = "teal"
+        if (assignedPm < actualPm) {
+            color = "red"
+        }
+        const chartData = [
+            {
+                name: "Workload",
+                "Assigned": TextUtil.roundDownToTwoDecimalPlaces(assignedPm),
+                "Actual": TextUtil.roundDownToTwoDecimalPlaces(actualPm)
+            }
+        ]
+        return ({
+            chartData: chartData,
+            barColor: ["blue", color],
+        })
     }
 }

@@ -9,7 +9,7 @@ import { projectAPI, projectSchemaAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { ProjectDetails } from "./ProjectDetails";
 import { WorkDetails } from "./WorkDetails";
-import { CurrentMonth } from "./CurrentMonth";
+import { CurrentlyRelevant } from "./CurrentlyRelevant";
 import { CostTimeline } from "./CostTimeline";
 import { BudgetBreakdown } from "./BudgetBreakdown";
 import { Spinner } from "flowbite-react";
@@ -71,7 +71,7 @@ export default function ProjectDashboardPage() {
   }, [projectId]);
 
   return (
-    <div className="flex flex-grow">
+    <div className="flex flex-grow overflow-y-auto">
       {loading ? (
         <div className="flex justify-center items-center h-full w-full">
           <Spinner size="xl" />
@@ -81,7 +81,7 @@ export default function ProjectDashboardPage() {
           <div className="p-5 flex flex-col flex-grow">
             <div className="flex">
               {project && chosenSchema && (
-                <ProjectDetails project={project} chosenSchema={chosenSchema} />
+                <ProjectDetails project={project} chosenSchema={chosenSchema} handleEditProject={fetchData} />
               )}
               {project && statistics && (
                 <WorkDetails project={project} statistics={statistics} />
@@ -92,9 +92,18 @@ export default function ProjectDashboardPage() {
               {<BudgetBreakdown statistics={statistics}/>}
             </div>
           </div>
-          <div className="w-[350px] bg-gray-100 flex flex-col rounded-[20px] p-5">
-            {statistics && <CurrentMonth statistics={statistics} handleEditProject={fetchData}/>}
+          <div className="py-5 pr-5 w-[400px]">
+            <div className="relative py-5 pr-5 z-0 h-full">
+              <div className="border-gray-200 h-full flex items-center justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
+                {statistics && <CurrentlyRelevant statistics={statistics} />}
+              </div>
+              <div
+                  className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-14 uppercase flex px-2">
+                currently relevant
+              </div>
+            </div>
           </div>
+
         </>
       )}
     </div>
