@@ -26,7 +26,11 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                 {
                     name: "Subcontracting",
                     value: project.subcontractingBudget ?? 0
-                }
+                },
+                {
+                    name: "Travel",
+                    value: project.travelBudget ?? 0
+                },
             ];
             setGraphArray(newGraphArray);
         }
@@ -125,6 +129,13 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                             </div>
                             <div className="text-xl font-medium">
                                 {TextUtil.numberFormatter(project?.subcontractingBudget)}
+                            </div>
+                        </div><div className="flex space-x-1 items-center">
+                            <div className="uppercase text-xs">
+                                travel:
+                            </div>
+                            <div className="text-xl font-medium">
+                                {TextUtil.numberFormatter(project?.travelBudget)}
                             </div>
                         </div>
                     </div>
