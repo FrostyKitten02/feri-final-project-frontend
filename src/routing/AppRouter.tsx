@@ -17,6 +17,7 @@ import {DashboardPage} from "../components/app-main/dashboard/DashboardPage";
 import {OverviewChartPage} from "../components/project-main/overview-chart/OverviewChartPage";
 import ProjectDashboardPage from "../components/project-main/project-dashboard/ProjectDashboardPage";
 import LandingPage from "../components/landing-page/LandingPage";
+import { FileManagerPage } from "../components/project-main/file-manager/FileManagerPage";
 
 function AppRouter() {
 
@@ -92,6 +93,11 @@ function AppRouter() {
                         {
                             path: "workload",
                             element: <WorkloadPage />,
+                            errorElement: <ErrorPage />
+                        },
+                        {
+                            path: "file-manager",
+                            element: <FileManagerPage />,
                             errorElement: <ErrorPage />
                         }
                     ]
