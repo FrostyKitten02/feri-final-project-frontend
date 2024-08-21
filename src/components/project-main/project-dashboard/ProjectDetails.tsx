@@ -4,10 +4,13 @@ import {DonutChart, ProgressBar} from "@tremor/react";
 import {Label} from "flowbite-react";
 import {DonutGraphData, ProjectDetailsProps} from "../../../interfaces";
 import {useEffect, useState} from "react";
+import {ProjectModal} from "../../app-main/projects/ProjectModal";
+import {DeleteProjectModal} from "../../app-main/projects/DeleteProjectModal";
+import {useParams} from "react-router-dom";
 
-export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => {
+export const ProjectDetails = ({project, chosenSchema, handleEditProject}: ProjectDetailsProps) => {
     const [graphArray, setGraphArray] = useState<DonutGraphData[]>([]);
-
+    const {projectId} = useParams();
     useEffect(() => {
         if (project) {
             const newGraphArray: DonutGraphData[] = [
@@ -26,7 +29,11 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                 {
                     name: "Subcontracting",
                     value: project.subcontractingBudget ?? 0
-                }
+                },
+                {
+                    name: "Travel",
+                    value: project.travelBudget ?? 0
+                },
             ];
             setGraphArray(newGraphArray);
         }
@@ -126,6 +133,13 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                             <div className="text-xl font-medium">
                                 {TextUtil.numberFormatter(project?.subcontractingBudget)}
                             </div>
+                        </div><div className="flex space-x-1 items-center">
+                            <div className="uppercase text-xs">
+                                travel:
+                            </div>
+                            <div className="text-xl font-medium">
+                                {TextUtil.numberFormatter(project?.travelBudget)}
+                            </div>
                         </div>
                     </div>
                     <div className="flex w-[40%] justify-end">
@@ -135,6 +149,17 @@ export const ProjectDetails = ({project, chosenSchema}: ProjectDetailsProps) => 
                             valueFormatter={valueFormatter}
                         />
                     </div>
+                </div>
+                <div className="flex flex-row items-center">
+                    <div className="w-[7%] h-[1px] bg-gray-300"/>
+                    <Label className="px-2 uppercase text-muted">
+                        manage project
+                    </Label>
+                    <div className="flex-grow h-[1px] bg-gray-300"/>
+                </div>
+                <div className="flex justify-end py-3">
+                    <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
+                    <DeleteProjectModal />
                 </div>
             </div>
             <div

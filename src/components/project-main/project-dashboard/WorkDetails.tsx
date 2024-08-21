@@ -3,8 +3,9 @@ import {DonutChart, LineChart, ProgressBar} from "@tremor/react";
 import ChartUtil from "../../../util/ChartUtil";
 import {useEffect, useState} from "react";
 export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
-    const [graphData, setGraphData] = useState<DonutGraphData[]>([]);
+    const [graphData, setGraphData] = useState<Array<DonutGraphData>>([]);
     const [totalTasks, setTotalTasks] = useState<number>(0);
+    const [relevantWP, setRelevantWP] = useState<number>(0);
     const [lineChartData, setLineChartData] = useState<WorkDetailsLineChartProps[]>([]);
     const [chartDetails, setChartDetails] = useState<{totalPm: number, actualPm: number, pmPercentValue: number, tooltipValue: string | undefined}>({
         totalPm: 0,
@@ -15,14 +16,26 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
     const valueFormatter = (number: number) => `${number}PM`;
     useEffect(() => {
         if (project && project.workPackages) {
-            const newGraphData = project.workPackages.map(workpackage => ({
-                name: workpackage.title ?? "",
-                value: workpackage.assignedPM ?? 0
-            }));
+            const newGraphData = project.workPackages
+                .filter(workpackage => workpackage.isRelevant)
+                .map(workpackage => ({
+                    name: workpackage.title ?? "",
+                    value: workpackage.assignedPM ?? 0,
+                }));
             setGraphData(newGraphData);
-            const taskArray = project.workPackages.map(workpackage => workpackage.tasks?.length ?? 0);
-            const totalTasks = taskArray.reduce((sum, current) => sum + current, 0);
+            const taskNumArray: Array<number> = [];
+            let wpRelevant: number = 0;
+            project.workPackages.forEach(workpackage => {
+                if(workpackage.isRelevant){
+                    taskNumArray.push(workpackage.tasks?.length ?? 0);
+                    wpRelevant += 1;
+                } else {
+                    taskNumArray.push(0);
+                }
+            });
+            const totalTasks = taskNumArray.reduce((sum, current) => sum + current, 0);
             setTotalTasks(totalTasks);
+            setRelevantWP(wpRelevant);
         }
     }, [project]);
 
@@ -58,15 +71,15 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
                                         <div className="flex-grow flex flex-col justify-center">
                                             <div className="flex space-x-1 items-center">
                                                 <div className="uppercase text-xs">
-                                                    work package count:
+                                                    relevant work package count:
                                                 </div>
                                                 <div className="text-xl font-medium">
-                                                    {project.workPackages.length}
+                                                    {relevantWP}
                                                 </div>
                                             </div>
                                             <div className="flex space-x-1 items-center">
                                                 <div className="uppercase text-xs">
-                                                    task count:
+                                                    relevant task count:
                                                 </div>
                                                 <div className="text-xl font-medium">
                                                     {totalTasks}
