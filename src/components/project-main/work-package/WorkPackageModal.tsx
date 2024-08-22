@@ -6,7 +6,11 @@ import { WorkPackageModalProps } from "../../../interfaces";
 import { WorkPackageFormFields } from "../../../types/types";
 import { workPackageAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
-import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";
+import {
+  toastSuccess,
+  toastError,
+  toastWarning,
+} from "../../toast-modals/ToastFunctions";
 import {
   CustomModal,
   CustomModalBody,
@@ -47,6 +51,12 @@ export default function WorkPackageModal({
   const watchStartDate = watch("startDate");
   register("isRelevant", { value: workpackage?.isRelevant ?? true }); // register the isRelevant field here, because it's a custom component not input
   const toggleSwitch = (): void => {
+    if (workpackage?.tasks && workpackage?.tasks?.length > 0 ) {
+      toastWarning(
+        "This work package already has tasks assigned. Please delete all of the tasks before setting the work package to not relevant."
+      );
+      return;
+    }
     setIsOn(!isOn);
     setValue("isRelevant", !isOn);
   };
@@ -117,7 +127,7 @@ export default function WorkPackageModal({
     <>
       {!workpackage && (
         <button onClick={() => setModalOpen(true)}>
-          <LuPackagePlus className="size-10" />
+          <LuPackagePlus className="size-14 hover:stroke-primary transition delay-50" />
         </button>
       )}
       {(modalOpen || isOpen) && (

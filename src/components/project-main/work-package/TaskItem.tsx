@@ -43,7 +43,7 @@ export const TaskItem: FC<TaskItemProps> = ({
     <AnimatePresence>
       {(showIrrelevant || task?.isRelevant) && (
         <motion.div
-          className={`grid grid-cols-[5px_0.5fr_1fr_1fr_0.5fr] items-center border-b border-gray-200 border-solid mb-[-1px]`}
+          className={`grid grid-cols-[5px_0.5fr_1fr_1fr_0.5fr] items-center overflow-visible border border-gray-200 border-solid mb-[-1px] bg-white rounded-md`}
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
@@ -66,10 +66,10 @@ export const TaskItem: FC<TaskItemProps> = ({
               {text}
             </motion.p>
           </motion.div>
-          <motion.div className="flex items-center justify-center font-medium py-4 px-4 text-center">
-            {TextUtil.truncateString(task?.title, 50)}
+          <motion.div className="flex items-center justify-start font-medium py-4 px-4 text-start">
+            {TextUtil.truncateString(task?.title, 80)}
           </motion.div>
-          <motion.div className="flex items-center justify-center font-medium py-4 px-4 space-x-2">
+          <motion.div className="flex items-center justify-start font-medium py-4 px-4 space-x-2">
             <motion.div className="flex justify-start">
               {TextUtil.refactorDate(task?.startDate)}
             </motion.div>

@@ -29,9 +29,9 @@ export const TaskListing: FC<TaskListingProps> = ({
     setShowIrrelevant((prev) => !prev);
   };
   return (
-    <div>
+    <div className="flex flex-col justify-center h-full">
       {showIrrelevant ? (
-        <div className="flex justify-end pb-6 gap-x-2">
+        <div className="flex justify-end pb-2 gap-x-2">
           <button
             onClick={handleToggleIrrelevant}
             className="flex flex-row gap-x-2"
@@ -41,7 +41,7 @@ export const TaskListing: FC<TaskListingProps> = ({
           </button>
         </div>
       ) : (
-        <div className="flex justify-end pb-6 gap-x-2">
+        <div className="flex justify-end pb-2 gap-x-2">
           <button
             disabled={irrelevantTasks.length === 0}
             onClick={() => setShowIrrelevant(true)}
@@ -64,11 +64,14 @@ export const TaskListing: FC<TaskListingProps> = ({
       )}
       {sortedTasksByDate.every((task) => !task.isRelevant) &&
       !showIrrelevant ? (
-        <div className="flex items-center justify-center">
-          <p className="text-md font-semibold">All irrelevant tasks are hidden</p>
+        <div className="h-full flex flex-col items-center justify-center">
+          <FaRegEyeSlash className="size-12 fill-muted" />
+          <p className="text-md text-muted font-semibold">
+            All irrelevant tasks are hidden
+          </p>
         </div>
       ) : (
-        <div className="h-full grid border border-solid border-gray-200 rounded-md overflow-visible bg-white">
+        <div className="grid rounded-md items-center gap-y-2">
           {sortedTasksByDate.map((task) => (
             <TaskItem
               key={task.id}

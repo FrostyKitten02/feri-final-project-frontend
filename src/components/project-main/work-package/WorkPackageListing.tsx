@@ -57,43 +57,40 @@ export const WorkPackageListing: FC = () => {
   };
 
   return (
-    <div className="flex w-full h-full">
-      <div className="flex flex-row h-full flex-grow">
-        <div
-          className={`flex flex-col py-12 px-12 border-r-2 border-solid border-gray-200 w-full h-full overflow-y-scroll`}
-        >
-          <div className="flex-grow">
-            <div className="flex flex-col h-full">
-              {loading ? (
-                <div className="flex justify-center items-center h-full">
-                  <Spinner size="xl" />
-                </div>
-              ) : workPackages.length > 0 ? (
-                <div className="flex-col flex-grow gap-y-10">
-                  {workPackages.map((workPackage) => (
-                    <div key={workPackage.id}>
-                      <WorkPackageItem
-                        projectDetails={projectDetails}
-                        onSuccess={onSuccess}
-                        workPackage={workPackage}
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col h-full items-center justify-center">
-                  <p className="text-2xl font-bold">No work packages found.</p>
-                  <p>Navigate to the top right to create a work package.</p>
-                </div>
-              )}
+    <div className="flex w-full p-10">
+      <div
+        className={`relative flex flex-col  flex-grow border-[1px] border-gray-200 border-solid rounded-[20px]`}
+      >
+        <div className="w-full h-full px-16 rounded-bl-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-muted scrollbar-track-white">
+          {loading ? (
+            <div className="flex justify-center items-center h-full">
+              <Spinner size="xl" />
             </div>
-          </div>
+          ) : workPackages.length > 0 ? (
+            workPackages.map((workPackage) => (
+              <WorkPackageItem
+                projectDetails={projectDetails}
+                onSuccess={onSuccess}
+                workPackage={workPackage}
+              />
+            ))
+          ) : (
+            <div className="flex flex-col h-full items-center justify-center">
+              <p className="text-2xl font-bold">No work packages found.</p>
+              <p>Navigate to the top right to create a work package.</p>
+            </div>
+          )}
         </div>
-        <div className="flex px-6 items-start pt-6">
-          <WorkPackageModal
-            onSuccess={onSuccess}
-            projectDetails={projectDetails}
-          />
+        <div className="absolute rounded-[20px] text-center text-muted bg-white top-[-12px] font-medium left-20 uppercase flex px-2">
+          WORK PACKAGES
+        </div>
+        <div className="absolute right-[-25px] top-[-30px]">
+          <div className="bg-white py-2 px-2">
+            <WorkPackageModal
+              onSuccess={onSuccess}
+              projectDetails={projectDetails}
+            />
+          </div>
         </div>
       </div>
     </div>
