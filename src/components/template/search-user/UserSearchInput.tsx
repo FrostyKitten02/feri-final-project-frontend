@@ -21,7 +21,7 @@ export default function UserSearchInput<
   handleSelectPerson,
   inputWidth,
   showResults,
-  setHookFormValue
+  setHookFormValue,
 }: UserSearchInputProps<T, K>) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,10 @@ export default function UserSearchInput<
               className="flex w-full h-full items-center justify-center"
               type="button"
               onClick={() => {
-                setSearchQuery(""), setInputValue?.(""), setQuery(""), setHookFormValue?.();
+                setSearchQuery(""),
+                  setInputValue?.(""),
+                  setQuery(""),
+                  setHookFormValue?.();
               }}
             >
               <MdClear className="size-5 stroke-black" />
@@ -79,7 +82,7 @@ export default function UserSearchInput<
               <GrSearch className="size-6 stroke-black" />
               <p className="font-semibold text-lg">Search for "{query}"</p>
             </div>
-            {(filteredPeople?.length ?? 0) > 0 && (
+            {(filteredPeople?.length ?? 0) > 0 ? (
               <>
                 <div className="py-2 px-4 font-semibold text-lg">Results</div>
                 <div className="divide-y">
@@ -108,6 +111,10 @@ export default function UserSearchInput<
                   ))}
                 </div>
               </>
+            ) : (
+              <div className="py-2 px-4 text-lg text-muted">
+                Your query does not match any users in the database.
+              </div>
             )}
           </div>
         </div>

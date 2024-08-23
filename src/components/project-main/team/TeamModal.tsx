@@ -10,6 +10,7 @@ import {
 } from "../../template/modal/CustomModal";
 import {
   AddPersonToProjectRequest,
+  GetProjectResponse,
   ListPersonResponse,
   PageInfoRequest,
   PersonDto,
@@ -21,8 +22,12 @@ import {
   CustomModalBody,
   CustomModalFooter,
 } from "../../template/modal/CustomModal";
-import { Label } from "flowbite-react";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import { Datepicker, Label, TextInput } from "flowbite-react";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../toast-modals/ToastFunctions";
 import { personAPI, projectAPI } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -31,6 +36,7 @@ import { useParams } from "react-router-dom";
 import { TeamModalProps } from "../../../interfaces";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
 import { motion } from "framer-motion";
+import TextUtil from "../../../util/TextUtil";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -43,6 +49,8 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [userSalary, setUserSalary] = useState<SalaryDto>({
     amount: undefined,
   });
+  const [projectDetails, setProjectDetails] =
+    useState<GetProjectResponse | null>(null);
 
   const requestArgs = useRequestArgs();
   const { projectId } = useParams();
@@ -108,10 +116,14 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const {
     handleSubmit,
     setValue,
+    watch,
     control,
     reset,
+    register,
     formState: { errors },
   } = useForm<AssignPersonFormFields>();
+  const watchPerson = watch("person");
+  const watchStartDate = watch("startDate");
 
   const handleSelectPerson = (person: PersonDto): void => {
     setValue("person", person);
@@ -136,7 +148,25 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         toastError(error.message);
       }
     };
+
+    const fetchProjectById = async (): Promise<void> => {
+      try {
+        if (projectId) {
+          const response = await projectAPI.getProject(projectId, requestArgs);
+          if (response.status === 200) {
+            setProjectDetails(response.data);
+          }
+        } else {
+          toastError("Project id not found");
+        }
+      } catch (error: any) {
+        toastError(error.message);
+      }
+    };
     fetchSalaryforUser();
+    if (!projectDetails) {
+      fetchProjectById();
+    }
   };
 
   const handleClose = (): void => {
@@ -144,6 +174,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     setSearchQuery("");
     setInputValue("");
     setUserSalary({ ...userSalary, amount: undefined });
+    setProjectDetails(null);
     setModalOpen(false);
   };
 
@@ -156,12 +187,15 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const onSubmit: SubmitHandler<AssignPersonFormFields> = async (
     data
   ): Promise<void> => {
-    const person: AddPersonToProjectRequest = {
-      personId: data.person.id,
-    };
-
     try {
-      if (projectId) {
+      if (projectId && data.person.id) {
+        const person: AddPersonToProjectRequest = {
+          personId: data.person.id,
+          from: data.startDate,
+          to: data.endDate,
+          estimatedPm: data.personMonths,
+        };
+
         const response = await projectAPI.addPersonToProject(
           projectId,
           person,
@@ -178,7 +212,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
           handleAddPerson();
         }
       } else {
-        toastError("Project id not found.");
+        toastWarning("Project or person id not found.");
       }
     } catch (error: any) {
       toastError(error.message);
@@ -208,8 +242,8 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                     required:
                       "Field can not be empty! Please select an employee.",
                     validate: (value) => {
-                      if (!value) {
-                        ("Field can not be empty! Please select an employee.");
+                      if (!value || !watchPerson?.id) {
+                        return "Please select a valid employee.";
                       }
                       return true;
                     },
@@ -233,6 +267,119 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                 />
                 <CustomModalError error={errors.person?.message} />
               </div>
+              {watchPerson?.id && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ModalDivider>duration</ModalDivider>
+                  <div className="flex flex-row justify-between">
+                    <div className="flex flex-row gap-x-2 w-1/2">
+                      <div className="w-[270px]">
+                        <Label>Start date</Label>
+                        <Controller
+                          name="startDate"
+                          defaultValue=""
+                          control={control}
+                          rules={{
+                            required: "Start date is required!",
+                            validate: (value) => {
+                              if (!value) {
+                                return "Start date is required!";
+                              }
+                            },
+                          }}
+                          render={({ field }) => (
+                            <Datepicker
+                              defaultDate={new Date(Date.now())}
+                              minDate={
+                                new Date(
+                                  projectDetails?.projectDto?.startDate ||
+                                    Date.now()
+                                )
+                              }
+                              maxDate={
+                                new Date(
+                                  projectDetails?.projectDto?.endDate ||
+                                    Date.now()
+                                )
+                              }
+                              {...field}
+                              placeholder="Select start date."
+                              onSelectedDateChanged={(date) =>
+                                field.onChange(TextUtil.formatFormDate(date))
+                              }
+                            />
+                          )}
+                        />
+                        <CustomModalError error={errors.startDate?.message} />
+                      </div>
+                      <div className="w-[270px]">
+                        <Label>End date</Label>
+                        <Controller
+                          name="endDate"
+                          defaultValue=""
+                          control={control}
+                          rules={{
+                            required: "End date is required!",
+                            validate: (value) => {
+                              if (!value) {
+                                return "End date is required!";
+                              }
+                              if (value < watchStartDate) {
+                                return "End date cannot be before start date!";
+                              }
+                              return true;
+                            },
+                          }}
+                          render={({ field }) => (
+                            <Datepicker
+                              defaultDate={new Date(Date.now())}
+                              minDate={
+                                new Date(
+                                  projectDetails?.projectDto?.startDate ||
+                                    Date.now()
+                                )
+                              }
+                              maxDate={
+                                new Date(
+                                  projectDetails?.projectDto?.endDate ||
+                                    Date.now()
+                                )
+                              }
+                              {...field}
+                              placeholder="Select end date."
+                              onSelectedDateChanged={(date) =>
+                                field.onChange(TextUtil.formatFormDate(date))
+                              }
+                            />
+                          )}
+                        />
+                        <CustomModalError error={errors.endDate?.message} />
+                      </div>
+                    </div>
+                    <div className="flex w-1/2 justify-center">
+                      <div>
+                        <Label>Person months</Label>
+                        <TextInput
+                          type="number"
+                          className="w-[270px]"
+                          min={0}
+                          step="0.01"
+                          {...register("personMonths", {
+                            required: "Person months can not be empty.",
+                          })}
+                        />
+                        <CustomModalError
+                          error={errors.personMonths?.message}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
               {userSalary.amount && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
