@@ -74,7 +74,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
 
   const fetchAllPeople = async (): Promise<void> => {
     const pageInfo: PageInfoRequest = {
-      elementsPerPage: 3,
+      elementsPerPage: 4,
       pageNumber: 1,
     };
     const sortInfo: PersonSortInfoRequest = {
@@ -92,7 +92,9 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         searchParams,
         requestArgs
       );
-      if (response.status === 200) setAllPeople(response.data);
+      if (response.status === 200) {
+        setAllPeople(response.data);
+      }
     } catch (error: any) {
       toastError(error.message);
     }
@@ -180,7 +182,6 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
 
   const resetField = (): void => {
     reset();
-
     setUserSalary({ ...userSalary, amount: undefined });
   };
 
