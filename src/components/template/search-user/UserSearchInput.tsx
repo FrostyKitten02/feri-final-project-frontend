@@ -31,6 +31,7 @@ export default function UserSearchInput<
     function handleClickOutside(e: MouseEvent): void {
       if (listRef.current && !listRef.current.contains(e.target as Node)) {
         setListOpen?.(false);
+        setQuery("");
       }
     }
 
