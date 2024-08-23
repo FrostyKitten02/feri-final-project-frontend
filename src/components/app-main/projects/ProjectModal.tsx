@@ -154,7 +154,7 @@ export const ProjectModal = ({
             popoverEdit ? (
                 <button
                     onClick={() => setModalOpen(true)}
-                    className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 transition delay-50 gap-x-4 pl-4"
+                    className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 transition delay-50 gap-x-4"
                 >
                   <span className="uppercase">edit project</span>
                 </button>
