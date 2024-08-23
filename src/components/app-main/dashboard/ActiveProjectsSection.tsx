@@ -40,7 +40,6 @@ export const ActiveProjectsSection = () => {
             if (res.status === 200) {
                 if (res.data.projects) {
                     setRelevantProjects(res.data.projects);
-                    console.log(res.data.projects)
                 }
                 if (res.data.pageInfo)
                     setPageInfo(res.data.pageInfo);
