@@ -9,10 +9,12 @@ import {projectAPI} from "../../../util/ApiDeclarations";
 import ChartUtil from "../../../util/ChartUtil";
 import SessionUtil from "../../../util/SessionUtil";
 import {useNavigate} from "react-router-dom";
+import {useUser} from "@clerk/clerk-react";
 
 export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
     const [barChartData, setBarChartData] = useState<ActiveProjectsChartProps>();
     const [loading, setLoading] = useState<boolean>(true);
+    const {user} = useUser();
     const requestArgs = useRequestArgs();
     const navigate = useNavigate();
 
@@ -42,12 +44,16 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                         stateData: ChartUtil.getActiveProjectsBarChartData(response.data)
                     }
                     setBarChartData(chartData);
-                    setLoading(false);
                 }
+                setLoading(false);
             } catch (error: any) {
             }
         }
-        getStatistics();
+        if(project.ownerId === user?.id){
+            getStatistics();
+        } else {
+            setLoading(false);
+        }
     }, [project]);
     const pmValueFormatter = (value: number) => {
         return value + ' PM';
@@ -56,8 +62,10 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
         return value + ' €';
     };
     const handleNavigate = () => {
-        navigate(`/project/${project?.id}/project-dashboard`);
-        SessionUtil.setSidebarSelect("project dashboard");
+        if(project.ownerId === user?.id){
+            navigate(`/project/${project?.id}/project-dashboard`);
+            SessionUtil.setSidebarSelect("project dashboard");
+        }
     };
     return (
         loading ?
@@ -66,7 +74,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
             </div> :
             <button
                 onClick={handleNavigate}
-                className="w-1/2 hover:bg-gray-100 transition delay-50 rounded-[20px]">
+                className={`${project.ownerId === user?.id ? "hover:bg-gray-100 transition delay-50" : "cursor-default"} w-1/2 rounded-[20px]`}>
                 <div
                     className="h-full border-solid border-[1px] rounded-[20px] border-gray-200 pt-5 px-5 space-y-5 flex flex-col">
                     <div className="flex flex-row items-center">
@@ -100,6 +108,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                             {`Progress: ${Math.floor(TextUtil.returnProgress(project?.startDate, project?.endDate)).toString()}%`}
                         </div>
                     </div>
+                    {project.ownerId === user?.id ?
                     <div className="flex-grow">
                         <div className="space-y-2 h-1/2 flex flex-col">
                             <div className="flex flex-row items-center">
@@ -155,8 +164,38 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                                 }
                             </div>
                         </div>
-
+                    </div> :
+                    <div className="space-y-4 h-full">
+                        <div className="flex flex-row items-center pt-2">
+                            <div className="w-[7%] h-[1px] bg-gray-300"/>
+                            <Label className="px-2 uppercase text-muted">
+                                collaboration duration
+                            </Label>
+                            <div className="flex-grow h-[1px] bg-gray-300"/>
+                        </div>
+                        <div className="flex flex-col items-center font-semibold">
+                            <div className="text-2xl">
+                                {TextUtil.refactorDate(project.startDate)} spremeni
+                            </div>
+                            <div>
+                                -
+                            </div>
+                            <div className="text-2xl">
+                                {TextUtil.refactorDate(project.endDate)} spremeni
+                            </div>
+                        </div>
+                        <div className="flex flex-row items-center pt-2">
+                            <div className="w-[7%] h-[1px] bg-gray-300"/>
+                            <Label className="px-2 uppercase text-muted">
+                                occupancy
+                            </Label>
+                            <div className="flex-grow h-[1px] bg-gray-300"/>
+                        </div>
+                        <div className="text-2xl font-semibold">
+                            5% spremeni
+                        </div>
                     </div>
+                    }
                 </div>
             </button>
     )
