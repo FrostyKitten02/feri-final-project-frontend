@@ -34,7 +34,25 @@ export interface AddPersonToProjectRequest {
      * @type {string}
      * @memberof AddPersonToProjectRequest
      */
-    'personId'?: string;
+    'personId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddPersonToProjectRequest
+     */
+    'from': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddPersonToProjectRequest
+     */
+    'to'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof AddPersonToProjectRequest
+     */
+    'estimatedPm': number;
 }
 /**
  * 

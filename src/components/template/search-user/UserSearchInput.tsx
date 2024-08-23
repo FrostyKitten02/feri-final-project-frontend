@@ -21,7 +21,7 @@ export default function UserSearchInput<
   handleSelectPerson,
   inputWidth,
   showResults,
-  setHookFormValue
+  setHookFormValue,
 }: UserSearchInputProps<T, K>) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,10 @@ export default function UserSearchInput<
               className="flex w-full h-full items-center justify-center"
               type="button"
               onClick={() => {
-                setSearchQuery(""), setInputValue?.(""), setQuery(""), setHookFormValue?.();
+                setSearchQuery(""),
+                  setInputValue?.(""),
+                  setQuery(""),
+                  setHookFormValue?.();
               }}
             >
               <MdClear className="size-5 stroke-black" />
@@ -68,7 +71,7 @@ export default function UserSearchInput<
         value={inputValue}
         icon={IoSearch}
       />
-      {listOpen && showResults && (
+      {showResults && query && (
         <div
           className="relative w-full"
           style={{ width: `${inputWidth && inputWidth + 48}px` }}
@@ -79,36 +82,42 @@ export default function UserSearchInput<
               <GrSearch className="size-6 stroke-black" />
               <p className="font-semibold text-lg">Search for "{query}"</p>
             </div>
-            {(filteredPeople?.length ?? 0) > 0 && (
-              <>
-                <div className="py-2 px-4 font-semibold text-lg">Results</div>
-                <div className="divide-y">
-                  {filteredPeople?.map((person) => (
-                    <div
-                      key={person.id}
-                      className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-gray-200"
-                      onClick={() => {
-                        handleSelectPerson?.(person);
-                      }}
-                    >
-                      <div className="flex justify-center">
-                        <IoPersonCircle className="size-6 fill-black" />
+            {listOpen &&
+              (filteredPeople && filteredPeople?.length > 0 ? (
+                <>
+                  <div className="py-2 px-4 font-semibold text-lg">Results</div>
+                  <div className="divide-y">
+                    {filteredPeople?.map((person) => (
+                      <div
+                        key={person.id}
+                        className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-gray-200"
+                        onClick={() => {
+                          handleSelectPerson?.(person);
+                          setQuery("");
+                        }}
+                      >
+                        <div className="flex justify-center">
+                          <IoPersonCircle className="size-6 fill-black" />
+                        </div>
+                        <div className="flex justify-center">
+                          {person.name && person.lastname ? (
+                            <p>
+                              {person.name} {person.lastname}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="flex justify-center">
+                          <p>{person.email}</p>
+                        </div>
                       </div>
-                      <div className="flex justify-center">
-                        {person.name && person.lastname ? (
-                          <p>
-                            {person.name} {person.lastname}
-                          </p>
-                        ) : null}
-                      </div>
-                      <div className="flex justify-center">
-                        <p>{person.email}</p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="py-2 px-4 text-lg text-muted">
+                  Your query does not match any users in the database.
                 </div>
-              </>
-            )}
+              ))}
           </div>
         </div>
       )}

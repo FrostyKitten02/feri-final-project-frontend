@@ -28,6 +28,9 @@ export type TaskFormFields = {
 
 export type AssignPersonFormFields = {
   person: PersonDto;
+  startDate: string;
+  endDate: string;
+  personMonths: number;
 };
 
 export type PersonTypeFormFields = {
@@ -48,12 +51,12 @@ export type SalaryFormFields = {
 
 export type WorkloadFormFields = {
   pmValue: number;
-}
+};
 
 export type DeleteConfirmationFields = {
   title: string;
 };
 
 export type DeleteTeamModalFields = {
-  email: string
-}
+  email: string;
+};
