@@ -43,10 +43,9 @@ export const ActiveProjectsSection = () => {
                 }
                 if (res.data.pageInfo)
                     setPageInfo(res.data.pageInfo);
-                setIsLoading(false);
             }
+            setIsLoading(false);
         } catch (error) {
-
         }
     };
     return (

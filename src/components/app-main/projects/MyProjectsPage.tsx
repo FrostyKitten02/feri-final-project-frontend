@@ -20,7 +20,7 @@ export const MyProjectsPage = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [pageNumber, setPageNumber] = useState<number>(1);
-    const [elementsPerPage] = useState<number>(6);
+    const [elementsPerPage] = useState<number>(3);
     const [selectedStatus, setSelectedStatus] = useState<SelectedItemProps>({value: "", text: ""});
     const requestArgs = useRequestArgs();
 
