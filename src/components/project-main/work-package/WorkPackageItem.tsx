@@ -2,7 +2,6 @@ import { FC } from "react";
 import { PopoverItem, WorkPackageItemProps } from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import { HiCalendar } from "react-icons/hi";
-import { HiOutlineTrash } from "react-icons/hi2";
 import { TaskListing } from "./TaskListing";
 import { ProgressBar } from "@tremor/react";
 import WorkPackageModal from "./WorkPackageModal";
@@ -12,7 +11,6 @@ import TaskModal from "./TaskModal";
 import Popover from "../../template/popover-menu/Popover";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { TbCalendarUser } from "react-icons/tb";
-import { FiEdit3 } from "react-icons/fi";
 
 export const WorkPackageItem: FC<WorkPackageItemProps> = ({
   workPackage,
@@ -35,7 +33,6 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           projectDetails={projectDetails}
         />
       ),
-      icon: <FiEdit3 className="size-5" />,
       label: "Edit work package",
     },
     {
@@ -45,7 +42,6 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           onSuccess={onSuccess}
         />
       ),
-      icon: <HiOutlineTrash className="size-5" />,
       label: "Delete work package",
     },
   ];
@@ -154,10 +150,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           {workPackage.tasks && workPackage.tasks.length > 0 ? (
             <div className="flex flex-col h-full">
               <div className="flex w-full pb-5">
-                <div className="flex justify-start w-1/2 font-semibold text-2xl">
-                  Tasks
-                </div>
-                <div className="flex w-1/2 justify-end">
+                <div className="flex w-full justify-end">
                   {
                     <TaskModal
                       onSuccess={onSuccess}

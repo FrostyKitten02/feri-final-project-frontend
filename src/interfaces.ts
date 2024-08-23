@@ -262,7 +262,7 @@ export interface ManageProjectModalProps {
 
 export interface PopoverItem {
     component: React.ReactElement;
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     label: string;
 }
 
