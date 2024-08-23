@@ -1,5 +1,6 @@
 import {ProjectListStatusResponse, ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
 import {
+    ActiveProjectsStateData,
     BudgetBreakdownTrackerData,
     CostTimelineChartProps, CurrentlyRelevantData,
     UserDetailsChartData,
@@ -221,5 +222,60 @@ export default class ChartUtil {
             chartData: chartData,
             barColor: ["blue", color],
         })
+    }
+
+    static getActiveProjectsBarChartData = (project: ProjectStatisticsResponse): ActiveProjectsStateData => {
+        let actualPmYear = 0;
+        let assignedPmYear = 0;
+        let actualBudgetYear = 0;
+        let assignedBudgetYear = 0;
+        let actualPmMonth = 0;
+        let assignedBudgetMonth = 0;
+        let actualBudgetMonth = 0;
+        let assignedPmMonth = 0;
+        const currentYear = new Date().getFullYear().toString();
+        const currentMonth = (new Date().getMonth() + 1).toString();
+        const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
+        project.months?.forEach(month => {
+            if(month.date?.includes(currentYear)){
+                assignedPmYear += month.pmBurnDownRate ?? 0;
+                actualPmYear += month.actualTotalWorkPm ?? 0;
+                actualBudgetYear += month.actualMonthSpending ?? 0;
+                assignedBudgetYear += month.staffBudgetBurnDownRate ?? 0;
+                if (month.date?.includes(currentMonth)){
+                    actualPmMonth = month.actualTotalWorkPm ?? 0;
+                    assignedPmMonth = month.pmBurnDownRate ?? 0;
+                    actualBudgetMonth = month.actualMonthSpending ?? 0;
+                    assignedBudgetMonth = month.staffBudgetBurnDownRate ?? 0;
+                }
+            }
+        })
+        return {
+            dataPm: [
+                {
+                    name: currentYear,
+                    Used: actualPmYear,
+                    Available: assignedPmYear
+                },
+                {
+                    name: currentMonthName,
+                    Used: actualPmMonth,
+                    Available: assignedPmMonth
+                },
+
+            ],
+            dataBudget: [
+                {
+                    name: currentYear,
+                    Used: actualBudgetYear,
+                    Available: assignedBudgetYear
+                },
+                {
+                    name: currentMonthName,
+                    Used: actualBudgetMonth,
+                    Available: assignedBudgetMonth
+                },
+            ]
+        }
     }
 }
