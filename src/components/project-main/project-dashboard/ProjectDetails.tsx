@@ -150,14 +150,8 @@ export const ProjectDetails = ({project, chosenSchema, handleEditProject}: Proje
                         />
                     </div>
                 </div>
-                <div className="flex flex-row items-center">
-                    <div className="w-[7%] h-[1px] bg-gray-300"/>
-                    <Label className="px-2 uppercase text-muted">
-                        manage project
-                    </Label>
-                    <div className="flex-grow h-[1px] bg-gray-300"/>
-                </div>
-                <div className="flex justify-end py-3">
+                <div className="flex flex-row items-center w-full bg-gray-300 h-[1px] mb-3" />
+                <div className="flex justify-between pb-3">
                     <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
                     <DeleteProjectModal />
                 </div>

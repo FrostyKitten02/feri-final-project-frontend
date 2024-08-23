@@ -41,7 +41,7 @@ export const BudgetBreakdown = ({statistics}: BudgetBreakdownProps) => {
                                         {TextUtil.numberFormatter(spentBudget.usedBudget) + " / " + TextUtil.numberFormatter(spentBudget.totalBudget) + " (" + spentBudget.percentage + "%)"}
                                     </div>
                                     <div className="text-muted uppercase text-xs">
-                                        Used staff budget
+                                        Used all time staff budget
                                     </div>
                                 </div>
                             </div>
