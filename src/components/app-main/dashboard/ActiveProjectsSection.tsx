@@ -3,10 +3,9 @@ import {PageInfo, ProjectDto, ProjectListSearchParams} from "../../../../temp_ts
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import TextUtil from "../../../util/TextUtil";
-import {HiCalendar} from "react-icons/hi";
-import {ProgressBar} from "@tremor/react";
-import {Label, Spinner} from "flowbite-react";
+import {Spinner} from "flowbite-react";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
+import {ProjectSectionItem} from "./ProjectSectionItem";
 
 export const ActiveProjectsSection = () => {
     const [relevantProjects, setRelevantProjects] = useState<Array<ProjectDto>>();
@@ -14,7 +13,6 @@ export const ActiveProjectsSection = () => {
     const [pageInfo, setPageInfo] = useState<PageInfo>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const requestArgs = useRequestArgs();
-
     useEffect(() => {
         fetchProjects();
     }, [pageNumber]);
@@ -62,73 +60,14 @@ export const ActiveProjectsSection = () => {
                         </div> :
                         <div className="flex space-x-5 w-full">
                             {
-                                relevantProjects?.map((project, index) => {
+                                (relevantProjects && relevantProjects?.length > 0) ? relevantProjects?.map((project, index) => {
                                     return (
-                                        <div
-                                            key={index}
-                                            className="w-1/2 border-solid border-[1px] rounded-[20px] border-gray-200 pt-5 px-5 space-y-5 flex flex-col">
-                                            <div className="flex flex-row items-center">
-                                                <div
-                                                    className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
-                                                    <HiCalendar className="h-4 w-4 fill-primary"/>
-                                                </div>
-                                                <div className="pl-2 text-xs text-muted">
-                                                    {TextUtil.refactorDate(project.startDate)}
-                                                </div>
-                                                <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
-                                                <div className="pr-2 text-xs text-muted">
-                                                    {TextUtil.refactorDate(project.endDate)}
-                                                </div>
-                                                <div
-                                                    className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
-                                                    <HiCalendar className="h-4 w-4 fill-primary"/>
-                                                </div>
-                                            </div>
-                                            <div className="text-3xl font-semibold text-center py-3">
-                                                {project.title}
-                                            </div>
-                                            <div>
-                                                <ProgressBar
-                                                    value={TextUtil.returnProgress(project?.startDate, project?.endDate)}
-                                                    color="blue"
-                                                    showAnimation={true}
-                                                    className="py-2"
-                                                />
-                                                <div className="text-muted uppercase text-sm">
-                                                    {`Progress: ${Math.floor(TextUtil.returnProgress(project?.startDate, project?.endDate)).toString()}%`}
-                                                </div>
-                                            </div>
-                                            <div className="bg-red-50 flex-grow">
-                                                <div className="h-1/2">
-                                                    <div className="flex flex-row items-center">
-                                                        <div className="w-[7%] h-[1px] bg-gray-300"/>
-                                                        <Label className="px-2 uppercase text-muted">
-                                                            annual report
-                                                        </Label>
-                                                        <div className="flex-grow h-[1px] bg-gray-300"/>
-                                                    </div>
-                                                    <div>
-                                                        report
-                                                    </div>
-                                                </div>
-                                                <div className="h-1/2">
-                                                    <div className="flex flex-row items-center">
-                                                        <div className="w-[7%] h-[1px] bg-gray-300"/>
-                                                        <Label className="px-2 uppercase text-muted">
-                                                            monthly report
-                                                        </Label>
-                                                        <div className="flex-grow h-[1px] bg-gray-300"/>
-                                                    </div>
-                                                    <div>
-                                                        report
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
+                                        <ProjectSectionItem key={index} project={project} />
                                     )
-                                })
-
+                                }):
+                                    <div className="w-full flex items-center text-center justify-center text-muted">
+                                        There currently aren't any active projects.
+                                    </div>
                             }
                         </div>
                 }

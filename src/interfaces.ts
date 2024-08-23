@@ -81,14 +81,6 @@ export interface ManageUsersModalProps {
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface PopoverMenuProps {
-    userId?: string;
-    userEmail?: string;
-    refetchUserList?: () => void;
-    manageProject?: boolean;
-    sidebarOpened?: boolean;
-}
-
 export interface ProgressObject {
     text: string;
     color: string;
@@ -201,17 +193,6 @@ export interface WorkloadTableProps {
     handleEdit: () => void;
 }
 
-export interface DeleteModalProps {
-    id?: string;
-    title?: string;
-    handleDelete?: () => void;
-    teamPage?: boolean;
-    workPackage?: boolean;
-    personName?: string;
-    personLastName?: string;
-    personEmail?: string;
-}
-
 export interface WorkloadModalProps {
     closeModal: () => void;
     modalWidth: string;
@@ -254,10 +235,6 @@ export interface CostTimelineChartProps {
 
 export interface CostTimelineProps {
     stats: ProjectStatisticsResponse;
-}
-
-export interface ManageProjectModalProps {
-    sidebarOpened: boolean;
 }
 
 export interface PopoverItem {
@@ -328,4 +305,24 @@ export interface CurrentlyRelevantData {
 export interface CurrentlyRelevantCurrDate {
     year: string,
     month: string
+}
+
+export interface ActiveProjectsChartData {
+    name: string,
+    Used: number,
+    Available: number
+}
+
+export interface ActiveProjectsChartProps {
+    projectId: string,
+    stateData: ActiveProjectsStateData,
+
+}
+export interface ActiveProjectsStateData {
+    dataPm: Array<ActiveProjectsChartData>,
+    dataBudget: Array<ActiveProjectsChartData>
+}
+
+export interface ProjectSectionItemProps  {
+    project: ProjectDto
 }
