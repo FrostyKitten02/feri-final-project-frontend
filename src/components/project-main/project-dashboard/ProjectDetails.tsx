@@ -152,7 +152,13 @@ export const ProjectDetails = ({project, chosenSchema, handleEditProject}: Proje
                 </div>
                 <div className="flex flex-row items-center w-full bg-gray-300 h-[1px] mb-3" />
                 <div className="flex justify-between pb-3">
-                    <ProjectModal edit={true} popoverEdit={true} projectId={projectId} handleProjectSubmit={handleEditProject}/>
+                    <ProjectModal
+                        edit={true}
+                        project={project}
+                        popoverEdit={true}
+                        projectId={projectId}
+                        handleProjectSubmit={handleEditProject}
+                    />
                     <DeleteProjectModal />
                 </div>
             </div>

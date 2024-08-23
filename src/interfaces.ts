@@ -12,6 +12,7 @@ import * as React from "react";
 import {SelectedItemProps} from "./components/template/inputs/inputsInterface";
 import {ReactElement} from "react";
 import {PopoverBaseProps} from "./components/template/popover-menu/popoverinterfaces";
+import {Color} from "@tremor/react";
 
 export interface SidebarTemplateProps {
     items: ListItem[];
@@ -83,7 +84,7 @@ export interface ManageUsersModalProps {
 
 export interface ProgressObject {
     text: string;
-    color: string;
+    color: Color;
     animation?: string;
 }
 
@@ -91,7 +92,8 @@ export interface ProjectModalProps extends PopoverBaseProps {
     handleProjectSubmit?: () => void;
     edit?: boolean;
     popoverEdit?: boolean;
-    projectId?: string;
+    project?: ProjectDto;
+    projectId?: string
 }
 
 export interface CustomModalErrorProps {

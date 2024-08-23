@@ -95,16 +95,16 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                         </div>
                     </div>
                     <div className="text-3xl font-semibold text-center py-3">
-                        {project.title}
+                        {TextUtil.truncateString(project.title, 70)}
                     </div>
                     <div>
                         <ProgressBar
                             value={TextUtil.returnProgress(project?.startDate, project?.endDate)}
-                            color="blue"
+                            color="amber"
                             showAnimation={true}
                             className="py-2"
                         />
-                        <div className="text-muted uppercase text-sm">
+                        <div className="text-muted text-start uppercase text-sm">
                             {`Progress: ${Math.floor(TextUtil.returnProgress(project?.startDate, project?.endDate)).toString()}%`}
                         </div>
                     </div>
