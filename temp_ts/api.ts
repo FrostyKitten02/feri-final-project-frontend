@@ -3188,14 +3188,12 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
-         * @param {Array<File>} files 
          * @param {string} projectId 
+         * @param {Array<File>} [files] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadProjectFile: async (files: Array<File>, projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'files' is not null or undefined
-            assertParamExists('uploadProjectFile', 'files', files)
+        uploadProjectFile: async (projectId: string, files?: Array<File>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('uploadProjectFile', 'projectId', projectId)
             const localVarPath = `/project/{projectId}/upload-file`
@@ -3210,16 +3208,22 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
 
             if (files) {
-                localVarQueryParameter['files'] = files;
+                files.forEach((element) => {
+                    localVarFormParams.append('files', element as any);
+                })
             }
 
-
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3398,13 +3402,13 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {Array<File>} files 
          * @param {string} projectId 
+         * @param {Array<File>} [files] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadProjectFile(files: Array<File>, projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceCreatedResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadProjectFile(files, projectId, options);
+        async uploadProjectFile(projectId: string, files?: Array<File>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceCreatedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadProjectFile(projectId, files, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.uploadProjectFile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3542,13 +3546,13 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {Array<File>} files 
          * @param {string} projectId 
+         * @param {Array<File>} [files] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadProjectFile(files: Array<File>, projectId: string, options?: any): AxiosPromise<ResourceCreatedResponse> {
-            return localVarFp.uploadProjectFile(files, projectId, options).then((request) => request(axios, basePath));
+        uploadProjectFile(projectId: string, files?: Array<File>, options?: any): AxiosPromise<ResourceCreatedResponse> {
+            return localVarFp.uploadProjectFile(projectId, files, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3709,14 +3713,14 @@ export class ProjectControllerApi extends BaseAPI {
 
     /**
      * 
-     * @param {Array<File>} files 
      * @param {string} projectId 
+     * @param {Array<File>} [files] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectControllerApi
      */
-    public uploadProjectFile(files: Array<File>, projectId: string, options?: RawAxiosRequestConfig) {
-        return ProjectControllerApiFp(this.configuration).uploadProjectFile(files, projectId, options).then((request) => request(this.axios, this.basePath));
+    public uploadProjectFile(projectId: string, files?: Array<File>, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).uploadProjectFile(projectId, files, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

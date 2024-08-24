@@ -70,22 +70,16 @@ export const FileUploadModal = () => {
     e.preventDefault();
     try {
       if (projectId) {
-        const formData = new FormData();
-        for (let i = 0; i < selectedFiles.length; i++) {
-          formData.append("files", selectedFiles[i]);
-        }
-
         const updatedRequestArgs = {
-          body: formData,
           headers: {
             ...requestArgs.headers,
           },
         };
 
         const response = await projectAPI.uploadProjectFile(
-          selectedFiles,
-          projectId,
-          updatedRequestArgs
+            projectId,
+            selectedFiles,
+            updatedRequestArgs
         );
 
         if (response.status === 201 || response.status === 204) {
