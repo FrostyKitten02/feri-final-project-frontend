@@ -54,50 +54,54 @@ export const UpcomingProject = () => {
                     loading ?
                         <div className="flex justify-center items-center h-full w-full">
                             <Spinner size="xl"/>
-                        </div> :
-                        <div className="flex flex-col flex-grow">
-                            <div className="flex flex-row items-center">
-                                <div
-                                    className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
-                                    <HiCalendar className="h-4 w-4 fill-primary"/>
-                                </div>
-                                <div className="pl-2 text-xs text-muted">
-                                    {TextUtil.refactorDate(upcomingProject?.startDate)}
-                                </div>
-                                <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
-                                <div className="pr-2 text-xs text-muted">
-                                    {TextUtil.refactorDate(upcomingProject?.endDate)}
-                                </div>
-                                <div
-                                    className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
-                                    <HiCalendar className="h-4 w-4 fill-primary"/>
-                                </div>
-                            </div>
-                            <div className="text-xl flex items-center justify-center font-semibold text-center py-3 flex-grow">
-                                {TextUtil.truncateString(upcomingProject?.title, 70)}
-                            </div>
-                            <div className="flex flex-row items-center">
-                                <div className="w-[7%] h-[1px] bg-gray-300"/>
-                                <Label className="px-2 uppercase text-muted">
-                                    project details
-                                </Label>
-                                <div className="flex-grow h-[1px] bg-gray-300"/>
-                            </div>
-                            <div className="flex justify-evenly pt-2">
-                                <div className="flex space-x-2 flex-row items-center">
-                                    <LuPackage size="22"/>
-                                    <div className="text-lg">
-                                        {upcomingProject?.workPackageCount}
+                        </div> : upcomingProject ?
+                            <div className="flex flex-col flex-grow">
+                                <div className="flex flex-row items-center">
+                                    <div
+                                        className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
+                                        <HiCalendar className="h-4 w-4 fill-primary"/>
+                                    </div>
+                                    <div className="pl-2 text-xs text-muted">
+                                        {TextUtil.refactorDate(upcomingProject?.startDate)}
+                                    </div>
+                                    <div className="flex-grow mx-2 h-[1px] bg-gray-200"/>
+                                    <div className="pr-2 text-xs text-muted">
+                                        {TextUtil.refactorDate(upcomingProject?.endDate)}
+                                    </div>
+                                    <div
+                                        className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
+                                        <HiCalendar className="h-4 w-4 fill-primary"/>
                                     </div>
                                 </div>
-                                <div className="flex space-x-2 flex-row items-center">
-                                    <IoPeopleOutline size="22"/>
-                                    <div className="text-lg">
-                                        {upcomingProject?.peopleCount}
+                                <div
+                                    className="text-xl flex items-center justify-center font-semibold text-center py-3 flex-grow">
+                                    {TextUtil.truncateString(upcomingProject?.title, 70)}
+                                </div>
+                                <div className="flex flex-row items-center">
+                                    <div className="w-[7%] h-[1px] bg-gray-300"/>
+                                    <Label className="px-2 uppercase text-muted">
+                                        project details
+                                    </Label>
+                                    <div className="flex-grow h-[1px] bg-gray-300"/>
+                                </div>
+                                <div className="flex justify-evenly pt-2">
+                                    <div className="flex space-x-2 flex-row items-center">
+                                        <LuPackage size="22"/>
+                                        <div className="text-lg">
+                                            {upcomingProject?.workPackageCount}
+                                        </div>
+                                    </div>
+                                    <div className="flex space-x-2 flex-row items-center">
+                                        <IoPeopleOutline size="22"/>
+                                        <div className="text-lg">
+                                            {upcomingProject?.peopleCount}
+                                        </div>
                                     </div>
                                 </div>
+                            </div> :
+                            <div className="flex-grow flex items-center justify-center text-muted">
+                                There is no upcoming project.
                             </div>
-                        </div>
                 }
             </div>
             <div
