@@ -63,17 +63,20 @@ export default class TextUtil {
         if (value === 100) {
             return ({
                 text: "finished",
-                color: "emerald"
+                color: "emerald",
+                bgColor: "bg-custom-green"
             })
         } else if (value !== 100 && value !== 0) {
             return ({
                 text: "in progress",
                 color: "amber",
-                animation: "animate-pulse"
+                animation: "animate-pulse",
+                bgColor: "bg-warning"
             })
         } else return ({
             text: "scheduled",
             color: "red",
+            bgColor: "bg-danger"
         })
     }
 
@@ -346,22 +349,28 @@ export default class TextUtil {
 
     static getWorkStatusColors = (month: ProjectMonthDto): string => {
         if (!month.pmBurnDownRate)
-            return ("")
+            return ("bg-c-teal bg-opacity-40");
         const pm = month.pmBurnDownRate ?? 0;
         const total = month.actualTotalWorkPm ?? 0;
+        const percent = total / pm;
+        if (percent < 0.9)
+            return ("bg-warning bg-opacity-40");
         if (total > pm)
-            return ("bg-danger bg-opacity-40")
-        return ("bg-c-teal bg-opacity-40")
+            return ("bg-danger bg-opacity-40");
+        return ("bg-c-teal bg-opacity-40");
     }
 
     static getSpendingStatusColors = (month: ProjectMonthDto): string => {
         if (!month.staffBudgetBurnDownRate)
-            return ("")
+            return ("bg-c-teal bg-opacity-40");
         const pm = month.staffBudgetBurnDownRate ?? 0;
         const total = month.actualMonthSpending ?? 0;
+        const percent = total / pm;
+        if (percent < 0.9)
+            return ("bg-warning bg-opacity-40");
         if (total > pm)
-            return ("bg-danger bg-opacity-40")
-        return ("bg-c-teal bg-opacity-40")
+            return ("bg-danger bg-opacity-40");
+        return ("bg-c-teal bg-opacity-40");
     }
     static getSpentBudgetProps = (stats: ProjectStatisticsResponse | undefined): BudgetBreakdownChartProps => {
         const chartBudget = {
