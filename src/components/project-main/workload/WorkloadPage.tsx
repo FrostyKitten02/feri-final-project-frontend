@@ -102,7 +102,7 @@ export const WorkloadPage = () => {
                             Workload data table
                         </div>
                         <div className="absolute rounded-[20px] text-center text-muted bg-white bottom-[-16px] font-medium right-20 uppercase flex px-2">
-                            {(statistics.workPackages?.length ?? 0) > 0 && (
+                            {(statistics.months?.length ?? 0) > 0 && (
                                 <CustomPagination
                                     totalPages={(Math.ceil((statistics.months?.length ?? 0) / monthsPerPage))}
                                     onPageChange={setCurrentPage}
