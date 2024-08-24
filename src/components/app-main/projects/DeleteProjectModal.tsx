@@ -1,4 +1,3 @@
-import { HiOutlineTrash } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import {
   CustomModal,
@@ -79,10 +78,9 @@ export const DeleteProjectModal = () => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex flex-row items-center justify-start text-red-500 h-full text-sm font-semibold hover:text-red-600 fill-red-500  hover:fill-red-600 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
+        className="flex flex-row items-center justify-start text-red-400 h-full text-sm font-semibold hover:text-danger transition delay-50 gap-x-4"
       >
-        <HiOutlineTrash className="size-5" />
-        <span className="uppercase">permanently delete project</span>
+        <span className="uppercase">delete project</span>
       </button>
       {open && (
         <ModalPortal>

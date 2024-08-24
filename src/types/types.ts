@@ -28,6 +28,9 @@ export type TaskFormFields = {
 
 export type AssignPersonFormFields = {
   person: PersonDto;
+  startDate: string;
+  endDate: string;
+  personMonths: number;
 };
 
 export type PersonTypeFormFields = {

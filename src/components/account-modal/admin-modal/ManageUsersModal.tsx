@@ -139,7 +139,7 @@ export default function ManageUsersModal({
             <div className="flex justify-end">
               <div className="flex flex-col items-end w-[400px]">
                 <UserSearchInput
-                  showResults={true}
+                  showResults={false}
                   inputWidth={250}
                   setSearchQuery={setSearchQuery}
                   inputValue={searchQuery}

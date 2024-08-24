@@ -25,9 +25,9 @@ export const BudgetBreakdown = ({statistics}: BudgetBreakdownProps) => {
                 {
                     statistics?.workPackages && statistics.workPackages.length !== 0 ?
                         <>
-                            <div className="flex flex-grow space-x-5 pt-2">
+                            <div className="flex space-x-5 pt-2">
                                 <ProgressCircle
-                                    value={75}
+                                    value={spentBudget.percentage}
                                     radius={60}
                                     strokeWidth={13}
                                     color="indigo"
@@ -41,19 +41,19 @@ export const BudgetBreakdown = ({statistics}: BudgetBreakdownProps) => {
                                         {TextUtil.numberFormatter(spentBudget.usedBudget) + " / " + TextUtil.numberFormatter(spentBudget.totalBudget) + " (" + spentBudget.percentage + "%)"}
                                     </div>
                                     <div className="text-muted uppercase text-xs">
-                                        Used staff budget
+                                        Used all time staff budget
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex py-5 flex-row items-center">
+                            <div className="flex pt-5 flex-row items-center">
                                 <div className="w-[7%] h-[1px] bg-gray-300"/>
                                 <Label className="px-2 uppercase text-muted">
                                     BUDGET ESTIMATE TRACKER
                                 </Label>
                                 <div className="flex-grow h-[1px] bg-gray-300"/>
                             </div>
-                            <div className="mx-5 pb-5">
-                                <Tracker data={chartData} className={"h-[100px]"}/>
+                            <div className="mx-5 flex-grow">
+                                <Tracker data={chartData} className={"h-full"}/>
                             </div>
                         </> :
                         <div className="h-full flex flex-grow justify-center items-center text-muted">
