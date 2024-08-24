@@ -399,4 +399,28 @@ export default class TextUtil {
         const day = date.slice(8, 10);
         return `${year}-${day}-${month}`;
     }
+    
+  static convertBytesToMB = (size: number): number => {
+    return Math.round((size / 1048576) * 100) / 100;
+  };
+
+  static fileTypeColorMap: { [key: string]: string } = {
+    "application/pdf": "fill-red-600",
+    "application/msword": "fill-c-blue",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      "fill-c-blue",
+    "application/vnd.ms-excel": "fill-green-700",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+      "fill-green-700",
+    "text/csv": "fill-green-700",
+    "application/vnd.ms-powerpoint": "fill-orange-400",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+      "fill-orange-400",
+    "application/zip": "fill-purple-600",
+    "application/vnd.rar": "fill-purple-600",
+  };
+
+  static returnFileTypeColor = (file: File): string => {
+    return TextUtil.fileTypeColorMap[file.type] || "fill-gray-500";
+  };
 }

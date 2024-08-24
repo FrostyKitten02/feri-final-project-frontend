@@ -60,3 +60,11 @@ export type DeleteConfirmationFields = {
 export type DeleteTeamModalFields = {
   email: string;
 };
+
+export type FileUploadModalFields = {
+  files: Array<File>;
+};
+
+export type DeleteFileModalFields = {
+  fileId: string;
+};

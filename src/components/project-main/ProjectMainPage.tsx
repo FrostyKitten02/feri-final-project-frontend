@@ -7,6 +7,7 @@ import {LuLayoutDashboard, LuPackageOpen} from "react-icons/lu";
 import {FaChartBar} from "react-icons/fa6";
 import {IoPeopleOutline} from "react-icons/io5";
 import {MdOutlineWorkOutline} from "react-icons/md";
+import { FaRegFolderOpen } from "react-icons/fa6";
 
 function ProjectMainPage() {
     const {projectId} = useParams();
@@ -35,7 +36,12 @@ function ProjectMainPage() {
             name: "workload",
             linkPath: TextUtil.constructValidRoutePath(Paths.WORKLOAD, ":projectId", projectId ?? ""),
             iconComponent: (props) => <MdOutlineWorkOutline {...props}/>
-        }
+        },
+        {
+            name: "file manager",
+            linkPath: TextUtil.constructValidRoutePath(Paths.FILE_MANAGER, ":projectId", projectId ?? ""),
+            iconComponent: (props) => <FaRegFolderOpen {...props} />
+         }
     ]
 
     return (
