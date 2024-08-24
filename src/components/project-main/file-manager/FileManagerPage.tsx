@@ -9,6 +9,10 @@ import { Spinner } from "flowbite-react";
 import { FaRegFileAlt } from "react-icons/fa";
 import TextUtil from "../../../util/TextUtil";
 import { DeleteFileModal } from "./DeleteFileModal";
+import Popover from "../../template/popover-menu/Popover";
+import { PopoverItem } from "../../../interfaces";
+import { BsThreeDots } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 export const FileManagerPage = () => {
   const [projectFiles, setProjectFiles] = useState<ProjectFilesResponse>();
@@ -38,6 +42,28 @@ export const FileManagerPage = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const downloadFile = async (fileId?: string): Promise<void> => {
+    await toast.promise(
+      async () => {
+        if (fileId) {
+          const response = await projectAPI.download(fileId, requestArgs);
+          if (response.status === 200) {
+            return true;
+          } else {
+            throw new Error("Failed to download the file.");
+          }
+        } else {
+          throw new Error("File id not found.");
+        }
+      },
+      {
+        pending: "Downloading file...",
+        success: "File successfully downloaded.",
+        error: "An error occured while trying to download the file.",
+      }
+    );
   };
 
   return (
@@ -77,37 +103,62 @@ export const FileManagerPage = () => {
               </div>
               <div className="flex-grow overflow-y-auto px-3">
                 <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
-                  {projectFiles.files.map((file, index) => (
-                    <div
-                      className="grid grid-cols-[80px_1fr_1fr_1fr_1fr] py-6"
-                      key={index}
-                    >
-                      <div className="flex justify-end items-center">
-                        <FaRegFileAlt className="size-6 fill-c-blue" />
+                  {projectFiles.files.map((file, index) => {
+                    const popoverItems: PopoverItem[] = [
+                      {
+                        component: (
+                          <DeleteFileModal
+                            file={file}
+                            refetchFileList={fetchProjectFiles}
+                          />
+                        ),
+                        label: "Delete",
+                      },
+                      {
+                        component: (
+                          <button onClick={() => downloadFile(file?.id)} />
+                        ),
+                        label: "Download",
+                      },
+                    ];
+
+                    return (
+                      <div
+                        className="grid grid-cols-[80px_1fr_1fr_1fr_1fr] py-6"
+                        key={index}
+                      >
+                        <div className="flex justify-end items-center">
+                          <FaRegFileAlt className="size-6 fill-c-blue" />
+                        </div>
+                        <div className="flex flex-row items-center justify-center px-8">
+                          <p className="text-normal font-semibold text-center">
+                            {file.originalFileName}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <p className="text-normal text-muted">
+                            {file.fileSizeMB}MB
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <p className="text-normal text-muted">
+                            {TextUtil.refactorDate(file.createdAt)}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-center relative">
+                          <Popover
+                            items={popoverItems}
+                            height={28}
+                            width={36}
+                            position="bottom"
+                            triggerIcon={
+                              <BsThreeDots className="size-6 fill-gray-700 hover:fill-primary transition delay-50" />
+                            }
+                          />
+                        </div>
                       </div>
-                      <div className="flex flex-row items-center justify-center px-8">
-                        <p className="text-normal font-semibold text-center">
-                          {file.originalFileName}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-center">
-                        <p className="text-normal text-muted">
-                          {file.fileSizeMB}MB
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-center">
-                        <p className="text-normal text-muted">
-                          {TextUtil.refactorDate(file.createdAt)}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-center">
-                        <DeleteFileModal
-                          file={file}
-                          refetchFileList={fetchProjectFiles}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>

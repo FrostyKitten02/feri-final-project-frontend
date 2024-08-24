@@ -257,7 +257,7 @@ export interface ManageProjectModalProps {
 
 export interface PopoverItem {
   component: React.ReactElement;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   label: string;
 }
 
@@ -311,7 +311,7 @@ export interface FileUploadModalProps {
   refetchFileList: () => void;
 }
 
-export interface DeleteFileModalProps {
+export interface DeleteFileModalProps extends PopoverBaseProps {
   file: ProjectFileDto;
   refetchFileList: () => void;
 }

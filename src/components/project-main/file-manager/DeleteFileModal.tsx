@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DeleteFileModalFields } from "../../../types/types";
@@ -22,11 +21,16 @@ import { projectAPI } from "../../../util/ApiDeclarations";
 export const DeleteFileModal = ({
   file,
   refetchFileList,
+  isOpen,
+  onClose,
 }: DeleteFileModalProps) => {
-  const [open, setOpen] = useState<boolean>(false);
   const requestArgs = useRequestArgs();
 
   const { handleSubmit } = useForm<DeleteFileModalFields>();
+
+  const handleModalClose = (): void => {
+    onClose?.();
+  };
 
   const onDelete: SubmitHandler<
     DeleteFileModalFields
@@ -38,7 +42,6 @@ export const DeleteFileModal = ({
           requestArgs
         );
         if (response.status === 200) {
-          setOpen(false);
           refetchFileList();
           toastSuccess(
             `File ${file.originalFileName} was successfully deleted.`
@@ -52,42 +55,37 @@ export const DeleteFileModal = ({
     }
   };
 
+  if (!isOpen) return null;
+
   return (
     <>
-      <button onClick={() => setOpen(true)}>
-        <span className="text-normal font-semibold text-muted hover:text-danger">
-          Delete file
-        </span>
-      </button>
-      {open && (
-        <ModalPortal>
-          <CustomModal closeModal={() => setOpen(false)}>
-            <form onSubmit={handleSubmit(onDelete)}>
-              <CustomModalHeader handleModalClose={() => setOpen(false)}>
-                <ModalTitle>delete file</ModalTitle>
-                <ModalText contentColor="danger" showIcon={true}>
-                  This action <span className="font-semibold"> cannot </span> be
-                  undone!
-                  <span className="font-semibold">
-                    {" "}
-                    {file.originalFileName}{" "}
-                  </span>
-                  will be <span className="font-semibold"> permanently </span>{" "}
-                  deleted.
-                </ModalText>
-              </CustomModalHeader>
-              <CustomModalBody>
-                <div className="font-semibold">
-                  Are you sure you want to delete {file.originalFileName}?
-                </div>
-              </CustomModalBody>
-              <CustomModalFooter danger={true}>
-                I understand, permanently delete.
-              </CustomModalFooter>
-            </form>
-          </CustomModal>
-        </ModalPortal>
-      )}
+      <ModalPortal>
+        <CustomModal closeModal={handleModalClose}>
+          <form onSubmit={handleSubmit(onDelete)}>
+            <CustomModalHeader handleModalClose={handleModalClose}>
+              <ModalTitle>delete file</ModalTitle>
+              <ModalText contentColor="danger" showIcon={true}>
+                This action <span className="font-semibold"> cannot </span> be
+                undone!
+                <span className="font-semibold"> {file.originalFileName} </span>
+                will be <span className="font-semibold">
+                  {" "}
+                  permanently{" "}
+                </span>{" "}
+                deleted.
+              </ModalText>
+            </CustomModalHeader>
+            <CustomModalBody>
+              <div className="font-semibold">
+                Are you sure you want to delete {file.originalFileName}?
+              </div>
+            </CustomModalBody>
+            <CustomModalFooter danger={true}>
+              I understand, permanently delete.
+            </CustomModalFooter>
+          </form>
+        </CustomModal>
+      </ModalPortal>
     </>
   );
 };

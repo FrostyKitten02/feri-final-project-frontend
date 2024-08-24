@@ -9,7 +9,7 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { FaFileCirclePlus } from "react-icons/fa6";
+import { MdOutlineFileUpload } from "react-icons/md";
 import { toastWarning } from "../../toast-modals/ToastFunctions";
 import { FaRegFileAlt } from "react-icons/fa";
 import TextUtil from "../../../util/TextUtil";
@@ -130,13 +130,13 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
   return (
     <>
       <button onClick={() => setModalOpen(true)}>
-        <FaFileCirclePlus className="fill-black size-12 hover:fill-primary transition delay-50" />
+        <MdOutlineFileUpload className="fill-black size-16 hover:fill-primary transition delay-50" />
       </button>
       {modalOpen && (
         <ModalPortal>
           <CustomModal closeModal={onClose} modalWidth="800px">
             <CustomModalHeader handleModalClose={onClose}>
-              <ModalTitle>upload file</ModalTitle>
+              <ModalTitle>upload files</ModalTitle>
               <ModalText showIcon={true} contentColor="muted">
                 Upload any documents related to the project.
               </ModalText>
@@ -150,7 +150,7 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
                       isDragActive && `border-c-blue bg-gray-100`
                     } dropzone flex flex-col justify-center items-center gap-y-2 h-[300px] w-full border-4 border-gray-300 rounded-2xl border-dashed cursor-pointer hover:border-c-blue transition delay-50`}
                   >
-                    <FaFileCirclePlus className="fill-gray-300 size-20 pb-6" />
+                    <MdOutlineFileUpload className="fill-gray-300 size-24 pb-2" />
                     <p className="text-2xl font-semibold">
                       Drag and drop your files here or browse
                     </p>
@@ -204,7 +204,7 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
                     ))}
                 </div>
               </CustomModalBody>
-              <CustomModalFooter>import</CustomModalFooter>
+              <CustomModalFooter>upload</CustomModalFooter>
             </form>
           </CustomModal>
         </ModalPortal>
