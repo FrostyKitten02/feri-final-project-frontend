@@ -1,11 +1,13 @@
 import {
-    ProjectBudgetSchemaDto,
-    PersonDto,
-    ProjectDto,
-    ProjectStatisticsResponse,
-    TaskDto,
-    WorkPackageDto,
-    PersonWorkDto, ProjectMonthDto,
+  ProjectBudgetSchemaDto,
+  PersonDto,
+  ProjectDto,
+  ProjectStatisticsResponse,
+  TaskDto,
+  WorkPackageDto,
+  PersonWorkDto,
+  ProjectMonthDto,
+  ProjectFileDto
 } from "../temp_ts";
 import {ControllerRenderProps, FieldValues, Path} from "react-hook-form";
 import * as React from "react";
@@ -240,9 +242,9 @@ export interface CostTimelineProps {
 }
 
 export interface PopoverItem {
-    component: React.ReactElement;
-    icon: React.ReactNode;
-    label: string;
+  component: React.ReactElement;
+  icon?: React.ReactNode;
+  label: string;
 }
 
 export interface PopoverProps {
@@ -269,13 +271,18 @@ export interface DeleteTeamModalProps {
 }
 
 export interface BudgetBreakdownProps {
-    statistics: ProjectStatisticsResponse | undefined
+  statistics: ProjectStatisticsResponse | undefined;
 }
 
 export interface BudgetBreakdownChartProps {
-    usedBudget: number,
-    totalBudget: number,
-    percentage: number
+  usedBudget: number;
+  totalBudget: number;
+  percentage: number;
+}
+
+export interface BudgetBreakdownTrackerData {
+  color: string;
+  tooltip: string;
 }
 
 export interface BudgetBreakdownTrackerData {
@@ -284,12 +291,12 @@ export interface BudgetBreakdownTrackerData {
 }
 
 export interface UserDetailsChartData {
-    name: string,
-    value: number
+  name: string;
+  value: number;
 }
 
 export interface UserDetailsProps {
-    projectsStatus: Array<UserDetailsChartData>
+  projectsStatus: Array<UserDetailsChartData>;
 }
 
 export interface CurrentlyRelevantChartData {
@@ -327,4 +334,13 @@ export interface ActiveProjectsStateData {
 
 export interface ProjectSectionItemProps  {
     project: ProjectDto
+}
+
+export interface FileUploadModalProps {
+  refetchFileList: () => void;
+}
+
+export interface DeleteFileModalProps extends PopoverBaseProps {
+  file: ProjectFileDto;
+  refetchFileList: () => void;
 }
