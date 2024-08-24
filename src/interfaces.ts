@@ -6,6 +6,7 @@ import {
   TaskDto,
   WorkPackageDto,
   PersonWorkDto,
+  ProjectFileDto,
 } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
@@ -215,7 +216,7 @@ export interface WorkloadModalProps {
   monthDate: string;
   person: PersonWorkDto;
   handleEdit: () => void;
-  personal: PersonDto | undefined
+  personal: PersonDto | undefined;
 }
 export interface DonutGraphData {
   name: string;
@@ -284,24 +285,33 @@ export interface DeleteTeamModalProps {
 }
 
 export interface BudgetBreakdownProps {
-  statistics: ProjectStatisticsResponse | undefined
+  statistics: ProjectStatisticsResponse | undefined;
 }
 
 export interface BudgetBreakdownChartProps {
-  usedBudget: number,
-  totalBudget: number,
-  percentage: number
+  usedBudget: number;
+  totalBudget: number;
+  percentage: number;
 }
 
 export interface BudgetBreakdownTrackerData {
-  color: string,
-  tooltip: string
+  color: string;
+  tooltip: string;
 }
 export interface UserDetailsChartData {
-  name: string,
-  value: number
+  name: string;
+  value: number;
 }
 
 export interface UserDetailsProps {
-  projectsStatus: Array<UserDetailsChartData>
+  projectsStatus: Array<UserDetailsChartData>;
+}
+
+export interface FileUploadModalProps {
+  refetchFileList: () => void;
+}
+
+export interface DeleteFileModalProps {
+  file: ProjectFileDto;
+  refetchFileList: () => void;
 }

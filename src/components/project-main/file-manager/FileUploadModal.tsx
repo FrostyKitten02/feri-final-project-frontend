@@ -3,17 +3,14 @@ import ModalPortal from "../../template/modal/ModalPortal";
 import {
   CustomModal,
   CustomModalBody,
+  CustomModalError,
   CustomModalFooter,
   CustomModalHeader,
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
 import { FaFileCirclePlus } from "react-icons/fa6";
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../toast-modals/ToastFunctions";
+import { toastWarning } from "../../toast-modals/ToastFunctions";
 import { FaRegFileAlt } from "react-icons/fa";
 import TextUtil from "../../../util/TextUtil";
 import { useDropzone } from "react-dropzone";
@@ -22,17 +19,29 @@ import { MdClear } from "react-icons/md";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { useParams } from "react-router-dom";
 import { projectAPI } from "../../../util/ApiDeclarations";
+import { toast } from "react-toastify";
+import { FileUploadModalProps } from "../../../interfaces";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FileUploadModalFields } from "../../../types/types";
 
-export const FileUploadModal = () => {
+export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedFiles, setSelectedFiles] = useState<Array<File>>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const requestArgs = useRequestArgs();
   const { projectId } = useParams();
 
+  const { handleSubmit, reset, setValue, getValues, clearErrors } =
+    useForm<FileUploadModalFields>({
+      defaultValues: {
+        files: [],
+      },
+    });
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const totalFiles = selectedFiles.length + acceptedFiles.length;
+      const currentFiles = getValues("files");
+      const totalFiles = currentFiles.length + acceptedFiles.length;
       if (totalFiles > 3) {
         toastWarning("Only 3 files are allowed to be uploaded at once.");
         return;
@@ -46,7 +55,7 @@ export const FileUploadModal = () => {
           return false;
         }
         if (
-          selectedFiles.some(
+          currentFiles.some(
             (f) =>
               f.name === file.name &&
               f.size === file.size &&
@@ -59,48 +68,62 @@ export const FileUploadModal = () => {
         return true;
       });
 
-      setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      setValue("files", [...currentFiles, ...validFiles], {
+        shouldValidate: true,
+      });
+      clearErrors("files");
+      setFileError(null);
     },
-    [selectedFiles]
+    [setValue, setValue, clearErrors]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault();
-    try {
-      if (projectId) {
-        const updatedRequestArgs = {
-          headers: {
-            ...requestArgs.headers,
-          },
-        };
-
-        const response = await projectAPI.uploadProjectFile(
-            projectId,
-            selectedFiles,
-            updatedRequestArgs
-        );
-
-        if (response.status === 201 || response.status === 204) {
-          toastSuccess("Files successfully imported");
-          setSelectedFiles([]);
-          setModalOpen(false);
-        }
-      } else {
-        toastWarning("Project id not found.");
-      }
-    } catch (error: any) {
-      toastError(error.message);
+  const handleFileSubmit: SubmitHandler<FileUploadModalFields> = async (
+    data
+  ): Promise<void> => {
+    if (data.files.length === 0) {
+      setFileError("Please select a file.");
+      return;
     }
+    await toast.promise(
+      async () => {
+        if (projectId) {
+          const response = await projectAPI.uploadProjectFile(
+            projectId,
+            data.files,
+            requestArgs
+          );
+
+          if (response.status === 201 || response.status === 204) {
+            reset();
+            setModalOpen(false);
+            refetchFileList();
+          }
+        } else {
+          throw new Error("Project id not found.");
+        }
+      },
+      {
+        pending: "Files uploading...",
+        success: "Files were successfully uploaded.",
+        error: "An error occured during upload.",
+      }
+    );
   };
 
   const removeFile = (file: File): void => {
-    setSelectedFiles((prevFiles) => prevFiles.filter((f) => f !== file));
+    const currentFiles = getValues("files");
+    setValue(
+      "files",
+      currentFiles.filter((f) => f !== file)
+    );
   };
 
   const onClose = (): void => {
-    setSelectedFiles([]);
+    reset();
+    clearErrors("files");
+    setFileError(null);
     setModalOpen(false);
   };
 
@@ -118,7 +141,7 @@ export const FileUploadModal = () => {
                 Upload any documents related to the project.
               </ModalText>
             </CustomModalHeader>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(handleFileSubmit)}>
               <CustomModalBody>
                 <div className="flex flex-col w-full h-full gap-y-2">
                   <div
@@ -139,6 +162,7 @@ export const FileUploadModal = () => {
                       type="file"
                       className="hidden"
                     />
+                    {fileError && <CustomModalError error={fileError} />}
                   </div>
                   <div className="flex items-start justify-between pb-4 w-full">
                     <p className="text-normal text-muted font-medium">
@@ -148,8 +172,8 @@ export const FileUploadModal = () => {
                       Files per upload: 3
                     </p>
                   </div>
-                  {selectedFiles.length > 0 &&
-                    selectedFiles.map((file, index) => (
+                  {getValues("files").length > 0 &&
+                    getValues("files").map((file, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, height: 0 }}
@@ -168,7 +192,7 @@ export const FileUploadModal = () => {
                             {file.name}
                           </p>
                           <p className="text-muted font-normal text-lg">
-                            {TextUtil.convertBytesToMB(file.size)} MB
+                            {TextUtil.convertBytesToMB(file.size)}MB
                           </p>
                         </div>
                         <div className="flex items-center">
