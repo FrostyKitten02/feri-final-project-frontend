@@ -36,7 +36,7 @@ export const FileManagerPage = () => {
           file manager
         </div>
         <div className="absolute right-[-25px] top-[-30px]">
-          <div className="bg-white py-2">
+          <div className="bg-white py-2 px-2">
             <FileUploadModal />
           </div>
         </div>
