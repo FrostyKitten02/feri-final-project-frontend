@@ -86,6 +86,7 @@ export interface ProgressObject {
     text: string;
     color: Color;
     animation?: string;
+    bgColor?: string
 }
 
 export interface ProjectModalProps extends PopoverBaseProps {
@@ -283,13 +284,14 @@ export interface BudgetBreakdownTrackerData {
     tooltip: string
 }
 
+export interface UserDetailsProjectData {
+    all: number,
+    active: number
+}
+
 export interface UserDetailsChartData {
     name: string,
     value: number
-}
-
-export interface UserDetailsProps {
-    projectsStatus: Array<UserDetailsChartData>
 }
 
 export interface CurrentlyRelevantChartData {
