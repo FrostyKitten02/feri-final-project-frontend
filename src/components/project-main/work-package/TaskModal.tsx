@@ -18,7 +18,6 @@ import {
   CustomModalError,
   CustomModalFooter,
 } from "../../template/modal/CustomModal";
-import { FaPlus } from "react-icons/fa6";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export default function TaskModal({

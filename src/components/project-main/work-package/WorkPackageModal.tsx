@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { CreateWorkPackageRequest } from "../../../../temp_ts";
 import { WorkPackageModalProps } from "../../../interfaces";
