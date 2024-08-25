@@ -1,8 +1,8 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Paths from "../../util/Paths";
-import DashboardImage from "../../assets/images/test.png";
 import steerLogoPath from "../../assets/images/steer_logo_black.png";
+import dashboardPath from "../../assets/images/steer_landing_page_dashboard.png";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function LandingPage() {
         <div className="flex flex-col w-full h-full">
           <div className="flex flex-row w-full h-[80px] items-center px-12 pt-4 justify-between bg-white">
             <div className="flex flex-row w-full">
-              <img src={steerLogoPath} className="max-w-full h-20" />
+              <img src={steerLogoPath} className="max-w-full h-20" alt="steer logo" />
             </div>
             <div className="flex flex-row w-full gap-x-8 justify-end items-center">
               <button onClick={() => navigate(Paths.SIGN_IN)}>
@@ -35,15 +35,14 @@ export default function LandingPage() {
                     Steer Your Projects to Success.
                   </h1>
                   <h1 className="font-extrabold text-6xl">
-                    Simplify Accounting, Amplify Productivity.
+                    Simplify Management, Amplify Productivity.
                   </h1>
                 </div>
                 <div>
                   <p className="text-xl text-gray-600 font-normal">
                     Steer streamlines project management by letting you create
                     projects, set budgets, assign tasks, and manage team
-                    workloads. Track progress and stay on budget with an
-                    intuitive dashboard, all in one easy-to-use platform.
+                    workloads. Track progress and stay on budget.
                   </p>
                 </div>
                 <div className="pt-6">
@@ -57,10 +56,9 @@ export default function LandingPage() {
                   </button>
                 </div>
               </div>
-              <div className="flex w-1/2 justify-end h-full items-center">
-                <div className="flex flex-col bg-white w-[800px] rounded-l-3xl justify-center drop-shadow-2xl">
-                  <img className="rounded-l-3xl" src={DashboardImage}></img>
-                  placeholder image
+              <div className="flex w-[60%] justify-end items-center">
+                <div className="flex bg-white rounded-l-3xl justify-center drop-shadow-2xl">
+                  <img className="rounded-l-3xl" src={dashboardPath} alt="dashboard"></img>
                 </div>
               </div>
             </div>

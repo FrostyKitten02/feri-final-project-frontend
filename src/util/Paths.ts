@@ -15,4 +15,6 @@ export default class Paths {
     public static readonly PROJECT_DASHBOARD = Paths.PROJECT + "/project-dashboard"
     public static readonly PROJECT_OVERVIEW = Paths.PROJECT + "/overview"
     public static readonly WORKLOAD =  Paths.PROJECT + "/workload";
+    public static readonly FILE_MANAGER = Paths.PROJECT + "/file-manager"
+    public static readonly REPORT = Paths.PROJECT + "/report"
 }

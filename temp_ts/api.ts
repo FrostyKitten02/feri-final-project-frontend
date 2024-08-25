@@ -34,7 +34,25 @@ export interface AddPersonToProjectRequest {
      * @type {string}
      * @memberof AddPersonToProjectRequest
      */
-    'personId'?: string;
+    'personId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddPersonToProjectRequest
+     */
+    'from': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddPersonToProjectRequest
+     */
+    'to'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof AddPersonToProjectRequest
+     */
+    'estimatedPm': number;
 }
 /**
  * 
@@ -958,6 +976,56 @@ export interface ProjectDto {
      * @memberof ProjectDto
      */
     'indirectBudget'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ProjectFileDto
+ */
+export interface ProjectFileDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectFileDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectFileDto
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectFileDto
+     */
+    'contentType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectFileDto
+     */
+    'originalFileName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectFileDto
+     */
+    'fileSizeMB'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ProjectFilesResponse
+ */
+export interface ProjectFilesResponse {
+    /**
+     * 
+     * @type {Array<ProjectFileDto>}
+     * @memberof ProjectFilesResponse
+     */
+    'files'?: Array<ProjectFileDto>;
 }
 /**
  * 
@@ -2771,6 +2839,72 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
+         * @param {string} projectFileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteProjectFile: async (projectFileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectFileId' is not null or undefined
+            assertParamExists('deleteProjectFile', 'projectFileId', projectFileId)
+            const localVarPath = `/project/file/{projectFileId}`
+                .replace(`{${"projectFileId"}}`, encodeURIComponent(String(projectFileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} projectFileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        download: async (projectFileId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectFileId' is not null or undefined
+            assertParamExists('download', 'projectFileId', projectFileId)
+            const localVarPath = `/project/file/{projectFileId}`
+                .replace(`{${"projectFileId"}}`, encodeURIComponent(String(projectFileId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} projectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2812,6 +2946,39 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('getProject', 'projectId', projectId)
             const localVarPath = `/project/{projectId}`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProjectFiles: async (projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectId' is not null or undefined
+            assertParamExists('getProjectFiles', 'projectId', projectId)
+            const localVarPath = `/project/{projectId}/files`
                 .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3025,6 +3192,50 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {Array<File>} [files] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadProjectFile: async (projectId: string, files?: Array<File>, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectId' is not null or undefined
+            assertParamExists('uploadProjectFile', 'projectId', projectId)
+            const localVarPath = `/project/{projectId}/upload-file`
+                .replace(`{${"projectId"}}`, encodeURIComponent(String(projectId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+            if (files) {
+                files.forEach((element) => {
+                    localVarFormParams.append('files', element as any);
+                })
+            }
+
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3074,6 +3285,30 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} projectFileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteProjectFile(projectFileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteProjectFile(projectFileId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.deleteProjectFile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} projectFileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async download(projectFileId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<File>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.download(projectFileId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.download']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} projectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3094,6 +3329,18 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getProject(projectId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.getProject']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getProjectFiles(projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectFilesResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectFiles(projectId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.getProjectFiles']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -3159,6 +3406,19 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
             const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.updateProject']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {Array<File>} [files] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadProjectFile(projectId: string, files?: Array<File>, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResourceCreatedResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadProjectFile(projectId, files, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.uploadProjectFile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -3199,6 +3459,24 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {string} projectFileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteProjectFile(projectFileId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteProjectFile(projectFileId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} projectFileId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        download(projectFileId: string, options?: any): AxiosPromise<File> {
+            return localVarFp.download(projectFileId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} projectId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3214,6 +3492,15 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
          */
         getProject(projectId: string, options?: any): AxiosPromise<GetProjectResponse> {
             return localVarFp.getProject(projectId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProjectFiles(projectId: string, options?: any): AxiosPromise<ProjectFilesResponse> {
+            return localVarFp.getProjectFiles(projectId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3263,6 +3550,16 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
         updateProject(projectId: string, updateProjectRequest: UpdateProjectRequest, options?: any): AxiosPromise<UpdateProjectResponse> {
             return localVarFp.updateProject(projectId, updateProjectRequest, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {string} projectId 
+         * @param {Array<File>} [files] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadProjectFile(projectId: string, files?: Array<File>, options?: any): AxiosPromise<ResourceCreatedResponse> {
+            return localVarFp.uploadProjectFile(projectId, files, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -3309,6 +3606,28 @@ export class ProjectControllerApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} projectFileId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public deleteProjectFile(projectFileId: string, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).deleteProjectFile(projectFileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectFileId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public download(projectFileId: string, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).download(projectFileId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {string} projectId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3327,6 +3646,17 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public getProject(projectId: string, options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).getProject(projectId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public getProjectFiles(projectId: string, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).getProjectFiles(projectId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3385,6 +3715,18 @@ export class ProjectControllerApi extends BaseAPI {
      */
     public updateProject(projectId: string, updateProjectRequest: UpdateProjectRequest, options?: RawAxiosRequestConfig) {
         return ProjectControllerApiFp(this.configuration).updateProject(projectId, updateProjectRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} projectId 
+     * @param {Array<File>} [files] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProjectControllerApi
+     */
+    public uploadProjectFile(projectId: string, files?: Array<File>, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).uploadProjectFile(projectId, files, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

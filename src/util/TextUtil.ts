@@ -1,4 +1,4 @@
-import {ProjectDto, ProjectMonthDto, ProjectStatisticsResponse, TaskDto, WorkPackageDto} from "../../temp_ts";
+import {ProjectMonthDto, ProjectStatisticsResponse, TaskDto, WorkPackageDto} from "../../temp_ts";
 import {
     BudgetBreakdownChartProps,
     ProgressObject,
@@ -9,17 +9,6 @@ import {
 export default class TextUtil {
     static replaceSpaces(value: string): string {
         return value.replace(/ /g, "-");
-    }
-
-    static getRelevantProjects(projects: ProjectDto []): ProjectDto[] {
-        const today = new Date();
-        const filteredProjects = projects.filter(project => {
-            if (!project.endDate)
-                return false;
-            const endDate = new Date(project.endDate);
-            return endDate > today;
-        })
-        return (filteredProjects);
     }
 
     static refactorDate(value: string | undefined): string {
@@ -74,17 +63,20 @@ export default class TextUtil {
         if (value === 100) {
             return ({
                 text: "finished",
-                color: "bg-custom-green"
+                color: "emerald",
+                bgColor: "bg-custom-green"
             })
         } else if (value !== 100 && value !== 0) {
             return ({
                 text: "in progress",
-                color: "bg-custom-yellow",
-                animation: "animate-pulse"
+                color: "amber",
+                animation: "animate-pulse",
+                bgColor: "bg-warning"
             })
         } else return ({
             text: "scheduled",
-            color: "bg-danger",
+            color: "red",
+            bgColor: "bg-danger"
         })
     }
 
@@ -357,22 +349,28 @@ export default class TextUtil {
 
     static getWorkStatusColors = (month: ProjectMonthDto): string => {
         if (!month.pmBurnDownRate)
-            return ("")
+            return ("bg-c-teal bg-opacity-40");
         const pm = month.pmBurnDownRate ?? 0;
         const total = month.actualTotalWorkPm ?? 0;
+        const percent = total / pm;
+        if (percent < 0.9)
+            return ("bg-warning bg-opacity-40");
         if (total > pm)
-            return ("bg-danger bg-opacity-40")
-        return ("bg-c-teal bg-opacity-40")
+            return ("bg-danger bg-opacity-40");
+        return ("bg-c-teal bg-opacity-40");
     }
 
     static getSpendingStatusColors = (month: ProjectMonthDto): string => {
         if (!month.staffBudgetBurnDownRate)
-            return ("")
+            return ("bg-c-teal bg-opacity-40");
         const pm = month.staffBudgetBurnDownRate ?? 0;
         const total = month.actualMonthSpending ?? 0;
+        const percent = total / pm;
+        if (percent < 0.9)
+            return ("bg-warning bg-opacity-40");
         if (total > pm)
-            return ("bg-danger bg-opacity-40")
-        return ("bg-c-teal bg-opacity-40")
+            return ("bg-danger bg-opacity-40");
+        return ("bg-c-teal bg-opacity-40");
     }
     static getSpentBudgetProps = (stats: ProjectStatisticsResponse | undefined): BudgetBreakdownChartProps => {
         const chartBudget = {
@@ -401,4 +399,35 @@ export default class TextUtil {
         const day = date.slice(8, 10);
         return `${year}-${day}-${month}`;
     }
+    
+  static convertBytesToMB = (size: number): number => {
+    return Math.round((size / 1048576) * 100) / 100;
+  };
+
+  static fileTypeColorMap: { [key: string]: string } = {
+    "application/pdf": "fill-red-600",
+    "application/msword": "fill-c-blue",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      "fill-c-blue",
+    "application/vnd.ms-excel": "fill-green-700",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+      "fill-green-700",
+    "text/csv": "fill-green-700",
+    "application/vnd.ms-powerpoint": "fill-orange-400",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+      "fill-orange-400",
+    "application/zip": "fill-purple-600",
+    "application/vnd.rar": "fill-purple-600",
+  };
+
+  static returnFileTypeColor = (type: string): string => {
+    return TextUtil.fileTypeColorMap[type] || "fill-gray-500";
+  };
+
+  static returnMonthYear = (dateStr: string): string => {
+      const date = new Date(dateStr);
+      const monthName = date.toLocaleString('default', { month: 'long' });
+      const year = date.getFullYear();
+      return (monthName + ", " + year)
+  }
 }

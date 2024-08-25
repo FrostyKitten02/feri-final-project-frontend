@@ -1,7 +1,8 @@
 import {ProjectListStatusResponse, ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
 import {
+    ActiveProjectsStateData,
     BudgetBreakdownTrackerData,
-    CostTimelineChartProps, CurrentlyRelevantData,
+    CostTimelineChartProps, CurrentlyRelevantData, ReportPageChartData,
     UserDetailsChartData,
     WorkDetailsLineChartProps
 } from "../interfaces";
@@ -142,6 +143,12 @@ export default class ChartUtil {
                     };
                 }
             }
+            if (month.staffBudgetBurnDownRate && (month.staffBudgetBurnDownRate > 0 && month.actualMonthSpending === 0)) {
+                return {
+                    tooltip: TextUtil.refactorDate(month.date) + ": Under 90% of estimated budget.",
+                    color: "amber"
+                };
+            }
             return {
                 tooltip: TextUtil.refactorDate(month.date) + ": No work needed.",
                 color: "green"
@@ -220,6 +227,100 @@ export default class ChartUtil {
         return ({
             chartData: chartData,
             barColor: ["blue", color],
+        })
+    }
+
+    static getActiveProjectsBarChartData = (project: ProjectStatisticsResponse): ActiveProjectsStateData => {
+        let actualPmYear = 0;
+        let assignedPmYear = 0;
+        let actualBudgetYear = 0;
+        let assignedBudgetYear = 0;
+        let actualPmMonth = 0;
+        let assignedBudgetMonth = 0;
+        let actualBudgetMonth = 0;
+        let assignedPmMonth = 0;
+        const currentYear = new Date().getFullYear().toString();
+        const currentMonth = (new Date().getMonth() + 1).toString();
+        const currentMonthName = new Date().toLocaleString('default', {month: 'long'});
+        project.months?.forEach(month => {
+            if (month.date?.includes(currentYear)) {
+                assignedPmYear += month.pmBurnDownRate ?? 0;
+                actualPmYear += month.actualTotalWorkPm ?? 0;
+                actualBudgetYear += month.actualMonthSpending ?? 0;
+                assignedBudgetYear += month.staffBudgetBurnDownRate ?? 0;
+                if (month.date?.includes(currentMonth)) {
+                    actualPmMonth = month.actualTotalWorkPm ?? 0;
+                    assignedPmMonth = month.pmBurnDownRate ?? 0;
+                    actualBudgetMonth = month.actualMonthSpending ?? 0;
+                    assignedBudgetMonth = month.staffBudgetBurnDownRate ?? 0;
+                }
+            }
+        })
+        return {
+            dataPm: [
+                {
+                    name: currentYear,
+                    Used: TextUtil.roundDownToTwoDecimalPlaces(actualPmYear),
+                    Available: TextUtil.roundDownToTwoDecimalPlaces(assignedPmYear)
+                },
+                {
+                    name: currentMonthName,
+                    Used: TextUtil.roundDownToTwoDecimalPlaces(actualPmMonth),
+                    Available: TextUtil.roundDownToTwoDecimalPlaces(assignedPmMonth)
+                },
+
+            ],
+            dataBudget: [
+                {
+                    name: currentYear,
+                    Used: TextUtil.roundDownToTwoDecimalPlaces(actualBudgetYear),
+                    Available: TextUtil.roundDownToTwoDecimalPlaces(assignedBudgetYear)
+                },
+                {
+                    name: currentMonthName,
+                    Used: TextUtil.roundDownToTwoDecimalPlaces(actualBudgetMonth),
+                    Available: TextUtil.roundDownToTwoDecimalPlaces(assignedBudgetMonth)
+                },
+            ]
+        }
+    }
+
+    static getReportChartData = (months: Array<ProjectMonthDto>): ReportPageChartData => {
+        let currentMonthName = "";
+        if (months.length === 1) {
+            currentMonthName = new Date(months[0].date!).toLocaleString('default', {month: 'long'});
+        } else {
+            months.forEach((month, index) => {
+                if (index === 0 || (index + 1) === months.length) {
+                    if ((index + 1) === months.length) {
+                        currentMonthName += " - "
+                    }
+                    currentMonthName += new Date(month.date!).toLocaleString('default', {month: 'long'});
+                }
+            })
+        }
+        let actualPm = 0;
+        let totalPm = 0;
+        let actualBudget = 0;
+        let totalBudget = 0;
+        months.forEach(month => {
+            actualPm += month.actualTotalWorkPm!;
+            totalPm += month.pmBurnDownRate!;
+            totalBudget += month.staffBudgetBurnDownRate!;
+            actualBudget += month.actualMonthSpending!;
+        })
+        return ({
+            pmData: {
+                name: currentMonthName,
+                "Estimated": TextUtil.roundDownToTwoDecimalPlaces(totalPm),
+                "Actual": TextUtil.roundDownToTwoDecimalPlaces(actualPm)
+            }
+            ,
+            budgetData: {
+                name: currentMonthName,
+                "Estimated": TextUtil.roundDownToTwoDecimalPlaces(totalBudget),
+                "Actual": TextUtil.roundDownToTwoDecimalPlaces(actualBudget)
+            }
         })
     }
 }

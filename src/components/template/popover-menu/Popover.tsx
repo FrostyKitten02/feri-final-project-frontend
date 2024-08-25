@@ -13,9 +13,7 @@ export default function Popover({
   const popoverRef = useRef<HTMLDivElement>(null);
   const ignoreClickOutside = useRef<boolean>(false);
   const [actionPopoverOpen, setActionPopoverOpen] = useState<boolean>(false);
-  const [activemModalIndex, setActiveModalIndex] = useState<number | null>(
-    null
-  );
+  const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent): void {
@@ -37,6 +35,10 @@ export default function Popover({
   const handleItemClick = (index: number): void => {
     setActiveModalIndex(index);
     setActionPopoverOpen(false);
+
+    if (items[index].component.type === "button") {
+      items[index].component.props.onClick?.();
+    }
   };
 
   const handleModalClose = (): void => {
@@ -77,8 +79,9 @@ export default function Popover({
           ))}
         </motion.div>
       )}
-      {activemModalIndex !== null &&
-        React.cloneElement(items[activemModalIndex].component, {
+      {activeModalIndex !== null &&
+        items[activeModalIndex].component.type !== "button" &&
+        React.cloneElement(items[activeModalIndex].component, {
           onClose: handleModalClose,
           isOpen: true,
         })}
