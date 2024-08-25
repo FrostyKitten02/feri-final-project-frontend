@@ -109,6 +109,13 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
         pending: "Files uploading...",
         success: "Files were successfully uploaded.",
         error: "An error occured during upload.",
+      },
+      {
+        position: "top-center",
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        autoClose: 5000,
       }
     );
   };
@@ -129,7 +136,7 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
   return (
     <>
       <button onClick={() => setModalOpen(true)}>
-        <MdOutlineFileUpload className="fill-black size-16 hover:fill-primary transition delay-50" />
+        <MdOutlineFileUpload className="fill-black size-14 hover:fill-primary transition delay-50" />
       </button>
       {modalOpen && (
         <ModalPortal>
