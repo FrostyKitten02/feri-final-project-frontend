@@ -6,8 +6,7 @@ import {
   TaskDto,
   WorkPackageDto,
   PersonWorkDto,
-  ProjectMonthDto,
-  ProjectFileDto,
+  ProjectFileDto, ProjectStatisticsUnitDto,
 } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
@@ -311,7 +310,7 @@ export interface CurrentlyRelevantChartData {
 export interface CurrentlyRelevantData {
   chartData: Array<CurrentlyRelevantChartData>;
   barColor: Array<string>;
-  foundMonth?: ProjectMonthDto | undefined;
+  foundMonth?: ProjectStatisticsUnitDto | undefined;
 }
 
 export interface CurrentlyRelevantCurrDate {
