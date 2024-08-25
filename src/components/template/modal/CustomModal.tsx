@@ -13,11 +13,11 @@ import {Label} from "flowbite-react";
 import ColorVariants from "../../../util/ColorVariants";
 import {CgDanger} from "react-icons/cg";
 
-export const CustomModal = ({children, closeModal, modalWidth = "600px"}: CustomModalProps) => {
+export const CustomModal = ({children, closeModal, modalWidth = "600px", modalHeight = "auto"}: CustomModalProps) => {
     return (
         <Backdrop closeModal={closeModal}>
             <div className="bg-white rounded-xl text-black"
-                 style={{width: modalWidth}}
+                 style={{width: modalWidth, height: modalHeight}}
                  onClick={(e) => e.stopPropagation()}
             >
                 {children}

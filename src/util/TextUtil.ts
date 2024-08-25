@@ -420,8 +420,8 @@ export default class TextUtil {
     "application/vnd.rar": "fill-purple-600",
   };
 
-  static returnFileTypeColor = (file: File): string => {
-    return TextUtil.fileTypeColorMap[file.type] || "fill-gray-500";
+  static returnFileTypeColor = (type: string): string => {
+    return TextUtil.fileTypeColorMap[type] || "fill-gray-500";
   };
 
   static returnMonthYear = (dateStr: string): string => {
