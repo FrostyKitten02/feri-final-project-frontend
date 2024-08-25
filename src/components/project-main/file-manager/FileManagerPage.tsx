@@ -13,6 +13,7 @@ import Popover from "../../template/popover-menu/Popover";
 import { PopoverItem } from "../../../interfaces";
 import { BsThreeDots } from "react-icons/bs";
 import { toast } from "react-toastify";
+import mime from "mime-types";
 
 export const FileManagerPage = () => {
   const [projectFiles, setProjectFiles] = useState<ProjectFilesResponse>();
@@ -78,32 +79,37 @@ export const FileManagerPage = () => {
             </div>
           ) : projectFiles?.files && projectFiles.files?.length > 0 ? (
             <div className="flex flex-col h-full">
-              <div className="grid grid-cols-[80px_1fr_1fr_1fr_1fr] pt-8 pb-4 px-3">
+              <div className="grid grid-cols-[80px_2fr_1fr_1fr_1fr_1fr] pt-8 pb-4 px-3">
                 <div className="flex justify-end items-center" />
-                <div className="flex justify-center items-center gap-x-4">
-                  <div className="text-sm text-gray-600 font-semibold">
+                <div className="flex items-center justify-start">
+                  <div className="text-sm text-gray-600 font-semibold text-start">
                     FILE NAME
                   </div>
                 </div>
-                <div className="flex justify-center items-center gap-x-4">
-                  <div className="text-sm text-gray-600 font-semibold">
+                <div className="flex justify-center items-center">
+                  <div className="text-sm text-gray-600 font-semibold text-center">
+                    FORMAT
+                  </div>
+                </div>
+                <div className="flex justify-center items-center">
+                  <div className="text-sm text-gray-600 font-semibold text-center">
                     FILE SIZE
                   </div>
                 </div>
-                <div className="flex justify-center items-center gap-x-4">
-                  <div className="text-sm text-gray-600 font-semibold">
+                <div className="flex justify-center items-center">
+                  <div className="text-sm text-gray-600 font-semibold text-center">
                     UPLOAD DATE
                   </div>
                 </div>
-                <div className="flex justify-center items-center gap-x-4">
-                  <div className="text-sm text-gray-600 font-semibold">
+                <div className="flex justify-center items-center">
+                  <div className="text-sm text-gray-600 font-semibold text-center">
                     ACTION
                   </div>
                 </div>
               </div>
               <div className="flex-grow overflow-y-auto px-3">
                 <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
-                  {projectFiles.files.map((file, index) => {
+                  {projectFiles.files.map((file) => {
                     const popoverItems: PopoverItem[] = [
                       {
                         component: (
@@ -124,15 +130,24 @@ export const FileManagerPage = () => {
 
                     return (
                       <div
-                        className="grid grid-cols-[80px_1fr_1fr_1fr_1fr] py-6"
-                        key={index}
+                        className="grid grid-cols-[80px_2fr_1fr_1fr_1fr_1fr] py-6"
+                        key={file.id}
                       >
                         <div className="flex justify-end items-center">
-                          <FaRegFileAlt className="size-6 fill-c-blue" />
+                          <FaRegFileAlt
+                            className={`size-6 ${TextUtil.returnFileTypeColor(
+                              file.contentType ?? ""
+                            )}`}
+                          />
                         </div>
-                        <div className="flex flex-row items-center justify-center px-8">
-                          <p className="text-normal font-semibold text-center">
+                        <div className="flex flex-row items-center justify-start px-4 overflow-hidden">
+                          <p className="text-normal font-semibold truncate text-start">
                             {file.originalFileName}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <p className="text-normal text-muted">
+                            .{mime.extension(file.contentType ?? "")}
                           </p>
                         </div>
                         <div className="flex items-center justify-center">

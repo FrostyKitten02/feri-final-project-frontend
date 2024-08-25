@@ -1000,6 +1000,12 @@ export interface ProjectFileDto {
      * @type {string}
      * @memberof ProjectFileDto
      */
+    'contentType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectFileDto
+     */
     'originalFileName'?: string;
     /**
      * 

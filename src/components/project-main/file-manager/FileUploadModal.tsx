@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import { FileUploadModalProps } from "../../../interfaces";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FileUploadModalFields } from "../../../types/types";
+import { useWatch } from "react-hook-form";
 
 export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -31,12 +32,13 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
   const requestArgs = useRequestArgs();
   const { projectId } = useParams();
 
-  const { handleSubmit, reset, setValue, getValues, clearErrors } =
+  const { handleSubmit, reset, setValue, getValues, clearErrors, control } =
     useForm<FileUploadModalFields>({
       defaultValues: {
         files: [],
       },
     });
+  const files = useWatch({ control: control, name: "files" });
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -74,9 +76,8 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
       clearErrors("files");
       setFileError(null);
     },
-    [setValue, setValue, clearErrors]
+    [setValue, clearErrors]
   );
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleFileSubmit: SubmitHandler<FileUploadModalFields> = async (
@@ -114,10 +115,8 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
 
   const removeFile = (file: File): void => {
     const currentFiles = getValues("files");
-    setValue(
-      "files",
-      currentFiles.filter((f) => f !== file)
-    );
+    const newFiles = currentFiles.filter((f) => f !== file);
+    setValue("files", newFiles);
   };
 
   const onClose = (): void => {
@@ -166,14 +165,14 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
                   </div>
                   <div className="flex items-start justify-between pb-4 w-full">
                     <p className="text-normal text-muted font-medium">
-                      Maximum size per file: 100MB
+                      Maximum size per file: 10MB
                     </p>
                     <p className="text-normal text-muted font-medium">
                       Files per upload: 3
                     </p>
                   </div>
-                  {getValues("files").length > 0 &&
-                    getValues("files").map((file, index) => (
+                  {files.length > 0 &&
+                    files.map((file, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, height: 0 }}
@@ -185,7 +184,7 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
                         <div className="flex flex-row gap-x-2 items-center flex-grow">
                           <FaRegFileAlt
                             className={`size-10 ${TextUtil.returnFileTypeColor(
-                              file
+                              file.type
                             )}`}
                           />
                           <p className="text-black font-semibold text-lg">
@@ -196,7 +195,10 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
                           </p>
                         </div>
                         <div className="flex items-center">
-                          <button onClick={() => removeFile(file)}>
+                          <button
+                            type="button"
+                            onClick={() => removeFile(file)}
+                          >
                             <MdClear className="size-6 fill-black" />
                           </button>
                         </div>
