@@ -383,10 +383,10 @@ export interface EmailAddress {
 export interface GetPeopleResponse {
     /**
      * 
-     * @type {Array<PersonDto>}
+     * @type {Array<PersonOnProjectDto>}
      * @memberof GetPeopleResponse
      */
-    'people'?: Array<PersonDto>;
+    'people'?: Array<PersonOnProjectDto>;
     /**
      * 
      * @type {string}
@@ -542,6 +542,50 @@ export interface ListSalaryResponse {
 /**
  * 
  * @export
+ * @interface MonthlyPersonOccupancyDto
+ */
+export interface MonthlyPersonOccupancyDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof MonthlyPersonOccupancyDto
+     */
+    'month'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MonthlyPersonOccupancyDto
+     */
+    'personId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyPersonOccupancyDto
+     */
+    'estimatedPm'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyPersonOccupancyDto
+     */
+    'maxAvailability'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface MonthlyPersonOccupancyResponse
+ */
+export interface MonthlyPersonOccupancyResponse {
+    /**
+     * 
+     * @type {Array<MonthlyPersonOccupancyDto>}
+     * @memberof MonthlyPersonOccupancyResponse
+     */
+    'monthlyPersonOccupancies'?: Array<MonthlyPersonOccupancyDto>;
+}
+/**
+ * 
+ * @export
  * @interface PageInfo
  */
 export interface PageInfo {
@@ -675,6 +719,55 @@ export interface PersonListSearchParams {
      * @memberof PersonListSearchParams
      */
     'searchStr'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PersonOnProjectDto
+ */
+export interface PersonOnProjectDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'lastname'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'fromDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'toDate'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonOnProjectDto
+     */
+    'estimatedPm'?: number;
 }
 /**
  * 
@@ -854,6 +947,12 @@ export interface PersonWorkDto {
      * @memberof PersonWorkDto
      */
     'avgSalary'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonWorkDto
+     */
+    'totalSalary'?: number;
 }
 /**
  * 
@@ -1098,55 +1197,6 @@ export interface ProjectListStatusResponse {
 /**
  * 
  * @export
- * @interface ProjectMonthDto
- */
-export interface ProjectMonthDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof ProjectMonthDto
-     */
-    'date'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof ProjectMonthDto
-     */
-    'monthNumber'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ProjectMonthDto
-     */
-    'pmBurnDownRate'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ProjectMonthDto
-     */
-    'staffBudgetBurnDownRate'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ProjectMonthDto
-     */
-    'actualTotalWorkPm'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ProjectMonthDto
-     */
-    'actualMonthSpending'?: number;
-    /**
-     * 
-     * @type {Array<PersonWorkDto>}
-     * @memberof ProjectMonthDto
-     */
-    'personWork'?: Array<PersonWorkDto>;
-}
-/**
- * 
- * @export
  * @interface ProjectSortInfoRequest
  */
 export interface ProjectSortInfoRequest {
@@ -1187,16 +1237,71 @@ export interface ProjectStatisticsResponse {
     'workPackages'?: Array<WorkPackageWithStatisticsDto>;
     /**
      * 
-     * @type {Array<ProjectMonthDto>}
+     * @type {Array<ProjectStatisticsUnitDto>}
      * @memberof ProjectStatisticsResponse
      */
-    'months'?: Array<ProjectMonthDto>;
+    'units'?: Array<ProjectStatisticsUnitDto>;
     /**
      * 
      * @type {{ [key: string]: PersonDto; }}
      * @memberof ProjectStatisticsResponse
      */
     'people'?: { [key: string]: PersonDto; };
+}
+/**
+ * 
+ * @export
+ * @interface ProjectStatisticsUnitDto
+ */
+export interface ProjectStatisticsUnitDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'startDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'endDate'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'unitNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'pmBurnDownRate'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'staffBudgetBurnDownRate'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'actualTotalWorkPm'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'actualMonthSpending'?: number;
+    /**
+     * 
+     * @type {Array<PersonWorkDto>}
+     * @memberof ProjectStatisticsUnitDto
+     */
+    'personWork'?: Array<PersonWorkDto>;
 }
 /**
  * 
@@ -2075,6 +2180,57 @@ export const OccupancyControllerApiAxiosParamCreator = function (configuration?:
         },
         /**
          * 
+         * @param {string} fromMonth 
+         * @param {string} toMonth 
+         * @param {string} personId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMonthlyPersonOccupancy: async (fromMonth: string, toMonth: string, personId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fromMonth' is not null or undefined
+            assertParamExists('getMonthlyPersonOccupancy', 'fromMonth', fromMonth)
+            // verify required parameter 'toMonth' is not null or undefined
+            assertParamExists('getMonthlyPersonOccupancy', 'toMonth', toMonth)
+            // verify required parameter 'personId' is not null or undefined
+            assertParamExists('getMonthlyPersonOccupancy', 'personId', personId)
+            const localVarPath = `/occupancy/monthly/person-id/{personId}`
+                .replace(`{${"personId"}}`, encodeURIComponent(String(personId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (fromMonth !== undefined) {
+                localVarQueryParameter['fromMonth'] = (fromMonth as any instanceof Date) ?
+                    (fromMonth as any).toISOString().substring(0,10) :
+                    fromMonth;
+            }
+
+            if (toMonth !== undefined) {
+                localVarQueryParameter['toMonth'] = (toMonth as any instanceof Date) ?
+                    (toMonth as any).toISOString().substring(0,10) :
+                    toMonth;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {UpdateOccupancyRequest} updateOccupancyRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2144,6 +2300,20 @@ export const OccupancyControllerApiFp = function(configuration?: Configuration) 
         },
         /**
          * 
+         * @param {string} fromMonth 
+         * @param {string} toMonth 
+         * @param {string} personId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getMonthlyPersonOccupancy(fromMonth: string, toMonth: string, personId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MonthlyPersonOccupancyResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMonthlyPersonOccupancy(fromMonth, toMonth, personId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['OccupancyControllerApi.getMonthlyPersonOccupancy']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {UpdateOccupancyRequest} updateOccupancyRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2184,6 +2354,17 @@ export const OccupancyControllerApiFactory = function (configuration?: Configura
         },
         /**
          * 
+         * @param {string} fromMonth 
+         * @param {string} toMonth 
+         * @param {string} personId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getMonthlyPersonOccupancy(fromMonth: string, toMonth: string, personId: string, options?: any): AxiosPromise<MonthlyPersonOccupancyResponse> {
+            return localVarFp.getMonthlyPersonOccupancy(fromMonth, toMonth, personId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {UpdateOccupancyRequest} updateOccupancyRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2221,6 +2402,19 @@ export class OccupancyControllerApi extends BaseAPI {
      */
     public deleteOccupancy(occupancyId: string, options?: RawAxiosRequestConfig) {
         return OccupancyControllerApiFp(this.configuration).deleteOccupancy(occupancyId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} fromMonth 
+     * @param {string} toMonth 
+     * @param {string} personId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof OccupancyControllerApi
+     */
+    public getMonthlyPersonOccupancy(fromMonth: string, toMonth: string, personId: string, options?: RawAxiosRequestConfig) {
+        return OccupancyControllerApiFp(this.configuration).getMonthlyPersonOccupancy(fromMonth, toMonth, personId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3005,10 +3199,12 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
         /**
          * 
          * @param {string} projectId 
+         * @param {string} [from] 
+         * @param {number} [monthsPerUnit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectStatistics: async (projectId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getProjectStatistics: async (projectId: string, from?: string, monthsPerUnit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'projectId' is not null or undefined
             assertParamExists('getProjectStatistics', 'projectId', projectId)
             const localVarPath = `/project/{projectId}/statistics`
@@ -3023,6 +3219,16 @@ export const ProjectControllerApiAxiosParamCreator = function (configuration?: C
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (from !== undefined) {
+                localVarQueryParameter['from'] = (from as any instanceof Date) ?
+                    (from as any).toISOString().substring(0,10) :
+                    from;
+            }
+
+            if (monthsPerUnit !== undefined) {
+                localVarQueryParameter['monthsPerUnit'] = monthsPerUnit;
+            }
 
 
     
@@ -3346,11 +3552,13 @@ export const ProjectControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} projectId 
+         * @param {string} [from] 
+         * @param {number} [monthsPerUnit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getProjectStatistics(projectId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectStatisticsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectStatistics(projectId, options);
+        async getProjectStatistics(projectId: string, from?: string, monthsPerUnit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProjectStatisticsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getProjectStatistics(projectId, from, monthsPerUnit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ProjectControllerApi.getProjectStatistics']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -3505,11 +3713,13 @@ export const ProjectControllerApiFactory = function (configuration?: Configurati
         /**
          * 
          * @param {string} projectId 
+         * @param {string} [from] 
+         * @param {number} [monthsPerUnit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getProjectStatistics(projectId: string, options?: any): AxiosPromise<ProjectStatisticsResponse> {
-            return localVarFp.getProjectStatistics(projectId, options).then((request) => request(axios, basePath));
+        getProjectStatistics(projectId: string, from?: string, monthsPerUnit?: number, options?: any): AxiosPromise<ProjectStatisticsResponse> {
+            return localVarFp.getProjectStatistics(projectId, from, monthsPerUnit, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3662,12 +3872,14 @@ export class ProjectControllerApi extends BaseAPI {
     /**
      * 
      * @param {string} projectId 
+     * @param {string} [from] 
+     * @param {number} [monthsPerUnit] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ProjectControllerApi
      */
-    public getProjectStatistics(projectId: string, options?: RawAxiosRequestConfig) {
-        return ProjectControllerApiFp(this.configuration).getProjectStatistics(projectId, options).then((request) => request(this.axios, this.basePath));
+    public getProjectStatistics(projectId: string, from?: string, monthsPerUnit?: number, options?: RawAxiosRequestConfig) {
+        return ProjectControllerApiFp(this.configuration).getProjectStatistics(projectId, from, monthsPerUnit, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

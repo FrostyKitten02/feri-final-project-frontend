@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PersonDto} from "../../../../temp_ts";
+import {PersonOnProjectDto} from "../../../../temp_ts";
 import TeamModal from "./TeamModal";
 import {useParams} from "react-router-dom";
 import {toastError} from "../../toast-modals/ToastFunctions";
@@ -7,9 +7,10 @@ import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {Spinner} from "flowbite-react";
 import {DeleteTeamModal} from "./DeleteTeamModal";
+import TextUtil from "../../../util/TextUtil";
 
 export default function ProjectTeamPage() {
-    const [peopleOnProject, setPeopleOnProject] = useState<PersonDto[]>([]);
+    const [peopleOnProject, setPeopleOnProject] = useState<PersonOnProjectDto[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const {projectId} = useParams();
     const requestArgs = useRequestArgs();
@@ -49,7 +50,7 @@ export default function ProjectTeamPage() {
                         </div>
                     ) : peopleOnProject.length > 0 ? (
                         <div className="flex flex-col h-full">
-                            <div className="grid grid-cols-3 pt-8 pb-4">
+                            <div className="grid grid-cols-6 pt-8 pb-4 px-3">
                                 <div className="flex justify-center items-center gap-x-4">
                                     <div className="text-sm text-gray-600 font-semibold">
                                         NAME
@@ -62,6 +63,21 @@ export default function ProjectTeamPage() {
                                 </div>
                                 <div className="flex justify-center items-center gap-x-4">
                                     <div className="text-sm text-gray-600 font-semibold">
+                                        FROM
+                                    </div>
+                                </div>
+                                <div className="flex justify-center items-center gap-x-4">
+                                    <div className="text-sm text-gray-600 font-semibold">
+                                        TO
+                                    </div>
+                                </div>
+                                <div className="flex justify-center items-center gap-x-4">
+                                    <div className="text-sm text-gray-600 font-semibold">
+                                        ESTIMATED PM
+                                    </div>
+                                </div>
+                                <div className="flex justify-center items-center gap-x-4">
+                                    <div className="text-sm text-gray-600 font-semibold">
                                         SETTINGS
                                     </div>
                                 </div>
@@ -69,7 +85,7 @@ export default function ProjectTeamPage() {
                             <div className="flex-grow overflow-y-auto px-3">
                                 <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
                                     {peopleOnProject?.map((person) => (
-                                        <div className="grid grid-cols-3 py-6" key={person.id}>
+                                        <div className="grid grid-cols-6 py-6" key={person.id}>
                                             <div className="flex items-center justify-center text-sm font-semibold">
                                                 <div>
                                                     {person.name && person.lastname ? (
@@ -84,6 +100,18 @@ export default function ProjectTeamPage() {
                                             <div
                                                 className="flex items-center justify-center text-sm font-normal text-gray-500">
                                                 {person.email}
+                                            </div>
+                                            <div
+                                                className="flex items-center justify-center text-sm font-semibold">
+                                                {TextUtil.refactorDate(person.fromDate)}
+                                            </div>
+                                            <div
+                                                className="flex items-center justify-center text-sm font-semibold">
+                                                {TextUtil.refactorDate(person.toDate)}
+                                            </div>
+                                            <div
+                                                className="flex items-center justify-center text-sm font-normal text-gray-500">
+                                                {person.estimatedPm}
                                             </div>
                                             <div className="flex items-center justify-center">
                                                 <DeleteTeamModal
