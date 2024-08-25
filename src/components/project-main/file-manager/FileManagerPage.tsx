@@ -51,7 +51,8 @@ export const FileManagerPage = () => {
 
   const downloadFile = async (
     fileId?: string,
-    fileName?: string
+    fileName?: string,
+    fileType?: string
   ): Promise<void> => {
     await toast.promise(
       async () => {
@@ -67,7 +68,10 @@ export const FileManagerPage = () => {
 
             const link = document.createElement("a");
             link.href = url;
-            link.setAttribute("download", fileName || "steer_file_download");
+            link.setAttribute(
+              "download",
+              fileName || `steer_file_download.${fileType}`
+            );
             document.body.appendChild(link);
             link.click();
 
@@ -169,7 +173,11 @@ export const FileManagerPage = () => {
                           <button
                             type="button"
                             onClick={() =>
-                              downloadFile(file.id, file.originalFileName)
+                              downloadFile(
+                                file.id,
+                                file.originalFileName,
+                                fileType
+                              )
                             }
                           ></button>
                         ),
