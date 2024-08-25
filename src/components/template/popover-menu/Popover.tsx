@@ -56,7 +56,11 @@ export default function Popover({
             opacity: 0,
           }}
           className={`flex z-20 flex-col absolute bg-white ${
-            position == `bottom` ? `top-full` : `bottom-full`
+            position == `bottom`
+              ? `top-full`
+              : position === `top-right`
+              ? `left-full bottom-full`
+              : `bottom-full`
           } mt-4 ${
             width ? `w-${width}` : `w-64`
           } h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}
@@ -69,7 +73,7 @@ export default function Popover({
               onClick={() => handleItemClick(index)}
               className="flex flex-row items-center justify-start text-gray-500 h-full text-sm font-semibold hover:text-gray-800 fill-gray-500  hover:fill-gray-800 transition delay-50 gap-x-4 pl-4 hover:bg-gray-100"
             >
-              {item.icon}
+              {item.icon && item.icon}
               <span>{item.label}</span>
             </button>
           ))}

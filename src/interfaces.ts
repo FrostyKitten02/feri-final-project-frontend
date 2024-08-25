@@ -254,7 +254,7 @@ export interface PopoverProps {
   triggerIcon: React.ReactNode;
   height?: number;
   width?: number;
-  position?: "top" | "bottom";
+  position?: "top" | "bottom" | "top-right";
 }
 
 export interface DeleteWorkPackageModalProps extends PopoverBaseProps {

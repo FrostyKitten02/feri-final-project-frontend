@@ -1,7 +1,6 @@
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { FaUsersCog } from "react-icons/fa";
-import { MdPerson } from "react-icons/md";
 import ManageUsersModal from "./admin-modal/ManageUsersModal";
 
 export default function ClerkUserButton() {
@@ -26,11 +25,6 @@ export default function ClerkUserButton() {
               onClick={() => setManageUsersModalOpen(true)}
             />
           )}
-          <UserButton.Action
-            label="STEER account information"
-            labelIcon={<MdPerson />}
-            onClick={() => console.log("test")}
-          />
           <UserButton.Action label="manageAccount" />
           <UserButton.Action label="signOut" />
         </UserButton.MenuItems>
