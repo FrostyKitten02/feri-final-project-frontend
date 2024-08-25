@@ -3,15 +3,6 @@ import {NumberInputProps, SelectedItemProps, SelectOptionProps, SelectProps} fro
 import {FaAngleDown} from "react-icons/fa6";
 import ColorVariants from "../../../util/ColorVariants";
 
-export const TextInput = () => {
-    return (
-        <React.Fragment>
-
-        </React.Fragment>
-    )
-}
-
-
 export const NumberInput = ({showArrows, register, name, icon, placeholderText}: NumberInputProps) => {
     const showArrowsClass = !showArrows ? `no-arrows` : ``;
     return (
@@ -65,14 +56,16 @@ export const CSelect = ({children, placeholderText, focusColor, selected, setSel
             </button>
             {opened && (
                 <div
-                    className="absolute mt-1 w-full rounded-lg border border-gray-300 border-solid bg-white shadow-lg z-10">
-                    {React.Children.map(children, (child, index) =>
-                        React.cloneElement(child as React.ReactElement, {
-                            onSelect: handleSelectChange,
-                            isFirst: index === 0,
-                            isLast: index === React.Children.count(children) - 1,
-                        })
-                    )}
+                    className="absolute mt-1 w-full pr-[2px] py-[2px] rounded-lg border border-gray-300 border-solid bg-white shadow-lg z-10">
+                    <div className="h-[200px] overflow-y-auto">
+                        {React.Children.map(children, (child, index) =>
+                            React.cloneElement(child as React.ReactElement, {
+                                onSelect: handleSelectChange,
+                                isFirst: index === 0,
+                                isLast: index === React.Children.count(children) - 1,
+                            })
+                        )}
+                    </div>
                 </div>
             )}
         </div>

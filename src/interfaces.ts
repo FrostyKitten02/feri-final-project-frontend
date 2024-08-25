@@ -347,8 +347,15 @@ export interface DeleteFileModalProps extends PopoverBaseProps {
   refetchFileList: () => void;
 }
 
+
+export interface ReportPageChartData {
+    pmData: {name: string, "Estimated": number,"Actual": number},
+    budgetData: {name: string, "Estimated": number,"Actual": number}
+}
+
 export interface PreviewFileModalProps extends PopoverBaseProps {
   fileId?: string;
   fileType?: string;
   fileName?: string;
 }
+

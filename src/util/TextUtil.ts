@@ -423,4 +423,11 @@ export default class TextUtil {
   static returnFileTypeColor = (type: string): string => {
     return TextUtil.fileTypeColorMap[type] || "fill-gray-500";
   };
+
+  static returnMonthYear = (dateStr: string): string => {
+      const date = new Date(dateStr);
+      const monthName = date.toLocaleString('default', { month: 'long' });
+      const year = date.getFullYear();
+      return (monthName + ", " + year)
+  }
 }

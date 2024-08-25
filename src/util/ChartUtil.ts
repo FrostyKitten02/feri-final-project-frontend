@@ -2,7 +2,7 @@ import {ProjectListStatusResponse, ProjectMonthDto, ProjectStatisticsResponse} f
 import {
     ActiveProjectsStateData,
     BudgetBreakdownTrackerData,
-    CostTimelineChartProps, CurrentlyRelevantData,
+    CostTimelineChartProps, CurrentlyRelevantData, ReportPageChartData,
     UserDetailsChartData,
     WorkDetailsLineChartProps
 } from "../interfaces";
@@ -283,5 +283,44 @@ export default class ChartUtil {
                 },
             ]
         }
+    }
+
+    static getReportChartData = (months: Array<ProjectMonthDto>): ReportPageChartData => {
+        let currentMonthName = "";
+        if (months.length === 1) {
+            currentMonthName = new Date(months[0].date!).toLocaleString('default', {month: 'long'});
+        } else {
+            months.forEach((month, index) => {
+                if (index === 0 || (index + 1) === months.length) {
+                    if ((index + 1) === months.length) {
+                        currentMonthName += " - "
+                    }
+                    currentMonthName += new Date(month.date!).toLocaleString('default', {month: 'long'});
+                }
+            })
+        }
+        let actualPm = 0;
+        let totalPm = 0;
+        let actualBudget = 0;
+        let totalBudget = 0;
+        months.forEach(month => {
+            actualPm += month.actualTotalWorkPm!;
+            totalPm += month.pmBurnDownRate!;
+            totalBudget += month.staffBudgetBurnDownRate!;
+            actualBudget += month.actualMonthSpending!;
+        })
+        return ({
+            pmData: {
+                name: currentMonthName,
+                "Estimated": TextUtil.roundDownToTwoDecimalPlaces(totalPm),
+                "Actual": TextUtil.roundDownToTwoDecimalPlaces(actualPm)
+            }
+            ,
+            budgetData: {
+                name: currentMonthName,
+                "Estimated": TextUtil.roundDownToTwoDecimalPlaces(totalBudget),
+                "Actual": TextUtil.roundDownToTwoDecimalPlaces(actualBudget)
+            }
+        })
     }
 }
