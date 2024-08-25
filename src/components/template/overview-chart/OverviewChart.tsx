@@ -71,16 +71,16 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
                 shownMonths.map(month => {
                     return (
                         <div
-                            key={month.monthNumber}
+                            key={month.unitNumber}
                             className={`h-20 relative justify-center flex items-center`}
                         >
                             <div className={`${TextUtil.isCurrentMonthYear(month) && "bg-c-violet bg-opacity-30 pl-4 py-1 pr-2 rounded-lg "} flex`}>
                                 <div className="relative h-full flex items-center">
                                     <div className="text-xs absolute w-20 flex justify-center left-[-45px] transform rotate-[270deg]">
-                                        M{month.monthNumber}
+                                        M{month.unitNumber}
                                     </div>
                                     <div className="uppercase text-3xl mx-2">
-                                        {TextUtil.getMonthAbbreviation(month?.date)}
+                                        {TextUtil.getMonthAbbreviation(month?.startDate)}
                                     </div>
                                 </div>
                                 <div
@@ -106,7 +106,7 @@ export const OverviewChartHeader = ({months, currentPage, monthsPerPage}: Overvi
 
 export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: OverviewChartBodyProps) => {
     const startIndex = (currentPage - 1) * monthsPerPage;
-    const shownMonths = statistics.months ? statistics.months.slice(startIndex, startIndex + monthsPerPage) : [];
+    const shownMonths = statistics.units ? statistics.units.slice(startIndex, startIndex + monthsPerPage) : [];
     const startMonth = shownMonths && shownMonths[0];
     const endMonth = shownMonths && shownMonths[shownMonths.length - 1];
     const emptyColumnsCount = monthsPerPage - shownMonths.length;

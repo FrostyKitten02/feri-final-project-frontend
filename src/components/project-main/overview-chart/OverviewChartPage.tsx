@@ -14,7 +14,7 @@ import { Spinner } from "flowbite-react";
 export const OverviewChartPage = () => {
   const [statistics, setStatistics] = useState<ProjectStatisticsResponse>({
     workPackages: [],
-    months: [],
+    units: [],
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [monthsPerPage, setMonthsPerPage] = useState<number>(6);
@@ -22,7 +22,7 @@ export const OverviewChartPage = () => {
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
   const totalPages = Math.ceil(
-    (statistics.months?.length ?? 0) / monthsPerPage
+    (statistics.units?.length ?? 0) / monthsPerPage
   );
   const handleMonthChange = (count: number) => {
     setMonthsPerPage(count);
@@ -35,6 +35,8 @@ export const OverviewChartPage = () => {
       try {
         const response = await projectAPI.getProjectStatistics(
           projectId,
+          undefined,
+          undefined,
           requestArgs
         );
         if (response.status === 200) {
@@ -50,7 +52,7 @@ export const OverviewChartPage = () => {
           });
           const sortedStatitics: ProjectStatisticsResponse = {
             workPackages: sortedWp,
-            months: response.data.months,
+            units: response.data.units,
           };
           setStatistics(sortedStatitics);
           setIsLoading(false);
@@ -110,7 +112,7 @@ export const OverviewChartPage = () => {
               workpackageCount={statistics.workPackages?.length ?? 0}
             >
               <OverviewChartHeader
-                months={statistics.months}
+                months={statistics.units}
                 currentPage={currentPage}
                 monthsPerPage={monthsPerPage}
               />

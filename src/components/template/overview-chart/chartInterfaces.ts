@@ -1,5 +1,5 @@
 import {ReactNode} from "react";
-import {ProjectMonthDto, ProjectStatisticsResponse} from "../../../../temp_ts";
+import {ProjectStatisticsResponse, ProjectStatisticsUnitDto} from "../../../../temp_ts";
 
 export interface OverviewChartProps {
     monthsPerPage: number,
@@ -8,7 +8,7 @@ export interface OverviewChartProps {
 }
 
 export interface OverviewChartHeaderProps {
-    months: Array<ProjectMonthDto> | undefined
+    months: Array<ProjectStatisticsUnitDto> | undefined
     currentPage: number,
     monthsPerPage: number
 }

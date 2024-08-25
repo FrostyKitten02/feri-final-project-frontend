@@ -1,4 +1,4 @@
-import {ProjectMonthDto, ProjectStatisticsResponse, TaskDto, WorkPackageDto} from "../../temp_ts";
+import {ProjectStatisticsResponse, ProjectStatisticsUnitDto, TaskDto, WorkPackageDto} from "../../temp_ts";
 import {
     BudgetBreakdownChartProps,
     ProgressObject,
@@ -119,14 +119,14 @@ export default class TextUtil {
         return monthName.slice(0, 3);
     }
 
-    static getMonthNumber(value: string | undefined, startMonth: ProjectMonthDto | undefined, currentPage: number, monthsPerPage: number): number {
-        if (!value || !startMonth || !startMonth.date || !startMonth.monthNumber)
+    static getMonthNumber(value: string | undefined, startUnit: ProjectStatisticsUnitDto | undefined, currentPage: number, monthsPerPage: number): number {
+        if (!value || !startUnit || !startUnit.startDate || !startUnit.unitNumber)
             return 0;
-        const diff = new Date(startMonth.date).getMonth() + 1 - startMonth.monthNumber;
+        const diff = new Date(startUnit.startDate).getMonth() + 1 - startUnit.unitNumber;
         const wpDate = new Date(value);
         const wpYear = wpDate.getFullYear();
         const wpMonths = wpDate.getMonth() + 1;
-        const startMonthYear = new Date(startMonth.date).getFullYear();
+        const startMonthYear = new Date(startUnit.startDate).getFullYear();
         const monthDiff = (wpYear - startMonthYear) * 12;
         const paginationDiff = (currentPage - 1) * monthsPerPage;
         return (monthDiff - diff + wpMonths - paginationDiff);
@@ -179,12 +179,12 @@ export default class TextUtil {
         return undefined;
     }
 
-    static returnWorkpackageLimit = (workpackage: WorkPackageDto, shownMonths: Array<ProjectMonthDto> | undefined): WorkpackageLimitProps | null => {
-        if (!shownMonths || shownMonths.length === 0 || !shownMonths[0].date) {
+    static returnWorkpackageLimit = (workpackage: WorkPackageDto, shownUnits: Array<ProjectStatisticsUnitDto> | undefined): WorkpackageLimitProps | null => {
+        if (!shownUnits || shownUnits.length === 0 || !shownUnits[0].startDate) {
             return null;
         }
-        const startMonthDateStr = shownMonths[0].date;
-        const endMonthDateStr = shownMonths[shownMonths.length - 1].date;
+        const startMonthDateStr = shownUnits[0].startDate;
+        const endMonthDateStr = shownUnits[shownUnits.length - 1].startDate;
 
         const startMonthDate = startMonthDateStr ? new Date(startMonthDateStr) : null;
         const endMonthDate = endMonthDateStr ? new Date(endMonthDateStr) : null;
@@ -222,10 +222,10 @@ export default class TextUtil {
         return null;
     }
 
-    static isCurrentMonthYear(month: ProjectMonthDto): boolean {
-        if (!month.date)
+    static isCurrentMonthYear(unit: ProjectStatisticsUnitDto): boolean {
+        if (!unit.startDate)
             return false;
-        const date = new Date(month.date);
+        const date = new Date(unit.startDate);
         const dateMonth = date.getMonth() + 1;
         const dateYear = date.getFullYear();
         const currentMonth = new Date().getMonth() + 1;
@@ -260,11 +260,11 @@ export default class TextUtil {
         return new Date(date).getFullYear();
     }
 
-    static returnYearCount = (months: Array<ProjectMonthDto>): Record<string, number> => {
+    static returnYearCount = (units: Array<ProjectStatisticsUnitDto>): Record<string, number> => {
         const countByYear: Record<string, number> = {}
-        months.forEach(month => {
-            if (month.date) {
-                const date = new Date(month.date);
+        units.forEach(month => {
+            if (month.startDate) {
+                const date = new Date(month.startDate);
                 const name = date.getFullYear().toString();
                 if (name !== "") {
                     if (countByYear.hasOwnProperty(name)) {
@@ -278,8 +278,8 @@ export default class TextUtil {
         return countByYear;
     }
 
-    static yearColumnLimit = (months: Array<ProjectMonthDto>, toAdd: number): Array<YearLimitProps> => {
-        const years = this.returnYearCount(months);
+    static yearColumnLimit = (units: Array<ProjectStatisticsUnitDto>, toAdd: number): Array<YearLimitProps> => {
+        const years = this.returnYearCount(units);
         const limitArray: Array<YearLimitProps> = [];
         const entries = Object.entries(years);
         entries.forEach(([year, count], index) => {
@@ -347,11 +347,11 @@ export default class TextUtil {
         return Math.floor(num * 100) / 100;
     }
 
-    static getWorkStatusColors = (month: ProjectMonthDto): string => {
-        if (!month.pmBurnDownRate)
+    static getWorkStatusColors = (unit: ProjectStatisticsUnitDto): string => {
+        if (!unit.pmBurnDownRate)
             return ("bg-c-teal bg-opacity-40");
-        const pm = month.pmBurnDownRate ?? 0;
-        const total = month.actualTotalWorkPm ?? 0;
+        const pm = unit.pmBurnDownRate ?? 0;
+        const total = unit.actualTotalWorkPm ?? 0;
         const percent = total / pm;
         if (percent < 0.9)
             return ("bg-warning bg-opacity-40");
@@ -360,11 +360,11 @@ export default class TextUtil {
         return ("bg-c-teal bg-opacity-40");
     }
 
-    static getSpendingStatusColors = (month: ProjectMonthDto): string => {
-        if (!month.staffBudgetBurnDownRate)
+    static getSpendingStatusColors = (unit: ProjectStatisticsUnitDto): string => {
+        if (!unit.staffBudgetBurnDownRate)
             return ("bg-c-teal bg-opacity-40");
-        const pm = month.staffBudgetBurnDownRate ?? 0;
-        const total = month.actualMonthSpending ?? 0;
+        const pm = unit.staffBudgetBurnDownRate ?? 0;
+        const total = unit.actualMonthSpending ?? 0;
         const percent = total / pm;
         if (percent < 0.9)
             return ("bg-warning bg-opacity-40");
@@ -378,12 +378,12 @@ export default class TextUtil {
             totalBudget: 0,
             percentage: 0
         }
-        if (!stats || !stats.months) return chartBudget;
+        if (!stats || !stats.units) return chartBudget;
         let spent = 0;
         let total = 0;
-        stats.months.forEach((month) => {
-            spent += month.actualMonthSpending ?? 0;
-            total += month.staffBudgetBurnDownRate ?? 0;
+        stats.units.forEach((unit) => {
+            spent += unit.actualMonthSpending ?? 0;
+            total += unit.staffBudgetBurnDownRate ?? 0;
         });
         const percantage = this.roundDownToTwoDecimalPlaces(spent / total) * 100;
         return {

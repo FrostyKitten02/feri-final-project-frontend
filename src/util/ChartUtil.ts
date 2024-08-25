@@ -1,4 +1,4 @@
-import {ProjectListStatusResponse, ProjectMonthDto, ProjectStatisticsResponse} from "../../temp_ts";
+import {ProjectListStatusResponse, ProjectStatisticsResponse, ProjectStatisticsUnitDto} from "../../temp_ts";
 import {
     ActiveProjectsStateData,
     BudgetBreakdownTrackerData,
@@ -19,8 +19,8 @@ export default class ChartUtil {
             return (workpackgage.assignedPM ?? 0);
         }) : []
 
-        const actualArray: number [] = statistics.months ? statistics.months.map(month => {
-            return (month.actualTotalWorkPm ?? 0)
+        const actualArray: number [] = statistics.units ? statistics.units.map(unit => {
+            return (unit.actualTotalWorkPm ?? 0)
         }) : []
         const total: number = totalArray.reduce((sum, current) => sum + current, 0);
         const actual: number = actualArray.reduce((sum, current) => sum + current, 0);
@@ -38,36 +38,36 @@ export default class ChartUtil {
         })
     }
 
-    static returnLineChartData = (months: ProjectMonthDto [] | undefined): WorkDetailsLineChartProps[] => {
-        if (months === undefined)
+    static returnLineChartData = (units: Array<ProjectStatisticsUnitDto> | undefined): WorkDetailsLineChartProps[] => {
+        if (units === undefined)
             return [];
         const currDate = TextUtil.getFirstOfYearMonth();
-        const relevantMonths: ProjectMonthDto[] = [];
+        const relevantMonths: Array<ProjectStatisticsUnitDto> = [];
 
-        for (let i = 6; i <= months.length; i += 6) {
-            const monthDateStr = months[i - 1]?.date;
+        for (let i = 6; i <= units.length; i += 6) {
+            const monthDateStr = units[i - 1]?.startDate;
             if (monthDateStr) {
                 const monthDate = new Date(monthDateStr);
                 if (currDate <= monthDate) {
-                    relevantMonths.push(...months.slice(i - 6, i));
+                    relevantMonths.push(...units.slice(i - 6, i));
                     break;
-                } else if (months.length < 6) {
-                    relevantMonths.push(...months);
+                } else if (units.length < 6) {
+                    relevantMonths.push(...units);
                     break;
                 } else {
-                    relevantMonths.push(...months.slice(-6))
+                    relevantMonths.push(...units.slice(-6))
                 }
             }
         }
         return (relevantMonths.map(month => {
             return ({
-                "date": TextUtil.refactorDate(month.date ?? ""),
+                "date": TextUtil.refactorDate(month.startDate ?? ""),
                 "PM per month": month.pmBurnDownRate ?? 0
             })
         }));
     }
     static returnCurrentMonthBarChartData = (statistics: ProjectStatisticsResponse): CurrentlyRelevantData => {
-        const foundMonth = (statistics.months ?? []).find(month => TextUtil.isCurrentMonthYear(month));
+        const foundMonth = (statistics.units ?? []).find(unit => TextUtil.isCurrentMonthYear(unit));
         let actual: number = 0;
         let assigned: number = 0;
         if (foundMonth) {
@@ -92,28 +92,28 @@ export default class ChartUtil {
         })
     }
 
-    static getCostTimelineChartData = (months: Array<ProjectMonthDto>) => {
+    static getCostTimelineChartData = (units: Array<ProjectStatisticsUnitDto>) => {
         const chartData: Array<CostTimelineChartProps> = [];
         const currDate = TextUtil.getFirstOfYearMonth();
-        const relevantMonths: ProjectMonthDto[] = [];
-        for (let i = 6; i <= months.length; i += 6) {
-            const monthDateStr = months[i - 1]?.date;
+        const relevantMonths: Array<ProjectStatisticsUnitDto> = [];
+        for (let i = 6; i <= units.length; i += 6) {
+            const monthDateStr = units[i - 1]?.startDate;
             if (monthDateStr) {
                 const monthDate = new Date(monthDateStr);
                 if (currDate <= monthDate) {
-                    relevantMonths.push(...months.slice(i - 6, i));
+                    relevantMonths.push(...units.slice(i - 6, i));
                     break;
                 }
-            } else if (months.length < 6) {
-                relevantMonths.push(...months);
+            } else if (units.length < 6) {
+                relevantMonths.push(...units);
                 break;
             } else {
-                relevantMonths.push(...months.slice(-6))
+                relevantMonths.push(...units.slice(-6))
             }
         }
         relevantMonths.forEach(month => {
             chartData.push({
-                date: TextUtil.refactorDate(month.date ?? ""),
+                date: TextUtil.refactorDate(month.startDate ?? ""),
                 "Predicted cost": month.staffBudgetBurnDownRate ?? 0,
                 "Actual cost": month.actualMonthSpending ?? 0
 
@@ -123,52 +123,52 @@ export default class ChartUtil {
     }
 
     static getBudgetBreakdownTrackerData = (stats: ProjectStatisticsResponse | undefined): Array<BudgetBreakdownTrackerData> => {
-        if (!stats || !stats.months) return [];
-        const getChartProps = (month: ProjectMonthDto): { color: string, tooltip: string } | undefined => {
+        if (!stats || !stats.units) return [];
+        const getChartProps = (month: ProjectStatisticsUnitDto): { color: string, tooltip: string } | undefined => {
             if (month.staffBudgetBurnDownRate && month.actualMonthSpending) {
                 if (month.staffBudgetBurnDownRate < month.actualMonthSpending) {
                     return {
-                        tooltip: TextUtil.refactorDate(month.date) + ": Over estimated budget.",
+                        tooltip: TextUtil.refactorDate(month.startDate) + ": Over estimated budget.",
                         color: "red"
                     };
                 } else if (month.actualMonthSpending / month.staffBudgetBurnDownRate < 0.9) {
                     return {
-                        tooltip: TextUtil.refactorDate(month.date) + ": Under 90% of estimated budget.",
+                        tooltip: TextUtil.refactorDate(month.startDate) + ": Under 90% of estimated budget.",
                         color: "amber"
                     };
                 } else {
                     return {
-                        tooltip: TextUtil.refactorDate(month.date) + ": Right on budget.",
+                        tooltip: TextUtil.refactorDate(month.startDate) + ": Right on budget.",
                         color: "green"
                     };
                 }
             }
             if (month.staffBudgetBurnDownRate && (month.staffBudgetBurnDownRate > 0 && month.actualMonthSpending === 0)) {
                 return {
-                    tooltip: TextUtil.refactorDate(month.date) + ": Under 90% of estimated budget.",
+                    tooltip: TextUtil.refactorDate(month.startDate) + ": Under 90% of estimated budget.",
                     color: "amber"
                 };
             }
             return {
-                tooltip: TextUtil.refactorDate(month.date) + ": No work needed.",
+                tooltip: TextUtil.refactorDate(month.startDate) + ": No work needed.",
                 color: "green"
             };
         }
-        const relevantMonths: ProjectMonthDto[] = [];
+        const relevantMonths: Array<ProjectStatisticsUnitDto> = [];
         const currDate = TextUtil.getFirstOfYearMonth();
         const trackerData: Array<BudgetBreakdownTrackerData> = []
-        if (stats.months?.length < 24) {
-            relevantMonths.push(...stats.months);
+        if (stats.units?.length < 24) {
+            relevantMonths.push(...stats.units);
         } else {
-            for (let i = 24; i < stats.months?.length; i += 24) {
-                const monthDateStr = stats.months[i - 1]?.date;
+            for (let i = 24; i < stats.units?.length; i += 24) {
+                const monthDateStr = stats.units[i - 1]?.startDate;
                 if (monthDateStr) {
                     const monthDate = new Date(monthDateStr);
                     if (currDate <= monthDate) {
-                        relevantMonths.push(...stats.months.slice(i - 24, i));
+                        relevantMonths.push(...stats.units.slice(i - 24, i));
                         break;
                     } else {
-                        relevantMonths.push(...stats.months.slice(-24));
+                        relevantMonths.push(...stats.units.slice(-24));
                         break;
                     }
                 }
@@ -207,10 +207,10 @@ export default class ChartUtil {
         let actualPm = 0;
         let assignedPm = 0;
         const currentYear = new Date().getFullYear().toString();
-        statistics.months?.forEach((month) => {
-            if (month.date?.includes(currentYear)) {
-                actualPm += month.actualTotalWorkPm ?? 0;
-                assignedPm += month.pmBurnDownRate ?? 0;
+        statistics.units?.forEach((unit) => {
+            if (unit.startDate?.includes(currentYear)) {
+                actualPm += unit.actualTotalWorkPm ?? 0;
+                assignedPm += unit.pmBurnDownRate ?? 0;
             }
         })
         let color: string = "teal"
@@ -242,17 +242,17 @@ export default class ChartUtil {
         const currentYear = new Date().getFullYear().toString();
         const currentMonth = (new Date().getMonth() + 1).toString();
         const currentMonthName = new Date().toLocaleString('default', {month: 'long'});
-        project.months?.forEach(month => {
-            if (month.date?.includes(currentYear)) {
-                assignedPmYear += month.pmBurnDownRate ?? 0;
-                actualPmYear += month.actualTotalWorkPm ?? 0;
-                actualBudgetYear += month.actualMonthSpending ?? 0;
-                assignedBudgetYear += month.staffBudgetBurnDownRate ?? 0;
-                if (month.date?.includes(currentMonth)) {
-                    actualPmMonth = month.actualTotalWorkPm ?? 0;
-                    assignedPmMonth = month.pmBurnDownRate ?? 0;
-                    actualBudgetMonth = month.actualMonthSpending ?? 0;
-                    assignedBudgetMonth = month.staffBudgetBurnDownRate ?? 0;
+        project.units?.forEach(unit => {
+            if (unit.startDate?.includes(currentYear)) {
+                assignedPmYear += unit.pmBurnDownRate ?? 0;
+                actualPmYear += unit.actualTotalWorkPm ?? 0;
+                actualBudgetYear += unit.actualMonthSpending ?? 0;
+                assignedBudgetYear += unit.staffBudgetBurnDownRate ?? 0;
+                if (unit.startDate?.includes(currentMonth)) {
+                    actualPmMonth = unit.actualTotalWorkPm ?? 0;
+                    assignedPmMonth = unit.pmBurnDownRate ?? 0;
+                    actualBudgetMonth = unit.actualMonthSpending ?? 0;
+                    assignedBudgetMonth = unit.staffBudgetBurnDownRate ?? 0;
                 }
             }
         })
@@ -285,17 +285,17 @@ export default class ChartUtil {
         }
     }
 
-    static getReportChartData = (months: Array<ProjectMonthDto>): ReportPageChartData => {
+    static getReportChartData = (units: Array<ProjectStatisticsUnitDto>): ReportPageChartData => {
         let currentMonthName = "";
-        if (months.length === 1) {
-            currentMonthName = new Date(months[0].date!).toLocaleString('default', {month: 'long'});
+        if (units.length === 1) {
+            currentMonthName = new Date(units[0].startDate!).toLocaleString('default', {month: 'long'});
         } else {
-            months.forEach((month, index) => {
-                if (index === 0 || (index + 1) === months.length) {
-                    if ((index + 1) === months.length) {
+            units.forEach((month, index) => {
+                if (index === 0 || (index + 1) === units.length) {
+                    if ((index + 1) === units.length) {
                         currentMonthName += " - "
                     }
-                    currentMonthName += new Date(month.date!).toLocaleString('default', {month: 'long'});
+                    currentMonthName += new Date(month.startDate!).toLocaleString('default', {month: 'long'});
                 }
             })
         }
@@ -303,7 +303,7 @@ export default class ChartUtil {
         let totalPm = 0;
         let actualBudget = 0;
         let totalBudget = 0;
-        months.forEach(month => {
+        units.forEach(month => {
             actualPm += month.actualTotalWorkPm!;
             totalPm += month.pmBurnDownRate!;
             totalBudget += month.staffBudgetBurnDownRate!;

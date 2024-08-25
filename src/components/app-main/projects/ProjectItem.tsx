@@ -29,6 +29,8 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                         return;
                     const response = await projectAPI.getProjectStatistics(
                         project.id,
+                        undefined,
+                        undefined,
                         requestArgs
                     )
                     if (response.status === 200) {
@@ -50,13 +52,24 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
         }
     }, [project]);
 
+    useEffect(() => {
+        // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
+        // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALPHA VERSIONS
+        // WAITING FOR TREMOR FIX
+        const error = console.error;
+        console.error = (...args: any) => {
+            if (/defaultProps/.test(args[0])) return;
+            error(...args);
+        };
+    }, []);
+
     const pmValueFormatter = (value: number) => {
         return value + ' PM';
     };
     const handleNavigate = () => {
         if (project?.ownerId === user?.id) {
             navigate(`/project/${project?.id}/project-dashboard`);
-            SessionUtil.setSidebarSelect("project dashboard");
+            SessionUtil.setSidebarSelect("dashboard");
         }
     };
 
