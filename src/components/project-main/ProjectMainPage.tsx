@@ -7,13 +7,14 @@ import {LuLayoutDashboard, LuPackageOpen} from "react-icons/lu";
 import {FaChartBar} from "react-icons/fa6";
 import {IoPeopleOutline} from "react-icons/io5";
 import {MdOutlineWorkOutline} from "react-icons/md";
-import { FaRegFolderOpen } from "react-icons/fa6";
+import {FaRegFolderOpen} from "react-icons/fa6";
+import {TbReportAnalytics} from "react-icons/tb";
 
 function ProjectMainPage() {
     const {projectId} = useParams();
     const items: Array<ListItem> = [
         {
-            name: "project dashboard",
+            name: "dashboard",
             linkPath: TextUtil.constructValidRoutePath(Paths.PROJECT_DASHBOARD, ":projectId", projectId ?? ""),
             iconComponent: (props) => <LuLayoutDashboard {...props}/>
         },
@@ -21,6 +22,11 @@ function ProjectMainPage() {
             name: "overview chart",
             linkPath: TextUtil.constructValidRoutePath(Paths.PROJECT_OVERVIEW, ":projectId", projectId ?? ""),
             iconComponent: (props) => <FaChartBar {...props}/>,
+        },
+        {
+            name: "workload",
+            linkPath: TextUtil.constructValidRoutePath(Paths.WORKLOAD, ":projectId", projectId ?? ""),
+            iconComponent: (props) => <MdOutlineWorkOutline {...props}/>
         },
         {
             name: "work packages",
@@ -33,15 +39,15 @@ function ProjectMainPage() {
             iconComponent: (props) => <IoPeopleOutline {...props}/>,
         },
         {
-            name: "workload",
-            linkPath: TextUtil.constructValidRoutePath(Paths.WORKLOAD, ":projectId", projectId ?? ""),
-            iconComponent: (props) => <MdOutlineWorkOutline {...props}/>
-        },
-        {
             name: "file manager",
             linkPath: TextUtil.constructValidRoutePath(Paths.FILE_MANAGER, ":projectId", projectId ?? ""),
             iconComponent: (props) => <FaRegFolderOpen {...props} />
-         }
+        },
+        {
+            name: "report",
+            linkPath: TextUtil.constructValidRoutePath(Paths.REPORT, ":projectId", projectId ?? ""),
+            iconComponent: (props) => <TbReportAnalytics {...props} />
+        }
     ]
 
     return (

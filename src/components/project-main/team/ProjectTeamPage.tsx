@@ -41,7 +41,7 @@ export default function ProjectTeamPage() {
     return (
         <div className="flex w-full p-10">
             <div
-                className={`relative flex flex-col  flex-grow border-[1px] border-gray-200 border-solid rounded-[20px] px-5`}>
+                className={`relative flex flex-col flex-grow border-[1px] border-gray-200 border-solid rounded-[20px] px-5`}>
                 <div className="w-full h-full px-12 rounded-bl-[20px]">
                     {loading ? (
                         <div className="flex justify-center items-center h-full">

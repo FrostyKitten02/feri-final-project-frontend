@@ -13,8 +13,6 @@ export default {
     theme: {
         extend: {
             colors: {
-                bg_placeholder1: '#CEEAF7',
-                bg_placeholder2: '#A288E3',
                 primary: '#075985',
                 "c-teal": '#14b8a6',
                 "c-cyan": '#06b6d4',

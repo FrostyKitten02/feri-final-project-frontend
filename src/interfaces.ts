@@ -346,3 +346,8 @@ export interface DeleteFileModalProps extends PopoverBaseProps {
   file: ProjectFileDto;
   refetchFileList: () => void;
 }
+
+export interface ReportPageChartData {
+    pmData: {name: string, "Estimated": number,"Actual": number},
+    budgetData: {name: string, "Estimated": number,"Actual": number}
+}

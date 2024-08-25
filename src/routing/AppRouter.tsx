@@ -9,7 +9,7 @@ import Paths from "../util/Paths";
 import ValidateProjectId from "../components/ValidateProjectId";
 import {RedirectMain} from "../components/app-main/RedirectMain";
 import ProjectTeamPage from "../components/project-main/team/ProjectTeamPage";
-import { WorkPackageListing } from "../components/project-main/work-package/WorkPackageListing";
+import {WorkPackageListing} from "../components/project-main/work-package/WorkPackageListing";
 import {MyProjectsPage} from "../components/app-main/projects/MyProjectsPage";
 import {WorkloadPage} from "../components/project-main/workload/WorkloadPage";
 import {AppMainPage} from "../components/app-main/AppMainPage";
@@ -17,7 +17,8 @@ import {DashboardPage} from "../components/app-main/dashboard/DashboardPage";
 import {OverviewChartPage} from "../components/project-main/overview-chart/OverviewChartPage";
 import ProjectDashboardPage from "../components/project-main/project-dashboard/ProjectDashboardPage";
 import LandingPage from "../components/landing-page/LandingPage";
-import { FileManagerPage } from "../components/project-main/file-manager/FileManagerPage";
+import {FileManagerPage} from "../components/project-main/file-manager/FileManagerPage";
+import {ReportPage} from "../components/project-main/report/ReportPage";
 
 function AppRouter() {
 
@@ -39,7 +40,7 @@ function AppRouter() {
         },
         {
             path: "introduction",
-            element: <LandingPage />,
+            element: <LandingPage/>,
             errorElement: <ErrorPage/>
         },
         {
@@ -67,7 +68,7 @@ function AppRouter() {
                     children: [
                         {
                             path: "project-dashboard",
-                            element: <ProjectDashboardPage />,
+                            element: <ProjectDashboardPage/>,
                             errorElement: <ErrorPage/>
                         },
                         {
@@ -82,7 +83,7 @@ function AppRouter() {
                         },
                         {
                             path: "overview",
-                            element: <OverviewChartPage />,
+                            element: <OverviewChartPage/>,
                             errorElement: <ErrorPage/>
                         },
                         {
@@ -92,13 +93,17 @@ function AppRouter() {
                         },
                         {
                             path: "workload",
-                            element: <WorkloadPage />,
-                            errorElement: <ErrorPage />
+                            element: <WorkloadPage/>,
+                            errorElement: <ErrorPage/>
                         },
                         {
                             path: "file-manager",
-                            element: <FileManagerPage />,
-                            errorElement: <ErrorPage />
+                            element: <FileManagerPage/>,
+                            errorElement: <ErrorPage/>
+                        }, {
+                            path: "report",
+                            element: <ReportPage/>,
+                            errorElement: <ErrorPage/>
                         }
                     ]
                 }
@@ -116,12 +121,12 @@ function AppRouter() {
                 },
                 {
                     path: "dashboard",
-                    element: <DashboardPage />,
+                    element: <DashboardPage/>,
                     errorElement: <ErrorPage/>
                 },
                 {
                     path: "",
-                    element: <RedirectMain />,
+                    element: <RedirectMain/>,
                     errorElement: <ErrorPage/>
                 }
             ]
