@@ -1,23 +1,43 @@
 import {DonutChart} from "@tremor/react";
-import {UserDetailsProps} from "../../../interfaces";
+import {UserDetailsChartData, UserDetailsProjectData} from "../../../interfaces";
 import {useUser} from "@clerk/clerk-react";
 import {Label, Spinner} from "flowbite-react";
+import {useEffect, useState} from "react";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import ChartUtil from "../../../util/ChartUtil";
 
 
-export const UserDetails = ({projectsStatus}: UserDetailsProps) => {
-    const {isLoaded, user} = useUser();
-    const numOfProjects = Object.values(projectsStatus).reduce((sum, value) => sum + value.value, 0);
-    const numOfActiveProjects = Object.values(projectsStatus).filter(value => {
-        if (value.name === "Ongoing projects")
-            return value.value
-    })
-    if (!isLoaded) {
-        return (
-            <div className="flex justify-center items-center h-full w-full">
-                <Spinner size="xl"/>
-            </div>
-        )
-    }
+export const UserDetails = () => {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [projectsStatus, setProjectsStatus] = useState<Array<UserDetailsChartData>>([]);
+    const [projectData, setProjectData] = useState<UserDetailsProjectData>()
+    const requestArgs = useRequestArgs();
+    const {user} = useUser();
+
+    useEffect(() => {
+        const getStatuses = async () => {
+            try {
+                const response = await projectAPI.listProjectsStatus(requestArgs);
+                if (response.status === 200) {
+                    const statuses = ChartUtil.returnUserDetailsChartData(response.data);
+                    setProjectsStatus(statuses);
+                    const numOfProjects = Object.values(statuses).reduce((sum, value) => sum + value.value, 0);
+                    const numOfActiveProjects = Object.values(statuses).filter(value => {
+                        if (value.name === "Ongoing projects")
+                            return value.value
+                    })
+                    setProjectData({
+                        all: numOfProjects,
+                        active: numOfActiveProjects[0].value
+                    })
+                }
+                setLoading(false);
+            } catch (error) {
+            }
+        }
+        getStatuses();
+    }, [])
     return (
         <div className="relative p-5 z-0">
             <div
@@ -49,51 +69,52 @@ export const UserDetails = ({projectsStatus}: UserDetailsProps) => {
                     <div className="flex-grow h-[1px] bg-gray-300"/>
                 </div>
                 {
-                    numOfProjects !== 0 ?
+                    loading ?
+                        <div className="flex justify-center items-center h-full w-full">
+                            <Spinner size="xl"/>
+                        </div> :
                         <>
-                            <div className="flex flex-col items-center space-y-2">
-                                <div className="text-lg">
-                                    Number of projects you've already been a part of:
-                                </div>
-                                <div className="text-4xl font-semibold">
-                                    {numOfProjects}
-                                </div>
-                            </div>
-                            <div>
-                                <DonutChart
-                                    data={projectsStatus}
-                                    variant="pie"
-                                    className="h-[200px]"
-                                    colors={["rose", "amber", "green"]}
-                                />
-                            </div>
-                        </> :
-                        <div className="h-[35%] text-muted flex justify-center items-center">
-                            You haven't been a part of a project yet.
-                        </div>
-                }
-                <div className="flex flex-row items-center py-2">
-                    <div className="w-[7%] h-[1px] bg-gray-300"/>
-                    <Label className="px-2 uppercase text-muted">
-                        currently active projects
-                    </Label>
-                    <div className="flex-grow h-[1px] bg-gray-300"/>
-                </div>
-                {
-                    numOfActiveProjects.length !== 0 ?
-                        <>
-                            <div className="flex flex-col h-full items-center justify-center space-y-2">
-                                <div className="text-lg">
-                                    Number of projects you're currently working on:
-                                </div>
-                                <div className="text-4xl font-semibold">
-                                    {numOfActiveProjects[0].value}
-                                </div>
-                            </div>
-                        </> :
-                        <div className="flex-grow flex items-center justify-center text-muted">
-                            You currently aren't working on any projects.
-                        </div>
+                            {
+                                projectData?.all !== 0 ?
+                                    <>
+                                        <div className="flex flex-col items-center space-y-2">
+                                            <div className="text-lg">
+                                                Number of projects you've already been a part of:
+                                            </div>
+                                            <div className="text-4xl font-semibold">
+                                                {projectData?.all}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <DonutChart
+                                                data={projectsStatus}
+                                                variant="pie"
+                                                className="h-[170px]"
+                                                colors={["rose", "amber", "green"]}
+                                            />
+                                        </div>
+                                    </> :
+                                    <div className="h-[35%] text-muted flex justify-center items-center">
+                                        You haven't been a part of a project yet.
+                                    </div>
+                            }
+                            {
+                                projectData?.active ?
+                                    <>
+                                        <div className="flex flex-col h-full items-center justify-center space-y-2">
+                                            <div className="text-lg">
+                                                Number of projects you're currently working on:
+                                            </div>
+                                            <div className="text-4xl font-semibold">
+                                                {projectData.active}
+                                            </div>
+                                        </div>
+                                    </> :
+                                    <div className="flex-grow flex items-center justify-center text-muted">
+                                        You currently aren't working on any projects.
+                                    </div>
+                            }
+                        </>
                 }
             </div>
             <div

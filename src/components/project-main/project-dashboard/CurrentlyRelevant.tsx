@@ -42,7 +42,7 @@ export const CurrentlyRelevant = ({statistics}: CurrentMonthProps) => {
                             <div className="space-y-2">
                                 <div>
                                     <div className="text-xs text-end uppercase text-muted">
-                                        Actual vs. Planned PM for This year
+                                        Actual vs. Planned PM for current year
                                     </div>
                                     <div className="text-xl font-medium text-end">
                                         {currDate.year}
@@ -73,7 +73,7 @@ export const CurrentlyRelevant = ({statistics}: CurrentMonthProps) => {
                             <div className="space-y-2">
                                 <div>
                                     <div className="text-xs text-end uppercase text-muted">
-                                        Actual vs. Planned PM for This Month
+                                        Actual vs. Planned PM for current Month
                                     </div>
                                     <div className="text-xl font-medium text-end">
                                         {currDate.month}
