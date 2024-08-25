@@ -54,7 +54,11 @@ export default function Popover({
             opacity: 0,
           }}
           className={`flex z-20 flex-col absolute bg-white ${
-            position == `bottom` ? `top-full` : `bottom-full`
+            position == `bottom`
+              ? `top-full`
+              : position === `top-right`
+              ? `left-full bottom-full`
+              : `bottom-full`
           } mt-4 ${
             width ? `w-${width}` : `w-64`
           } h-${height} rounded-xl border border-solid border-gray-200 divide-y overflow-hidden`}

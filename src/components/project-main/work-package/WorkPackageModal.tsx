@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { CreateWorkPackageRequest } from "../../../../temp_ts";
 import { WorkPackageModalProps } from "../../../interfaces";
@@ -50,15 +50,23 @@ export default function WorkPackageModal({
   } = useForm<WorkPackageFormFields>();
   const watchStartDate = watch("startDate");
   register("isRelevant", { value: workpackage?.isRelevant ?? true }); // register the isRelevant field here, because it's a custom component not input
+
   const toggleSwitch = (): void => {
-    if (workpackage?.tasks && workpackage?.tasks?.length > 0 ) {
+    if (workpackage?.tasks && workpackage?.tasks?.length > 0) {
       toastWarning(
         "This work package already has tasks assigned. Please delete all of the tasks before setting the work package to not relevant."
       );
       return;
     }
-    setIsOn(!isOn);
-    setValue("isRelevant", !isOn);
+    const newIsOn = !isOn;
+
+    setIsOn(newIsOn);
+    setValue("isRelevant", newIsOn);
+    if (!newIsOn) {
+      setValue("assignedPM", 0);
+    } else if (newIsOn && workpackage?.assignedPM) {
+      setValue("assignedPM", workpackage.assignedPM);
+    }
   };
 
   const onSubmit: SubmitHandler<WorkPackageFormFields> = async (
@@ -262,6 +270,7 @@ export default function WorkPackageModal({
                     <Label>No. person months involved</Label>
                     <TextInput
                       defaultValue={workpackage && workpackage.assignedPM}
+                      disabled={!isOn}
                       type="number"
                       min="0"
                       rightIcon={TbCalendarUser}

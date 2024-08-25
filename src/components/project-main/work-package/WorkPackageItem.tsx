@@ -33,7 +33,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           projectDetails={projectDetails}
         />
       ),
-      label: "Edit work package",
+      label: "Edit",
     },
     {
       component: (
@@ -42,7 +42,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
           onSuccess={onSuccess}
         />
       ),
-      label: "Delete work package",
+      label: "Delete",
     },
   ];
 
@@ -134,11 +134,12 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
                 <p className="font-semibold italic text-sm uppercase">{text}</p>
               </div>
             </div>
-            <div className="flex flex-row justify-end w-1/3 gap-x-4 relative">
+            <div className="flex flex-row justify-end w-1/3 relative">
               <Popover
                 items={popoverItems}
+                width={40}
                 height={28}
-                position="bottom"
+                position="top-right"
                 triggerIcon={
                   <BsThreeDotsVertical className="size-6 fill-gray-700 hover:fill-primary transition delay-50" />
                 }
@@ -146,21 +147,26 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-2/3 rounded-r-xl p-5 border-solid border-l border-gray-200">
+        <div className="relative flex flex-col w-2/3 rounded-r-xl p-5 border-solid border-l border-gray-200">
           {workPackage.tasks && workPackage.tasks.length > 0 ? (
-            <div className="flex flex-col h-full">
-              <div className="flex w-full pb-5">
-                <div className="flex w-full justify-end">
-                  {
-                    <TaskModal
-                      onSuccess={onSuccess}
-                      workpackage={workPackage}
-                    />
-                  }
+            <>
+              <div className="flex flex-col h-full">
+                <div className="flex w-full pb-5">
+                  <div className="flex w-full justify-end">
+                    {
+                      <TaskModal
+                        onSuccess={onSuccess}
+                        workpackage={workPackage}
+                      />
+                    }
+                  </div>
                 </div>
+                <TaskListing workpackage={workPackage} onSuccess={onSuccess} />
               </div>
-              <TaskListing workpackage={workPackage} onSuccess={onSuccess} />
-            </div>
+              <div className="absolute rounded-[20px] text-center text-muted bg-white top-[-12px] font-medium left-20 uppercase flex px-2">
+                TASKS
+              </div>
+            </>
           ) : workPackage.isRelevant ? (
             <div className="flex flex-col h-full items-center gap-y-6 justify-center">
               <h1 className="font-semibold text-xl">

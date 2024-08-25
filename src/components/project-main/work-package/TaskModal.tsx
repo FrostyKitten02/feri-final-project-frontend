@@ -101,10 +101,9 @@ export default function TaskModal({
       {!task && (
         <button
           onClick={() => setModalOpen(true)}
-          className={`flex items-center justify-center bg-primary rounded-lg text-white w-28 h-8 gap-x-2`}
+          className={`w-24 h-8 rounded-xl border-solid border-2 border-gray-200 flex items-center justify-center hover:bg-gray-100 transition delay-50 hover:border-primary`}
         >
-          <FaPlus className="stroke-white size-4" />
-          <span className="text-sm">New task</span>
+          <span className="text-md font-semibold">New task</span>
         </button>
       )}
       {(modalOpen || isOpen) && (

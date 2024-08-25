@@ -29,7 +29,7 @@ export const TaskListing: FC<TaskListingProps> = ({
     setShowIrrelevant((prev) => !prev);
   };
   return (
-    <div className="flex flex-col justify-center h-full">
+    <>
       {showIrrelevant ? (
         <div className="flex justify-end pb-2 gap-x-2">
           <button
@@ -62,27 +62,29 @@ export const TaskListing: FC<TaskListingProps> = ({
           </button>
         </div>
       )}
-      {sortedTasksByDate.every((task) => !task.isRelevant) &&
-      !showIrrelevant ? (
-        <div className="h-full flex flex-col items-center justify-center">
-          <FaRegEyeSlash className="size-12 fill-muted" />
-          <p className="text-md text-muted font-semibold">
-            All irrelevant tasks are hidden
-          </p>
-        </div>
-      ) : (
-        <div className="grid rounded-md items-center gap-y-2">
-          {sortedTasksByDate.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              showIrrelevant={showIrrelevant}
-              onSuccess={onSuccess}
-              workpackage={workpackage}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+      <div className="flex flex-col justify-center h-full">
+        {sortedTasksByDate.every((task) => !task.isRelevant) &&
+        !showIrrelevant ? (
+          <div className="h-full flex flex-col items-center justify-center">
+            <FaRegEyeSlash className="size-12 fill-muted" />
+            <p className="text-md text-muted font-semibold">
+              All irrelevant tasks are hidden
+            </p>
+          </div>
+        ) : (
+          <div className="grid rounded-md items-center gap-y-2">
+            {sortedTasksByDate.map((task) => (
+              <TaskItem
+                key={task.id}
+                task={task}
+                showIrrelevant={showIrrelevant}
+                onSuccess={onSuccess}
+                workpackage={workpackage}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
