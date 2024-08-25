@@ -211,7 +211,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                             className={`flex h-14 space-x-1 text-xl font-semibold justify-center border-solid border-gray-200 items-center ${TextUtil.getWorkStatusColors(month)}`}>
 
                             <div>
-                                {month.actualTotalWorkPm}
+                                {TextUtil.roundDownToTwoDecimalPlaces(month.actualTotalWorkPm ?? 0)}
                             </div>
                             <div className="text-xs font-semibold">
                                 PM
@@ -237,7 +237,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                         key={`total-spending-${index}`}
                         className={`h-14 relative justify-center flex border-solid border-gray-200 items-center ${TextUtil.getSpendingStatusColors(month)}`}>
                         <div className="text-xl font-semibold">
-                            {month.actualMonthSpending ?? 0}
+                            {TextUtil.roundDownToTwoDecimalPlaces(month.actualMonthSpending ?? 0)}
                         </div>
                         <div className="text-xl font-semibold">
                             €
