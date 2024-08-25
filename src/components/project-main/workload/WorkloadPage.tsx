@@ -26,6 +26,8 @@ export const WorkloadPage = () => {
         try {
             const response = await projectAPI.getProjectStatistics(
                 projectId,
+                undefined,
+                undefined,
                 requestArgs
             )
             if (response.status === 200) {
@@ -102,9 +104,9 @@ export const WorkloadPage = () => {
                             Workload data table
                         </div>
                         <div className="absolute rounded-[20px] text-center text-muted bg-white bottom-[-16px] font-medium right-20 uppercase flex px-2">
-                            {(statistics.months?.length ?? 0) > 0 && (
+                            {(statistics.units?.length ?? 0) > 0 && (
                                 <CustomPagination
-                                    totalPages={(Math.ceil((statistics.months?.length ?? 0) / monthsPerPage))}
+                                    totalPages={(Math.ceil((statistics.units?.length ?? 0) / monthsPerPage))}
                                     onPageChange={setCurrentPage}
                                     currentPage={currentPage}
                                     nextLabelText=""

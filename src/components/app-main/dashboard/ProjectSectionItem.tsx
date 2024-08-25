@@ -36,6 +36,8 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                     return;
                 const response = await projectAPI.getProjectStatistics(
                     project.id,
+                    undefined,
+                    undefined,
                     requestArgs
                 )
                 if (response.status === 200) {
@@ -64,7 +66,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
     const handleNavigate = () => {
         if(project.ownerId === user?.id){
             navigate(`/project/${project?.id}/project-dashboard`);
-            SessionUtil.setSidebarSelect("project dashboard");
+            SessionUtil.setSidebarSelect("dashboard");
         }
     };
     return (

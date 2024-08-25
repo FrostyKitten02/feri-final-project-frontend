@@ -1,7 +1,6 @@
 import {useParams} from "react-router-dom";
 import {Fragment, useEffect, useState} from "react";
 import {projectAPI} from "../../../util/ApiDeclarations";
-import {ProjectMonthDto} from "../../../../temp_ts";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {CSelect, SelectOption} from "../../template/inputs/CustomInputs";
 import {SelectedItemProps} from "../../template/inputs/inputsInterface";
@@ -12,12 +11,13 @@ import ChartUtil from "../../../util/ChartUtil";
 import {BarChart} from "@tremor/react";
 import html2canvas from "html2canvas";
 import {jsPDF} from 'jspdf';
+import {ProjectStatisticsUnitDto} from "../../../../temp_ts";
 
 export const ReportPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [months, setMonths] = useState<Array<ProjectMonthDto>>();
+    const [months, setMonths] = useState<Array<ProjectStatisticsUnitDto>>();
     const [selectedMonthly, setSelectedMonthly] = useState<SelectedItemProps>({value: "", text: ""});
-    const [chosenMonthly, setChosenMonthly] = useState<Array<ProjectMonthDto>>();
+    const [chosenMonthly, setChosenMonthly] = useState<Array<ProjectStatisticsUnitDto>>();
     const [reportType, setReportType] = useState<string>("");
     const [barChartData, setBarChartData] = useState<ReportPageChartData>();
     const {projectId} = useParams();
@@ -28,10 +28,12 @@ export const ReportPage = () => {
             try {
                 const response = await projectAPI.getProjectStatistics(
                     projectId,
+                    undefined,
+                    undefined,
                     requestArgs
                 );
                 if (response.status === 200) {
-                    setMonths(response.data.months);
+                    setMonths(response.data.units);
                     setLoading(false);
                 }
             } catch (error: any) {
@@ -42,8 +44,8 @@ export const ReportPage = () => {
 
     useEffect(() => {
             if (selectedMonthly.value !== "" && months) {
-                let chosen: Array<ProjectMonthDto> = []
-                const selectedIndex = months.findIndex(month => month.date === selectedMonthly.value);
+                let chosen: Array<ProjectStatisticsUnitDto> = []
+                const selectedIndex = months.findIndex(unit => unit.startDate === selectedMonthly.value);
                 if (reportType === "quarterly") {
                     chosen = months.slice(selectedIndex, selectedIndex + 3);
                 } else if (reportType === "monthly") {
@@ -54,7 +56,17 @@ export const ReportPage = () => {
                 setBarChartData(chartData);
             }
         }
-        , [selectedMonthly])
+        , [selectedMonthly]);
+    useEffect(() => {
+        // THIS IS TEMPORARY SO THE ERROR DOES NOT SHOW
+        // RECHART XAXIS ERROR -> FIX ON ALPHA VERSION -> TREMOR DOES NOT UPDATE ON ALPHA VERSIONS
+        // WAITING FOR TREMOR FIX
+        const error = console.error;
+        console.error = (...args: any) => {
+            if (/defaultProps/.test(args[0])) return;
+            error(...args);
+        };
+    }, []);
     const generateReport = () => {
         const input = document.getElementById("report-div");
         if (input) {
@@ -122,10 +134,10 @@ export const ReportPage = () => {
                                                 <CSelect selected={selectedMonthly} setSelected={setSelectedMonthly}>
                                                     {
                                                         months?.map((month, index) => {
-                                                            if (month.date) {
+                                                            if (month.startDate) {
                                                                 return (
-                                                                    <SelectOption key={index} value={month.date ?? ""}>
-                                                                        {TextUtil.returnMonthYear(month.date)}
+                                                                    <SelectOption key={index} value={month.startDate ?? ""}>
+                                                                        {TextUtil.returnMonthYear(month.startDate)}
                                                                     </SelectOption>
                                                                 )
                                                             }
@@ -159,10 +171,10 @@ export const ReportPage = () => {
                                                 <CSelect selected={selectedMonthly} setSelected={setSelectedMonthly}>
                                                     {
                                                         (months && months.length > 2 ? months.slice(0, -2) : months)?.map((month, index) => {
-                                                            if (month.date) {
+                                                            if (month.startDate) {
                                                                 return (
-                                                                    <SelectOption key={index} value={month.date ?? ""}>
-                                                                        {TextUtil.returnMonthYear(month.date)}
+                                                                    <SelectOption key={index} value={month.startDate ?? ""}>
+                                                                        {TextUtil.returnMonthYear(month.startDate)}
                                                                     </SelectOption>
                                                                 )
                                                             }
@@ -224,13 +236,13 @@ export const ReportPage = () => {
                                                             <div
                                                                 className="col-span-3 bg-black w-full h-[1px] mt-2"/>
                                                             {
-                                                                chosenMonthly.map(month => (
-                                                                    <>
+                                                                chosenMonthly.map((month, monthIndex) => (
+                                                                    <Fragment key={monthIndex}>
                                                                         {
                                                                             month.personWork?.map((person, index) => {
                                                                                 return (
                                                                                     <Fragment
-                                                                                        key={`person-index-${index}`}>
+                                                                                        key={`person-index-${index}-${monthIndex}`}>
                                                                                         <div
                                                                                             className={`text-start ${index % 2 === 0 && "bg-gray-200"} pb-3`}>
                                                                                             {person.personId}
@@ -274,11 +286,11 @@ export const ReportPage = () => {
                                                                             {TextUtil.roundDownToTwoDecimalPlaces(month.actualMonthSpending ?? 0) + "€"}
                                                                         </div>
                                                                         <div className="col-span-3 py-3 italic font-semibold">
-                                                                            {TextUtil.refactorDate(month.date)}
+                                                                            {TextUtil.refactorDate(month.startDate)}
                                                                         </div>
                                                                         <div className="col-span-3 h-10">
                                                                         </div>
-                                                                    </>
+                                                                    </Fragment>
                                                                 ))
                                                             }
                                                         </div>

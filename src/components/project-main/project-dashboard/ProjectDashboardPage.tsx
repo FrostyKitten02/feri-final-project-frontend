@@ -34,6 +34,8 @@ export default function ProjectDashboardPage() {
         projectSchemaAPI.getAllProjectBudgetSchema(requestArgs);
       const statisticsPromise = projectAPI.getProjectStatistics(
         projectId,
+        undefined,
+        undefined,
         requestArgs
       );
       const [projectResponse, schemaResponse, statisticsResponse] =

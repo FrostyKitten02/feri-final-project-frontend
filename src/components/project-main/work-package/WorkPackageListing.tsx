@@ -69,6 +69,7 @@ export const WorkPackageListing: FC = () => {
           ) : workPackages.length > 0 ? (
             workPackages.map((workPackage) => (
               <WorkPackageItem
+                  key={workPackage.id}
                 projectDetails={projectDetails}
                 onSuccess={onSuccess}
                 workPackage={workPackage}
