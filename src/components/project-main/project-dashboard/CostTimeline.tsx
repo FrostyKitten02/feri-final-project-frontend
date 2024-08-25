@@ -10,8 +10,8 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
     }
 
     useEffect(() => {
-        if (stats.months !== undefined) {
-            const chartData = ChartUtil.getCostTimelineChartData(stats.months);
+        if (stats.units !== undefined) {
+            const chartData = ChartUtil.getCostTimelineChartData(stats.units);
             setChartData(chartData);
         }
 

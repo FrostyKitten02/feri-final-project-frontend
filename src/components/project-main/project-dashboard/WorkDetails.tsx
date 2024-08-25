@@ -43,7 +43,7 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
         if (statistics) {
             const { totalPm, actualPm, pmPercentValue, tooltipValue } = ChartUtil.getWorkDetailsLineChartPm(statistics);
             setChartDetails({ totalPm, actualPm, pmPercentValue, tooltipValue });
-            const newLineChartData = ChartUtil.returnLineChartData(statistics.months);
+            const newLineChartData = ChartUtil.returnLineChartData(statistics.units);
             setLineChartData(newLineChartData);
         }
     }, [statistics]);

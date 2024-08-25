@@ -19,16 +19,16 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
         }
     }
     const {shownMonths, emptyColumnsCount, years} = useMemo(() => {
-        if (!statistics.months)
+        if (!statistics.units)
             return {shownMonths: [], startIndex: 0, emptyColumnsCount: 0, years: []};
 
         const startIndex = (currentPage - 1) * monthsPerPage;
-        const shownMonths = statistics.months.slice(startIndex, startIndex + monthsPerPage);
+        const shownMonths = statistics.units.slice(startIndex, startIndex + monthsPerPage);
         const emptyColumnsCount = monthsPerPage - shownMonths.length;
         const years = TextUtil.yearColumnLimit(shownMonths, 2);
 
         return {shownMonths, emptyColumnsCount, years};
-    }, [statistics.months, currentPage, monthsPerPage]);
+    }, [statistics.units, currentPage, monthsPerPage]);
 
     return (
         <div className="relative">
@@ -85,17 +85,17 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 {shownMonths.map(month => {
                     return (
                         <div
-                            key={month.monthNumber}
+                            key={month.unitNumber}
                             className={`h-14 relative justify-center flex border-solid border-gray-200 items-center ${TextUtil.isCurrentMonthYear(month) && "bg-gray-100"}`}
                         >
                             <div className={`flex`}>
                                 <div className="relative h-full flex items-center">
                                     <div
                                         className="text-xs absolute font-semibold w-20 flex justify-center left-[-45px] transform rotate-[270deg]">
-                                        M{month.monthNumber}
+                                        M{month.unitNumber}
                                     </div>
                                     <div className="uppercase text-3xl mx-2">
-                                        {TextUtil.getMonthAbbreviation(month?.date)}
+                                        {TextUtil.getMonthAbbreviation(month?.startDate)}
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 {shownMonths.map(month => {
                     return (
                         <div
-                            key={month.monthNumber}
+                            key={month.unitNumber}
                             className={`h-14 relative justify-center space-x-1 flex border-solid border-gray-200 items-center ${TextUtil.isCurrentMonthYear(month) && "bg-gray-100"}`}
                         >
                             <div className="text-xl font-semibold">
@@ -136,7 +136,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 {shownMonths.map(month => {
                     return (
                         <div
-                            key={month.monthNumber}
+                            key={month.unitNumber}
                             className={`h-14 relative justify-center flex border-solid border-gray-200 items-center ${TextUtil.isCurrentMonthYear(month) && "bg-gray-100"}`}
                         >
                             <div className="text-xl font-semibold">
@@ -178,7 +178,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                                     <div key={`person-work-${indexPerson}-${monthIndex}`}
                                          className={`flex h-20 items-center justify-center border-solid border-gray-200 ${TextUtil.isCurrentMonthYear(month) && "bg-gray-100"}`}>
                                         <button
-                                            onClick={() => handleButtonOpen(month.date, month.personWork?.[indexPerson])}
+                                            onClick={() => handleButtonOpen(month.startDate, month.personWork?.[indexPerson])}
                                             className="flex-grow text-xl h-full hover:bg-gray-50 transition delay-50">
                                             {month.personWork?.[indexPerson].occupancyId !== null ? month.personWork?.[indexPerson].totalWorkPm :
                                                 <div
