@@ -181,7 +181,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
           const response = await projectAPI.getProject(projectId, await requestArgs.getRequestArgs());
           if (response.status === 200) {
             setProjectDetails(response.data);
-            fetchOccupancyForUser(response.data);
+            await fetchOccupancyForUser(response.data);
           }
         } else {
           toastError("Project id not found");
