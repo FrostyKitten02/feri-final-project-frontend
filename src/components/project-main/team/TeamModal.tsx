@@ -12,6 +12,7 @@ import {
   AddPersonToProjectRequest,
   GetProjectResponse,
   ListPersonResponse,
+  MonthlyPersonOccupancyDto,
   PageInfoRequest,
   PersonDto,
   PersonListSearchParams,
@@ -28,7 +29,11 @@ import {
   toastSuccess,
   toastWarning,
 } from "../../toast-modals/ToastFunctions";
-import { personAPI, projectAPI } from "../../../util/ApiDeclarations";
+import {
+  occupancyAPI,
+  personAPI,
+  projectAPI,
+} from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AssignPersonFormFields } from "../../../types/types";
@@ -49,6 +54,9 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [userSalary, setUserSalary] = useState<SalaryDto>({
     amount: undefined,
   });
+  const [userOccupancy, setUserOccupancy] = useState<
+    MonthlyPersonOccupancyDto[]
+  >([]);
   const [projectDetails, setProjectDetails] =
     useState<GetProjectResponse | null>(null);
 
@@ -69,6 +77,24 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   useEffect(() => {
     if (modalOpen) {
       fetchAllPeople();
+      const fetchProjectById = async (): Promise<void> => {
+        try {
+          if (projectId) {
+            const response = await projectAPI.getProject(
+              projectId,
+              requestArgs
+            );
+            if (response.status === 200) {
+              setProjectDetails(response.data);
+            }
+          } else {
+            toastError("Project id not found");
+          }
+        } catch (error: any) {
+          toastError(error.message);
+        }
+      };
+      fetchProjectById();
     }
   }, [debouncedSearchQuery]);
 
@@ -151,24 +177,32 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       }
     };
 
-    const fetchProjectById = async (): Promise<void> => {
+    const fetchOccupancyForUser = async (): Promise<void> => {
+      if (!person.id) return;
       try {
-        if (projectId) {
-          const response = await projectAPI.getProject(projectId, requestArgs);
+        if (
+          projectDetails?.projectDto?.startDate &&
+          projectDetails.projectDto.endDate
+        ) {
+          const response = await occupancyAPI.getMonthlyPersonOccupancy(
+            projectDetails?.projectDto?.startDate,
+            projectDetails?.projectDto?.endDate,
+            person.id,
+            requestArgs
+          );
           if (response.status === 200) {
-            setProjectDetails(response.data);
+            setUserOccupancy(response.data.monthlyPersonOccupancies ?? []);
           }
         } else {
-          toastError("Project id not found");
+          toastWarning("Project start date or end date is undefined!");
         }
       } catch (error: any) {
         toastError(error.message);
       }
     };
+
     fetchSalaryforUser();
-    if (!projectDetails) {
-      fetchProjectById();
-    }
+    fetchOccupancyForUser();
   };
 
   const handleClose = (): void => {
@@ -183,6 +217,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const resetField = (): void => {
     reset();
     setUserSalary({ ...userSalary, amount: undefined });
+    setUserOccupancy([]);
   };
 
   const onSubmit: SubmitHandler<AssignPersonFormFields> = async (
@@ -398,30 +433,74 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                   </div>
                 </motion.div>
               )}
-              {userSalary.amount && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ModalDivider>user details</ModalDivider>
-                  <div className="grid grid-cols-1 pt-8 pb-4">
-                    <div className="flex justify-center items-center gap-x-4">
-                      <div className="text-sm text-gray-600 font-semibold">
-                        CURRENT MONTHLY SALARY [€]
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {userSalary && userOccupancy && (
+                  <>
+                    <ModalDivider>user details</ModalDivider>
+                    <div>
+                      <div className="grid grid-cols-1 pt-8 pb-4">
+                        <div className="flex justify-center items-center gap-x-4">
+                          <div className="text-sm text-gray-600 font-semibold">
+                            CURRENT MONTHLY SALARY [€]
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
+                        <div className="grid grid-cols-1 py-6">
+                          <div className="flex items-center justify-center text-sm font-semibold text-black">
+                            {userSalary.amount ? userSalary.amount : "N/A"}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
-                    <div className="grid grid-cols-1 py-6">
-                      <div className="flex items-center justify-center text-sm font-semibold text-black">
-                        {userSalary.amount}
+                    <div>
+                      <div className="grid grid-cols-3 pt-8 pb-4">
+                        <div className="flex justify-center items-center gap-x-4">
+                          <div className="text-sm text-gray-600 font-semibold">
+                            MONTH
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-x-4">
+                          <div className="text-sm text-gray-600 font-semibold">
+                            ESTIMATED PM
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center gap-x-4">
+                          <div className="text-sm text-gray-600 font-semibold">
+                            MAX AVAILABILITY
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200 overflow-scroll">
+                        {userOccupancy.map((occupancy, index) => {
+                          return (
+                            <div className="grid grid-cols-3 py-6" key={index}>
+                              <div className="flex items-center justify-center text-sm font-semibold text-black">
+                                {occupancy.month ? occupancy.month : "N/A"}
+                              </div>
+                              <div className="flex items-center justify-center text-sm font-semibold text-black">
+                                {occupancy.estimatedPm
+                                  ? occupancy.estimatedPm
+                                  : "N/A"}
+                              </div>
+                              <div className="flex items-center justify-center text-sm font-semibold text-black">
+                                {occupancy.maxAvailability
+                                  ? occupancy.maxAvailability
+                                  : "N/A"}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
+                  </>
+                )}
+              </motion.div>
             </CustomModalBody>
             <CustomModalFooter>assign</CustomModalFooter>
           </form>
