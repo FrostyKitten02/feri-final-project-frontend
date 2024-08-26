@@ -33,7 +33,7 @@ export default function Backdrop({ children, closeModal }: BackdropProps) {
           key="modalBackdrop"
           ref={modalRef}
           onClick={handleClose}
-          className="flex z-50 justify-center items-center fixed top-0 left-0 w-screen h-screen bg-black/50 backdrop-blur-md"
+          className="flex z-50 justify-center items-center fixed top-0 left-0 w-screen overflow-y-auto h-screen bg-black/50 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

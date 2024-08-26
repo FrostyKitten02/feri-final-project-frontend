@@ -71,18 +71,21 @@ export const ActiveProjectsSection = () => {
                         </div>
                 }
             </div>
-            <div
-                className="absolute rounded-[20px] text-center text-muted bg-white bottom-0 font-medium right-20 uppercase flex px-2">
-                {pageInfo?.totalElements && pageInfo?.elementsPerPage && (
-                    <CustomPagination
-                        totalPages={(Math.ceil(pageInfo.totalElements / pageInfo.elementsPerPage))}
-                        onPageChange={setPageNumber}
-                        currentPage={pageNumber}
-                        nextLabelText=""
-                        backLabelText=""
-                    />
-                )}
-            </div>
+            {
+                relevantProjects && relevantProjects.length > 0 &&
+                <div
+                    className="absolute rounded-[20px] text-center text-muted bg-white bottom-0 font-medium right-20 uppercase flex px-2">
+                    {pageInfo?.totalElements && pageInfo?.elementsPerPage && (
+                        <CustomPagination
+                            totalPages={(Math.ceil(pageInfo.totalElements / pageInfo.elementsPerPage))}
+                            onPageChange={setPageNumber}
+                            currentPage={pageNumber}
+                            nextLabelText=""
+                            backLabelText=""
+                        />
+                    )}
+                </div>
+            }
             <div
                 className="absolute rounded-[20px] text-center text-muted bg-white top-2 font-medium left-20 uppercase flex px-2">
                 active projects

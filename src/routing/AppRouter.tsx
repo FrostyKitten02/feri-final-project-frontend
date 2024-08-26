@@ -104,7 +104,7 @@ function AppRouter() {
                             path: "report",
                             element: <ReportPage/>,
                             errorElement: <ErrorPage/>
-                        }
+                        },
                     ]
                 }
             ]
