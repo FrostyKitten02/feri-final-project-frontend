@@ -77,24 +77,6 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   useEffect(() => {
     if (modalOpen) {
       fetchAllPeople();
-      const fetchProjectById = async (): Promise<void> => {
-        try {
-          if (projectId) {
-            const response = await projectAPI.getProject(
-              projectId,
-              requestArgs
-            );
-            if (response.status === 200) {
-              setProjectDetails(response.data);
-            }
-          } else {
-            toastError("Project id not found");
-          }
-        } catch (error: any) {
-          toastError(error.message);
-        }
-      };
-      fetchProjectById();
     }
   }, [debouncedSearchQuery]);
 
@@ -177,16 +159,18 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       }
     };
 
-    const fetchOccupancyForUser = async (): Promise<void> => {
+    const fetchOccupancyForUser = async (
+      projectData: GetProjectResponse
+    ): Promise<void> => {
       if (!person.id) return;
       try {
         if (
-          projectDetails?.projectDto?.startDate &&
-          projectDetails.projectDto.endDate
+          projectData?.projectDto?.startDate &&
+          projectData.projectDto.endDate
         ) {
           const response = await occupancyAPI.getMonthlyPersonOccupancy(
-            projectDetails?.projectDto?.startDate,
-            projectDetails?.projectDto?.endDate,
+            projectData?.projectDto?.startDate,
+            projectData?.projectDto?.endDate,
             person.id,
             requestArgs
           );
@@ -201,8 +185,27 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       }
     };
 
+    const fetchProjectById = async (): Promise<void> => {
+      try {
+        if (projectId) {
+          const response = await projectAPI.getProject(projectId, requestArgs);
+          if (response.status === 200) {
+            setProjectDetails(response.data);
+            fetchOccupancyForUser(response.data);
+          }
+        } else {
+          toastError("Project id not found");
+        }
+      } catch (error: any) {
+        toastError(error.message);
+      }
+    };
+
     fetchSalaryforUser();
-    fetchOccupancyForUser();
+
+    if (!projectDetails) {
+      fetchProjectById();
+    }
   };
 
   const handleClose = (): void => {
@@ -210,6 +213,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     setSearchQuery("");
     setInputValue("");
     setUserSalary({ ...userSalary, amount: undefined });
+    setUserOccupancy([]);
     setProjectDetails(null);
     setModalOpen(false);
   };
@@ -266,7 +270,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
             <CustomModalHeader handleModalClose={handleClose}>
               <ModalTitle>Assign person to project</ModalTitle>
               <ModalText showIcon={true} contentColor="warning">
-                Only available employees can be assigned to the project.
+                Only available employees should be assigned to the project.
               </ModalText>
             </CustomModalHeader>
             <CustomModalBody>
@@ -439,7 +443,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {userSalary && userOccupancy && (
+                {userSalary && userOccupancy && watchPerson?.id && (
                   <>
                     <ModalDivider>user details</ModalDivider>
                     <div>
@@ -462,26 +466,28 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                       <div className="grid grid-cols-3 pt-8 pb-4">
                         <div className="flex justify-center items-center gap-x-4">
                           <div className="text-sm text-gray-600 font-semibold">
-                            MONTH
+                            PROJECT MONTH
                           </div>
                         </div>
                         <div className="flex justify-center items-center gap-x-4">
                           <div className="text-sm text-gray-600 font-semibold">
-                            ESTIMATED PM
+                            ESTIMATED PM ACROSS ALL PROJECTS
                           </div>
                         </div>
                         <div className="flex justify-center items-center gap-x-4">
                           <div className="text-sm text-gray-600 font-semibold">
-                            MAX AVAILABILITY
+                            MAX AVAILABILITY PERCENTAGE
                           </div>
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200 overflow-y-scroll h-[250px]">
-                        {userOccupancy.map((occupancy, index) => {
-                          return (
+                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200 overflow-y-scroll h-[210px]">
+                        {userOccupancy.length > 0 ? (
+                          userOccupancy.map((occupancy, index) => (
                             <div className="grid grid-cols-3 py-6" key={index}>
                               <div className="flex items-center justify-center text-sm font-semibold text-black">
-                                {occupancy.month ? occupancy.month : "N/A"}
+                                {occupancy.month
+                                  ? TextUtil.refactorDate(occupancy.month)
+                                  : "N/A"}
                               </div>
                               <div className="flex items-center justify-center text-sm font-semibold text-black">
                                 {occupancy.estimatedPm
@@ -490,12 +496,20 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                               </div>
                               <div className="flex items-center justify-center text-sm font-semibold text-black">
                                 {occupancy.maxAvailability
-                                  ? occupancy.maxAvailability
+                                  ? occupancy.maxAvailability * 100
                                   : "N/A"}
                               </div>
                             </div>
-                          );
-                        })}
+                          ))
+                        ) : (
+                          <div className="h-full items-center justify-center flex">
+                            <p className="text-muted">
+                              There is currently no data to display, because
+                              this user has not been assigned to any projects
+                              yet.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>
