@@ -223,7 +223,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   return (
     <>
       <button onClick={() => setModalOpen(true)}>
-        <BsPersonAdd className="fill-black size-12 transition delay-50" />
+        <BsPersonAdd className="fill-black size-12 transition delay-50 hover:fill-primary" />
       </button>
       {modalOpen && (
         <CustomModal closeModal={handleClose} modalWidth="950px">
@@ -276,6 +276,23 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                   transition={{ duration: 0.2 }}
                 >
                   <ModalDivider>duration</ModalDivider>
+                  <ModalText showIcon={true}>
+                    <div className="flex items-center text-black text-md pb-6">
+                      <div>Remember that project starts on</div>
+                      <div className="font-semibold px-[5px]">
+                        {TextUtil.refactorDate(
+                          projectDetails?.projectDto?.startDate
+                        )}
+                      </div>
+                      <div>and ends on</div>
+                      <div className="font-semibold pl-[5px]">
+                        {TextUtil.refactorDate(
+                          projectDetails?.projectDto?.endDate
+                        )}
+                      </div>
+                      <div>.</div>
+                    </div>
+                  </ModalText>
                   <div className="flex flex-row justify-between">
                     <div className="flex flex-row gap-x-2 w-1/2">
                       <div className="w-[270px]">

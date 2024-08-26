@@ -383,10 +383,10 @@ export interface EmailAddress {
 export interface GetPeopleResponse {
     /**
      * 
-     * @type {Array<PersonDto>}
+     * @type {Array<PersonOnProjectDto>}
      * @memberof GetPeopleResponse
      */
-    'people'?: Array<PersonDto>;
+    'people'?: Array<PersonOnProjectDto>;
     /**
      * 
      * @type {string}
@@ -719,6 +719,55 @@ export interface PersonListSearchParams {
      * @memberof PersonListSearchParams
      */
     'searchStr'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface PersonOnProjectDto
+ */
+export interface PersonOnProjectDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'lastname'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'fromDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonOnProjectDto
+     */
+    'toDate'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PersonOnProjectDto
+     */
+    'estimatedPm'?: number;
 }
 /**
  * 

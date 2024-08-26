@@ -65,7 +65,7 @@ export const DeleteTeamModal = ({
   return (
     <>
       <button onClick={() => setOpen(true)}>
-        <BsPersonDash className="size-6 fill-gray-500 transition delay-50" />
+        <BsPersonDash className="size-6 fill-gray-500 hover:fill-danger transition delay-50" />
       </button>
       {open && (
         <ModalPortal>

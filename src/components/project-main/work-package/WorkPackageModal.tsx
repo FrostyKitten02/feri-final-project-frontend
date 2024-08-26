@@ -276,6 +276,11 @@ export default function WorkPackageModal({
                       rightIcon={TbCalendarUser}
                       {...register("assignedPM", {
                         required: "PM can not be empty!",
+                        validate: (value) => {
+                          if (isOn && value === 0) {
+                            return "PM can not be 0 for a relevant work package!";
+                          }
+                        },
                       })}
                     />
                     <CustomModalError error={errors.assignedPM?.message} />
