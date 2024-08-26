@@ -476,7 +476,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                           </div>
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200 overflow-scroll">
+                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200 overflow-y-scroll h-[250px]">
                         {userOccupancy.map((occupancy, index) => {
                           return (
                             <div className="grid grid-cols-3 py-6" key={index}>
