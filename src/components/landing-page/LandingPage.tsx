@@ -13,18 +13,24 @@ export default function LandingPage() {
         <div className="flex flex-col w-full h-full">
           <div className="flex flex-row w-full h-[80px] items-center px-12 pt-4 justify-between bg-white">
             <div className="flex flex-row w-full">
-              <img src={steerLogoPath} className="max-w-full h-20" alt="steer logo" />
+              <img
+                src={steerLogoPath}
+                className="max-w-full h-20"
+                alt="steer logo"
+              />
             </div>
             <div className="flex flex-row w-full gap-x-8 justify-end items-center">
               <button onClick={() => navigate(Paths.SIGN_IN)}>
                 <span className="text-md font-semibold">Sign in</span>
               </button>
+              {/*
               <button
                 onClick={() => navigate(Paths.SIGN_UP)}
                 className="border border-solid rounded-xl px-4 py-2 border-black"
               >
                 <span className="text-md font-semibold">Get started</span>
               </button>
+                */}
             </div>
           </div>
           <div className="flex w-full h-full py-4 px-4">
@@ -47,7 +53,7 @@ export default function LandingPage() {
                 </div>
                 <div className="pt-6">
                   <button
-                    onClick={() => navigate(Paths.SIGN_UP)}
+                    onClick={() => navigate(Paths.SIGN_IN)}
                     className="py-4 px-6 bg-primary rounded-xl transition delay-50"
                   >
                     <span className="text-white font-semibold">
@@ -58,7 +64,11 @@ export default function LandingPage() {
               </div>
               <div className="flex w-[60%] justify-end items-center">
                 <div className="flex bg-white rounded-l-3xl justify-center drop-shadow-2xl">
-                  <img className="rounded-l-3xl" src={dashboardPath} alt="dashboard"></img>
+                  <img
+                    className="rounded-l-3xl"
+                    src={dashboardPath}
+                    alt="dashboard"
+                  ></img>
                 </div>
               </div>
             </div>
