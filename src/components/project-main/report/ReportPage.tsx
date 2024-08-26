@@ -38,7 +38,7 @@ export const ReportPage = () => {
                     projectId,
                     undefined,
                     undefined,
-                    requestArgs
+                    await requestArgs.getRequestArgs()
                 );
                 if (response.status === 200) {
                     setMonths(response.data.units);

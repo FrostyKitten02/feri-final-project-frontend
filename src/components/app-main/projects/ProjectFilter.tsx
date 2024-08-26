@@ -10,7 +10,7 @@ export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilter
     const [projectStatusCount, setProjectStatusCount] = useState<ProjectListStatusResponse>();
     const requestArgs = useRequestArgs();
     const fetchProjectsByStatus = async () => {
-        const response = await projectAPI.listProjectsStatus(requestArgs);
+        const response = await projectAPI.listProjectsStatus(await requestArgs.getRequestArgs());
         if (response.status === 200) {
             setProjectStatusCount(response.data);
         }

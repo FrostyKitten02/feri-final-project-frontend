@@ -6,11 +6,11 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { DeleteTaskModalProps } from "../../../interfaces";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { taskAPI } from "../../../util/ApiDeclarations";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {DeleteTaskModalProps} from "../../../interfaces";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {taskAPI} from "../../../util/ApiDeclarations";
+import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export const DeleteTaskModal = ({
@@ -27,7 +27,7 @@ export const DeleteTaskModal = ({
   const onDelete: SubmitHandler<any> = async () => {
     try {
       if (task.id) {
-        const response = await taskAPI.deleteTask(task.id, requestArgs);
+        const response = await taskAPI.deleteTask(task.id, await requestArgs.getRequestArgs());
         if (response.status === 200 || response.status === 204) {
           onSuccess();
           toastSuccess(`Task ${task.title} was successfully deleted.`);

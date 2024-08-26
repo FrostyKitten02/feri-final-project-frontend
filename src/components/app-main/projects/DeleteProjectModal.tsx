@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {
   CustomModal,
   CustomModalBody,
@@ -8,15 +8,15 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { DeleteConfirmationFields } from "../../../types/types";
-import { TextInput } from "flowbite-react";
-import { projectAPI } from "../../../util/ApiDeclarations";
-import { toastError } from "../../toast-modals/ToastFunctions";
-import { useRequestArgs } from "../../../util/CustomHooks";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {DeleteConfirmationFields} from "../../../types/types";
+import {TextInput} from "flowbite-react";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {toastError} from "../../toast-modals/ToastFunctions";
+import {useRequestArgs} from "../../../util/CustomHooks";
 import ModalPortal from "../../template/modal/ModalPortal";
-import { useNavigate, useParams } from "react-router-dom";
-import { GetProjectResponse } from "../../../../temp_ts";
+import {useNavigate, useParams} from "react-router-dom";
+import {GetProjectResponse} from "../../../../temp_ts";
 import Paths from "../../../util/Paths";
 
 export const DeleteProjectModal = () => {
@@ -34,7 +34,7 @@ export const DeleteProjectModal = () => {
           if (projectId) {
             const response = await projectAPI.getProject(
               projectId,
-              requestArgs
+                await requestArgs.getRequestArgs()
             );
             if (response.status === 200) {
               setProjectDetails(response.data);
@@ -64,7 +64,7 @@ export const DeleteProjectModal = () => {
   const onDelete: SubmitHandler<any> = async () => {
     try {
       if (projectId) {
-        const response = await projectAPI.deleteProject(projectId, requestArgs);
+        const response = await projectAPI.deleteProject(projectId, await requestArgs.getRequestArgs());
         if (response.status === 200 || response.status === 204) {
           navigate(Paths.HOME);
         }

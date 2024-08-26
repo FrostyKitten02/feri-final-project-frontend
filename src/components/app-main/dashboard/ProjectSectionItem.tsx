@@ -38,7 +38,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                     project.id,
                     undefined,
                     undefined,
-                    requestArgs
+                    await requestArgs.getRequestArgs()
                 )
                 if (response.status === 200) {
                     const chartData = {

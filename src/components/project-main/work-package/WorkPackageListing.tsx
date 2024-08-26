@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from "react";
-import { ProjectDto, WorkPackageDto } from "../../../../temp_ts";
-import { useParams } from "react-router-dom";
-import { projectAPI } from "../../../util/ApiDeclarations";
-import { toastError } from "../../toast-modals/ToastFunctions";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { WorkPackageItem } from "./WorkPackageItem";
+import {FC, useEffect, useState} from "react";
+import {ProjectDto, WorkPackageDto} from "../../../../temp_ts";
+import {useParams} from "react-router-dom";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {toastError} from "../../toast-modals/ToastFunctions";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {WorkPackageItem} from "./WorkPackageItem";
 import WorkPackageModal from "./WorkPackageModal";
-import { Spinner } from "flowbite-react";
+import {Spinner} from "flowbite-react";
 
 export const WorkPackageListing: FC = () => {
   const { projectId } = useParams();
@@ -26,7 +26,7 @@ export const WorkPackageListing: FC = () => {
   const fetchWorkPackagesForProject = async (): Promise<void> => {
     try {
       if (projectId) {
-        const response = await projectAPI.getProject(projectId, requestArgs);
+        const response = await projectAPI.getProject(projectId, await requestArgs.getRequestArgs());
         if (response.status === 200) {
           if (response.data.projectDto) {
             setProjectDetails(response.data.projectDto);

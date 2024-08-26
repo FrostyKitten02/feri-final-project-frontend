@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { ManageUsersModalProps, PopoverItem } from "../../../interfaces";
-import { FaHistory } from "react-icons/fa";
+import {useEffect, useState} from "react";
+import {ManageUsersModalProps, PopoverItem} from "../../../interfaces";
+import {FaHistory} from "react-icons/fa";
 import {
   CustomModal,
   CustomModalBody,
@@ -8,24 +8,19 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { toastError } from "../../toast-modals/ToastFunctions";
-import { personAPI } from "../../../util/ApiDeclarations";
-import {
-  ListPersonResponse,
-  PageInfoRequest,
-  PersonListSearchParams,
-  PersonSortInfoRequest,
-} from "../../../../temp_ts";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { CustomPagination } from "../../template/pagination/CustomPagination";
+import {toastError} from "../../toast-modals/ToastFunctions";
+import {personAPI} from "../../../util/ApiDeclarations";
+import {ListPersonResponse, PageInfoRequest, PersonListSearchParams, PersonSortInfoRequest,} from "../../../../temp_ts";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {CustomPagination} from "../../template/pagination/CustomPagination";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
 import Popover from "../../template/popover-menu/Popover";
 import SalaryModal from "./SalaryModal";
 import PersonTypeModal from "./PersonTypeModal";
 import SalaryEmploymentHistoryModal from "./SalaryEmploymentHistoryModal";
-import { BsFillPersonVcardFill, BsThreeDots } from "react-icons/bs";
-import { Spinner } from "flowbite-react";
-import { FaEuroSign } from "react-icons/fa6";
+import {BsFillPersonVcardFill, BsThreeDots} from "react-icons/bs";
+import {Spinner} from "flowbite-react";
+import {FaEuroSign} from "react-icons/fa6";
 import TextUtil from "../../../util/TextUtil";
 
 export default function ManageUsersModal({
@@ -99,7 +94,7 @@ export default function ManageUsersModal({
         pageInfo,
         sortInfo,
         searchParams,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       if (response.status === 200) {
         setAllUsers(response.data);

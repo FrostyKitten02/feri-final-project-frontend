@@ -28,7 +28,7 @@ export const WorkloadPage = () => {
                 projectId,
                 undefined,
                 undefined,
-                requestArgs
+                await requestArgs.getRequestArgs()
             )
             if (response.status === 200) {
                 setStatistics(response.data);

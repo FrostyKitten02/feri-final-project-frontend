@@ -35,7 +35,7 @@ export const ActiveProjectsSection = () => {
                     fields: ["CREATED_AT"],
                 },
                 params,
-                requestArgs
+                await requestArgs.getRequestArgs()
             );
             if (res.status === 200) {
                 if (res.data.projects) {

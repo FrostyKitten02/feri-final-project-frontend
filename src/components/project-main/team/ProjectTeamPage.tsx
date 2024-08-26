@@ -24,7 +24,7 @@ export default function ProjectTeamPage() {
             if (projectId) {
                 const response = await projectAPI.getPeopleOnProjectByProjectId(
                     projectId,
-                    requestArgs
+                    await requestArgs.getRequestArgs()
                 );
                 if (response.status === 200) {
                     if (response.data.people) setPeopleOnProject(response.data.people);

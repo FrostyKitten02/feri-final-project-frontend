@@ -7,13 +7,13 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { DeleteConfirmationFields } from "../../../types/types";
-import { DeleteWorkPackageModalProps } from "../../../interfaces";
-import { TextInput } from "flowbite-react";
-import { workPackageAPI } from "../../../util/ApiDeclarations";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
-import { useRequestArgs } from "../../../util/CustomHooks";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {DeleteConfirmationFields} from "../../../types/types";
+import {DeleteWorkPackageModalProps} from "../../../interfaces";
+import {TextInput} from "flowbite-react";
+import {workPackageAPI} from "../../../util/ApiDeclarations";
+import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import {useRequestArgs} from "../../../util/CustomHooks";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export const DeleteWorkPackageModal = ({
@@ -36,7 +36,7 @@ export const DeleteWorkPackageModal = ({
       if (workpackage?.id) {
         const response = await workPackageAPI.deleteWorkPackage(
           workpackage.id,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 200 || response.status === 204) {
           onSuccess();

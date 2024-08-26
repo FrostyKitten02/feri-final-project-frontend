@@ -1,16 +1,12 @@
-import { useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { CreateWorkPackageRequest } from "../../../../temp_ts";
-import { WorkPackageModalProps } from "../../../interfaces";
-import { WorkPackageFormFields } from "../../../types/types";
-import { workPackageAPI } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import {
-  toastSuccess,
-  toastError,
-  toastWarning,
-} from "../../toast-modals/ToastFunctions";
+import {useState} from "react";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {useParams} from "react-router-dom";
+import {CreateWorkPackageRequest} from "../../../../temp_ts";
+import {WorkPackageModalProps} from "../../../interfaces";
+import {WorkPackageFormFields} from "../../../types/types";
+import {workPackageAPI} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
 import {
   CustomModal,
   CustomModalBody,
@@ -21,11 +17,11 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { Datepicker, Label, TextInput } from "flowbite-react";
+import {Datepicker, Label, TextInput} from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
-import { TbCalendarUser } from "react-icons/tb";
-import { motion } from "framer-motion";
-import { LuPackagePlus } from "react-icons/lu";
+import {TbCalendarUser} from "react-icons/tb";
+import {motion} from "framer-motion";
+import {LuPackagePlus} from "react-icons/lu";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export default function WorkPackageModal({
@@ -86,7 +82,7 @@ export default function WorkPackageModal({
           const response = await workPackageAPI.updateWorkPackage(
             workpackage.id,
             wp,
-            requestArgs
+              await requestArgs.getRequestArgs()
           );
           if (response.status === 200) {
             handleFormSubmit();
@@ -97,7 +93,7 @@ export default function WorkPackageModal({
         } else {
           const response = await workPackageAPI.createWorkPackage(
             wp,
-            requestArgs
+              await requestArgs.getRequestArgs()
           );
           if (response.status === 201) {
             handleFormSubmit();

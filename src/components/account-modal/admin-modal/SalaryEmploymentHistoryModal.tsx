@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { AdminModalProps } from "../../../interfaces";
+import {useEffect, useState} from "react";
+import {AdminModalProps} from "../../../interfaces";
 import ModalPortal from "../../template/modal/ModalPortal";
 import {
   CustomModal,
@@ -9,7 +9,7 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { toastError } from "../../toast-modals/ToastFunctions";
+import {toastError} from "../../toast-modals/ToastFunctions";
 import {
   PageInfoRequest,
   PersonTypeListDto,
@@ -19,10 +19,10 @@ import {
   SalaryListSearchParams,
   SalaryListSortInfoRequest,
 } from "../../../../temp_ts";
-import { personTypeAPI, salaryApi } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { CustomPagination } from "../../template/pagination/CustomPagination";
-import { Spinner } from "flowbite-react";
+import {personTypeAPI, salaryApi} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {CustomPagination} from "../../template/pagination/CustomPagination";
+import {Spinner} from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
 
 export default function SalaryEmploymentHistoryModal({
@@ -95,7 +95,7 @@ export default function SalaryEmploymentHistoryModal({
         pageInfo,
         sortInfo,
         searchParams,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       if (response.status === 200) {
         setSalaries(response.data.salaries ?? []);
@@ -137,7 +137,7 @@ export default function SalaryEmploymentHistoryModal({
         pageInfo,
         sortInfo,
         searchParams,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       if (response.status === 200) {
         setEmployments(response.data.personTypes ?? []);
