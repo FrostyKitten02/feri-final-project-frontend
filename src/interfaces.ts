@@ -111,6 +111,7 @@ export interface CustomModalProps {
   modalWidth?: string;
   modalHeight?: string;
   children?: React.ReactNode;
+  marginY?: string;
 }
 
 export interface CustomModalHeaderProps {
@@ -358,3 +359,8 @@ export interface PreviewFileModalProps extends PopoverBaseProps {
   fileName?: string;
 }
 
+export interface ReportPdfProps {
+  reportType: string,
+  barChartData?: ReportPageChartData,
+  chosenMonthly?: Array<ProjectStatisticsUnitDto>
+}

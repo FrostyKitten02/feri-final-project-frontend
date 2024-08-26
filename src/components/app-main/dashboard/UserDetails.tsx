@@ -27,10 +27,17 @@ export const UserDetails = () => {
                         if (value.name === "Ongoing projects")
                             return value.value
                     })
-                    setProjectData({
-                        all: numOfProjects,
-                        active: numOfActiveProjects[0].value
-                    })
+                    if(numOfActiveProjects.length === 0){
+                        setProjectData({
+                            all: numOfProjects ?? 0,
+                            active: 0
+                        })
+                    } else {
+                        setProjectData({
+                            all: numOfProjects ?? 0,
+                            active: numOfActiveProjects[0].value ?? 0
+                        })
+                    }
                 }
                 setLoading(false);
             } catch (error) {
@@ -94,7 +101,7 @@ export const UserDetails = () => {
                                             />
                                         </div>
                                     </> :
-                                    <div className="h-[35%] text-muted flex justify-center items-center">
+                                    <div className="h-[150px] text-muted flex justify-center items-center">
                                         You haven't been a part of a project yet.
                                     </div>
                             }
@@ -110,7 +117,7 @@ export const UserDetails = () => {
                                             </div>
                                         </div>
                                     </> :
-                                    <div className="flex-grow flex items-center justify-center text-muted">
+                                    <div className="flex-grow h-[150px] flex items-center justify-center text-muted">
                                         You currently aren't working on any projects.
                                     </div>
                             }
