@@ -663,6 +663,12 @@ export interface PersonDto {
      * @memberof PersonDto
      */
     'email'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PersonDto
+     */
+    'admin'?: boolean;
 }
 /**
  * 
@@ -768,6 +774,12 @@ export interface PersonOnProjectDto {
      * @memberof PersonOnProjectDto
      */
     'estimatedPm'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PersonOnProjectDto
+     */
+    'admin'?: boolean;
 }
 /**
  * 
@@ -2439,6 +2451,35 @@ export const PersonControllerApiAxiosParamCreator = function (configuration?: Co
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCurrentPerson: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/person/current`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} personId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2534,6 +2575,17 @@ export const PersonControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCurrentPerson(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetPersonResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCurrentPerson(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PersonControllerApi.getCurrentPerson']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} personId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2570,6 +2622,14 @@ export const PersonControllerApiFactory = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCurrentPerson(options?: any): AxiosPromise<GetPersonResponse> {
+            return localVarFp.getCurrentPerson(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} personId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2598,6 +2658,16 @@ export const PersonControllerApiFactory = function (configuration?: Configuratio
  * @extends {BaseAPI}
  */
 export class PersonControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PersonControllerApi
+     */
+    public getCurrentPerson(options?: RawAxiosRequestConfig) {
+        return PersonControllerApiFp(this.configuration).getCurrentPerson(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {string} personId 

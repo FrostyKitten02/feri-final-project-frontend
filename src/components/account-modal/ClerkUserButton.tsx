@@ -1,12 +1,20 @@
-import { UserButton, useUser } from "@clerk/clerk-react";
-import { useState } from "react";
-import { FaUsersCog } from "react-icons/fa";
+import {UserButton} from "@clerk/clerk-react";
+import {useState} from "react";
+import {FaUsersCog} from "react-icons/fa";
 import ManageUsersModal from "./admin-modal/ManageUsersModal";
+import {PersonDto} from "../../../temp_ts";
 
-export default function ClerkUserButton() {
-  const { user } = useUser();
-  const [manageUsersModalOpen, setManageUsersModalOpen] =
-    useState<boolean>(false);
+export default function ClerkUserButton(
+        {
+            person
+        }
+        :
+        {
+            person?: PersonDto
+        }) {
+  const [manageUsersModalOpen, setManageUsersModalOpen] = useState<boolean>(false);
+
+
 
   const userButtonAppearance = {
     elements: {
@@ -18,7 +26,7 @@ export default function ClerkUserButton() {
     <div className="flex items-center justify-center ">
       <UserButton appearance={userButtonAppearance}>
         <UserButton.MenuItems>
-          {user?.id === import.meta.env.VITE_ADMIN_ID && (
+          {person?.admin ?? (
             <UserButton.Action
               label="Manage users (admin)"
               labelIcon={<FaUsersCog />}
