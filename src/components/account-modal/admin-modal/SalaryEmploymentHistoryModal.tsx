@@ -23,6 +23,7 @@ import { personTypeAPI, salaryApi } from "../../../util/ApiDeclarations";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { CustomPagination } from "../../template/pagination/CustomPagination";
 import { Spinner } from "flowbite-react";
+import TextUtil from "../../../util/TextUtil";
 
 export default function SalaryEmploymentHistoryModal({
   isOpen,
@@ -215,10 +216,12 @@ export default function SalaryEmploymentHistoryModal({
                             {salary.amount}
                           </div>
                           <div className="flex items-center justify-center font-semibold">
-                            {salary.startDate}
+                            {TextUtil.refactorDate(salary.startDate)}
                           </div>
                           <div className="flex items-center justify-center font-semibold">
-                            {salary.endDate ? salary.endDate : `N/A`}
+                            {salary.endDate
+                              ? TextUtil.refactorDate(salary.endDate)
+                              : `N/A`}
                           </div>
                         </div>
                       ))}
@@ -289,15 +292,19 @@ export default function SalaryEmploymentHistoryModal({
                             {employment.name}
                           </div>
                           <div className="flex items-center justify-center font-semibold">
-                            {(employment.maxAvailability ?? 0) * 100} (
-                            {(employment.research ?? 0) * 100} /{" "}
+                            {TextUtil.roundDownToTwoDecimalPlaces(
+                              (employment.maxAvailability ?? 0) * 100
+                            )}{" "}
+                            ({(employment.research ?? 0) * 100} /{" "}
                             {(employment.educate ?? 0) * 100})
                           </div>
                           <div className="flex items-center justify-center font-semibold">
-                            {employment.startDate}
+                            {TextUtil.refactorDate(employment.startDate)}
                           </div>
                           <div className="flex items-center justify-center font-semibold">
-                            {employment.endDate ? employment.endDate : `N/A`}
+                            {employment.endDate
+                              ? TextUtil.refactorDate(employment.endDate)
+                              : `N/A`}
                           </div>
                         </div>
                       ))}

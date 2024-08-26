@@ -10,7 +10,11 @@ import {
 } from "../../template/modal/CustomModal";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { personTypeAPI } from "../../../util/ApiDeclarations";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import {
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../toast-modals/ToastFunctions";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { PersonTypeFormFields } from "../../../types/types";
 import { AdminModalProps } from "../../../interfaces";
@@ -46,6 +50,14 @@ export default function PersonTypeModal({
   const onSubmit: SubmitHandler<PersonTypeFormFields> = async (
     data
   ): Promise<void> => {
+    const research = Number(data.research);
+    const educate = Number(data.educate);
+
+    if (research + educate < 100) {
+      toastWarning("The sum of data and educate can't equal less than 100%!");
+      return;
+    }
+
     const personType: CreatePersonTypeRequest = {
       name: data.name,
       research: data.research / 100,

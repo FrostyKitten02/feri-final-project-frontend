@@ -26,6 +26,7 @@ import SalaryEmploymentHistoryModal from "./SalaryEmploymentHistoryModal";
 import { BsFillPersonVcardFill, BsThreeDots } from "react-icons/bs";
 import { Spinner } from "flowbite-react";
 import { FaEuroSign } from "react-icons/fa6";
+import TextUtil from "../../../util/TextUtil";
 
 export default function ManageUsersModal({
   modalOpen,
@@ -248,7 +249,9 @@ export default function ManageUsersModal({
                           </div>
                           <div className="flex items-center justify-center">
                             {user.availability
-                              ? user.availability * 100
+                              ? TextUtil.roundDownToTwoDecimalPlaces(
+                                  user.availability * 100
+                                )
                               : "N/A"}
                           </div>
                           <div className="flex items-center justify-center relative">
