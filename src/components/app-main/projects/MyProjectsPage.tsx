@@ -53,7 +53,7 @@ export const MyProjectsPage = () => {
                 pageInfo,
                 sortInfo,
                 searchParams,
-                requestArgs
+                await requestArgs.getRequestArgs()
             );
             if (response.status === 200 && response.data) {
                 setProjects(response.data);

@@ -8,7 +8,11 @@ export default class RequestUtil {
         basePath: import.meta.env.VITE_BACKEND_BASE_URL
     });
 
-    public static createBaseAxiosRequestConfig(session: string): RawAxiosRequestConfig {
+    public static createBaseAxiosRequestConfig(session: string | null): RawAxiosRequestConfig {
+        if (session == null) {
+            return {};
+        }
+
         return {
             headers: {
                 Authorization: `Bearer ${session}`,

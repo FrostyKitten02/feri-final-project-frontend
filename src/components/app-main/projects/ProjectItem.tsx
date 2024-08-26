@@ -31,7 +31,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                         project.id,
                         undefined,
                         undefined,
-                        requestArgs
+                        await requestArgs.getRequestArgs()
                     )
                     if (response.status === 200) {
                         const chartData = {

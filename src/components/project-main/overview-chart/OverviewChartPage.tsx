@@ -1,15 +1,11 @@
-import { useEffect, useState } from "react";
-import { ProjectStatisticsResponse } from "../../../../temp_ts";
-import { projectAPI } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { useParams } from "react-router-dom";
-import {
-  OverviewChart,
-  OverviewChartBody,
-  OverviewChartHeader,
-} from "../../template/overview-chart/OverviewChart";
-import { CustomPagination } from "../../template/pagination/CustomPagination";
-import { Spinner } from "flowbite-react";
+import {useEffect, useState} from "react";
+import {ProjectStatisticsResponse} from "../../../../temp_ts";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {useParams} from "react-router-dom";
+import {OverviewChart, OverviewChartBody, OverviewChartHeader,} from "../../template/overview-chart/OverviewChart";
+import {CustomPagination} from "../../template/pagination/CustomPagination";
+import {Spinner} from "flowbite-react";
 
 export const OverviewChartPage = () => {
   const [statistics, setStatistics] = useState<ProjectStatisticsResponse>({
@@ -37,7 +33,7 @@ export const OverviewChartPage = () => {
           projectId,
           undefined,
           undefined,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 200) {
           const sortedWp = response.data.workPackages?.sort((a, b) => {

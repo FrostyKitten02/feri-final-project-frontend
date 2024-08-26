@@ -13,10 +13,7 @@ import {useParams} from "react-router-dom";
 import {TextInput} from "flowbite-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {WorkloadFormFields} from "../../../types/types";
-import {
-    CreateOccupancyRequest,
-    UpdateOccupancyRequest,
-} from "../../../../temp_ts";
+import {CreateOccupancyRequest, UpdateOccupancyRequest,} from "../../../../temp_ts";
 import {occupancyAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {toastError} from "../../toast-modals/ToastFunctions";
@@ -92,14 +89,14 @@ export const WorkloadModal = ({
                     fromMonth: monthDate,
                     value: data.pmValue,
                 };
-                const response = await occupancyAPI.addOccupancy(workload, requestArgs);
+                const response = await occupancyAPI.addOccupancy(workload, await requestArgs.getRequestArgs());
                 if (response.status === 201) {
                     handleFormSubmit();
                 }
             } else if (data.pmValue == 0 && person.occupancyId !== undefined) {
                 const response = await occupancyAPI.deleteOccupancy(
                     person.occupancyId,
-                    requestArgs
+                    await requestArgs.getRequestArgs()
                 );
                 if (response.status === 200) {
                     handleFormSubmit();
@@ -111,7 +108,7 @@ export const WorkloadModal = ({
                 };
                 const response = await occupancyAPI.updateOccupancy(
                     workload,
-                    requestArgs
+                    await requestArgs.getRequestArgs()
                 );
                 if (response.status === 200) {
                     handleFormSubmit();

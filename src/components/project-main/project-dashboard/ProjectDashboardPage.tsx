@@ -1,18 +1,14 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  ProjectBudgetSchemaDto,
-  ProjectDto,
-  ProjectStatisticsResponse,
-} from "../../../../temp_ts";
-import { projectAPI, projectSchemaAPI } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { ProjectDetails } from "./ProjectDetails";
-import { WorkDetails } from "./WorkDetails";
-import { CurrentlyRelevant } from "./CurrentlyRelevant";
-import { CostTimeline } from "./CostTimeline";
-import { BudgetBreakdown } from "./BudgetBreakdown";
-import { Spinner } from "flowbite-react";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {ProjectBudgetSchemaDto, ProjectDto, ProjectStatisticsResponse,} from "../../../../temp_ts";
+import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {ProjectDetails} from "./ProjectDetails";
+import {WorkDetails} from "./WorkDetails";
+import {CurrentlyRelevant} from "./CurrentlyRelevant";
+import {CostTimeline} from "./CostTimeline";
+import {BudgetBreakdown} from "./BudgetBreakdown";
+import {Spinner} from "flowbite-react";
 
 export default function ProjectDashboardPage() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -29,14 +25,14 @@ export default function ProjectDashboardPage() {
   const fetchData = async () => {
     if (!projectId) return;
     try {
-      const projectPromise = projectAPI.getProject(projectId, requestArgs);
+      const projectPromise = projectAPI.getProject(projectId, await requestArgs.getRequestArgs());
       const schemaPromise =
-        projectSchemaAPI.getAllProjectBudgetSchema(requestArgs);
+        projectSchemaAPI.getAllProjectBudgetSchema(await requestArgs.getRequestArgs());
       const statisticsPromise = projectAPI.getProjectStatistics(
         projectId,
         undefined,
         undefined,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       const [projectResponse, schemaResponse, statisticsResponse] =
         await Promise.all([projectPromise, schemaPromise, statisticsPromise]);

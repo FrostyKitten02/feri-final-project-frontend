@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { CreateTaskRequest, UpdateTaskRequest } from "../../../../temp_ts";
-import { TaskModalProps } from "../../../interfaces";
-import { TaskFormFields } from "../../../types/types";
-import { taskAPI } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { toastSuccess, toastError } from "../../toast-modals/ToastFunctions";
-import { Label, TextInput, Datepicker } from "flowbite-react";
-import { motion } from "framer-motion";
+import {useState} from "react";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {CreateTaskRequest, UpdateTaskRequest} from "../../../../temp_ts";
+import {TaskModalProps} from "../../../interfaces";
+import {TaskFormFields} from "../../../types/types";
+import {taskAPI} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import {Datepicker, Label, TextInput} from "flowbite-react";
+import {motion} from "framer-motion";
 import TextUtil from "../../../util/TextUtil";
 import {
   CustomModal,
-  CustomModalHeader,
-  ModalTitle,
-  ModalText,
   CustomModalBody,
   CustomModalError,
   CustomModalFooter,
+  CustomModalHeader,
+  ModalText,
+  ModalTitle,
 } from "../../template/modal/CustomModal";
 import ModalPortal from "../../template/modal/ModalPortal";
 
@@ -66,7 +66,7 @@ export default function TaskModal({
         const response = await taskAPI.updateTask(
           task.id,
           updateTask,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 200) {
           reset();
@@ -82,7 +82,7 @@ export default function TaskModal({
           isRelevant: data.isRelevant,
           workPackageId: workpackage?.id,
         };
-        const response = await taskAPI.createTask(createTask, requestArgs);
+        const response = await taskAPI.createTask(createTask, await requestArgs.getRequestArgs());
         if (response.status === 201) {
           reset();
           handleClose();

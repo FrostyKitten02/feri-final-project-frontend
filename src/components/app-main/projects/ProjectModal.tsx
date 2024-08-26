@@ -5,11 +5,7 @@ import {AddProjectFormFields} from "../../../types/types";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
 import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
-import {
-    CreateProjectRequest,
-    ProjectBudgetSchemaDto,
-    UpdateProjectRequest,
-} from "../../../../temp_ts";
+import {CreateProjectRequest, ProjectBudgetSchemaDto, UpdateProjectRequest,} from "../../../../temp_ts";
 import {LuEuro} from "react-icons/lu";
 import {ProjectModalProps} from "../../../interfaces";
 import {
@@ -56,7 +52,7 @@ export const ProjectModal = ({
     const fetchBudgetSchemas = async (): Promise<void> => {
         try {
             const response = await projectSchemaAPI.getAllProjectBudgetSchema(
-                requestArgs
+                await requestArgs.getRequestArgs()
             );
             if (response.status === 200) {
                 if (response.data.projectBudgetSchemaDtoList)
@@ -98,7 +94,7 @@ export const ProjectModal = ({
                     response = await projectAPI.updateProject(
                         projectId,
                         project,
-                        requestArgs
+                        await requestArgs.getRequestArgs()
                     );
                     if (response.status === 200) {
                         handleFormSubmit();
@@ -112,7 +108,7 @@ export const ProjectModal = ({
                     toastError("Project id not found.");
                 }
             } else {
-                response = await projectAPI.createProject(project, requestArgs);
+                response = await projectAPI.createProject(project, await requestArgs.getRequestArgs());
                 if (response.status === 201) {
                     handleFormSubmit();
                     toastSuccess(

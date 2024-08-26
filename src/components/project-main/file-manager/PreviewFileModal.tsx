@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { PreviewFileModalProps } from "../../../interfaces";
+import {useEffect, useState} from "react";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {PreviewFileModalProps} from "../../../interfaces";
 import ModalPortal from "../../template/modal/ModalPortal";
 import {
   CustomModal,
@@ -9,10 +9,7 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import DocViewer, {
-  DocViewerRenderers,
-  IDocument,
-} from "@cyntler/react-doc-viewer";
+import DocViewer, {DocViewerRenderers, IDocument,} from "@cyntler/react-doc-viewer";
 
 export const PreviewFileModal = ({
   fileId,
@@ -22,18 +19,22 @@ export const PreviewFileModal = ({
   onClose,
 }: PreviewFileModalProps) => {
   const requestArgs = useRequestArgs();
-  const requestHeaders: Record<string, string> = requestArgs.headers as Record<
-    string,
-    string
-  >;
-
+  const [requestHeaders, setRequestHeaders] = useState<Record<string, string> | null>(null)
   const [documents, setDocuments] = useState<IDocument[]>([]);
+
+  useEffect(() => {
+    setHeaders()
+  }, [])
 
   useEffect(() => {
     if (isOpen) {
       constructFileDownloadURI();
     }
   }, [isOpen]);
+
+  const setHeaders = async function () {
+    setRequestHeaders((await requestArgs.getRequestArgs()).headers as Record<string, string>)
+  }
 
   const handleModalClose = (): void => {
     onClose?.();
@@ -56,8 +57,9 @@ export const PreviewFileModal = ({
     ]);
   };
 
-  if (!isOpen) return false;
+  if (!isOpen || requestHeaders == null) return false;
 
+  console.log(requestHeaders, "HEADERS ")
   return (
     <ModalPortal>
       <CustomModal

@@ -18,7 +18,7 @@ export const UserDetails = () => {
     useEffect(() => {
         const getStatuses = async () => {
             try {
-                const response = await projectAPI.listProjectsStatus(requestArgs);
+                const response = await projectAPI.listProjectsStatus(await requestArgs.getRequestArgs());
                 if (response.status === 200) {
                     const statuses = ChartUtil.returnUserDetailsChartData(response.data);
                     setProjectsStatus(statuses);

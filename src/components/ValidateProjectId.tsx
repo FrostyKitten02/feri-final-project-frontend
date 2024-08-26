@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {useNavigate, useParams, Outlet} from 'react-router-dom';
+import {Outlet, useNavigate, useParams} from 'react-router-dom';
 import {projectAPI} from "../util/ApiDeclarations";
 import TextUtil from "../util/TextUtil";
 import {useRequestArgs} from "../util/CustomHooks";
@@ -13,7 +13,7 @@ const ValidateProjectId = () => {
         const getProject = async () => {
             try {
                 if (projectId && TextUtil.isValidUUID(projectId)) {
-                    const res = await projectAPI.getProject(projectId, requestArgs)
+                    const res = await projectAPI.getProject(projectId, await requestArgs.getRequestArgs())
                     if (res.status !== 200)
                         navigate("/")
 

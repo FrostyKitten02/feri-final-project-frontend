@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { BsPersonAdd } from "react-icons/bs";
+import {useEffect, useMemo, useState} from "react";
+import {BsPersonAdd} from "react-icons/bs";
 import {
   CustomModal,
+  CustomModalBody,
   CustomModalError,
+  CustomModalFooter,
   CustomModalHeader,
   ModalDivider,
   ModalText,
@@ -19,28 +21,16 @@ import {
   PersonSortInfoRequest,
   SalaryDto,
 } from "../../../../temp_ts";
-import {
-  CustomModalBody,
-  CustomModalFooter,
-} from "../../template/modal/CustomModal";
-import { Datepicker, Label, TextInput } from "flowbite-react";
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../toast-modals/ToastFunctions";
-import {
-  occupancyAPI,
-  personAPI,
-  projectAPI,
-} from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { AssignPersonFormFields } from "../../../types/types";
-import { useParams } from "react-router-dom";
-import { TeamModalProps } from "../../../interfaces";
+import {Datepicker, Label, TextInput} from "flowbite-react";
+import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
+import {occupancyAPI, personAPI, projectAPI,} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {AssignPersonFormFields} from "../../../types/types";
+import {useParams} from "react-router-dom";
+import {TeamModalProps} from "../../../interfaces";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import TextUtil from "../../../util/TextUtil";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
@@ -98,7 +88,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         pageInfo,
         sortInfo,
         searchParams,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       if (response.status === 200) {
         setAllPeople(response.data);
@@ -147,7 +137,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     const fetchSalaryforUser = async (): Promise<void> => {
       if (!person.id) return;
       try {
-        const response = await personAPI.getPersonById(person?.id, requestArgs);
+        const response = await personAPI.getPersonById(person?.id, await requestArgs.getRequestArgs());
         if (response.status === 200) {
           setUserSalary({
             ...userSalary,
@@ -172,7 +162,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
             projectData?.projectDto?.startDate,
             projectData?.projectDto?.endDate,
             person.id,
-            requestArgs
+              await requestArgs.getRequestArgs()
           );
           if (response.status === 200) {
             setUserOccupancy(response.data.monthlyPersonOccupancies ?? []);
@@ -188,10 +178,10 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     const fetchProjectById = async (): Promise<void> => {
       try {
         if (projectId) {
-          const response = await projectAPI.getProject(projectId, requestArgs);
+          const response = await projectAPI.getProject(projectId, await requestArgs.getRequestArgs());
           if (response.status === 200) {
             setProjectDetails(response.data);
-            fetchOccupancyForUser(response.data);
+            await fetchOccupancyForUser(response.data);
           }
         } else {
           toastError("Project id not found");
@@ -239,7 +229,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         const response = await projectAPI.addPersonToProject(
           projectId,
           person,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 204) {
           handleClose();

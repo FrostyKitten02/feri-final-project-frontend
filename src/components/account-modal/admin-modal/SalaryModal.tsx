@@ -1,22 +1,22 @@
-import { CreateSalaryRequest } from "../../../../temp_ts";
-import { AdminModalProps } from "../../../interfaces";
-import { salaryApi } from "../../../util/ApiDeclarations";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { SalaryFormFields } from "../../../types/types";
-import { Label, Datepicker, TextInput } from "flowbite-react";
+import {CreateSalaryRequest} from "../../../../temp_ts";
+import {AdminModalProps} from "../../../interfaces";
+import {salaryApi} from "../../../util/ApiDeclarations";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {SalaryFormFields} from "../../../types/types";
+import {Datepicker, Label, TextInput} from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
 import {
   CustomModal,
-  CustomModalHeader,
-  ModalTitle,
   CustomModalBody,
   CustomModalError,
   CustomModalFooter,
+  CustomModalHeader,
   ModalText,
+  ModalTitle,
 } from "../../template/modal/CustomModal";
-import { FaEuroSign } from "react-icons/fa6";
+import {FaEuroSign} from "react-icons/fa6";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export default function SalaryModal({
@@ -55,7 +55,7 @@ export default function SalaryModal({
     try {
       const response = await salaryApi.createSalaryForPerson(
         salary,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       if (response.status === 201) {
         handleClose();

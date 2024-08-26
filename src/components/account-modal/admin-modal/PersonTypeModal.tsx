@@ -1,4 +1,4 @@
-import { CreatePersonTypeRequest } from "../../../../temp_ts";
+import {CreatePersonTypeRequest} from "../../../../temp_ts";
 import {
   CustomModal,
   CustomModalBody,
@@ -8,18 +8,14 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { personTypeAPI } from "../../../util/ApiDeclarations";
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../toast-modals/ToastFunctions";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { PersonTypeFormFields } from "../../../types/types";
-import { AdminModalProps } from "../../../interfaces";
-import { Datepicker, Label, TextInput } from "flowbite-react";
-import { FaPercent } from "react-icons/fa6";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {personTypeAPI} from "../../../util/ApiDeclarations";
+import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
+import {PersonTypeFormFields} from "../../../types/types";
+import {AdminModalProps} from "../../../interfaces";
+import {Datepicker, Label, TextInput} from "flowbite-react";
+import {FaPercent} from "react-icons/fa6";
 import TextUtil from "../../../util/TextUtil";
 import ModalPortal from "../../template/modal/ModalPortal";
 
@@ -70,7 +66,7 @@ export default function PersonTypeModal({
     try {
       const response = await personTypeAPI.createPersonType(
         personType,
-        requestArgs
+          await requestArgs.getRequestArgs()
       );
       if (response.status === 201) {
         handleClose();

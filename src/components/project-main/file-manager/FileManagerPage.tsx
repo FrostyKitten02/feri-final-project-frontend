@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
-import { ProjectFilesResponse } from "../../../../temp_ts";
-import { FileUploadModal } from "./FileUploadModal";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { useParams } from "react-router-dom";
-import { toastError, toastWarning } from "../../toast-modals/ToastFunctions";
-import { projectAPI } from "../../../util/ApiDeclarations";
-import { Spinner } from "flowbite-react";
-import { FaRegFileAlt } from "react-icons/fa";
+import {useEffect, useState} from "react";
+import {ProjectFilesResponse} from "../../../../temp_ts";
+import {FileUploadModal} from "./FileUploadModal";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {useParams} from "react-router-dom";
+import {toastError, toastWarning} from "../../toast-modals/ToastFunctions";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {Spinner} from "flowbite-react";
+import {FaRegFileAlt} from "react-icons/fa";
 import TextUtil from "../../../util/TextUtil";
-import { DeleteFileModal } from "./DeleteFileModal";
+import {DeleteFileModal} from "./DeleteFileModal";
 import Popover from "../../template/popover-menu/Popover";
-import { PopoverItem } from "../../../interfaces";
-import { BsThreeDots } from "react-icons/bs";
+import {PopoverItem} from "../../../interfaces";
+import {BsThreeDots} from "react-icons/bs";
 import mime from "mime-types";
-import { PreviewFileModal } from "./PreviewFileModal";
+import {PreviewFileModal} from "./PreviewFileModal";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { ModalText } from "../../template/modal/CustomModal";
-import { toast } from "react-toastify";
+import {ModalText} from "../../template/modal/CustomModal";
+import {toast} from "react-toastify";
 
 export const FileManagerPage = () => {
   const [projectFiles, setProjectFiles] = useState<ProjectFilesResponse>();
@@ -34,7 +34,7 @@ export const FileManagerPage = () => {
       if (projectId) {
         const response = await projectAPI.getProjectFiles(
           projectId,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 200) {
           setProjectFiles(response.data);
@@ -58,7 +58,7 @@ export const FileManagerPage = () => {
       async () => {
         if (fileId) {
           const response = await projectAPI.download(fileId, {
-            ...requestArgs,
+            ...(await requestArgs.getRequestArgs()),
             responseType: "blob",
           });
           if (response.status === 200) {

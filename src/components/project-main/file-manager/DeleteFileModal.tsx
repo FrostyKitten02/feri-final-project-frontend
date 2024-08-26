@@ -1,22 +1,18 @@
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { DeleteFileModalFields } from "../../../types/types";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {DeleteFileModalFields} from "../../../types/types";
 import {
   CustomModal,
-  CustomModalHeader,
-  ModalTitle,
-  ModalText,
   CustomModalBody,
   CustomModalFooter,
+  CustomModalHeader,
+  ModalText,
+  ModalTitle,
 } from "../../template/modal/CustomModal";
 import ModalPortal from "../../template/modal/ModalPortal";
-import { DeleteFileModalProps } from "../../../interfaces";
-import {
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../toast-modals/ToastFunctions";
-import { projectAPI } from "../../../util/ApiDeclarations";
+import {DeleteFileModalProps} from "../../../interfaces";
+import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
+import {projectAPI} from "../../../util/ApiDeclarations";
 
 export const DeleteFileModal = ({
   file,
@@ -39,7 +35,7 @@ export const DeleteFileModal = ({
       if (file.id) {
         const response = await projectAPI.deleteProjectFile(
           file.id,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 200) {
           refetchFileList();

@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useRequestArgs } from "../../../util/CustomHooks";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { DeleteTeamModalFields } from "../../../types/types";
-import { projectAPI } from "../../../util/ApiDeclarations";
-import { toastError, toastSuccess } from "../../toast-modals/ToastFunctions";
+import {useState} from "react";
+import {useRequestArgs} from "../../../util/CustomHooks";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {DeleteTeamModalFields} from "../../../types/types";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
 import {
   CustomModal,
   CustomModalBody,
@@ -13,10 +13,10 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import { TextInput } from "flowbite-react";
-import { DeleteTeamModalProps } from "../../../interfaces";
-import { useParams } from "react-router-dom";
-import { BsPersonDash } from "react-icons/bs";
+import {TextInput} from "flowbite-react";
+import {DeleteTeamModalProps} from "../../../interfaces";
+import {useParams} from "react-router-dom";
+import {BsPersonDash} from "react-icons/bs";
 import ModalPortal from "../../template/modal/ModalPortal";
 
 export const DeleteTeamModal = ({
@@ -42,7 +42,7 @@ export const DeleteTeamModal = ({
         const response = await projectAPI.removePersonFromProject(
           projectId,
           person.id,
-          requestArgs
+            await requestArgs.getRequestArgs()
         );
         if (response.status === 200 || response.status === 204) {
           onSuccess();
