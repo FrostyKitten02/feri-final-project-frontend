@@ -53,8 +53,8 @@ export default function PersonTypeModal({
     const research = Number(data.research);
     const educate = Number(data.educate);
 
-    if (research + educate < 100) {
-      toastWarning("The sum of data and educate can't equal less than 100%!");
+    if (research + educate !== 100) {
+      toastWarning("The sum of research and educate must equal 100 percent!");
       return;
     }
 
