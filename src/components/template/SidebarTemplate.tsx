@@ -118,7 +118,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
             >
               <div className="text-black font-semibold text-lg flex flex-row items-center gap-x-1">
                 <p>{user?.fullName}</p>
-                {person?.admin && (
+                {person?.admin ?? (
                   <p className="text-danger text-sm">(admin)</p>
                 )}
               </div>
