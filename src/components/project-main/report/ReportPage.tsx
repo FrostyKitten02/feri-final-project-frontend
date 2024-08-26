@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {Fragment, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {CSelect, SelectOption} from "../../template/inputs/CustomInputs";
@@ -8,16 +8,24 @@ import TextUtil from "../../../util/TextUtil";
 import {Label, Spinner} from "flowbite-react";
 import {ReportPageChartData} from "../../../interfaces";
 import ChartUtil from "../../../util/ChartUtil";
-import {BarChart} from "@tremor/react";
 import html2canvas from "html2canvas";
 import {jsPDF} from 'jspdf';
 import {ProjectStatisticsUnitDto} from "../../../../temp_ts";
+import {ReportPdf} from "./ReportPdf";
+import {
+    CustomModal,
+    CustomModalBody,
+    CustomModalFooter,
+    CustomModalHeader,
+    ModalTitle
+} from "../../template/modal/CustomModal";
 
 export const ReportPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [months, setMonths] = useState<Array<ProjectStatisticsUnitDto>>();
     const [selectedMonthly, setSelectedMonthly] = useState<SelectedItemProps>({value: "", text: ""});
     const [chosenMonthly, setChosenMonthly] = useState<Array<ProjectStatisticsUnitDto>>();
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [reportType, setReportType] = useState<string>("");
     const [barChartData, setBarChartData] = useState<ReportPageChartData>();
     const {projectId} = useParams();
@@ -67,10 +75,14 @@ export const ReportPage = () => {
             error(...args);
         };
     }, []);
-    const generateReport = () => {
+    const previewReport = () => {
+        setModalOpen(true);
+    }
+    const generateReport = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         const input = document.getElementById("report-div");
         if (input) {
-            html2canvas(input, {scale: 2}).then((canvas) => {
+            html2canvas(input, {scrollY: -window.scrollY, height: input.scrollHeight}).then((canvas) => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF();
                 const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -86,18 +98,12 @@ export const ReportPage = () => {
             console.error("Element with ID 'report-demo' not found");
         }
     }
+
     const handleButton = (name: string) => {
         setChosenMonthly(undefined);
         setSelectedMonthly({value: "", text: ""});
         setReportType(name);
     }
-    const pmValueFormatter = (value: number) => {
-        return value + ' PM';
-    };
-    const budgetValueFormatter = (value: number) => {
-        return value + '€';
-    };
-
     return (
         <div className="flex-grow">
             <div className="h-full p-10">
@@ -136,7 +142,8 @@ export const ReportPage = () => {
                                                         months?.map((month, index) => {
                                                             if (month.startDate) {
                                                                 return (
-                                                                    <SelectOption key={index} value={month.startDate ?? ""}>
+                                                                    <SelectOption key={index}
+                                                                                  value={month.startDate ?? ""}>
                                                                         {TextUtil.returnMonthYear(month.startDate)}
                                                                     </SelectOption>
                                                                 )
@@ -157,8 +164,8 @@ export const ReportPage = () => {
                                                         </div>
                                                         <button
                                                             className="bg-primary text-white font-semibold py-2 px-4 rounded-lg uppercase"
-                                                            onClick={() => generateReport()}>
-                                                            create a report
+                                                            onClick={() => previewReport()}>
+                                                            preview report
                                                         </button>
                                                     </div>
                                                 }
@@ -173,7 +180,8 @@ export const ReportPage = () => {
                                                         (months && months.length > 2 ? months.slice(0, -2) : months)?.map((month, index) => {
                                                             if (month.startDate) {
                                                                 return (
-                                                                    <SelectOption key={index} value={month.startDate ?? ""}>
+                                                                    <SelectOption key={index}
+                                                                                  value={month.startDate ?? ""}>
                                                                         {TextUtil.returnMonthYear(month.startDate)}
                                                                     </SelectOption>
                                                                 )
@@ -197,8 +205,8 @@ export const ReportPage = () => {
                                                         </div>
                                                         <button
                                                             className="bg-primary text-white font-semibold py-2 px-4 rounded-lg uppercase"
-                                                            onClick={() => generateReport()}>
-                                                            create a report
+                                                            onClick={() => previewReport()}>
+                                                            preview report
                                                         </button>
                                                     </div>
                                                 }
@@ -206,162 +214,15 @@ export const ReportPage = () => {
                                     }
                                 </div>
                                 <div className="bg-gray-200 w-[1px] mx-5 h-full"/>
-                                {
-                                    selectedMonthly.value !== "" ?
-                                        <div id="report-div" className="flex flex-col h-full overflow-y-auto p-5">
-                                            <div className="text-xs uppercase italic">
-                                                {"Created  on: " + TextUtil.refactorDate(new Date().toString())}
-                                            </div>
-                                            <div
-                                                className="uppercase text-3xl font-bold text-center pb-14 pt-10">
-                                                {reportType} Report
-                                            </div>
-                                            <div>
-                                                {
-                                                    chosenMonthly &&
-                                                    <>
-                                                        <div className="grid grid-cols-3">
-                                                            <div
-                                                                className="text-start uppercase font-semibold">
-                                                                Full name
-                                                            </div>
-                                                            <div
-                                                                className="text-center uppercase font-semibold">
-                                                                Personal months
-                                                            </div>
-                                                            <div
-                                                                className="text-center uppercase font-semibold">
-                                                                Salary
-                                                            </div>
-                                                            <div
-                                                                className="col-span-3 bg-black w-full h-[1px] mt-2"/>
-                                                            {
-                                                                chosenMonthly.map((month, monthIndex) => (
-                                                                    <Fragment key={monthIndex}>
-                                                                        {
-                                                                            month.personWork?.map((person, index) => {
-                                                                                return (
-                                                                                    <Fragment
-                                                                                        key={`person-index-${index}-${monthIndex}`}>
-                                                                                        <div
-                                                                                            className={`text-start ${index % 2 === 0 && "bg-gray-200"} pb-3`}>
-                                                                                            {person.personId}
-                                                                                        </div>
-                                                                                        <div
-                                                                                            className={`text-center ${index % 2 === 0 && "bg-gray-200"} pb-3`}>
-                                                                                            {TextUtil.roundDownToTwoDecimalPlaces(person.totalWorkPm ?? 0)}
-                                                                                        </div>
-                                                                                        <div
-                                                                                            className={`text-center ${index % 2 === 0 && "bg-gray-200"} pb-3`}>
-                                                                                            {TextUtil.roundDownToTwoDecimalPlaces((person.totalWorkPm ?? 0) * (person.avgSalary ?? 0)) + "€"}
-                                                                                        </div>
-                                                                                    </Fragment>
-
-                                                                                )
-                                                                            })
-                                                                        }
-                                                                        <div
-                                                                            className="col-span-3 bg-black w-full h-[1px]"/>
-                                                                        <div className="uppercase">
-                                                                            Estimated:
-                                                                        </div>
-                                                                        <div
-                                                                            className="uppercase text-center ">
-                                                                            {TextUtil.roundDownToTwoDecimalPlaces(month.pmBurnDownRate ?? 0)}
-                                                                        </div>
-                                                                        <div
-                                                                            className="uppercase text-center">
-                                                                            {TextUtil.roundDownToTwoDecimalPlaces(month.staffBudgetBurnDownRate ?? 0) + "€"}
-                                                                        </div>
-                                                                        <div
-                                                                            className="uppercase font-bold">
-                                                                            Together:
-                                                                        </div>
-                                                                        <div
-                                                                            className="uppercase font-bold text-center">
-                                                                            {TextUtil.roundDownToTwoDecimalPlaces(month.actualTotalWorkPm ?? 0)}
-                                                                        </div>
-                                                                        <div
-                                                                            className="uppercase font-bold text-center">
-                                                                            {TextUtil.roundDownToTwoDecimalPlaces(month.actualMonthSpending ?? 0) + "€"}
-                                                                        </div>
-                                                                        <div className="col-span-3 py-3 italic font-semibold">
-                                                                            {TextUtil.refactorDate(month.startDate)}
-                                                                        </div>
-                                                                        <div className="col-span-3 h-10">
-                                                                        </div>
-                                                                    </Fragment>
-                                                                ))
-                                                            }
-                                                        </div>
-                                                        {barChartData && reportType === "monthly" &&
-                                                            <div className="flex justify-evenly pt-20">
-                                                                <div className="flex space-x-4">
-                                                                    <div>
-                                                                        <div className="flex items-center">
-                                                                            <div
-                                                                                className="h-2 rounded-full w-2 bg-c-teal mr-2"/>
-                                                                            <div className="pb-4">
-                                                                                Estimated PM
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="flex items-center">
-                                                                            <div
-                                                                                className="h-2 rounded-full w-2 bg-c-blue mr-2"/>
-                                                                            <div className="pb-4">
-                                                                                Actual PM
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <BarChart
-                                                                        data={[barChartData.pmData]}
-                                                                        categories={["Estimated", "Actual"]}
-                                                                        colors={["teal", "blue"]}
-                                                                        index="name"
-                                                                        className="w-[300px]"
-                                                                        showLegend={false}
-                                                                        showTooltip={false}
-                                                                        valueFormatter={pmValueFormatter}
-                                                                    />
-                                                                </div>
-                                                                <div className="flex space-x-4">
-                                                                    <BarChart
-                                                                        data={[barChartData.budgetData]}
-                                                                        categories={["Estimated", "Actual"]}
-                                                                        colors={["cyan", "violet"]}
-                                                                        index="name"
-                                                                        className="w-[300px]"
-                                                                        showLegend={false}
-                                                                        showTooltip={false}
-                                                                        valueFormatter={budgetValueFormatter}
-                                                                    />
-                                                                    <div>
-                                                                        <div className="flex items-center">
-                                                                            <div
-                                                                                className="h-2 rounded-full w-2 bg-c-cyan mr-2"/>
-                                                                            <div className="pb-4">
-                                                                                Estimated Budget
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="flex items-center">
-                                                                            <div
-                                                                                className="h-2 rounded-full w-2 bg-c-violet mr-2"/>
-                                                                            <div className="pb-4">
-                                                                                Actual Budget
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    </>
-                                                }
-                                            </div>
-                                        </div> :
-                                        <div className="flex-grow flex items-center justify-center text-muted">
-                                            Choose months to preview report.
-                                        </div>
-                                }
+                                <div className="overflow-y-auto">
+                                    {
+                                        selectedMonthly.value !== "" &&
+                                        <ReportPdf
+                                            reportType={reportType}
+                                            barChartData={barChartData}
+                                            chosenMonthly={chosenMonthly}/>
+                                    }
+                                </div>
                             </div>
                     }
                     <div
@@ -370,6 +231,31 @@ export const ReportPage = () => {
                     </div>
                 </div>
             </div>
+            {
+                modalOpen &&
+                <CustomModal
+                    closeModal={() => setModalOpen(false)}
+                    modalWidth="1100px"
+                >
+                    <CustomModalHeader handleModalClose={() => setModalOpen(false)}>
+                        <ModalTitle>
+                            preview report
+                        </ModalTitle>
+                    </CustomModalHeader>
+                    <CustomModalBody>
+                        <ReportPdf
+                            reportType={reportType}
+                            chosenMonthly={chosenMonthly}
+                            barChartData={barChartData}
+                        />
+                    </CustomModalBody>
+                    <form onSubmit={generateReport}>
+                        <CustomModalFooter>
+                            create report
+                        </CustomModalFooter>
+                    </form>
+                </CustomModal>
+            }
         </div>
     )
 }
