@@ -23,6 +23,7 @@ import {TbCalendarUser} from "react-icons/tb";
 import {motion} from "framer-motion";
 import {LuPackagePlus} from "react-icons/lu";
 import ModalPortal from "../../template/modal/ModalPortal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function WorkPackageModal({
   onSuccess,
@@ -107,8 +108,8 @@ export default function WorkPackageModal({
       } else {
         toastError("Project id not found");
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     }
   };
 

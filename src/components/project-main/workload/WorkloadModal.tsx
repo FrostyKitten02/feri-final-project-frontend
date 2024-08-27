@@ -16,7 +16,7 @@ import {WorkloadFormFields} from "../../../types/types";
 import {CreateOccupancyRequest, UpdateOccupancyRequest,} from "../../../../temp_ts";
 import {occupancyAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
-import {toastError} from "../../toast-modals/ToastFunctions";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const WorkloadModal = ({
                                   closeModal,
@@ -114,8 +114,8 @@ export const WorkloadModal = ({
                     handleFormSubmit();
                 }
             }
-        } catch (error: any) {
-            toastError(error.message);
+        } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);;
         }
     };
     return (

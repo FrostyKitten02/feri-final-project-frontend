@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import ChartUtil from "../../../util/ChartUtil";
+import RequestUtil from "../../../util/RequestUtil";
 
 
 export const UserDetails = () => {
@@ -41,6 +42,7 @@ export const UserDetails = () => {
                 }
                 setLoading(false);
             } catch (error) {
+                RequestUtil.handleAxiosRequestError(error);
             }
         }
         getStatuses();

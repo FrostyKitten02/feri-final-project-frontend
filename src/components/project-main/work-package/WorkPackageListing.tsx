@@ -7,6 +7,7 @@ import {useRequestArgs} from "../../../util/CustomHooks";
 import {WorkPackageItem} from "./WorkPackageItem";
 import WorkPackageModal from "./WorkPackageModal";
 import {Spinner} from "flowbite-react";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const WorkPackageListing: FC = () => {
   const { projectId } = useParams();
@@ -49,8 +50,8 @@ export const WorkPackageListing: FC = () => {
       } else {
         toastError("Project id not found!");
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     } finally {
       setLoading(false);
     }

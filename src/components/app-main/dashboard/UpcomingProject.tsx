@@ -7,6 +7,7 @@ import {Label, Spinner} from "flowbite-react";
 import {HiCalendar} from "react-icons/hi";
 import {LuPackage} from "react-icons/lu";
 import {IoPeopleOutline} from "react-icons/io5";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const UpcomingProject = () => {
     const [upcomingProject, setUpcomingProject] = useState<ProjectDto>();
@@ -42,6 +43,7 @@ export const UpcomingProject = () => {
                 }
                 setLoading(false);
             } catch (error) {
+                RequestUtil.handleAxiosRequestError(error);
             }
         };
         fetchProjects();

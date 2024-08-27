@@ -8,7 +8,6 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import {toastError} from "../../toast-modals/ToastFunctions";
 import {personAPI} from "../../../util/ApiDeclarations";
 import {ListPersonResponse, PageInfoRequest, PersonListSearchParams, PersonSortInfoRequest,} from "../../../../temp_ts";
 import {useRequestArgs} from "../../../util/CustomHooks";
@@ -22,6 +21,7 @@ import {BsFillPersonVcardFill, BsThreeDots} from "react-icons/bs";
 import {Spinner} from "flowbite-react";
 import {FaEuroSign} from "react-icons/fa6";
 import TextUtil from "../../../util/TextUtil";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function ManageUsersModal({
   modalOpen,
@@ -111,8 +111,8 @@ export default function ManageUsersModal({
           setPageNumber(pageNum);
         }
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     } finally {
       setLoading(false);
     }

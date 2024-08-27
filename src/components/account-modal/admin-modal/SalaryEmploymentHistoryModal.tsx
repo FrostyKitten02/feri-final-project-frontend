@@ -9,7 +9,6 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import {toastError} from "../../toast-modals/ToastFunctions";
 import {
   PageInfoRequest,
   PersonTypeListDto,
@@ -24,6 +23,7 @@ import {useRequestArgs} from "../../../util/CustomHooks";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {Spinner} from "flowbite-react";
 import TextUtil from "../../../util/TextUtil";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function SalaryEmploymentHistoryModal({
   isOpen,
@@ -112,8 +112,8 @@ export default function SalaryEmploymentHistoryModal({
           setPageNumberSalary(pageNum);
         }
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     }
   };
 
@@ -154,8 +154,8 @@ export default function SalaryEmploymentHistoryModal({
           setPageNumberEmployment(pageNum);
         }
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     }
   };
 

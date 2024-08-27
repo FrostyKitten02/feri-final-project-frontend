@@ -2,12 +2,13 @@ import {useEffect, useState} from "react";
 import {PersonOnProjectDto} from "../../../../temp_ts";
 import TeamModal from "./TeamModal";
 import {useParams} from "react-router-dom";
-import {toastError} from "../../toast-modals/ToastFunctions";
+import {toastWarning} from "../../toast-modals/ToastFunctions";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {Spinner} from "flowbite-react";
 import {DeleteTeamModal} from "./DeleteTeamModal";
 import TextUtil from "../../../util/TextUtil";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function ProjectTeamPage() {
     const [peopleOnProject, setPeopleOnProject] = useState<PersonOnProjectDto[]>([]);
@@ -30,10 +31,10 @@ export default function ProjectTeamPage() {
                     if (response.data.people) setPeopleOnProject(response.data.people);
                 }
             } else {
-                toastError("Project id not found.");
+                toastWarning("Project id not found.");
             }
-        } catch (error: any) {
-            toastError(error.message);
+        } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);
         } finally {
             setLoading(false);
         }

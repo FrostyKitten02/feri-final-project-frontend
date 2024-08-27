@@ -1,13 +1,13 @@
-import {useState} from "react";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {CreateTaskRequest, UpdateTaskRequest} from "../../../../temp_ts";
-import {TaskModalProps} from "../../../interfaces";
-import {TaskFormFields} from "../../../types/types";
-import {taskAPI} from "../../../util/ApiDeclarations";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
-import {Datepicker, Label, TextInput} from "flowbite-react";
-import {motion} from "framer-motion";
+import { useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { CreateTaskRequest, UpdateTaskRequest } from "../../../../temp_ts";
+import { TaskModalProps } from "../../../interfaces";
+import { TaskFormFields } from "../../../types/types";
+import { taskAPI } from "../../../util/ApiDeclarations";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { toastSuccess } from "../../toast-modals/ToastFunctions";
+import { Datepicker, Label, TextInput } from "flowbite-react";
+import { motion } from "framer-motion";
 import TextUtil from "../../../util/TextUtil";
 import {
   CustomModal,
@@ -19,6 +19,7 @@ import {
   ModalTitle,
 } from "../../template/modal/CustomModal";
 import ModalPortal from "../../template/modal/ModalPortal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function TaskModal({
   onSuccess,
@@ -66,7 +67,7 @@ export default function TaskModal({
         const response = await taskAPI.updateTask(
           task.id,
           updateTask,
-            await requestArgs.getRequestArgs()
+          await requestArgs.getRequestArgs()
         );
         if (response.status === 200) {
           reset();
@@ -82,7 +83,10 @@ export default function TaskModal({
           isRelevant: data.isRelevant,
           workPackageId: workpackage?.id,
         };
-        const response = await taskAPI.createTask(createTask, await requestArgs.getRequestArgs());
+        const response = await taskAPI.createTask(
+          createTask,
+          await requestArgs.getRequestArgs()
+        );
         if (response.status === 201) {
           reset();
           handleClose();
@@ -90,8 +94,8 @@ export default function TaskModal({
           toastSuccess("Task " + data.title + " was successfully created.");
         }
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     }
   };
 

@@ -2,7 +2,7 @@ import {CreateSalaryRequest} from "../../../../temp_ts";
 import {AdminModalProps} from "../../../interfaces";
 import {salaryApi} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
-import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import {toastSuccess} from "../../toast-modals/ToastFunctions";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {SalaryFormFields} from "../../../types/types";
 import {Datepicker, Label, TextInput} from "flowbite-react";
@@ -18,6 +18,7 @@ import {
 } from "../../template/modal/CustomModal";
 import {FaEuroSign} from "react-icons/fa6";
 import ModalPortal from "../../template/modal/ModalPortal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function SalaryModal({
   isOpen,
@@ -68,8 +69,8 @@ export default function SalaryModal({
         );
         refetchUserList?.();
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     }
   };
 

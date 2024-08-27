@@ -22,6 +22,7 @@ import TextUtil from "../../../util/TextUtil";
 import ModalPortal from "../../template/modal/ModalPortal";
 import {FiEdit3} from "react-icons/fi";
 import {BsFolderPlus} from "react-icons/bs";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const ProjectModal = ({
                                  handleProjectSubmit,
@@ -58,8 +59,8 @@ export const ProjectModal = ({
                 if (response.data.projectBudgetSchemaDtoList)
                     setBudgetSchemas(response.data.projectBudgetSchemaDtoList);
             }
-        } catch (error: any) {
-            toastError(error.message);
+        } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);;
         }
     };
 
@@ -112,12 +113,12 @@ export const ProjectModal = ({
                 if (response.status === 201) {
                     handleFormSubmit();
                     toastSuccess(
-                        `Project with id ${response.data.id} was successfully created!`
+                        `Project ${data.title} was successfully created!`
                     );
                 }
             }
-        } catch (error: any) {
-            toastError(`An error has occured: ${error.message}`);
+        } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);
         }
     };
 

@@ -9,6 +9,7 @@ import {CurrentlyRelevant} from "./CurrentlyRelevant";
 import {CostTimeline} from "./CostTimeline";
 import {BudgetBreakdown} from "./BudgetBreakdown";
 import {Spinner} from "flowbite-react";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function ProjectDashboardPage() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -59,6 +60,7 @@ export default function ProjectDashboardPage() {
         setStatistics(statisticsData);
       }
     } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     } finally {
       setLoading(false);
     }
@@ -92,7 +94,7 @@ export default function ProjectDashboardPage() {
           </div>
           <div className="py-5 pr-5 w-[400px]">
             <div className="relative py-5 pr-5 z-0 h-full">
-              <div className="border-gray-200 h-full flex items-center justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
+              <div className="border-gray-200 h-full flex justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
                 {statistics && <CurrentlyRelevant statistics={statistics} />}
               </div>
               <div
