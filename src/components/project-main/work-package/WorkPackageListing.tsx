@@ -1,13 +1,14 @@
-import {FC, useEffect, useState} from "react";
-import {ProjectDto, WorkPackageDto} from "../../../../temp_ts";
-import {useParams} from "react-router-dom";
-import {projectAPI} from "../../../util/ApiDeclarations";
-import {toastError} from "../../toast-modals/ToastFunctions";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {WorkPackageItem} from "./WorkPackageItem";
+import { FC, useEffect, useState } from "react";
+import { ProjectDto, WorkPackageDto } from "../../../../temp_ts";
+import { useParams } from "react-router-dom";
+import { projectAPI } from "../../../util/ApiDeclarations";
+import { toastError } from "../../toast-modals/ToastFunctions";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { WorkPackageItem } from "./WorkPackageItem";
 import WorkPackageModal from "./WorkPackageModal";
-import {Spinner} from "flowbite-react";
+import { Spinner } from "flowbite-react";
 import RequestUtil from "../../../util/RequestUtil";
+import { LuPackageOpen } from "react-icons/lu";
 
 export const WorkPackageListing: FC = () => {
   const { projectId } = useParams();
@@ -17,6 +18,7 @@ export const WorkPackageListing: FC = () => {
   const requestArgs = useRequestArgs();
 
   useEffect(() => {
+    console.log("useEffect called with projectId:", projectId);
     setLoading(true);
     fetchWorkPackagesForProject();
   }, [projectId]);
@@ -27,7 +29,10 @@ export const WorkPackageListing: FC = () => {
   const fetchWorkPackagesForProject = async (): Promise<void> => {
     try {
       if (projectId) {
-        const response = await projectAPI.getProject(projectId, await requestArgs.getRequestArgs());
+        const response = await projectAPI.getProject(
+          projectId,
+          await requestArgs.getRequestArgs()
+        );
         if (response.status === 200) {
           if (response.data.projectDto) {
             setProjectDetails(response.data.projectDto);
@@ -51,7 +56,7 @@ export const WorkPackageListing: FC = () => {
         toastError("Project id not found!");
       }
     } catch (error) {
-      RequestUtil.handleAxiosRequestError(error);;
+      RequestUtil.handleAxiosRequestError(error);
     } finally {
       setLoading(false);
     }
@@ -70,7 +75,7 @@ export const WorkPackageListing: FC = () => {
           ) : workPackages.length > 0 ? (
             workPackages.map((workPackage) => (
               <WorkPackageItem
-                  key={workPackage.id}
+                key={workPackage.id}
                 projectDetails={projectDetails}
                 onSuccess={onSuccess}
                 workPackage={workPackage}
@@ -78,6 +83,7 @@ export const WorkPackageListing: FC = () => {
             ))
           ) : (
             <div className="flex flex-col h-full items-center justify-center">
+              <LuPackageOpen className="stroke-gray-300 size-44 pb-6"/>
               <p className="text-2xl font-bold">No work packages found.</p>
               <p>Navigate to the top right to create a work package.</p>
             </div>

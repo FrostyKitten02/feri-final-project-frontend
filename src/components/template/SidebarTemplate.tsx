@@ -104,10 +104,13 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
         ))}
       </div>
       <div className="flex flex-col gap-y-4 items-center w-full mb-2">
-        <div
+        <motion.div
           className={`flex flex-row justify-center px-4 w-[300px] h-20 rounded-[20px] gap-x-4 ${
             opened && `bg-white`
           }`}
+          initial={{ visibility: "hidden", opacity: 0 }}
+          animate={{ visibility: "visible", opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.7 }}
         >
           <ClerkUserButton person={person} />
           {opened && (
@@ -128,7 +131,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
               </div>
             </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
 
       {showReturn && (
@@ -157,8 +160,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       <div
         className={
           selected === item.name
-            ? "flex flex-row items-center tracking-wider text-black bg-white py-3 rounded-l-full h-20"
-            : "h-20 flex flex-row items-center hover:fill-black tracking-wider bg-transparent py-3 hover:text-black hover:bg-white hover:rounded-l-full"
+            ? "flex flex-row items-center tracking-wider text-black bg-white py-3 rounded-l-full h-20 font-semibold pl-4"
+            : "h-20 flex flex-row items-center hover:fill-black tracking-wider bg-transparent py-3 hover:text-black font-semibold hover:bg-white hover:rounded-l-full"
         }
       >
         {item.iconComponent({
