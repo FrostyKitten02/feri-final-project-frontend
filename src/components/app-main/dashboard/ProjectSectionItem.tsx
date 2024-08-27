@@ -48,7 +48,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                     setBarChartData(chartData);
                 }
                 setLoading(false);
-            } catch (error: any) {
+            } catch (error) {
             }
         }
         if(project.ownerId === user?.id){

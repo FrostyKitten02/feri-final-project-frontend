@@ -11,8 +11,9 @@ import {
 } from "../../template/modal/CustomModal";
 import ModalPortal from "../../template/modal/ModalPortal";
 import {DeleteFileModalProps} from "../../../interfaces";
-import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
+import {toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
 import {projectAPI} from "../../../util/ApiDeclarations";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const DeleteFileModal = ({
   file,
@@ -46,8 +47,8 @@ export const DeleteFileModal = ({
       } else {
         toastWarning("File id not found.");
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     }
   };
 

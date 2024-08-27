@@ -6,12 +6,16 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {DeleteTaskModalProps} from "../../../interfaces";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {taskAPI} from "../../../util/ApiDeclarations";
-import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { DeleteTaskModalProps } from "../../../interfaces";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { taskAPI } from "../../../util/ApiDeclarations";
+import {
+  toastSuccess,
+  toastWarning,
+} from "../../toast-modals/ToastFunctions";
 import ModalPortal from "../../template/modal/ModalPortal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const DeleteTaskModal = ({
   task,
@@ -27,15 +31,20 @@ export const DeleteTaskModal = ({
   const onDelete: SubmitHandler<any> = async () => {
     try {
       if (task.id) {
-        const response = await taskAPI.deleteTask(task.id, await requestArgs.getRequestArgs());
+        const response = await taskAPI.deleteTask(
+          task.id,
+          await requestArgs.getRequestArgs()
+        );
         if (response.status === 200 || response.status === 204) {
           onSuccess();
           toastSuccess(`Task ${task.title} was successfully deleted.`);
           onClose?.();
         }
+      } else {
+        toastWarning("Task id not found");
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     }
   };
 

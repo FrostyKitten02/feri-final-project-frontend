@@ -3,7 +3,7 @@ import {useRequestArgs} from "../../../util/CustomHooks";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {DeleteTeamModalFields} from "../../../types/types";
 import {projectAPI} from "../../../util/ApiDeclarations";
-import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
+import {toastSuccess, toastWarning} from "../../toast-modals/ToastFunctions";
 import {
   CustomModal,
   CustomModalBody,
@@ -18,6 +18,7 @@ import {DeleteTeamModalProps} from "../../../interfaces";
 import {useParams} from "react-router-dom";
 import {BsPersonDash} from "react-icons/bs";
 import ModalPortal from "../../template/modal/ModalPortal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const DeleteTeamModal = ({
   person,
@@ -57,9 +58,11 @@ export const DeleteTeamModal = ({
           }
           handleModalClose();
         }
+      } else {
+        toastWarning("Project or person id not found.")
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     }
   };
   return (

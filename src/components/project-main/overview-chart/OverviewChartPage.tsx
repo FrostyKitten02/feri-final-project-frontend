@@ -6,6 +6,7 @@ import {useParams} from "react-router-dom";
 import {OverviewChart, OverviewChartBody, OverviewChartHeader,} from "../../template/overview-chart/OverviewChart";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {Spinner} from "flowbite-react";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const OverviewChartPage = () => {
   const [statistics, setStatistics] = useState<ProjectStatisticsResponse>({
@@ -53,7 +54,9 @@ export const OverviewChartPage = () => {
           setStatistics(sortedStatitics);
           setIsLoading(false);
         }
-      } catch (error: any) {}
+      } catch (error) {
+        RequestUtil.handleAxiosRequestError(error);
+      }
     };
     getStatistics();
   }, []);

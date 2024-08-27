@@ -19,6 +19,7 @@ import {
     CustomModalHeader,
     ModalTitle
 } from "../../template/modal/CustomModal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const ReportPage = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -44,7 +45,8 @@ export const ReportPage = () => {
                     setMonths(response.data.units);
                     setLoading(false);
                 }
-            } catch (error: any) {
+            } catch (error) {
+                RequestUtil.handleAxiosRequestError(error);
             }
         };
         getStatistics();

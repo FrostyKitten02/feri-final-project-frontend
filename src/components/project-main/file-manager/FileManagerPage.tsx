@@ -3,7 +3,7 @@ import {ProjectFilesResponse} from "../../../../temp_ts";
 import {FileUploadModal} from "./FileUploadModal";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {useParams} from "react-router-dom";
-import {toastError, toastWarning} from "../../toast-modals/ToastFunctions";
+import {toastWarning} from "../../toast-modals/ToastFunctions";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {Spinner} from "flowbite-react";
 import {FaRegFileAlt} from "react-icons/fa";
@@ -18,6 +18,7 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import {ModalText} from "../../template/modal/CustomModal";
 import {toast} from "react-toastify";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const FileManagerPage = () => {
   const [projectFiles, setProjectFiles] = useState<ProjectFilesResponse>();
@@ -42,8 +43,8 @@ export const FileManagerPage = () => {
       } else {
         toastWarning("Project id not found");
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     } finally {
       setLoading(false);
     }

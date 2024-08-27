@@ -22,7 +22,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
     workPackage?.endDate
   );
   const daysLeft: string = TextUtil.returnDaysLeft(workPackage?.endDate);
-  const { text, color, animation } = TextUtil.returnProgressText(progress);
+  const { text, animation, bgColor } = TextUtil.returnProgressText(progress);
 
   const popoverItems: PopoverItem[] = [
     {
@@ -130,7 +130,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
               <div
                 className={`flex w-fit px-2 justify-start items-center gap-x-2`}
               >
-                <div className={`${color} rounded-full w-2 h-2 ${animation}`} />
+                <div className={`${bgColor} rounded-full w-2 h-2 ${animation}`} />
                 <p className="font-semibold italic text-sm uppercase">{text}</p>
               </div>
             </div>

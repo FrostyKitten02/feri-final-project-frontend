@@ -18,6 +18,7 @@ import ModalPortal from "../../template/modal/ModalPortal";
 import {useNavigate, useParams} from "react-router-dom";
 import {GetProjectResponse} from "../../../../temp_ts";
 import Paths from "../../../util/Paths";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const DeleteProjectModal = () => {
   const [projectDetails, setProjectDetails] = useState<GetProjectResponse>();
@@ -42,8 +43,8 @@ export const DeleteProjectModal = () => {
           } else {
             toastError("Project id not found.");
           }
-        } catch (error: any) {
-          toastError(error.message);
+        } catch (error) {
+          RequestUtil.handleAxiosRequestError(error);;
         }
       };
       fetchProjectDetails();
@@ -69,8 +70,8 @@ export const DeleteProjectModal = () => {
           navigate(Paths.HOME);
         }
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     }
   };
 

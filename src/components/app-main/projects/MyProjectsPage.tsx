@@ -14,6 +14,7 @@ import {SelectedItemProps} from "../../template/inputs/inputsInterface";
 import ParamUtil from "../../../util/ParamUtil";
 import {Spinner} from "flowbite-react";
 import {ProjectModal} from "./ProjectModal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const MyProjectsPage = () => {
     const [projects, setProjects] = useState<ListProjectResponse | null>(null);
@@ -63,8 +64,8 @@ export const MyProjectsPage = () => {
                     setPageNumber(pageNum);
                 }
             }
-        } catch (error: any) {
-
+        } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);
         }
     };
 

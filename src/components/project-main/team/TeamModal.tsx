@@ -1,5 +1,5 @@
-import {useEffect, useMemo, useState} from "react";
-import {BsPersonAdd} from "react-icons/bs";
+import { useEffect, useMemo, useState } from "react";
+import { BsPersonAdd } from "react-icons/bs";
 import {
   CustomModal,
   CustomModalBody,
@@ -21,17 +21,22 @@ import {
   PersonSortInfoRequest,
   SalaryDto,
 } from "../../../../temp_ts";
-import {Datepicker, Label, TextInput} from "flowbite-react";
-import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
-import {occupancyAPI, personAPI, projectAPI,} from "../../../util/ApiDeclarations";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {AssignPersonFormFields} from "../../../types/types";
-import {useParams} from "react-router-dom";
-import {TeamModalProps} from "../../../interfaces";
+import { Datepicker, Label, TextInput } from "flowbite-react";
+import { toastSuccess, toastWarning } from "../../toast-modals/ToastFunctions";
+import {
+  occupancyAPI,
+  personAPI,
+  projectAPI,
+} from "../../../util/ApiDeclarations";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { AssignPersonFormFields } from "../../../types/types";
+import { useParams } from "react-router-dom";
+import { TeamModalProps } from "../../../interfaces";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 import TextUtil from "../../../util/TextUtil";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -88,13 +93,13 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         pageInfo,
         sortInfo,
         searchParams,
-          await requestArgs.getRequestArgs()
+        await requestArgs.getRequestArgs()
       );
       if (response.status === 200) {
         setAllPeople(response.data);
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     }
   };
 
@@ -137,15 +142,18 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     const fetchSalaryforUser = async (): Promise<void> => {
       if (!person.id) return;
       try {
-        const response = await personAPI.getPersonById(person?.id, await requestArgs.getRequestArgs());
+        const response = await personAPI.getPersonById(
+          person?.id,
+          await requestArgs.getRequestArgs()
+        );
         if (response.status === 200) {
           setUserSalary({
             ...userSalary,
             amount: response.data.currentSalary?.amount,
           });
         }
-      } catch (error: any) {
-        toastError(error.message);
+      } catch (error) {
+        RequestUtil.handleAxiosRequestError(error);
       }
     };
 
@@ -162,7 +170,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
             projectData?.projectDto?.startDate,
             projectData?.projectDto?.endDate,
             person.id,
-              await requestArgs.getRequestArgs()
+            await requestArgs.getRequestArgs()
           );
           if (response.status === 200) {
             setUserOccupancy(response.data.monthlyPersonOccupancies ?? []);
@@ -170,24 +178,27 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         } else {
           toastWarning("Project start date or end date is undefined!");
         }
-      } catch (error: any) {
-        toastError(error.message);
+      } catch (error) {
+        RequestUtil.handleAxiosRequestError(error);
       }
     };
 
     const fetchProjectById = async (): Promise<void> => {
       try {
         if (projectId) {
-          const response = await projectAPI.getProject(projectId, await requestArgs.getRequestArgs());
+          const response = await projectAPI.getProject(
+            projectId,
+            await requestArgs.getRequestArgs()
+          );
           if (response.status === 200) {
             setProjectDetails(response.data);
             await fetchOccupancyForUser(response.data);
           }
         } else {
-          toastError("Project id not found");
+          toastWarning("Project id not found");
         }
-      } catch (error: any) {
-        toastError(error.message);
+      } catch (error) {
+        RequestUtil.handleAxiosRequestError(error);
       }
     };
 
@@ -229,7 +240,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
         const response = await projectAPI.addPersonToProject(
           projectId,
           person,
-            await requestArgs.getRequestArgs()
+          await requestArgs.getRequestArgs()
         );
         if (response.status === 204) {
           handleClose();
@@ -244,8 +255,8 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       } else {
         toastWarning("Project or person id not found.");
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);
     }
   };
 

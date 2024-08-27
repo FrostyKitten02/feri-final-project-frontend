@@ -10,7 +10,7 @@ import {
 } from "../../template/modal/CustomModal";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {personTypeAPI} from "../../../util/ApiDeclarations";
-import {toastError, toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
+import {toastSuccess, toastWarning,} from "../../toast-modals/ToastFunctions";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {PersonTypeFormFields} from "../../../types/types";
 import {AdminModalProps} from "../../../interfaces";
@@ -18,6 +18,7 @@ import {Datepicker, Label, TextInput} from "flowbite-react";
 import {FaPercent} from "react-icons/fa6";
 import TextUtil from "../../../util/TextUtil";
 import ModalPortal from "../../template/modal/ModalPortal";
+import RequestUtil from "../../../util/RequestUtil";
 
 export default function PersonTypeModal({
   isOpen,
@@ -73,8 +74,8 @@ export default function PersonTypeModal({
         toastSuccess(data.name + " was successfully assigned to " + userEmail);
         refetchUserList?.();
       }
-    } catch (error: any) {
-      toastError(error.message);
+    } catch (error) {
+      RequestUtil.handleAxiosRequestError(error);;
     }
   };
 

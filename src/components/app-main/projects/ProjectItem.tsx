@@ -12,6 +12,7 @@ import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {LuPackage} from "react-icons/lu";
 import {IoPeopleOutline} from "react-icons/io5";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
     const navigate = useNavigate();
@@ -41,7 +42,8 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                         setBarChartData(chartData);
                     }
                     setLoading(false);
-                } catch (error: any) {
+                } catch (error) {
+                    RequestUtil.handleAxiosRequestError(error);
                 }
             }
             if (project.ownerId === user?.id) {

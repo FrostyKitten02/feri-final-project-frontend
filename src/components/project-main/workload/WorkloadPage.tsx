@@ -6,6 +6,7 @@ import {ProjectStatisticsResponse} from "../../../../temp_ts";
 import {WorkloadTable} from "./WorkloadTable";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {Spinner} from "flowbite-react";
+import RequestUtil from "../../../util/RequestUtil";
 
 const StatisticsInitialState = {
     workPackages: undefined,
@@ -34,7 +35,8 @@ export const WorkloadPage = () => {
                 setStatistics(response.data);
                 setIsLoading(false);
             }
-        } catch (error: any) {
+        } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);
         }
     }
 

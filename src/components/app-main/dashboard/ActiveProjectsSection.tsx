@@ -6,6 +6,7 @@ import TextUtil from "../../../util/TextUtil";
 import {Spinner} from "flowbite-react";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {ProjectSectionItem} from "./ProjectSectionItem";
+import RequestUtil from "../../../util/RequestUtil";
 
 export const ActiveProjectsSection = () => {
     const [relevantProjects, setRelevantProjects] = useState<Array<ProjectDto>>();
@@ -46,6 +47,7 @@ export const ActiveProjectsSection = () => {
             }
             setIsLoading(false);
         } catch (error) {
+            RequestUtil.handleAxiosRequestError(error);
         }
     };
     return (

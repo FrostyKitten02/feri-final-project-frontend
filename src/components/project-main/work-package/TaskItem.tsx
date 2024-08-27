@@ -18,7 +18,7 @@ export const TaskItem: FC<TaskItemProps> = ({
 
   const progress = TextUtil.returnProgress(task.startDate, task.endDate);
   const daysLeft = TextUtil.returnDaysLeft(task.endDate);
-  const { text, color, animation } = TextUtil.returnProgressText(progress);
+  const { text, bgColor, animation } = TextUtil.returnProgressText(progress);
 
   const popoverItems: PopoverItem[] = [
     {
@@ -60,7 +60,7 @@ export const TaskItem: FC<TaskItemProps> = ({
               className={`grid grid-cols-[10px_1fr] items-center gap-x-2`}
             >
               <div className={`flex`}>
-                <div className={`${color} rounded-full w-2 h-2 ${animation}`} />
+                <div className={`${bgColor} rounded-full w-2 h-2 ${animation}`} />
               </div>
               <p className="flex justify-start font-semibold italic text-xs uppercase">
                 {text}
