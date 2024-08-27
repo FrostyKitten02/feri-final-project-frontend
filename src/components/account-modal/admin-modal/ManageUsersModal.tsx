@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {ManageUsersModalProps, PopoverItem} from "../../../interfaces";
 import {FaHistory} from "react-icons/fa";
 import {
@@ -9,7 +9,7 @@ import {
   ModalTitle,
 } from "../../template/modal/CustomModal";
 import {personAPI} from "../../../util/ApiDeclarations";
-import {ListPersonResponse, PageInfoRequest, PersonListSearchParams, PersonSortInfoRequest,} from "../../../../temp_ts";
+import {ListPersonResponse, PageInfoRequest, PersonListDto, PersonListSearchParams, PersonSortInfoRequest,} from "../../../../temp_ts";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
@@ -118,6 +118,14 @@ export default function ManageUsersModal({
     }
   };
 
+  const filteredPeople = useMemo((): PersonListDto[] => {
+      return (allUsers?.people ?? []).filter((person) =>
+        `${person.name} ${person.lastname} ${person.email}`
+          .toLowerCase()
+          .includes(debouncedSearchQuery.toLowerCase())
+      );
+  }, [debouncedSearchQuery, allUsers]);
+
   return (
     <>
       <CustomModal closeModal={handleClose} modalWidth="1500px">
@@ -147,7 +155,7 @@ export default function ManageUsersModal({
                 <div className="flex justify-center items-center h-full">
                   <Spinner size="xl" />
                 </div>
-              ) : (allUsers?.people?.length ?? 0) > 0 ? (
+              ) : (filteredPeople?.length ?? 0) > 0 ? (
                 <>
                   <div className="grid grid-cols-5 pt-8 pb-4">
                     <div className="flex justify-center items-center gap-x-4">
@@ -177,7 +185,7 @@ export default function ManageUsersModal({
                     </div>
                   </div>
                   <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
-                    {allUsers?.people?.map((user, index) => {
+                    {filteredPeople?.map((user, index) => {
                       const popoverItems: PopoverItem[] = [
                         {
                           component: (
@@ -219,7 +227,7 @@ export default function ManageUsersModal({
                           className={`grid grid-cols-5 py-6 ${
                             index === 0 ? `rounded-t-xl` : ""
                           } ${
-                            index === (allUsers.people?.length ?? 0) - 1
+                            index === (filteredPeople?.length ?? 0) - 1
                               ? `rounded-b-xl`
                               : ""
                           }`}
