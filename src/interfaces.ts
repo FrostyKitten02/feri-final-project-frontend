@@ -97,6 +97,7 @@ export interface ProjectModalProps extends PopoverBaseProps {
   popoverEdit?: boolean;
   project?: ProjectDto;
   projectId?: string;
+  callToAction?: boolean;
 }
 
 export interface CustomModalErrorProps {

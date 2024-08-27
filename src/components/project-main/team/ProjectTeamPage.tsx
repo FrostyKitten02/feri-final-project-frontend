@@ -9,6 +9,7 @@ import {Spinner} from "flowbite-react";
 import {DeleteTeamModal} from "./DeleteTeamModal";
 import TextUtil from "../../../util/TextUtil";
 import RequestUtil from "../../../util/RequestUtil";
+import { IoPeopleOutline } from "react-icons/io5";
 
 export default function ProjectTeamPage() {
     const [peopleOnProject, setPeopleOnProject] = useState<PersonOnProjectDto[]>([]);
@@ -129,6 +130,7 @@ export default function ProjectTeamPage() {
                         </div>
                     ) : (
                         <div className="flex flex-col h-full items-center justify-center">
+                            <IoPeopleOutline className="stroke-gray-300 size-44 pb-6"/>
                             <p className="text-2xl font-bold">
                                 There is no one currently assigned to this project.
                             </p>

@@ -29,7 +29,8 @@ export const ProjectModal = ({
                                  edit = false,
                                  popoverEdit = false,
                                  project,
-                                 projectId
+                                 projectId,
+                                 callToAction
                              }: ProjectModalProps) => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const {
@@ -137,11 +138,16 @@ export const ProjectModal = ({
                         <FiEdit3 className="size-5 hover:stroke-primary transition delay-50"/>
                     </button>
                 )
-            ) : (
+            ) : !callToAction ? (
                 <button onClick={() => setModalOpen(true)}>
-                    <BsFolderPlus className="h-10 w-10 transition delay-50"/>
+                    <BsFolderPlus className="h-10 w-10 transition delay-50 hover:fill-primary delay-50"/>
                 </button>
-            )}
+            ) : <button
+                onClick={() => setModalOpen(true)}
+                className={`w-44 h-16 rounded-2xl border-solid border-2 border-gray-200 flex items-center justify-center hover:bg-gray-100 transition delay-50`}
+                >
+                    <span className="text-lg font-semibold">Create new project</span>
+                </button>}
             {modalOpen && (
                 <ModalPortal>
                     <CustomModal

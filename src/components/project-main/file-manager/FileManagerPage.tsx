@@ -1,24 +1,25 @@
-import {useEffect, useState} from "react";
-import {ProjectFilesResponse} from "../../../../temp_ts";
-import {FileUploadModal} from "./FileUploadModal";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {useParams} from "react-router-dom";
-import {toastWarning} from "../../toast-modals/ToastFunctions";
-import {projectAPI} from "../../../util/ApiDeclarations";
-import {Spinner} from "flowbite-react";
-import {FaRegFileAlt} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { ProjectFilesResponse } from "../../../../temp_ts";
+import { FileUploadModal } from "./FileUploadModal";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { useParams } from "react-router-dom";
+import { toastWarning } from "../../toast-modals/ToastFunctions";
+import { projectAPI } from "../../../util/ApiDeclarations";
+import { Spinner } from "flowbite-react";
+import { FaRegFileAlt } from "react-icons/fa";
 import TextUtil from "../../../util/TextUtil";
-import {DeleteFileModal} from "./DeleteFileModal";
+import { DeleteFileModal } from "./DeleteFileModal";
 import Popover from "../../template/popover-menu/Popover";
-import {PopoverItem} from "../../../interfaces";
-import {BsThreeDots} from "react-icons/bs";
+import { PopoverItem } from "../../../interfaces";
+import { BsThreeDots } from "react-icons/bs";
 import mime from "mime-types";
-import {PreviewFileModal} from "./PreviewFileModal";
+import { PreviewFileModal } from "./PreviewFileModal";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import {ModalText} from "../../template/modal/CustomModal";
-import {toast} from "react-toastify";
+import { ModalText } from "../../template/modal/CustomModal";
+import { toast } from "react-toastify";
 import RequestUtil from "../../../util/RequestUtil";
+import { FaRegFolderOpen } from "react-icons/fa";
 
 export const FileManagerPage = () => {
   const [projectFiles, setProjectFiles] = useState<ProjectFilesResponse>();
@@ -35,7 +36,7 @@ export const FileManagerPage = () => {
       if (projectId) {
         const response = await projectAPI.getProjectFiles(
           projectId,
-            await requestArgs.getRequestArgs()
+          await requestArgs.getRequestArgs()
         );
         if (response.status === 200) {
           setProjectFiles(response.data);
@@ -97,7 +98,7 @@ export const FileManagerPage = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        autoClose: 5000,
+        autoClose: 2000,
       }
     );
   };
@@ -247,6 +248,7 @@ export const FileManagerPage = () => {
             </>
           ) : (
             <div className="flex flex-col h-full items-center justify-center">
+              <FaRegFolderOpen className="fill-gray-300 size-44 pb-6" />
               <p className="text-2xl font-bold">
                 This project does not have any documents.
               </p>

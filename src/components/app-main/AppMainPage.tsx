@@ -18,7 +18,7 @@ export const AppMainPage = () => {
         },
     ]
     return (
-        <div className="flex flex-row h-screen bg-primary">
+        <div className="flex flex-row h-screen bg-gradient-to-tr from-c-sky to-primary">
             <SidebarTemplate items={items} showReturn={false}/>
             <div className="flex w-[82%] flex-grow my-5 mr-5">
                 <div className="flex bg-white flex-grow rounded-[20px]">

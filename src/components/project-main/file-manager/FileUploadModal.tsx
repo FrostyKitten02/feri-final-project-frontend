@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import { useCallback, useState } from "react";
 import ModalPortal from "../../template/modal/ModalPortal";
 import {
   CustomModal,
@@ -9,19 +9,19 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import {MdClear, MdOutlineFileUpload} from "react-icons/md";
-import {toastWarning} from "../../toast-modals/ToastFunctions";
-import {FaRegFileAlt} from "react-icons/fa";
+import { MdClear, MdOutlineFileUpload } from "react-icons/md";
+import { toastWarning } from "../../toast-modals/ToastFunctions";
+import { FaRegFileAlt } from "react-icons/fa";
 import TextUtil from "../../../util/TextUtil";
-import {useDropzone} from "react-dropzone";
-import {motion} from "framer-motion";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {useParams} from "react-router-dom";
-import {projectAPI} from "../../../util/ApiDeclarations";
-import {toast} from "react-toastify";
-import {FileUploadModalProps} from "../../../interfaces";
-import {SubmitHandler, useForm, useWatch} from "react-hook-form";
-import {FileUploadModalFields} from "../../../types/types";
+import { useDropzone } from "react-dropzone";
+import { motion } from "framer-motion";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { useParams } from "react-router-dom";
+import { projectAPI } from "../../../util/ApiDeclarations";
+import { toast } from "react-toastify";
+import { FileUploadModalProps } from "../../../interfaces";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { FileUploadModalFields } from "../../../types/types";
 
 export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -48,9 +48,9 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
       }
 
       const validFiles = acceptedFiles.filter((file) => {
-        if (file.size > 104857600) {
+        if (file.size > 10485760) {
           toastWarning(
-            `File ${file.name} is too large! Size of 100MB exceeded.`
+            `File ${file.name} is too large! Size of 10MB exceeded.`
           );
           return false;
         }
@@ -113,7 +113,7 @@ export const FileUploadModal = ({ refetchFileList }: FileUploadModalProps) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        autoClose: 5000,
+        autoClose: 2000,
       }
     );
   };
