@@ -1,7 +1,7 @@
 import { SignIn } from "@clerk/clerk-react";
 import steerLogoPath from "../../assets/images/steer_logo_black.png";
 import { useEffect } from "react";
-import { injectCustomIcon } from "../../main";
+import { injectCustomIcon } from "../template/sign-in-icon/CustomIcon";
 
 function SignInPage() {
   useEffect(() => {

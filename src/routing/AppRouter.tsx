@@ -23,12 +23,17 @@ import ProjectDashboardPage from "../components/project-main/project-dashboard/P
 import LandingPage from "../components/landing-page/LandingPage";
 import { FileManagerPage } from "../components/project-main/file-manager/FileManagerPage";
 import { ReportPage } from "../components/project-main/report/ReportPage";
+import { Spinner } from "flowbite-react";
 
 function AppRouter() {
   const { isLoaded, isSignedIn } = useSession();
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Spinner size="xl" />
+      </div>
+    );
   }
 
   const signedOutRoutes: RouteObject[] = [
