@@ -204,7 +204,7 @@ export interface WorkloadModalProps {
   closeModal: () => void;
   modalWidth: string;
   monthDate: string;
-  person: PersonWorkDto;
+  person: { workPerson: PersonWorkDto | undefined, person: PersonDto };
   handleEdit: () => void;
   personal?: PersonDto;
 }
