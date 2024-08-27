@@ -110,11 +110,12 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       return [];
     } else {
       setListOpen(true);
-      return (allPeople?.people ?? []).filter((person) =>
-        `${person.name} ${person.lastname} ${person.email}`
-          .toLowerCase()
-          .includes(debouncedSearchQuery.toLowerCase())
-      );
+      return (allPeople?.people ?? []).filter((person) => {
+        const searchTerms = debouncedSearchQuery.toLowerCase().split(" ");
+        const personString =
+          `${person.name} ${person.lastname} ${person.email}`.toLowerCase();
+        return searchTerms.every((term) => personString.includes(term));
+      });
     }
   }, [debouncedSearchQuery, allPeople]);
 
