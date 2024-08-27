@@ -1,17 +1,17 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import {useUser} from "@clerk/clerk-react";
-import {SidebarItemProps, SidebarTemplateProps} from "../../interfaces";
-import {motion} from "framer-motion";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
+import { SidebarItemProps, SidebarTemplateProps } from "../../interfaces";
+import { motion } from "framer-motion";
 import Paths from "../../util/Paths";
 import SessionUtil from "../../util/SessionUtil";
-import {IoMenu, IoReturnDownBack} from "react-icons/io5";
+import { IoMenu, IoReturnDownBack } from "react-icons/io5";
 import ClerkUserButton from "../account-modal/ClerkUserButton";
 import steerLogoPath from "../../assets/images/steer_logo_white.png";
-import {useRequestArgs} from "../../util/CustomHooks";
-import {personAPI} from "../../util/ApiDeclarations";
-import {PersonDto} from "../../../temp_ts";
+import { useRequestArgs } from "../../util/CustomHooks";
+import { personAPI } from "../../util/ApiDeclarations";
+import { PersonDto } from "../../../temp_ts";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   items,
@@ -22,7 +22,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   const navigate = useNavigate();
   const { user } = useUser();
   const requestArgs = useRequestArgs();
-  const [person, setPerson] = useState<PersonDto | undefined>(undefined)
+  const [person, setPerson] = useState<PersonDto | undefined>(undefined);
 
   const toggle = (): void => {
     const newStatus: boolean = !opened;
@@ -49,16 +49,17 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
     } else setOpened(sidebarStatus);
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     getPerson();
-  }, [user])
+  }, [user]);
 
-
-  const getPerson = async function() {
-    const res = await personAPI.getCurrentPerson(await requestArgs.getRequestArgs())
+  const getPerson = async function () {
+    const res = await personAPI.getCurrentPerson(
+      await requestArgs.getRequestArgs()
+    );
     const person = res.data.person;
     setPerson(person);
-  }
+  };
 
   return (
     <motion.div
@@ -108,7 +109,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
             opened && `bg-white`
           }`}
         >
-          <ClerkUserButton person={person}/>
+          <ClerkUserButton person={person} />
           {opened && (
             <motion.div
               initial={{ visibility: "hidden", opacity: 0 }}
@@ -118,7 +119,7 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
             >
               <div className="text-black font-semibold text-lg flex flex-row items-center gap-x-1">
                 <p>{user?.fullName}</p>
-                {person?.admin ?? (
+                {person?.admin && (
                   <p className="text-danger text-sm">(admin)</p>
                 )}
               </div>

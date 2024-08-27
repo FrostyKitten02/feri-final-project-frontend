@@ -6,7 +6,8 @@ import {
   TaskDto,
   WorkPackageDto,
   PersonWorkDto,
-  ProjectFileDto, ProjectStatisticsUnitDto,
+  ProjectFileDto,
+  ProjectStatisticsUnitDto,
 } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
@@ -84,10 +85,10 @@ export interface ManageUsersModalProps {
 }
 
 export interface ProgressObject {
-    text: string;
-    color: Color;
-    animation?: string;
-    bgColor?: string
+  text: string;
+  color: Color;
+  animation?: string;
+  bgColor?: string;
 }
 
 export interface ProjectModalProps extends PopoverBaseProps {
@@ -293,8 +294,8 @@ export interface BudgetBreakdownTrackerData {
 }
 
 export interface UserDetailsProjectData {
-    all: number,
-    active: number
+  all: number;
+  active: number;
 }
 
 export interface UserDetailsChartData {
@@ -347,10 +348,9 @@ export interface DeleteFileModalProps extends PopoverBaseProps {
   refetchFileList: () => void;
 }
 
-
 export interface ReportPageChartData {
-    pmData: {name: string, "Estimated": number,"Actual": number},
-    budgetData: {name: string, "Estimated": number,"Actual": number}
+  pmData: { name: string; Estimated: number; Actual: number };
+  budgetData: { name: string; Estimated: number; Actual: number };
 }
 
 export interface PreviewFileModalProps extends PopoverBaseProps {
@@ -360,7 +360,11 @@ export interface PreviewFileModalProps extends PopoverBaseProps {
 }
 
 export interface ReportPdfProps {
-  reportType: string,
-  barChartData?: ReportPageChartData,
-  chosenMonthly?: Array<ProjectStatisticsUnitDto>
+  reportType: string;
+  barChartData?: ReportPageChartData;
+  chosenMonthly?: Array<ProjectStatisticsUnitDto>;
+}
+
+export interface ClerkUserButtonProps {
+  person?: PersonDto;
 }

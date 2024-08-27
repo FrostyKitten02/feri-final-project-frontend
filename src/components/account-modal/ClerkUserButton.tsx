@@ -1,20 +1,12 @@
-import {UserButton} from "@clerk/clerk-react";
-import {useState} from "react";
-import {FaUsersCog} from "react-icons/fa";
+import { UserButton } from "@clerk/clerk-react";
+import { useState } from "react";
+import { FaUsersCog } from "react-icons/fa";
 import ManageUsersModal from "./admin-modal/ManageUsersModal";
-import {PersonDto} from "../../../temp_ts";
+import { ClerkUserButtonProps } from "../../interfaces";
 
-export default function ClerkUserButton(
-        {
-            person
-        }
-        :
-        {
-            person?: PersonDto
-        }) {
-  const [manageUsersModalOpen, setManageUsersModalOpen] = useState<boolean>(false);
-
-
+export default function ClerkUserButton({ person }: ClerkUserButtonProps) {
+  const [manageUsersModalOpen, setManageUsersModalOpen] =
+    useState<boolean>(false);
 
   const userButtonAppearance = {
     elements: {
@@ -24,24 +16,28 @@ export default function ClerkUserButton(
 
   return (
     <div className="flex items-center justify-center ">
-      <UserButton appearance={userButtonAppearance}>
-        <UserButton.MenuItems>
-          {person?.admin ?? (
-            <UserButton.Action
-              label="Manage users (admin)"
-              labelIcon={<FaUsersCog />}
-              onClick={() => setManageUsersModalOpen(true)}
+      {person && (
+        <>
+          <UserButton appearance={userButtonAppearance}>
+            <UserButton.MenuItems>
+              {person.admin && (
+                <UserButton.Action
+                  label="Manage users (admin)"
+                  labelIcon={<FaUsersCog className="size-4" />}
+                  onClick={() => setManageUsersModalOpen(true)}
+                />
+              )}
+              <UserButton.Action label="manageAccount" />
+              <UserButton.Action label="signOut" />
+            </UserButton.MenuItems>
+          </UserButton>
+          {manageUsersModalOpen && (
+            <ManageUsersModal
+              modalOpen={manageUsersModalOpen}
+              setModalOpen={setManageUsersModalOpen}
             />
           )}
-          <UserButton.Action label="manageAccount" />
-          <UserButton.Action label="signOut" />
-        </UserButton.MenuItems>
-      </UserButton>
-      {manageUsersModalOpen && (
-        <ManageUsersModal
-          modalOpen={manageUsersModalOpen}
-          setModalOpen={setManageUsersModalOpen}
-        />
+        </>
       )}
     </div>
   );
