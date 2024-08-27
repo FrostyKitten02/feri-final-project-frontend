@@ -168,6 +168,8 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                         </div>
                     </div> :
                     <div className="space-y-4 h-full">
+                        { /*
+
                         <div className="flex flex-row items-center pt-2">
                             <div className="w-[7%] h-[1px] bg-gray-300"/>
                             <Label className="px-2 uppercase text-muted">
@@ -196,6 +198,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                         <div className="text-2xl font-semibold">
                             5% spremeni
                         </div>
+                         */}
                     </div>
                     }
                 </div>

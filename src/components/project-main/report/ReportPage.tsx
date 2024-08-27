@@ -10,7 +10,7 @@ import {ReportPageChartData} from "../../../interfaces";
 import ChartUtil from "../../../util/ChartUtil";
 import html2canvas from "html2canvas";
 import {jsPDF} from 'jspdf';
-import {PersonDto, ProjectStatisticsUnitDto} from "../../../../temp_ts";
+import {PersonDto, PersonOnProjectDto, ProjectStatisticsUnitDto} from "../../../../temp_ts";
 import {ReportPdf} from "./ReportPdf";
 import {
     CustomModal,
@@ -29,6 +29,7 @@ export const ReportPage = () => {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [reportType, setReportType] = useState<string>("");
     const [barChartData, setBarChartData] = useState<ReportPageChartData>();
+    const [projectPeople, setProjectPeople] = useState<Array<PersonOnProjectDto>>()
     const {projectId} = useParams();
     const requestArgs = useRequestArgs();
     useEffect(() => {
@@ -49,6 +50,21 @@ export const ReportPage = () => {
             } catch (error: any) {
             }
         };
+        const getPeoppleOnProject = async () => {
+            if (projectId) {
+                const getPeopleOnProject = async () => {
+                    const response = await projectAPI.getPeopleOnProjectByProjectId(
+                        projectId,
+                        await requestArgs.getRequestArgs()
+                    );
+                    if (response.status === 200) {
+                        setProjectPeople(response.data.people);
+                    }
+                }
+                getPeopleOnProject();
+            }
+        }
+        getPeoppleOnProject();
         getStatistics();
     }, []);
 
@@ -220,6 +236,7 @@ export const ReportPage = () => {
                                     {
                                         selectedMonthly.value !== "" &&
                                         <ReportPdf
+                                            projectPeople={projectPeople}
                                             people={people}
                                             reportType={reportType}
                                             barChartData={barChartData}
@@ -247,6 +264,7 @@ export const ReportPage = () => {
                     </CustomModalHeader>
                     <CustomModalBody>
                         <ReportPdf
+                            projectPeople={projectPeople}
                             people={people}
                             reportType={reportType}
                             chosenMonthly={chosenMonthly}

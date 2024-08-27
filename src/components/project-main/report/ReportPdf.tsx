@@ -45,6 +45,7 @@ export const ReportPdf = ({reportType, chosenMonthly, barChartData, people}: Rep
                                         <Fragment key={monthIndex}>
                                             {
                                                 month.personWork?.map((person, index) => {
+
                                                     return (
                                                         <Fragment
                                                             key={`person-index-${index}-${monthIndex}`}>

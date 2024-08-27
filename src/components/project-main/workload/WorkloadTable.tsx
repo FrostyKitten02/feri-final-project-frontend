@@ -1,26 +1,37 @@
 import {WorkloadTableProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {WorkloadModal} from "./WorkloadModal";
-import {PersonDto, PersonWorkDto} from "../../../../temp_ts";
+import {PersonDto, PersonOnProjectDto, PersonWorkDto} from "../../../../temp_ts";
 import {GoTriangleRight} from "react-icons/go";
 import {IoMdInformationCircleOutline} from "react-icons/io";
 import * as React from "react";
+import {projectAPI} from "../../../util/ApiDeclarations";
+import {useParams} from "react-router-dom";
+import {useRequestArgs} from "../../../util/CustomHooks";
 
 export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdit}: WorkloadTableProps) => {
     const [open, setOpen] = useState<boolean>(false);
     const [selectedMonth, setSelectedMonth] = useState<string>("");
-    const [selectedPerson, setSelectedPerson] = useState<{workPerson: PersonWorkDto | undefined, person: PersonDto }>();
-    const handleButtonOpen = (month: string | undefined, workPerson: PersonWorkDto | undefined, person: PersonDto) => {
-        if (month !== undefined) {
-            setOpen(true);
-            setSelectedMonth(month);
-            setSelectedPerson({
-                workPerson: workPerson,
-                person: person
-            });
+    const [selectedPerson, setSelectedPerson] = useState<{ workPerson: PersonWorkDto | undefined, person: PersonDto }>();
+    const [projectPeople, setProjectPeople] = useState<Array<PersonOnProjectDto>>();
+    const {projectId} = useParams();
+    const requestArgs = useRequestArgs();
+
+    useEffect(() => {
+        if (projectId) {
+            const getPeopleOnProject = async () => {
+                const response = await projectAPI.getPeopleOnProjectByProjectId(
+                    projectId,
+                    await requestArgs.getRequestArgs()
+                );
+                if (response.status === 200) {
+                    setProjectPeople(response.data.people);
+                }
+            }
+            getPeopleOnProject();
         }
-    }
+    }, [])
     const {shownMonths, emptyColumnsCount, years} = useMemo(() => {
         if (!statistics.units)
             return {shownMonths: [], startIndex: 0, emptyColumnsCount: 0, years: []};
@@ -32,6 +43,16 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
 
         return {shownMonths, emptyColumnsCount, years};
     }, [statistics.units, currentPage, monthsPerPage]);
+    const handleButtonOpen = (month: string | undefined, workPerson: PersonWorkDto | undefined, person: PersonDto, isAvailable: boolean) => {
+        if (month !== undefined && isAvailable) {
+            setOpen(true);
+            setSelectedMonth(month);
+            setSelectedPerson({
+                workPerson: workPerson,
+                person: person
+            });
+        }
+    }
 
     return (
         <div className="relative">
@@ -133,7 +154,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 }
                 <div
                     className="flex h-14 uppercase text-sm font-bold items-center border-solid border-l-white border-y-gray-200">
-                    <IoMdInformationCircleOutline className="mr-1" />
+                    <IoMdInformationCircleOutline className="mr-1"/>
                     budget estimate
                 </div>
                 {shownMonths.map(month => {
@@ -157,10 +178,10 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                     ))
                 }
                 {
-                    statistics.people && Object.values(statistics.people).map((person, personIndex) => {
+                    projectPeople && projectPeople.map((person, personIndex) => {
                         return (
                             <React.Fragment key={personIndex}>
-                                <div>
+                                <div className={`h-20 flex items-center border-solid border-t-gray-200 border-l-white`}>
                                     {
                                         (person?.name && person.lastname) ?
                                             <div>
@@ -175,6 +196,7 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                                 {
                                     shownMonths.map((unit, unitIndex) => {
                                         let unitPersonArray: Array<PersonWorkDto> = [];
+                                        const isAvailable = TextUtil.returnPersonAvailabilityByUnit(person, unit);
                                         if (unit.personWork && unit.personWork.length > 0) {
                                             unitPersonArray = unit.personWork.filter(work => work.personId === person.id);
                                         }
@@ -183,9 +205,9 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                                                 key={unitIndex}
                                                 className={`flex h-20 items-center justify-center border-solid border-gray-200 ${TextUtil.isCurrentMonthYear(unit) && "bg-gray-100"}`}>
                                                 <button
-                                                    onClick={() => handleButtonOpen(unit.startDate, unitPersonArray[0], person)}
-                                                    className="flex-grow text-xl h-full hover:bg-gray-50 transition delay-50">
-                                                    {unitPersonArray.length === 0 ? 0 : unitPersonArray[0].totalWorkPm}
+                                                    onClick={() => handleButtonOpen(unit.startDate, unitPersonArray[0], person, isAvailable)}
+                                                    className={`${!isAvailable && "cursor-not-allowed"} flex-grow text-xl h-full hover:bg-gray-50 transition delay-50`}>
+                                                    {!isAvailable ? "/" : unitPersonArray.length === 0 ? 0 : unitPersonArray[0].totalWorkPm}
                                                 </button>
                                             </div>
                                         )
