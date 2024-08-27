@@ -7,7 +7,7 @@ import {
   WorkPackageDto,
   PersonWorkDto,
   ProjectFileDto,
-  ProjectStatisticsUnitDto,
+  ProjectStatisticsUnitDto, PersonOnProjectDto,
 } from "../temp_ts";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
@@ -205,9 +205,9 @@ export interface WorkloadModalProps {
   closeModal: () => void;
   modalWidth: string;
   monthDate: string;
-  person: PersonWorkDto;
+  person: { workPerson: PersonWorkDto | undefined, person: PersonDto };
   handleEdit: () => void;
-  personal: PersonDto | undefined;
+  personal?: PersonDto;
 }
 
 export interface DonutGraphData {
@@ -338,6 +338,7 @@ export interface ActiveProjectsStateData {
 
 export interface ProjectSectionItemProps {
   project: ProjectDto;
+  currentPerson: PersonDto
 }
 
 export interface FileUploadModalProps {
@@ -364,6 +365,8 @@ export interface ReportPdfProps {
   reportType: string;
   barChartData?: ReportPageChartData;
   chosenMonthly?: Array<ProjectStatisticsUnitDto>;
+  projectPeople?: Array<PersonOnProjectDto>
+  people?: { [key: string]: PersonDto; };
 }
 
 export interface ClerkUserButtonProps {

@@ -8,13 +8,17 @@ import {
 } from "../../template/modal/CustomModal";
 import {WorkloadModalProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
-import {useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useParams} from "react-router-dom";
-import {TextInput} from "flowbite-react";
+import {Label, TextInput} from "flowbite-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {WorkloadFormFields} from "../../../types/types";
-import {CreateOccupancyRequest, UpdateOccupancyRequest,} from "../../../../temp_ts";
-import {occupancyAPI} from "../../../util/ApiDeclarations";
+import {
+    CreateOccupancyRequest,
+    PersonTypeListDto,
+    UpdateOccupancyRequest,
+} from "../../../../temp_ts";
+import {occupancyAPI, personTypeAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import RequestUtil from "../../../util/RequestUtil";
 
@@ -24,54 +28,45 @@ export const WorkloadModal = ({
                                   monthDate,
                                   person,
                                   handleEdit,
-                                  personal
                               }: WorkloadModalProps) => {
     const {projectId} = useParams();
     const {register, reset, handleSubmit} = useForm<WorkloadFormFields>();
-   // const [salary, setSalary] = useState<ListSalaryResponse>();
-    const {monthName, year} = useMemo(() => {
-        const date = TextUtil.getFirstOfYearMonth(monthDate);
-        const monthName = date.toLocaleString("default", {month: "long"});
-        const year = date.getFullYear();
-        return {monthName, year};
-    }, [monthDate]);
     const requestArgs = useRequestArgs();
-/*
+    const [personType, setPersonType] = useState<PersonTypeListDto>();
     useEffect(() => {
-        const getSalaray = async (): Promise<void> => {
-            const date = new Date().toISOString().split('T')[0];
-            console.log("opened")
+        const getPersonTypeData = async () => {
             try{
-                const response = await salaryApi.listSalaries(
+                const response = await personTypeAPI.listPersonTypes(
                     {
                         elementsPerPage: 1,
                         pageNumber: 1
                     },
                     {
                         ascending: true,
-                        fields: [
-                            "START_DATE"
-                        ]
+                        fields: ["START_DATE"]
                     },
                     {
-                        forUser: person.personId,
-                        endDateFrom: date,
-                        endDateTo: date
+                        startDateTo: monthDate,
+                        forUser: person.person.id
                     },
-                    requestArgs
+                    await requestArgs.getRequestArgs()
                 )
-                if (response.status === 200) {
-                    setSalary(response.data)
-                    console.log(response.data)
+                if(response.status === 200){
+                    if(response.data.personTypes?.length === 1 ){
+                        setPersonType(response.data.personTypes[0])
+                    }
                 }
-            } catch (error){
-
-            }
+            } catch (err){}
         }
-        getSalaray();
+        getPersonTypeData();
     }, [])
 
- */
+    const {monthName, year} = useMemo(() => {
+        const date = TextUtil.getFirstOfYearMonth(monthDate);
+        const monthName = date.toLocaleString("default", {month: "long"});
+        const year = date.getFullYear();
+        return {monthName, year};
+    }, [monthDate]);
     const handleFormSubmit = (): void => {
         reset();
         closeModal();
@@ -81,37 +76,55 @@ export const WorkloadModal = ({
         data
     ): Promise<void> => {
         try {
-            if (person.occupancyId === null) {
+            if (person.workPerson === undefined) {
                 const workload: CreateOccupancyRequest = {
                     projectId: projectId,
-                    personId: person.personId,
+                    personId: person.person.id,
                     toMonth: monthDate,
                     fromMonth: monthDate,
                     value: data.pmValue,
                 };
+                console.log("create", workload);
                 const response = await occupancyAPI.addOccupancy(workload, await requestArgs.getRequestArgs());
                 if (response.status === 201) {
                     handleFormSubmit();
                 }
-            } else if (data.pmValue == 0 && person.occupancyId !== undefined) {
-                const response = await occupancyAPI.deleteOccupancy(
-                    person.occupancyId,
-                    await requestArgs.getRequestArgs()
-                );
-                if (response.status === 200) {
-                    handleFormSubmit();
-                }
             } else {
-                const workload: UpdateOccupancyRequest = {
-                    occupancyId: person.occupancyId,
-                    value: data.pmValue,
-                };
-                const response = await occupancyAPI.updateOccupancy(
-                    workload,
-                    await requestArgs.getRequestArgs()
-                );
-                if (response.status === 200) {
-                    handleFormSubmit();
+                if (person.workPerson.occupancyId === null) {
+                    const workload: CreateOccupancyRequest = {
+                        projectId: projectId,
+                        personId: person.workPerson.personId,
+                        toMonth: monthDate,
+                        fromMonth: monthDate,
+                        value: data.pmValue,
+                    };
+                    console.log("create 2", workload);
+                    const response = await occupancyAPI.addOccupancy(workload, await requestArgs.getRequestArgs());
+                    if (response.status === 201) {
+                        handleFormSubmit();
+                    }
+                } else if (data.pmValue == 0 && person.workPerson.occupancyId) {
+                    console.log("delete");
+                    const response = await occupancyAPI.deleteOccupancy(
+                        person.workPerson.occupancyId,
+                        await requestArgs.getRequestArgs()
+                    );
+                    if (response.status === 200) {
+                        handleFormSubmit();
+                    }
+                } else {
+                    const workload: UpdateOccupancyRequest = {
+                        occupancyId: person.workPerson.occupancyId,
+                        value: data.pmValue,
+                    };
+                    console.log("update", workload);
+                    const response = await occupancyAPI.updateOccupancy(
+                        workload,
+                        await requestArgs.getRequestArgs()
+                    );
+                    if (response.status === 200) {
+                        handleFormSubmit();
+                    }
                 }
             }
         } catch (error) {
@@ -130,17 +143,17 @@ export const WorkloadModal = ({
                     <div className="flex items-center text-black text-md space-x-[5px]">
                         <div>You are currently editing workload of</div>
                         {
-                            (personal?.name && personal.lastname) ?
+                            (person.person.name && person.person.lastname) ?
                                 <>
                                     <div className="font-semibold">
-                                        {personal?.name}
+                                        {person.person.name}
                                     </div>
                                     <div className="font-semibold">
-                                        {personal?.lastname}
+                                        {person.person.lastname}
                                     </div>
                                 </> :
                                 <div className="font-semibold">
-                                    {personal?.email}
+                                    {person.person.email}
                                 </div>
                         }
                         <div>for</div>
@@ -157,21 +170,28 @@ export const WorkloadModal = ({
                 <CustomModalBody>
                     <div className="space-y-3">
                         <div className="flex space-x-2">
-                            <div>
-                                This month's remaining availability:
-                            </div>
-                            <div>
-                                [availability]
-                            </div>
+                            { personType?.maxAvailability ?
+                                <>
+                                    <div>
+                                        This month's remaining availability:
+                                    </div>
+                                    <div className="font-semibold">
+                                        {personType?.maxAvailability + " PM"}
+                                    </div>
+                                </> :
+                                <div>
+                                    This user does not have availability yet assigned.
+                                </div>
+                            }
                         </div>
-                        <div className="flex items-center space-x-2">
-                            <div>Assign personal months:</div>
+                        <div className="flex flex-col">
+                            <Label>Assign personal months:</Label>
                             <TextInput
                                 type="number"
-                                className="w-[200px]"
+                                className="w-[300px]"
                                 min={0}
                                 step="0.01"
-                                defaultValue={person.totalWorkPm}
+                                defaultValue={person.workPerson?.totalWorkPm}
                                 {...register("pmValue")}
                             />
                         </div>
