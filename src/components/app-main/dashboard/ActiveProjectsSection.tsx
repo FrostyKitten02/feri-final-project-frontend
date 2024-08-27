@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {PageInfo, ProjectDto, ProjectListSearchParams} from "../../../../temp_ts";
-import {projectAPI} from "../../../util/ApiDeclarations";
+import {PageInfo, PersonDto, ProjectDto, ProjectListSearchParams} from "../../../../temp_ts";
+import {personAPI, projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import TextUtil from "../../../util/TextUtil";
 import {Spinner} from "flowbite-react";
@@ -13,10 +13,21 @@ export const ActiveProjectsSection = () => {
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [pageInfo, setPageInfo] = useState<PageInfo>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [currentPerson, setCurrentPerson] = useState<PersonDto>();
     const requestArgs = useRequestArgs();
     useEffect(() => {
         fetchProjects();
+        fetchCurrentPerson();
     }, [pageNumber]);
+
+    const fetchCurrentPerson = async () => {
+        try {
+            const response = await personAPI.getCurrentPerson(await requestArgs.getRequestArgs());
+            if (response.status === 200) {
+                setCurrentPerson(response.data.person);
+            }
+        } catch (err) {}
+    }
     const fetchProjects = async () => {
         try {
             const today = TextUtil.formatFormDate(new Date());
@@ -56,14 +67,14 @@ export const ActiveProjectsSection = () => {
                 className="border-gray-200 flex h-full rounded-[20px] p-5 border-solid border-[1px]">
                 {
                     isLoading ?
-                        <div className="flex justify-center items-center h-full">
+                        <div className="flex flex-grow justify-center items-center h-full">
                             <Spinner size="xl"/>
                         </div> :
                         <div className="flex space-x-5 w-full">
                             {
-                                (relevantProjects && relevantProjects?.length > 0) ? relevantProjects?.map((project, index) => {
+                                (relevantProjects && currentPerson && relevantProjects?.length > 0) ? relevantProjects?.map((project, index) => {
                                     return (
-                                        <ProjectSectionItem key={index} project={project} />
+                                        <ProjectSectionItem key={index} project={project} currentPerson={currentPerson} />
                                     )
                                 }):
                                     <div className="w-full flex items-center text-center justify-center text-muted">
