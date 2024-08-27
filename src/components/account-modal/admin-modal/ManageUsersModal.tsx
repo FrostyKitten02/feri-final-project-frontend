@@ -1,6 +1,6 @@
-import {useEffect, useMemo, useState} from "react";
-import {ManageUsersModalProps, PopoverItem} from "../../../interfaces";
-import {FaHistory} from "react-icons/fa";
+import { useEffect, useMemo, useState } from "react";
+import { ManageUsersModalProps, PopoverItem } from "../../../interfaces";
+import { FaHistory } from "react-icons/fa";
 import {
   CustomModal,
   CustomModalBody,
@@ -8,18 +8,24 @@ import {
   ModalText,
   ModalTitle,
 } from "../../template/modal/CustomModal";
-import {personAPI} from "../../../util/ApiDeclarations";
-import {ListPersonResponse, PageInfoRequest, PersonListDto, PersonListSearchParams, PersonSortInfoRequest,} from "../../../../temp_ts";
-import {useRequestArgs} from "../../../util/CustomHooks";
-import {CustomPagination} from "../../template/pagination/CustomPagination";
+import { personAPI } from "../../../util/ApiDeclarations";
+import {
+  ListPersonResponse,
+  PageInfoRequest,
+  PersonListDto,
+  PersonListSearchParams,
+  PersonSortInfoRequest,
+} from "../../../../temp_ts";
+import { useRequestArgs } from "../../../util/CustomHooks";
+import { CustomPagination } from "../../template/pagination/CustomPagination";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
 import Popover from "../../template/popover-menu/Popover";
 import SalaryModal from "./SalaryModal";
 import PersonTypeModal from "./PersonTypeModal";
 import SalaryEmploymentHistoryModal from "./SalaryEmploymentHistoryModal";
-import {BsFillPersonVcardFill, BsThreeDots} from "react-icons/bs";
-import {Spinner} from "flowbite-react";
-import {FaEuroSign} from "react-icons/fa6";
+import { BsFillPersonVcardFill, BsThreeDots } from "react-icons/bs";
+import { Spinner } from "flowbite-react";
+import { FaEuroSign } from "react-icons/fa6";
 import TextUtil from "../../../util/TextUtil";
 import RequestUtil from "../../../util/RequestUtil";
 
@@ -94,7 +100,7 @@ export default function ManageUsersModal({
         pageInfo,
         sortInfo,
         searchParams,
-          await requestArgs.getRequestArgs()
+        await requestArgs.getRequestArgs()
       );
       if (response.status === 200) {
         setAllUsers(response.data);
@@ -112,18 +118,19 @@ export default function ManageUsersModal({
         }
       }
     } catch (error) {
-      RequestUtil.handleAxiosRequestError(error);;
+      RequestUtil.handleAxiosRequestError(error);
     } finally {
       setLoading(false);
     }
   };
 
   const filteredPeople = useMemo((): PersonListDto[] => {
-      return (allUsers?.people ?? []).filter((person) =>
-        `${person.name} ${person.lastname} ${person.email}`
-          .toLowerCase()
-          .includes(debouncedSearchQuery.toLowerCase())
-      );
+    return (allUsers?.people ?? []).filter((person) => {
+      const searchTerms = debouncedSearchQuery.toLowerCase().split(" ");
+      const personString =
+        `${person.name} ${person.lastname} ${person.email}`.toLowerCase();
+      return searchTerms.every((term) => personString.includes(term));
+    });
   }, [debouncedSearchQuery, allUsers]);
 
   return (
