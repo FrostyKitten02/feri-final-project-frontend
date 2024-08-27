@@ -3,7 +3,7 @@ import {Fragment} from "react";
 import {BarChart} from "@tremor/react";
 import {ReportPdfProps} from "../../../interfaces";
 
-export const ReportPdf = ({reportType, chosenMonthly, barChartData}: ReportPdfProps) => {
+export const ReportPdf = ({reportType, chosenMonthly, barChartData, people}: ReportPdfProps) => {
     const pmValueFormatter = (value: number) => {
         return value + ' PM';
     };
@@ -50,7 +50,7 @@ export const ReportPdf = ({reportType, chosenMonthly, barChartData}: ReportPdfPr
                                                             key={`person-index-${index}-${monthIndex}`}>
                                                             <div
                                                                 className={`text-start ${index % 2 === 0 && "bg-gray-200"} pb-3`}>
-                                                                {person.personId}
+                                                                {people && person.personId ? (people[person.personId].name + " " + people[person.personId].lastname): ""}
                                                             </div>
                                                             <div
                                                                 className={`text-center ${index % 2 === 0 && "bg-gray-200"} pb-3`}>

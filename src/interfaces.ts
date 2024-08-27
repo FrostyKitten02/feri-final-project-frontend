@@ -206,7 +206,7 @@ export interface WorkloadModalProps {
   monthDate: string;
   person: PersonWorkDto;
   handleEdit: () => void;
-  personal: PersonDto | undefined;
+  personal?: PersonDto;
 }
 
 export interface DonutGraphData {
@@ -363,6 +363,7 @@ export interface ReportPdfProps {
   reportType: string;
   barChartData?: ReportPageChartData;
   chosenMonthly?: Array<ProjectStatisticsUnitDto>;
+  people?: { [key: string]: PersonDto; };
 }
 
 export interface ClerkUserButtonProps {

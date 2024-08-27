@@ -1,6 +1,5 @@
 import {WorkloadTableProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
-import * as React from "react";
 import {useMemo, useState} from "react";
 import {WorkloadModal} from "./WorkloadModal";
 import {PersonWorkDto} from "../../../../temp_ts";
@@ -154,6 +153,10 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                     ))
                 }
                 {
+
+                }
+                {
+                    /*
                     Array.from({length: shownMonths[0]?.personWork?.length || 0}, (_, indexPerson) => {
                         const personWork = shownMonths[0]?.personWork?.[indexPerson];
                         const personId = personWork?.personId;
@@ -198,6 +201,8 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                             </React.Fragment>
                         )
                     })
+
+                     */
                 }
                 <div
                     className="flex h-14 uppercase font-bold text-sm items-center border-solid border-l-white border-y-gray-200">

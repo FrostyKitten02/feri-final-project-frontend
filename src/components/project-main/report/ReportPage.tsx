@@ -10,7 +10,7 @@ import {ReportPageChartData} from "../../../interfaces";
 import ChartUtil from "../../../util/ChartUtil";
 import html2canvas from "html2canvas";
 import {jsPDF} from 'jspdf';
-import {ProjectStatisticsUnitDto} from "../../../../temp_ts";
+import {PersonDto, ProjectStatisticsUnitDto} from "../../../../temp_ts";
 import {ReportPdf} from "./ReportPdf";
 import {
     CustomModal,
@@ -25,6 +25,7 @@ export const ReportPage = () => {
     const [months, setMonths] = useState<Array<ProjectStatisticsUnitDto>>();
     const [selectedMonthly, setSelectedMonthly] = useState<SelectedItemProps>({value: "", text: ""});
     const [chosenMonthly, setChosenMonthly] = useState<Array<ProjectStatisticsUnitDto>>();
+    const [people, setPeople] = useState<{ [key: string]: PersonDto; }>()
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [reportType, setReportType] = useState<string>("");
     const [barChartData, setBarChartData] = useState<ReportPageChartData>();
@@ -42,6 +43,7 @@ export const ReportPage = () => {
                 );
                 if (response.status === 200) {
                     setMonths(response.data.units);
+                    setPeople(response.data.people);
                     setLoading(false);
                 }
             } catch (error: any) {
@@ -218,6 +220,7 @@ export const ReportPage = () => {
                                     {
                                         selectedMonthly.value !== "" &&
                                         <ReportPdf
+                                            people={people}
                                             reportType={reportType}
                                             barChartData={barChartData}
                                             chosenMonthly={chosenMonthly}/>
@@ -244,6 +247,7 @@ export const ReportPage = () => {
                     </CustomModalHeader>
                     <CustomModalBody>
                         <ReportPdf
+                            people={people}
                             reportType={reportType}
                             chosenMonthly={chosenMonthly}
                             barChartData={barChartData}

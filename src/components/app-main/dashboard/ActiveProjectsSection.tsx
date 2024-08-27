@@ -54,7 +54,7 @@ export const ActiveProjectsSection = () => {
                 className="border-gray-200 flex h-full rounded-[20px] p-5 border-solid border-[1px]">
                 {
                     isLoading ?
-                        <div className="flex justify-center items-center h-full">
+                        <div className="flex flex-grow justify-center items-center h-full">
                             <Spinner size="xl"/>
                         </div> :
                         <div className="flex space-x-5 w-full">
