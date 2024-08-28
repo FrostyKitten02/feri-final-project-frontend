@@ -69,9 +69,9 @@ export const ModalText = ({children, showIcon = false, contentColor = "muted"}: 
     )
 }
 
-export const CustomModalBody = ({children}: CustomModalBodyProps) => {
+export const CustomModalBody = ({children, padding}: CustomModalBodyProps) => {
     return (
-        <div className="p-10">
+        <div className={`${padding ? padding : `p-10`}`}>
             {children}
         </div>
     )

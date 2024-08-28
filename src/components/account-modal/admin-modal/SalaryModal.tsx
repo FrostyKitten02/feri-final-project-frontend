@@ -1,4 +1,4 @@
-import {CreateSalaryRequest} from "../../../../temp_ts";
+import {CreateSalaryRequest} from "../../../../client";
 import {AdminModalProps} from "../../../interfaces";
 import {salaryApi} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";

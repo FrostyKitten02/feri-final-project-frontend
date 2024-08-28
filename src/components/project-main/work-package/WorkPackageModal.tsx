@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {useParams} from "react-router-dom";
-import {CreateWorkPackageRequest} from "../../../../temp_ts";
+import {CreateWorkPackageRequest} from "../../../../client";
 import {WorkPackageModalProps} from "../../../interfaces";
 import {WorkPackageFormFields} from "../../../types/types";
 import {workPackageAPI} from "../../../util/ApiDeclarations";

@@ -10,7 +10,7 @@ import {ReportPageChartData} from "../../../interfaces";
 import ChartUtil from "../../../util/ChartUtil";
 import html2canvas from "html2canvas";
 import {jsPDF} from 'jspdf';
-import {PersonDto, PersonOnProjectDto, ProjectStatisticsUnitDto} from "../../../../temp_ts";
+import {PersonDto, PersonOnProjectDto, ProjectStatisticsUnitDto} from "../../../../client";
 import {ReportPdf} from "./ReportPdf";
 import {
     CustomModal,

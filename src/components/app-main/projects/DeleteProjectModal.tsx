@@ -16,7 +16,7 @@ import {toastError} from "../../toast-modals/ToastFunctions";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import ModalPortal from "../../template/modal/ModalPortal";
 import {useNavigate, useParams} from "react-router-dom";
-import {GetProjectResponse} from "../../../../temp_ts";
+import {GetProjectResponse} from "../../../../client";
 import Paths from "../../../util/Paths";
 import RequestUtil from "../../../util/RequestUtil";
 

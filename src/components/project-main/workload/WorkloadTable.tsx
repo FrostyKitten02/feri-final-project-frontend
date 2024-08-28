@@ -2,7 +2,7 @@ import {WorkloadTableProps} from "../../../interfaces";
 import TextUtil from "../../../util/TextUtil";
 import {useEffect, useMemo, useState} from "react";
 import {WorkloadModal} from "./WorkloadModal";
-import {PersonDto, PersonOnProjectDto, PersonWorkDto} from "../../../../temp_ts";
+import {PersonDto, PersonOnProjectDto, PersonWorkDto} from "../../../../client";
 import {GoTriangleRight} from "react-icons/go";
 import {IoMdInformationCircleOutline} from "react-icons/io";
 import * as React from "react";

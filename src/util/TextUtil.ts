@@ -4,7 +4,7 @@ import {
     ProjectStatisticsUnitDto,
     TaskDto,
     WorkPackageDto,
-} from "../../temp_ts";
+} from "../../client";
 import {
     BudgetBreakdownChartProps,
     ProgressObject,

@@ -17,7 +17,7 @@ import {
     CreateOccupancyRequest,
     PersonTypeListDto,
     UpdateOccupancyRequest,
-} from "../../../../temp_ts";
+} from "../../../../client";
 import {occupancyAPI, personTypeAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import RequestUtil from "../../../util/RequestUtil";

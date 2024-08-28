@@ -11,7 +11,7 @@ import ClerkUserButton from "../account-modal/ClerkUserButton";
 import steerLogoPath from "../../assets/images/steer_logo_white.png";
 import { useRequestArgs } from "../../util/CustomHooks";
 import { personAPI } from "../../util/ApiDeclarations";
-import { PersonDto } from "../../../temp_ts";
+import { PersonDto } from "../../../client";
 
 const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
   items,

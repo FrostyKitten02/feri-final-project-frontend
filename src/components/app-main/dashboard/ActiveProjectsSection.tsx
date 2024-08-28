@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PageInfo, PersonDto, ProjectDto, ProjectListSearchParams} from "../../../../temp_ts";
+import {PageInfo, PersonDto, ProjectDto, ProjectListSearchParams} from "../../../../client";
 import {personAPI, projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import TextUtil from "../../../util/TextUtil";

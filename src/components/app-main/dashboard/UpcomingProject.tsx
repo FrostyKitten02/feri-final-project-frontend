@@ -1,5 +1,5 @@
 import TextUtil from "../../../util/TextUtil";
-import {ProjectDto, ProjectListSearchParams} from "../../../../temp_ts";
+import {ProjectDto, ProjectListSearchParams} from "../../../../client";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {useEffect, useState} from "react";

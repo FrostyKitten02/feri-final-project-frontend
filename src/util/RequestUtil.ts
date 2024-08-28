@@ -1,5 +1,5 @@
 import { AxiosError, RawAxiosRequestConfig } from "axios";
-import { Configuration } from "../../temp_ts";
+import { Configuration } from "../../client";
 import { toastError } from "../components/toast-modals/ToastFunctions";
 
 export default class RequestUtil {

@@ -8,7 +8,7 @@ import {
   PersonWorkDto,
   ProjectFileDto,
   ProjectStatisticsUnitDto, PersonOnProjectDto,
-} from "../temp_ts";
+} from "../client";
 import { ControllerRenderProps, FieldValues, Path } from "react-hook-form";
 import * as React from "react";
 import { SelectedItemProps } from "./components/template/inputs/inputsInterface";
@@ -133,6 +133,7 @@ export interface ModalTextProps {
 
 export interface CustomModalBodyProps {
   children?: React.ReactNode;
+  padding?: string;
 }
 
 export interface ModalDividerProps {

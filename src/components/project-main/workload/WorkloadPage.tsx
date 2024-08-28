@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useParams} from "react-router-dom";
 import {useRequestArgs} from "../../../util/CustomHooks";
-import {ProjectStatisticsResponse} from "../../../../temp_ts";
+import {ProjectStatisticsResponse} from "../../../../client";
 import {WorkloadTable} from "./WorkloadTable";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
 import {Spinner} from "flowbite-react";

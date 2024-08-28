@@ -21,7 +21,7 @@ import {
   PersonListSearchParams,
   PersonSortInfoRequest,
   SalaryDto,
-} from "../../../../temp_ts";
+} from "../../../../client";
 import { Datepicker, Label, TextInput } from "flowbite-react";
 import { toastSuccess, toastWarning } from "../../toast-modals/ToastFunctions";
 import {
@@ -201,7 +201,9 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
 
     fetchSalaryforUser();
 
-    if (!projectDetails) {
+    if (projectDetails) {
+      fetchOccupancyForUser(projectDetails);
+    } else {
       fetchProjectById();
     }
   };
@@ -271,7 +273,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                 Only available employees should be assigned to the project.
               </ModalText>
             </CustomModalHeader>
-            <CustomModalBody>
+            <CustomModalBody padding="px-10 py-2">
               <div>
                 <Label>Select employee</Label>
                 <Controller
@@ -312,7 +314,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ModalDivider>duration</ModalDivider>
+                  <ModalDivider paddingTop="pt-2">duration</ModalDivider>
                   <ModalText showIcon={true}>
                     <div className="flex items-center text-black text-md pb-6">
                       <div>Remember that project starts on</div>
@@ -443,25 +445,23 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
               >
                 {userSalary && userOccupancy && watchPerson?.id && (
                   <>
-                    <ModalDivider>user details</ModalDivider>
-                    <div>
-                      <div className="grid grid-cols-1 pt-8 pb-4">
-                        <div className="flex justify-center items-center gap-x-4">
-                          <div className="text-sm text-gray-600 font-semibold">
-                            CURRENT MONTHLY SALARY [€]
-                          </div>
+                    <ModalDivider paddingTop="pt-2" paddingBottom="pb-2">
+                      user details
+                    </ModalDivider>
+                    <div className="flex flex-row gap-x-2 justify-start py-2">
+                      <div className="flex justify-center items-center gap-x-4">
+                        <div className="text-sm text-gray-600 font-semibold">
+                          CURRENT MONTHLY SALARY [€]:
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-solid border-gray-200 bg-white divide-y divide-solid divide-gray-200">
-                        <div className="grid grid-cols-1 py-6">
-                          <div className="flex items-center justify-center text-sm font-semibold text-black">
-                            {userSalary.amount ? userSalary.amount : "N/A"}
-                          </div>
-                        </div>
+                      <div className="">
+                        <p className="text-sm font-semibold">
+                          {userSalary.amount ? userSalary.amount : "N/A"}
+                        </p>
                       </div>
                     </div>
                     <div>
-                      <div className="grid grid-cols-3 pt-8 pb-4">
+                      <div className="grid grid-cols-3 pt-4 pb-4">
                         <div className="flex justify-center items-center gap-x-4">
                           <div className="text-sm text-gray-600 font-semibold">
                             PROJECT MONTH

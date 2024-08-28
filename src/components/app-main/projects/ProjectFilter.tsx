@@ -1,7 +1,7 @@
 import {ProjectFilterProps} from "../../../interfaces";
 import {CSelect, SelectOption} from "../../template/inputs/CustomInputs";
 import {useEffect, useState} from "react";
-import {ProjectListStatusResponse} from "../../../../temp_ts";
+import {ProjectListStatusResponse} from "../../../../client";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {IoCloseOutline} from "react-icons/io5";
