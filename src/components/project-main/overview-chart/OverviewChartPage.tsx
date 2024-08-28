@@ -18,14 +18,6 @@ export const OverviewChartPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const { projectId } = useParams();
   const requestArgs = useRequestArgs();
-  const totalPages = Math.ceil(
-    (statistics.units?.length ?? 0) / monthsPerPage
-  );
-  const handleMonthChange = (count: number) => {
-    setMonthsPerPage(count);
-    setCurrentPage(1);
-  };
-
   useEffect(() => {
     const getStatistics = async (): Promise<void> => {
       if (!projectId) return;
@@ -60,6 +52,14 @@ export const OverviewChartPage = () => {
     };
     getStatistics();
   }, []);
+  const totalPages = Math.ceil(
+      (statistics.units?.length ?? 0) / monthsPerPage
+  );
+  const handleMonthChange = (count: number) => {
+    setMonthsPerPage(count);
+    setCurrentPage(1);
+  };
+
 
   return (
     <div className="w-full h-full p-10">

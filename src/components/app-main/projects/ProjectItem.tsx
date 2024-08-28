@@ -13,15 +13,18 @@ import {useRequestArgs} from "../../../util/CustomHooks";
 import {LuPackage} from "react-icons/lu";
 import {IoPeopleOutline} from "react-icons/io5";
 import RequestUtil from "../../../util/RequestUtil";
+import {PersonOnProjectDto} from "../../../../client";
 
-export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
+export const ProjectItem: FC<ProjectItemProps> = ({project, currentPerson}) => {
     const navigate = useNavigate();
     const {user} = useUser();
     const requestArgs = useRequestArgs();
     const [barChartData, setBarChartData] = useState<ActiveProjectsChartProps>();
+    const [assignedData, setAssignedData] = useState<PersonOnProjectDto>();
     const [loading, setLoading] = useState<boolean>(true);
     const progress: number = TextUtil.returnProgress(project?.startDate, project?.endDate);
     const {text, color, bgColor} = TextUtil.returnProgressText(progress);
+
     useEffect(() => {
         if (project) {
             const getStatistics = async (): Promise<void> => {
@@ -46,10 +49,22 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                     RequestUtil.handleAxiosRequestError(error);
                 }
             }
+            const getAssignedPersonData = async () => {
+                try {
+                    if (project.id && currentPerson.id) {
+                        const response = await projectAPI.getPersonOnProject(project.id, currentPerson.id, await requestArgs.getRequestArgs());
+                        if (response.status === 200 && response.data.people?.length === 1) {
+                            setAssignedData(response.data.people[0]);
+                        }
+                        setLoading(false);
+                    }
+                } catch (err) {
+                }
+            }
             if (project.ownerId === user?.id) {
                 getStatistics();
             } else {
-                setLoading(false);
+                getAssignedPersonData();
             }
         }
     }, [project]);
@@ -177,7 +192,6 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                                         </div> :
                                         <div>
                                             <div className="space-y-4 h-full">
-                                                {/*
                                                 <div className="flex flex-row items-center pt-2">
                                                     <div className="w-[7%] h-[1px] bg-gray-300"/>
                                                     <Label className="px-2 uppercase text-muted">
@@ -187,13 +201,13 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                                                 </div>
                                                 <div className="flex flex-col items-center font-semibold">
                                                     <div className="text-2xl">
-                                                        {TextUtil.refactorDate(project.startDate)} spremeni
+                                                        {TextUtil.refactorDate(assignedData?.fromDate)  ?? "N/A"}
                                                     </div>
                                                     <div>
                                                         -
                                                     </div>
                                                     <div className="text-2xl">
-                                                        {TextUtil.refactorDate(project.endDate)} spremeni
+                                                        {TextUtil.refactorDate(assignedData?.toDate) ?? "N/A"}
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-row items-center pt-2">
@@ -204,9 +218,8 @@ export const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                                                     <div className="flex-grow h-[1px] bg-gray-300"/>
                                                 </div>
                                                 <div className="text-2xl font-semibold">
-                                                    5% spremeni
+                                                    {TextUtil.roundDownToTwoDecimalPlaces(assignedData?.estimatedPm ?? 0) + " PM" ?? "N/A"}
                                                 </div>
-                                                */}
                                             </div>
                                         </div>
                                     }

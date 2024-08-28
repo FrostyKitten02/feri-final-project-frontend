@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import App from "../App";
 import ErrorPage from "../components/template/pages/ErrorPage";
-import SignInPage from "../components/authorization/SignInPage";
 import ProjectMainPage from "../components/project-main/ProjectMainPage";
 import { useSession } from "@clerk/clerk-react";
 import Paths from "../util/Paths";
@@ -24,6 +23,7 @@ import LandingPage from "../components/landing-page/LandingPage";
 import { FileManagerPage } from "../components/project-main/file-manager/FileManagerPage";
 import { ReportPage } from "../components/project-main/report/ReportPage";
 import { Spinner } from "flowbite-react";
+import {SignInPage} from "../components/authorization/SignInPage";
 
 function AppRouter() {
   const { isLoaded, isSignedIn } = useSession();

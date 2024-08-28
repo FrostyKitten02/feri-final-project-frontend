@@ -24,7 +24,6 @@ export const DeleteProjectModal = () => {
   const [projectDetails, setProjectDetails] = useState<GetProjectResponse>();
   const [open, setOpen] = useState<boolean>(false);
   const requestArgs = useRequestArgs();
-
   const { projectId } = useParams();
   const navigate = useNavigate();
 
@@ -44,7 +43,7 @@ export const DeleteProjectModal = () => {
             toastError("Project id not found.");
           }
         } catch (error) {
-          RequestUtil.handleAxiosRequestError(error);;
+          RequestUtil.handleAxiosRequestError(error);
         }
       };
       fetchProjectDetails();

@@ -13,7 +13,6 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
         pmPercentValue: 0,
         tooltipValue: undefined
     });
-    const valueFormatter = (number: number) => `${number}PM`;
     useEffect(() => {
         if (project && project.workPackages) {
             const newGraphData = project.workPackages
@@ -58,6 +57,7 @@ export const WorkDetails = ({project, statistics}: WorkDetailsProps) => {
             error(...args);
         };
     }, []);
+    const valueFormatter = (number: number) => `${number}PM`;
 
     return (
         <div className="relative flex-grow p-5">

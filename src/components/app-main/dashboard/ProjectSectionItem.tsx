@@ -10,9 +10,11 @@ import ChartUtil from "../../../util/ChartUtil";
 import SessionUtil from "../../../util/SessionUtil";
 import {useNavigate} from "react-router-dom";
 import {useUser} from "@clerk/clerk-react";
+import {PersonOnProjectDto} from "../../../../client";
 
-export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
+export const ProjectSectionItem = ({project, currentPerson}: ProjectSectionItemProps) => {
     const [barChartData, setBarChartData] = useState<ActiveProjectsChartProps>();
+    const [assignedData, setAssignedData] = useState<PersonOnProjectDto>();
     const [loading, setLoading] = useState<boolean>(true);
     const {user} = useUser();
     const requestArgs = useRequestArgs();
@@ -51,10 +53,22 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
             } catch (error) {
             }
         }
-        if(project.ownerId === user?.id){
+        const getAssignedPersonData = async () => {
+            try {
+                if (project.id && currentPerson.id) {
+                    const response = await projectAPI.getPersonOnProject(project.id, currentPerson.id, await requestArgs.getRequestArgs());
+                    if (response.status === 200 && response.data.people?.length === 1) {
+                        setAssignedData(response.data.people[0]);
+                    }
+                    setLoading(false);
+                }
+            } catch (err) {
+            }
+        }
+        if (project.ownerId === user?.id) {
             getStatistics();
         } else {
-            setLoading(false);
+            getAssignedPersonData();
         }
     }, [project]);
     const pmValueFormatter = (value: number) => {
@@ -64,7 +78,7 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
         return value + ' €';
     };
     const handleNavigate = () => {
-        if(project.ownerId === user?.id){
+        if (project.ownerId === user?.id) {
             navigate(`/project/${project?.id}/project-dashboard`);
             SessionUtil.setSidebarSelect("dashboard");
         }
@@ -111,95 +125,94 @@ export const ProjectSectionItem = ({project}: ProjectSectionItemProps) => {
                         </div>
                     </div>
                     {project.ownerId === user?.id ?
-                    <div className="flex-grow">
-                        <div className="space-y-2 h-1/2 flex flex-col">
-                            <div className="flex flex-row items-center">
+                        <div className="flex-grow">
+                            <div className="space-y-2 h-1/2 flex flex-col">
+                                <div className="flex flex-row items-center">
+                                    <div className="w-[7%] h-[1px] bg-gray-300"/>
+                                    <Label className="px-2 uppercase text-muted">
+                                        pm report
+                                    </Label>
+                                    <div className="flex-grow h-[1px] bg-gray-300"/>
+                                </div>
+                                <div className="flex-grow flex items-center justify-center">
+                                    {
+                                        barChartData &&
+                                        (barChartData.stateData.dataPm[0]["Available"] !== 0 || barChartData.stateData.dataPm[1]["Available"] !== 0) ?
+                                            <BarChart
+                                                data={barChartData.stateData.dataPm}
+                                                categories={["Used", "Available"]}
+                                                index="name"
+                                                colors={['rose', 'blue']}
+                                                yAxisWidth={0}
+                                                className="h-full max-h-[250px] w-[350px]"
+                                                valueFormatter={pmValueFormatter}
+                                            /> :
+                                            <div
+                                                className="flex items-center justify-center text-center h-full text-muted">
+                                                There are no available PM for current year and month.
+                                            </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="pace-y-2 h-1/2 flex flex-col">
+                                <div className="flex flex-row items-center">
+                                    <div className="w-[7%] h-[1px] bg-gray-300"/>
+                                    <Label className="px-2 uppercase text-muted">
+                                        budget report
+                                    </Label>
+                                    <div className="flex-grow h-[1px] bg-gray-300"/>
+                                </div>
+                                <div className="flex-grow flex items-center justify-center">
+                                    {
+                                        barChartData &&
+                                        (barChartData.stateData.dataBudget[0]["Available"] !== 0 || barChartData.stateData.dataBudget[1]["Available"] !== 0) ?
+                                            <BarChart
+                                                data={barChartData.stateData.dataBudget}
+                                                categories={["Used", "Available"]}
+                                                index="name"
+                                                colors={['rose', 'violet']}
+                                                yAxisWidth={0}
+                                                className="h-full max-h-[250px] w-[350px]"
+                                                valueFormatter={budgetValueFormatter}
+                                            /> :
+                                            <div
+                                                className="flex items-center justify-center text-center h-full text-muted">
+                                                There is no available budget for current year and month.
+                                            </div>
+                                    }
+                                </div>
+                            </div>
+                        </div> :
+                        <div className="space-y-4 h-full">
+                            <div className="flex flex-row items-center pt-2">
                                 <div className="w-[7%] h-[1px] bg-gray-300"/>
                                 <Label className="px-2 uppercase text-muted">
-                                    pm report
+                                    collaboration duration
                                 </Label>
                                 <div className="flex-grow h-[1px] bg-gray-300"/>
                             </div>
-                            <div className="flex-grow flex items-center justify-center">
-                                {
-                                    barChartData &&
-                                    (barChartData.stateData.dataPm[0]["Available"] !== 0 || barChartData.stateData.dataPm[1]["Available"] !== 0) ?
-                                        <BarChart
-                                            data={barChartData.stateData.dataPm}
-                                            categories={["Used", "Available"]}
-                                            index="name"
-                                            colors={['rose', 'blue']}
-                                            yAxisWidth={0}
-                                            className="h-full max-h-[250px] w-[350px]"
-                                            valueFormatter={pmValueFormatter}
-                                        /> :
-                                        <div className="flex items-center justify-center text-center h-full text-muted">
-                                            There are no available PM for current year and month.
-                                        </div>
-                                }
+                            <div className="flex flex-col items-center font-semibold">
+                                <div className="text-2xl">
+                                    {TextUtil.refactorDate(assignedData?.fromDate)  ?? "N/A"}
+                                </div>
+                                <div>
+                                    -
+                                </div>
+                                <div className="text-2xl">
+                                    {TextUtil.refactorDate(assignedData?.toDate) ?? "N/A"}
+                                </div>
                             </div>
-                        </div>
-                        <div className="pace-y-2 h-1/2 flex flex-col">
-                            <div className="flex flex-row items-center">
+                            <div className="flex flex-row items-center pt-2">
                                 <div className="w-[7%] h-[1px] bg-gray-300"/>
                                 <Label className="px-2 uppercase text-muted">
-                                    budget report
+                                    occupancy
                                 </Label>
                                 <div className="flex-grow h-[1px] bg-gray-300"/>
                             </div>
-                            <div className="flex-grow flex items-center justify-center">
-                                {
-                                    barChartData &&
-                                    (barChartData.stateData.dataBudget[0]["Available"] !== 0 || barChartData.stateData.dataBudget[1]["Available"] !== 0) ?
-                                        <BarChart
-                                            data={barChartData.stateData.dataBudget}
-                                            categories={["Used", "Available"]}
-                                            index="name"
-                                            colors={['rose', 'violet']}
-                                            yAxisWidth={0}
-                                            className="h-full max-h-[250px] w-[350px]"
-                                            valueFormatter={budgetValueFormatter}
-                                        /> :
-                                        <div className="flex items-center justify-center text-center h-full text-muted">
-                                            There is no available budget for current year and month.
-                                        </div>
-                                }
+                            <div className="text-2xl font-semibold">
+                                {TextUtil.roundDownToTwoDecimalPlaces(assignedData?.estimatedPm ?? 0) + " PM" ?? "N/A"}
                             </div>
                         </div>
-                    </div> :
-                    <div className="space-y-4 h-full">
-                        { /*
-
-                        <div className="flex flex-row items-center pt-2">
-                            <div className="w-[7%] h-[1px] bg-gray-300"/>
-                            <Label className="px-2 uppercase text-muted">
-                                collaboration duration
-                            </Label>
-                            <div className="flex-grow h-[1px] bg-gray-300"/>
-                        </div>
-                        <div className="flex flex-col items-center font-semibold">
-                            <div className="text-2xl">
-                                {TextUtil.refactorDate(project.startDate)} spremeni
-                            </div>
-                            <div>
-                                -
-                            </div>
-                            <div className="text-2xl">
-                                {TextUtil.refactorDate(project.endDate)} spremeni
-                            </div>
-                        </div>
-                        <div className="flex flex-row items-center pt-2">
-                            <div className="w-[7%] h-[1px] bg-gray-300"/>
-                            <Label className="px-2 uppercase text-muted">
-                                occupancy
-                            </Label>
-                            <div className="flex-grow h-[1px] bg-gray-300"/>
-                        </div>
-                        <div className="text-2xl font-semibold">
-                            5% spremeni
-                        </div>
-                         */}
-                    </div>
                     }
                 </div>
             </button>

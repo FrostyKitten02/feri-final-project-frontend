@@ -5,9 +5,6 @@ import ChartUtil from "../../../util/ChartUtil";
 
 export const CostTimeline = ({stats}: CostTimelineProps) => {
     const [chartData, setChartData] = useState<Array<CostTimelineChartProps>>([]);
-    const valueFormatter = function (number: number) {
-        return new Intl.NumberFormat('us').format(number).toString() + '€';
-    }
 
     useEffect(() => {
         if (stats.units !== undefined) {
@@ -16,6 +13,9 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
         }
 
     }, [stats]);
+    const valueFormatter = function (number: number) {
+        return new Intl.NumberFormat('us').format(number).toString() + '€';
+    }
 
     return (
         <div className="relative p-5 z-0">
