@@ -13,7 +13,7 @@ export const ReportPdf = ({reportType, chosenMonthly, barChartData, people}: Rep
 
     return (
         <>
-            <div id="report-div" className="flex flex-col h-full p-5">
+            <div id="report-div" className="flex flex-col h-full p-5 w-fit">
                 <div className="text-xs uppercase italic">
                     {"Created  on: " + TextUtil.refactorDate(new Date().toString())}
                 </div>
