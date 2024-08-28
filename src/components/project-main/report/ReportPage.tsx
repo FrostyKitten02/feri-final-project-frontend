@@ -270,11 +270,11 @@ export const ReportPage = () => {
               <div className="overflow-y-auto h-full w-full flex items-center justify-center">
                 {selectedMonthly.value === "" ? (
                   <div className="flex flex-col h-full items-center justify-center">
-                    <TbReportAnalytics className="stroke-gray-300 size-44 pb-6" />
-                    <p className="text-2xl font-bold">
+                    <TbReportAnalytics className="stroke-muted size-44 pb-6" />
+                    <p className="text-2xl font-bold text-muted">
                       No report selected.
                     </p>
-                    <p>Navigate to the top left to create a report.</p>
+                    <p className="text-muted">Navigate to the top left to create a report.</p>
                   </div>
                 ) : (
                   <ReportPdf

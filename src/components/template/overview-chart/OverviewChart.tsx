@@ -9,11 +9,11 @@ export const OverviewChart = ({monthsPerPage, workpackageCount, children}: Overv
     if (workpackageCount === 0)
         return (
             <div className="h-full flex-grow flex flex-col justify-center items-center">
-                <FaChartBar className="fill-gray-300 size-40 pb-6"/>
-                <p className="text-2xl font-bold">
+                <FaChartBar className="fill-muted size-40 pb-6"/>
+                <p className="text-2xl font-bold text-muted">
                     There are currently no work packages included in this project.
                 </p>
-                <p>
+                <p className="text-muted">
                     Navigate to work packages to add them to the project.
                 </p>
             </div>

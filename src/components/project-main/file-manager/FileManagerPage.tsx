@@ -248,11 +248,11 @@ export const FileManagerPage = () => {
             </>
           ) : (
             <div className="flex flex-col h-full items-center justify-center">
-              <FaRegFolderOpen className="fill-gray-300 size-44 pb-6" />
-              <p className="text-2xl font-bold">
+              <FaRegFolderOpen className="fill-muted size-44 pb-6" />
+              <p className="text-2xl font-bold text-muted">
                 This project does not have any documents.
               </p>
-              <p>Navigate to the top right to import a file.</p>
+              <p className="text-muted">Navigate to the top right to import a file.</p>
             </div>
           )}
         </div>
