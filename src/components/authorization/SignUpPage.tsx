@@ -1,7 +1,7 @@
 import { SignUp } from "@clerk/clerk-react";
 import steerLogoPath from "../../assets/images/steer_logo_black.png";
 
-function SignUpPage() {
+export const SignUpPage = () => {
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen overflow-auto bg-gradient-to-tr from-c-sky to-white">
       <img src={steerLogoPath} className="max-w-full ml-[35px]" />
@@ -9,4 +9,3 @@ function SignUpPage() {
     </div>
   );
 }
-export default SignUpPage;

@@ -19,6 +19,9 @@ export default function ProjectDashboardPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const requestArgs = useRequestArgs();
 
+  useEffect(() => {
+    fetchData();
+  }, [projectId]);
   const getProjectSchema = (schemas: ProjectBudgetSchemaDto[], id: string) => {
     return schemas.find((schema) => schema.id === id);
   };
@@ -65,10 +68,6 @@ export default function ProjectDashboardPage() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [projectId]);
 
   return (
     <div className="flex flex-grow overflow-y-auto">

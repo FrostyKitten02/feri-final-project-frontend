@@ -37,6 +37,7 @@ export interface SidebarItemProps {
 export interface ProjectItemProps {
   project?: ProjectDto;
   handleEditProject: () => void;
+  currentPerson: PersonDto
 }
 
 export interface WorkPackageItemProps {

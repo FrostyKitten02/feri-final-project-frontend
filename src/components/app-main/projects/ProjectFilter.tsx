@@ -9,16 +9,16 @@ import {IoCloseOutline} from "react-icons/io5";
 export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilterProps) => {
     const [projectStatusCount, setProjectStatusCount] = useState<ProjectListStatusResponse>();
     const requestArgs = useRequestArgs();
+
+    useEffect(() => {
+        fetchProjectsByStatus();
+    }, []);
     const fetchProjectsByStatus = async () => {
         const response = await projectAPI.listProjectsStatus(await requestArgs.getRequestArgs());
         if (response.status === 200) {
             setProjectStatusCount(response.data);
         }
     }
-
-    useEffect(() => {
-        fetchProjectsByStatus();
-    }, []);
 
     return (
         <div className="flex flex-grow justify-between items-center">
