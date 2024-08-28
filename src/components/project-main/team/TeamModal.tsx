@@ -78,7 +78,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
 
   const fetchAllPeople = async (): Promise<void> => {
     const pageInfo: PageInfoRequest = {
-      elementsPerPage: 4,
+      elementsPerPage: 20,
       pageNumber: 1,
     };
     const sortInfo: PersonSortInfoRequest = {
@@ -111,7 +111,11 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       return [];
     } else {
       setListOpen(true);
-      return allPeople?.people ?? [];
+      return (allPeople?.people ?? []).filter((person) => {
+        return `${person.name} ${person.lastname} ${person.email}`
+          .toLowerCase()
+          .includes(debouncedSearchQuery.toLowerCase().trim());
+      });
     }
   }, [debouncedSearchQuery, allPeople]);
 

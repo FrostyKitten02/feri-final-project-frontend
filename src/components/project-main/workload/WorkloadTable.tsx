@@ -3,8 +3,6 @@ import TextUtil from "../../../util/TextUtil";
 import {useEffect, useMemo, useState} from "react";
 import {WorkloadModal} from "./WorkloadModal";
 import {PersonDto, PersonOnProjectDto, PersonWorkDto} from "../../../../client";
-import {GoTriangleRight} from "react-icons/go";
-import {IoMdInformationCircleOutline} from "react-icons/io";
 import * as React from "react";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useParams} from "react-router-dom";
@@ -154,7 +152,6 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 }
                 <div
                     className="flex h-14 uppercase text-sm font-bold items-center border-solid border-l-white border-y-gray-200">
-                    <IoMdInformationCircleOutline className="mr-1"/>
                     budget estimate
                 </div>
                 {shownMonths.map(month => {
@@ -224,7 +221,6 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
                 }
                 <div
                     className="flex h-14 uppercase font-bold text-sm items-center border-solid border-l-white border-y-gray-200">
-                    <GoTriangleRight className="mr-1"/>
                     Total work
                 </div>
 
@@ -251,7 +247,6 @@ export const WorkloadTable = ({statistics, currentPage, monthsPerPage, handleEdi
 
                 <div
                     className="flex h-14 uppercase text-sm font-bold items-center border-solid border-l-white border-y-gray-200">
-                    <GoTriangleRight className="mr-1"/>
                     Total spending
                 </div>
 

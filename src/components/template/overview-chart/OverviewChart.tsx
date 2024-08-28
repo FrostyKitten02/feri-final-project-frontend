@@ -189,9 +189,6 @@ export const OverviewChartBody = ({statistics, currentPage, monthsPerPage}: Over
                                                     }}
                                                 >
                                                     <div className={`absolute flex top-[-25px]`}>
-                                                        <div className="pt-[2px]">
-                                                            <GoTriangleRight/>
-                                                        </div>
                                                         <div className="text-sm font-semibold px-1">
                                                             {TextUtil.truncateString(workPackage.title, 55)}
                                                         </div>
