@@ -1,5 +1,5 @@
 import {SelectedItemProps} from "../components/template/inputs/inputsInterface";
-import {ProjectListSearchParams} from "../../temp_ts";
+import {ProjectListSearchParams} from "../../client";
 import TextUtil from "./TextUtil";
 
 export default class ParamUtil {

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PersonOnProjectDto} from "../../../../temp_ts";
+import {PersonOnProjectDto} from "../../../../client";
 import TeamModal from "./TeamModal";
 import {useParams} from "react-router-dom";
 import {toastWarning} from "../../toast-modals/ToastFunctions";

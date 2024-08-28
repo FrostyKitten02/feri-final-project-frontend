@@ -5,7 +5,7 @@ import {AddProjectFormFields} from "../../../types/types";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
 import {toastError, toastSuccess} from "../../toast-modals/ToastFunctions";
-import {CreateProjectRequest, ProjectBudgetSchemaDto, UpdateProjectRequest,} from "../../../../temp_ts";
+import {CreateProjectRequest, ProjectBudgetSchemaDto, UpdateProjectRequest,} from "../../../../client";
 import {LuEuro} from "react-icons/lu";
 import {ProjectModalProps} from "../../../interfaces";
 import {

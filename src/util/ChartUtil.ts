@@ -1,4 +1,4 @@
-import {ProjectListStatusResponse, ProjectStatisticsResponse, ProjectStatisticsUnitDto} from "../../temp_ts";
+import {ProjectListStatusResponse, ProjectStatisticsResponse, ProjectStatisticsUnitDto} from "../../client";
 import {
     ActiveProjectsStateData,
     BudgetBreakdownTrackerData,

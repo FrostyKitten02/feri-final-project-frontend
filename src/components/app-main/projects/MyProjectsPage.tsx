@@ -5,7 +5,7 @@ import {
   PageInfoRequest,
   ProjectListSearchParams,
   ProjectSortInfoRequest,
-} from "../../../../temp_ts";
+} from "../../../../client";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { ProjectItem } from "./ProjectItem";
 import { CustomPagination } from "../../template/pagination/CustomPagination";

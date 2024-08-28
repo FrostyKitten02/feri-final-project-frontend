@@ -1,4 +1,4 @@
-import {CreatePersonTypeRequest} from "../../../../temp_ts";
+import {CreatePersonTypeRequest} from "../../../../client";
 import {
   CustomModal,
   CustomModalBody,

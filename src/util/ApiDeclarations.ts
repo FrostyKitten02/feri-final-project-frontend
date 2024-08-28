@@ -8,7 +8,7 @@ import {
     SalaryControllerApi,
     TaskControllerApi,
     WorkPackageControllerApi,
-} from "../../temp_ts";
+} from "../../client";
 
 export const projectAPI = new ProjectControllerApi(RequestUtil.API_CONFIG);
 export const workPackageAPI = new WorkPackageControllerApi(RequestUtil.API_CONFIG);

@@ -14,7 +14,7 @@ import {
   PageInfoRequest,
   PersonListSearchParams,
   PersonSortInfoRequest,
-} from "../../../../temp_ts";
+} from "../../../../client";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { CustomPagination } from "../../template/pagination/CustomPagination";
 import UserSearchInput from "../../template/search-user/UserSearchInput";

@@ -1,6 +1,6 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {ProjectBudgetSchemaDto, ProjectDto, ProjectStatisticsResponse,} from "../../../../temp_ts";
+import {ProjectBudgetSchemaDto, ProjectDto, ProjectStatisticsResponse,} from "../../../../client";
 import {projectAPI, projectSchemaAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {ProjectDetails} from "./ProjectDetails";

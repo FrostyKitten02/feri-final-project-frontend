@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { CreateTaskRequest, UpdateTaskRequest } from "../../../../temp_ts";
+import { CreateTaskRequest, UpdateTaskRequest } from "../../../../client";
 import { TaskModalProps } from "../../../interfaces";
 import { TaskFormFields } from "../../../types/types";
 import { taskAPI } from "../../../util/ApiDeclarations";

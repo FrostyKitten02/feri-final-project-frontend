@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProjectFilesResponse } from "../../../../temp_ts";
+import { ProjectFilesResponse } from "../../../../client";
 import { FileUploadModal } from "./FileUploadModal";
 import { useRequestArgs } from "../../../util/CustomHooks";
 import { useParams } from "react-router-dom";

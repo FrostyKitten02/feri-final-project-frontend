@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { ProjectDto, WorkPackageDto } from "../../../../temp_ts";
+import { ProjectDto, WorkPackageDto } from "../../../../client";
 import { useParams } from "react-router-dom";
 import { projectAPI } from "../../../util/ApiDeclarations";
 import { toastError } from "../../toast-modals/ToastFunctions";

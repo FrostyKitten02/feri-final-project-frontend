@@ -17,7 +17,7 @@ import {
   SalaryListDto,
   SalaryListSearchParams,
   SalaryListSortInfoRequest,
-} from "../../../../temp_ts";
+} from "../../../../client";
 import {personTypeAPI, salaryApi} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {CustomPagination} from "../../template/pagination/CustomPagination";
