@@ -129,9 +129,9 @@ export const MyProjectsPage = () => {
                   ) : (
                     <div>
                       <div className="flex flex-col h-full items-center justify-center">
-                        <IoFolderOutline className="stroke-gray-300 size-40 pb-6" />
-                        <p className="text-2xl font-bold">No projects found.</p>
-                        <p className="pb-6">
+                        <IoFolderOutline className="stroke-muted size-40 pb-6" />
+                        <p className="text-2xl font-bold text-muted">No projects found.</p>
+                        <p className="pb-6 text-muted">
                           Navigate to the top right to create a project or click
                           the button below.
                         </p>

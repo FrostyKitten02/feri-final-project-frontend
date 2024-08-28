@@ -83,9 +83,9 @@ export const WorkPackageListing: FC = () => {
             ))
           ) : (
             <div className="flex flex-col h-full items-center justify-center">
-              <LuPackageOpen className="stroke-gray-300 size-44 pb-6"/>
-              <p className="text-2xl font-bold">No work packages found.</p>
-              <p>Navigate to the top right to create a work package.</p>
+              <LuPackageOpen className="stroke-muted size-44 pb-6"/>
+              <p className="text-2xl font-bold text-muted">No work packages found.</p>
+              <p className="text-muted">Navigate to the top right to create a work package.</p>
             </div>
           )}
         </div>

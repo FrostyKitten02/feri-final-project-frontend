@@ -159,11 +159,11 @@ export default function ProjectTeamPage() {
             </div>
           ) : (
             <div className="flex flex-col h-full items-center justify-center">
-              <IoPeopleOutline className="stroke-gray-300 size-44 pb-6" />
-              <p className="text-2xl font-bold">
+              <IoPeopleOutline className="stroke-muted size-44 pb-6" />
+              <p className="text-2xl font-bold text-muted">
                 There is no one currently assigned to this project.
               </p>
-              <p>
+              <p className="text-muted">
                 Navigate to the top right to assign someone to this project.
               </p>
             </div>
