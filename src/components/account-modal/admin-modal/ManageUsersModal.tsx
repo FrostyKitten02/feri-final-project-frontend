@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ManageUsersModalProps, PopoverItem } from "../../../interfaces";
 import { FaHistory } from "react-icons/fa";
 import {
@@ -12,7 +12,6 @@ import { personAPI } from "../../../util/ApiDeclarations";
 import {
   ListPersonResponse,
   PageInfoRequest,
-  PersonListDto,
   PersonListSearchParams,
   PersonSortInfoRequest,
 } from "../../../../temp_ts";
@@ -124,15 +123,6 @@ export default function ManageUsersModal({
     }
   };
 
-  const filteredPeople = useMemo((): PersonListDto[] => {
-    return (allUsers?.people ?? []).filter((person) => {
-      const searchTerms = debouncedSearchQuery.toLowerCase().split(" ");
-      const personString =
-        `${person.name} ${person.lastname} ${person.email}`.toLowerCase();
-      return searchTerms.every((term) => personString.includes(term));
-    });
-  }, [debouncedSearchQuery, allUsers]);
-
   return (
     <>
       <CustomModal closeModal={handleClose} modalWidth="1500px">
@@ -162,7 +152,7 @@ export default function ManageUsersModal({
                 <div className="flex justify-center items-center h-full">
                   <Spinner size="xl" />
                 </div>
-              ) : (filteredPeople?.length ?? 0) > 0 ? (
+              ) : (allUsers?.people?.length ?? 0) > 0 ? (
                 <>
                   <div className="grid grid-cols-5 pt-8 pb-4">
                     <div className="flex justify-center items-center gap-x-4">
@@ -192,7 +182,7 @@ export default function ManageUsersModal({
                     </div>
                   </div>
                   <div className="rounded-2xl border border-solid border-gray-200 overflow-visible bg-white divide-y divide-solid divide-gray-200">
-                    {filteredPeople?.map((user, index) => {
+                    {allUsers?.people?.map((user, index) => {
                       const popoverItems: PopoverItem[] = [
                         {
                           component: (
@@ -234,7 +224,7 @@ export default function ManageUsersModal({
                           className={`grid grid-cols-5 py-6 ${
                             index === 0 ? `rounded-t-xl` : ""
                           } ${
-                            index === (filteredPeople?.length ?? 0) - 1
+                            index === (allUsers?.people?.length ?? 0) - 1
                               ? `rounded-b-xl`
                               : ""
                           }`}

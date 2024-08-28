@@ -17,6 +17,7 @@ import {
   MonthlyPersonOccupancyDto,
   PageInfoRequest,
   PersonDto,
+  PersonListDto,
   PersonListSearchParams,
   PersonSortInfoRequest,
   SalaryDto,
@@ -103,19 +104,14 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     }
   };
 
-  const filteredPeople = useMemo((): PersonDto[] => {
+  const filteredPeople = useMemo((): PersonListDto[] => {
     if (debouncedSearchQuery.trim() === "") {
       setListOpen(false);
       setUserSalary({ ...userSalary, amount: undefined });
       return [];
     } else {
       setListOpen(true);
-      return (allPeople?.people ?? []).filter((person) => {
-        const searchTerms = debouncedSearchQuery.toLowerCase().split(" ");
-        const personString =
-          `${person.name} ${person.lastname} ${person.email}`.toLowerCase();
-        return searchTerms.every((term) => personString.includes(term));
-      });
+      return allPeople?.people ?? [];
     }
   }, [debouncedSearchQuery, allPeople]);
 
