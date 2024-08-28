@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {ProjectStatisticsResponse, WorkPackageDto} from "../../../../client";
+import {ProjectStatisticsResponse} from "../../../../client";
 import {projectAPI} from "../../../util/ApiDeclarations";
 import {useRequestArgs} from "../../../util/CustomHooks";
 import {useParams} from "react-router-dom";
