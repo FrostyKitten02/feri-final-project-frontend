@@ -233,7 +233,7 @@ export default function ManageUsersModal({
                           }`}
                           key={user.id}
                         >
-                          <div className="flex items-center justify-center text-sm font-semibold gap-x-4">
+                          <div className="flex items-center justify-start pl-16 text-sm font-semibold gap-x-4">
                             <div>
                               {user.profileImageUrl ? (
                                 <>
