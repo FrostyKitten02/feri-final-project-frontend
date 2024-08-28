@@ -1,11 +1,12 @@
 import { TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { FieldValues, Path } from "react-hook-form";
-import { IoPersonCircle } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import { UserSearchInputProps } from "../../../interfaces";
 import { GrSearch } from "react-icons/gr";
 import { MdClear } from "react-icons/md";
+import ClerkDefaultImg from "../../../assets/images/clerk_default_profile_img.png";
+import { useUserImageLoader } from "../../../util/CustomHooks";
 
 export default function UserSearchInput<
   T extends FieldValues,
@@ -24,6 +25,8 @@ export default function UserSearchInput<
   setHookFormValue,
 }: UserSearchInputProps<T, K>) {
   const listRef = useRef<HTMLDivElement>(null);
+
+  const { updateImageState, userImageLoaded } = useUserImageLoader();
 
   const [query, setQuery] = useState<string>("");
 
@@ -98,7 +101,27 @@ export default function UserSearchInput<
                         }}
                       >
                         <div className="flex justify-center">
-                          <IoPersonCircle className="size-6 fill-black" />
+                          {person.profileImageUrl ? (
+                            <>
+                              {!userImageLoaded[person.id as string] && (
+                                <div className="rounded-full animate-pulse h-6 w-6 bg-slate-200" />
+                              )}
+                              <img
+                                src={person.profileImageUrl}
+                                className={`${
+                                  userImageLoaded[person.id as string]
+                                    ? "block"
+                                    : "hidden"
+                                } size-6 rounded-full`}
+                                onLoad={() => updateImageState(person.id)}
+                              />
+                            </>
+                          ) : (
+                            <img
+                              src={ClerkDefaultImg}
+                              className="size-6 rounded-full"
+                            />
+                          )}
                         </div>
                         <div className="flex justify-center">
                           {person.name && person.lastname ? (

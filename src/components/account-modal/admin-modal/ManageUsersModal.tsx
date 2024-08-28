@@ -15,7 +15,7 @@ import {
   PersonListSearchParams,
   PersonSortInfoRequest,
 } from "../../../../client";
-import { useRequestArgs } from "../../../util/CustomHooks";
+import { useUserImageLoader, useRequestArgs } from "../../../util/CustomHooks";
 import { CustomPagination } from "../../template/pagination/CustomPagination";
 import UserSearchInput from "../../template/search-user/UserSearchInput";
 import Popover from "../../template/popover-menu/Popover";
@@ -27,6 +27,7 @@ import { Spinner } from "flowbite-react";
 import { FaEuroSign } from "react-icons/fa6";
 import TextUtil from "../../../util/TextUtil";
 import RequestUtil from "../../../util/RequestUtil";
+import ClerkDefaultImg from "../../../assets/images/clerk_default_profile_img.png";
 
 export default function ManageUsersModal({
   modalOpen,
@@ -42,6 +43,8 @@ export default function ManageUsersModal({
   const [debouncedSearchQuery, setDebouncedSearchQuery] =
     useState<string>(searchQuery);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const { updateImageState, userImageLoaded } = useUserImageLoader();
 
   const requestArgs = useRequestArgs();
 
@@ -230,7 +233,30 @@ export default function ManageUsersModal({
                           }`}
                           key={user.id}
                         >
-                          <div className="flex items-center justify-center text-sm font-semibold">
+                          <div className="flex items-center justify-center text-sm font-semibold gap-x-4">
+                            <div>
+                              {user.profileImageUrl ? (
+                                <>
+                                  {!userImageLoaded[user.id as string] && (
+                                    <div className="rounded-full animate-pulse h-8 w-8 bg-slate-200" />
+                                  )}
+                                  <img
+                                    src={user.profileImageUrl}
+                                    className={`${
+                                      userImageLoaded[user.id as string]
+                                        ? "block"
+                                        : "hidden"
+                                    } size-8 rounded-full`}
+                                    onLoad={() => updateImageState(user.id)}
+                                  />
+                                </>
+                              ) : (
+                                <img
+                                  src={ClerkDefaultImg}
+                                  className="size-8 rounded-full"
+                                />
+                              )}
+                            </div>
                             <div>
                               {user.name && user.lastname ? (
                                 <p>

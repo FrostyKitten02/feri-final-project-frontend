@@ -489,4 +489,4 @@ export default class TextUtil {
             return fromDate <= checkStartDate && toDate >= checkEndDate;
         } else return false;
     }
-}
+ }
