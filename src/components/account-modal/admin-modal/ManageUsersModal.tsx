@@ -133,9 +133,12 @@ export default function ManageUsersModal({
           <ModalTitle>manage users</ModalTitle>
           <ModalText showIcon={true}>
             Manage employee information including salaries, employment types,
-            and view historical changes. Use the search bar to find specific
-            employees quickly. Set or update salary and availability percentage,
-            and access additional actions through the menu on each row.
+            and view historical changes.
+          </ModalText>
+          <ModalText >
+            For best query results enter{" "}
+            <span className="font-semibold">the email</span>, or only the{" "}
+            <span className="font-semibold">last name</span> of the user.
           </ModalText>
         </CustomModalHeader>
         <CustomModalBody>
