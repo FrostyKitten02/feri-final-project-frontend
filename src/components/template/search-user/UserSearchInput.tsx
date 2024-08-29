@@ -90,8 +90,12 @@ export default function UserSearchInput<
               (filteredPeople && filteredPeople?.length > 0 ? (
                 <>
                   <div className="py-2 px-4 font-semibold text-lg">Results</div>
-                  <div className="divide-y">
-                    {filteredPeople?.slice(0, 4).map((person) => (
+                  <div
+                    className={`divide-y overflow-y-auto ${
+                      filteredPeople.length > 4 ? `h-[160px]` : `h-auto`
+                    }`}
+                  >
+                    {filteredPeople?.map((person) => (
                       <div
                         key={person.id}
                         className="grid grid-cols-[40px_1fr_1fr] py-2 px-2 hover:bg-gray-200 font-semibold text-sm cursor-pointer items-center border-solid border-gray-200"
