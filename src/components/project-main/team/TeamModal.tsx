@@ -41,7 +41,9 @@ import RequestUtil from "../../../util/RequestUtil";
 
 export default function TeamModal({ handleAddPerson }: TeamModalProps) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [allPeople, setAllPeople] = useState<ListPersonResponse>();
+  const [allPeople, setAllPeople] = useState<ListPersonResponse | undefined>(
+    undefined
+  );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] =
     useState<string>(searchQuery);
@@ -78,7 +80,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
 
   const fetchAllPeople = async (): Promise<void> => {
     const pageInfo: PageInfoRequest = {
-      elementsPerPage: 20,
+      elementsPerPage: 10,
       pageNumber: 1,
     };
     const sortInfo: PersonSortInfoRequest = {
@@ -111,11 +113,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
       return [];
     } else {
       setListOpen(true);
-      return (allPeople?.people ?? []).filter((person) => {
-        return `${person.name} ${person.lastname} ${person.email}`
-          .toLowerCase()
-          .includes(debouncedSearchQuery.toLowerCase().trim());
-      });
+      return allPeople?.people ?? [];
     }
   }, [debouncedSearchQuery, allPeople]);
 
@@ -219,6 +217,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     setUserSalary({ ...userSalary, amount: undefined });
     setUserOccupancy([]);
     setProjectDetails(null);
+    setAllPeople(undefined);
     setModalOpen(false);
   };
 
@@ -226,6 +225,7 @@ export default function TeamModal({ handleAddPerson }: TeamModalProps) {
     reset();
     setUserSalary({ ...userSalary, amount: undefined });
     setUserOccupancy([]);
+    setAllPeople(undefined);
   };
 
   const onSubmit: SubmitHandler<AssignPersonFormFields> = async (
