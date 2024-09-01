@@ -62,12 +62,12 @@ export const TaskItem: FC<TaskItemProps> = ({
               <div className={`flex`}>
                 <div className={`${bgColor} rounded-full w-2 h-2 ${animation}`} />
               </div>
-              <p className="flex justify-start font-semibold italic text-xs uppercase">
+              <p className="flex justify-start font-semibold text-xs uppercase">
                 {text}
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-start py-4 px-4 space-x-2">
+          <div className="flex items-center justify-center py-4 px-4 space-x-2">
             <TiFlag className="size-5 fill-muted" />
             <p className="font-normal text-muted text-normal">
               {TextUtil.refactorDate(task.endDate)} ({daysLeft} days left)
