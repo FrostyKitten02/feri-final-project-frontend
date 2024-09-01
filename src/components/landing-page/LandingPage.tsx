@@ -9,7 +9,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-white overflow-hidden">
+    <div className="flex flex-col h-screen min-h-screen w-screen bg-white">
       <SignedOut>
         <div className="flex flex-col w-full h-full">
           <div className="flex flex-row w-full h-[80px] items-center px-12 pt-4 justify-between bg-white">
@@ -20,18 +20,13 @@ export default function LandingPage() {
                 alt="steer logo"
               />
             </div>
-            <div className="flex flex-row w-full gap-x-8 justify-end items-center">
-              <button onClick={() => navigate(Paths.SIGN_IN)}>
+            <div className="flex flex-row w-full justify-end items-center">
+              <button
+                onClick={() => navigate(Paths.SIGN_IN)}
+                className="hover:text-primary transition delay-50"
+              >
                 <span className="text-md font-semibold">Sign in</span>
               </button>
-              {/*
-              <button
-                onClick={() => navigate(Paths.SIGN_UP)}
-                className="border border-solid rounded-xl px-4 py-2 border-black"
-              >
-                <span className="text-md font-semibold">Get started</span>
-              </button>
-                */}
             </div>
           </div>
           <div className="flex w-full h-full py-4 px-4">
@@ -44,10 +39,10 @@ export default function LandingPage() {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.5, type: "spring" }}
                 >
-                  <h1 className="font-extrabold text-6xl">
+                  <h1 className="font-extrabold text-6xl max-[1499px]:text-3xl">
                     Steer Your Projects to Success.
                   </h1>
-                  <h1 className="font-extrabold text-6xl">
+                  <h1 className="font-extrabold text-6xl max-[1499px]:text-3xl">
                     Simplify Management, Amplify Productivity.
                   </h1>
                 </motion.div>
@@ -57,7 +52,7 @@ export default function LandingPage() {
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.8, type: "spring" }}
                 >
-                  <p className="text-xl text-gray-600 font-normal">
+                  <p className="text-xl text-gray-600 font-normal max-[1499px]:text-sm">
                     Steer streamlines project management by letting you create
                     projects, set budgets, assign tasks, and manage team
                     workloads. Track progress and stay on budget.
@@ -72,9 +67,9 @@ export default function LandingPage() {
                 >
                   <button
                     onClick={() => navigate(Paths.SIGN_IN)}
-                    className="py-4 px-6 bg-primary rounded-xl transition delay-50"
+                    className="w-[200px] h-[60px] max-[1499px]:w-[150px] max-[1499px]:h-[40px] bg-primary rounded-xl transition delay-50 flex justify-center items-center"
                   >
-                    <span className="text-white font-semibold">
+                    <span className="text-white font-semibold text-lg max-[1499px]:text-xs">
                       Start Managing Now
                     </span>
                   </button>
