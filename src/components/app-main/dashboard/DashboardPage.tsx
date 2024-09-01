@@ -6,8 +6,8 @@ export const DashboardPage = () => {
     return (
         <div className="flex flex-grow">
                 <div className="p-5 flex flex-col flex-grow">
-                    <div className="flex flex-grow">
-                        <div className="flex flex-col">
+                    <div className="flex max-[1400px]:flex-col flex-grow">
+                        <div className="flex max-[1200px]:flex-col min-[1400px]:flex-col">
                             <UserDetails />
                             <UpcomingProject />
                         </div>

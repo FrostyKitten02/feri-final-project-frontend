@@ -21,7 +21,7 @@ export const ProjectFilter = ({setSelectedStatus, selectedStatus}: ProjectFilter
     }
 
     return (
-        <div className="flex flex-grow justify-between items-center">
+        <div className="flex max-[1200px]:flex-col flex-grow justify-between items-center">
             <div className="flex flex-row space-x-10">
                 <div className="flex items-center">
                     <div className="rounded-full bg-c-teal w-2 h-2 mr-2"/>

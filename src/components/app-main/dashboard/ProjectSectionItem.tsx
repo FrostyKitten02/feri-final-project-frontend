@@ -90,9 +90,9 @@ export const ProjectSectionItem = ({project, currentPerson}: ProjectSectionItemP
             </div> :
             <button
                 onClick={handleNavigate}
-                className={`${project.ownerId === user?.id ? "hover:bg-gray-100 transition delay-50" : "cursor-default"} w-1/2 rounded-[20px]`}>
+                className={`${project.ownerId === user?.id ? "hover:bg-gray-100 transition delay-50" : "cursor-default"} w-1/2 w-full rounded-[20px]`}>
                 <div
-                    className="h-full border-solid border-[1px] rounded-[20px] border-gray-200 pt-5 px-5 space-y-5 flex flex-col">
+                    className="h-full border-solid border-[1px] rounded-[20px] w-full border-gray-200 pt-5 px-5 space-y-5 flex flex-col">
                     <div className="flex flex-row items-center">
                         <div
                             className="flex items-center justify-center rounded-full w-6 h-6 bg-gray-200">
@@ -209,7 +209,7 @@ export const ProjectSectionItem = ({project, currentPerson}: ProjectSectionItemP
                                 </Label>
                                 <div className="flex-grow h-[1px] bg-gray-300"/>
                             </div>
-                            <div className="text-2xl font-semibold">
+                            <div className="text-2xl font-semibold pb-5">
                                 {TextUtil.roundDownToTwoDecimalPlaces(assignedData?.estimatedPm ?? 0) + " PM" ?? "N/A"}
                             </div>
                         </div>

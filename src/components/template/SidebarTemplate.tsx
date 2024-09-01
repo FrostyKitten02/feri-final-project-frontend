@@ -63,10 +63,10 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
 
   return (
     <motion.div
-      animate={{ width: opened ? "18%" : "6%" }}
-      initial={{ width: opened ? "18%" : "6%" }}
+      animate={{ width: opened ? "350px" : "100px" }}
+      initial={{ width: opened ? "350px" : "100px" }}
       transition={{ duration: 0.3 }}
-      className={`h-full text-white pb-3 flex items-center flex-col flex-wrap bg-transparent`}
+      className={`text-white pb-3 flex items-center flex-col flex-wrap bg-transparent`}
     >
       <div
         className={
@@ -103,11 +103,9 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
           />
         ))}
       </div>
-      <div className="flex flex-col gap-y-4 items-center w-full mb-2">
+      <div className="gap-y-4 items-center w-full mb-2">
         <motion.div
-          className={`flex flex-row justify-center px-4 w-[300px] h-20 rounded-[20px] gap-x-4 ${
-            opened && `bg-white`
-          }`}
+          className={`flex flex-row justify-center gap-x-4`}
           initial={{ visibility: "hidden", opacity: 0 }}
           animate={{ visibility: "visible", opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.7 }}
@@ -120,20 +118,19 @@ const SidebarTemplate: React.FC<SidebarTemplateProps> = ({
               transition={{ delay: 0.2, duration: 0.7 }}
               className="flex flex-col items-start justify-center"
             >
-              <div className="text-black font-semibold text-lg flex flex-row items-center gap-x-1">
+              <div className="text-white font-semibold text-lg flex flex-row items-center gap-x-1">
                 <p>{user?.fullName}</p>
                 {person?.admin && (
                   <p className="text-danger text-sm">(admin)</p>
                 )}
               </div>
-              <div className="text-gray-500 font-normal text-sm">
+              <div className="text-white font-normal text-sm">
                 <p>{user?.primaryEmailAddress?.emailAddress}</p>
               </div>
             </motion.div>
           )}
         </motion.div>
       </div>
-
       {showReturn && (
         <button onClick={() => handleReturn()} className="w-full py-6">
           <div className="flex flex-row items-center justify-around w-full">

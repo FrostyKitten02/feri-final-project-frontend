@@ -51,9 +51,9 @@ function ProjectMainPage() {
     ]
 
     return (
-        <div className="flex flex-row h-screen bg-gradient-to-tr from-primary to-c-sky">
+        <div className="flex flex-row min-h-screen min-[1800px]:h-screen bg-gradient-to-tr from-primary to-c-sky">
             <SidebarTemplate items={items} showReturn={true}/>
-            <div className="flex w-[82%] flex-grow my-5 mr-5">
+            <div className="flex w-[82%] flex-grow py-5 pr-5">
                 <div className="flex bg-white flex-grow rounded-[20px]">
                     <Outlet/>
                 </div>

@@ -34,7 +34,7 @@ export const CurrentlyRelevant = ({statistics}: CurrentMonthProps) => {
     };
 
     return (
-        <div className="flex flex-col flex-grow space-y-8">
+        <div className="flex flex-col flex-grow h-full justify-around">
             {
                 statistics.workPackages?.length !== 0 && (
                     <Fragment>
