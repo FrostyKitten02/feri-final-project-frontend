@@ -218,7 +218,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project, currentPerson}) => {
                                                     <div className="flex-grow h-[1px] bg-gray-300"/>
                                                 </div>
                                                 <div className="text-2xl font-semibold">
-                                                    {TextUtil.roundDownToTwoDecimalPlaces(assignedData?.estimatedPm ?? 0) + " PM" ?? "N/A"}
+                                                    {TextUtil.roundDownToTwoDecimalPlaces(assignedData?.estimatedPm ?? 0) + " PM"}
                                                 </div>
                                             </div>
                                         </div>

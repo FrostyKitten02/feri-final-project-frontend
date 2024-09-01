@@ -28,9 +28,3 @@ export const AppMainPage = () => {
         </div>
     )
 }
-
-{
-    /*
-    bg-gradient-to-tr from-c-sky to-primary
-     */
-}
