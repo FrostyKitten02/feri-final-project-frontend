@@ -70,15 +70,15 @@ export default function ProjectDashboardPage() {
   };
 
   return (
-    <div className="flex flex-grow overflow-y-auto">
+    <div className="flex flex-grow">
       {loading ? (
-        <div className="flex justify-center items-center h-full w-full">
+        <div className="flex justify-center h-full w-full">
           <Spinner size="xl" />
         </div>
       ) : (
-        <>
+        <div className="flex min-[1800px]:flex-row flex-col flex-grow">
           <div className="p-5 flex flex-col flex-grow">
-            <div className="flex">
+            <div className="flex max-[1400px]:flex-col">
               {project && chosenSchema && (
                 <ProjectDetails project={project} chosenSchema={chosenSchema} handleEditProject={fetchData} />
               )}
@@ -86,12 +86,12 @@ export default function ProjectDashboardPage() {
                 <WorkDetails project={project} statistics={statistics} />
               )}
             </div>
-            <div className="flex flex-grow">
+            <div className="flex flex-grow max-[1400px]:flex-col">
               {statistics && <CostTimeline stats={statistics} />}
               {<BudgetBreakdown statistics={statistics}/>}
             </div>
           </div>
-          <div className="py-5 pr-5 w-[400px]">
+          <div className="min-[1800px]:py-5 min-[1800px]:pr-5 w-[400px] pl-10 pb-5 min-[1800px]:pl-0 min-[1800px]:pb-5">
             <div className="relative py-5 pr-5 z-0 h-full">
               <div className="border-gray-200 h-full flex justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
                 {statistics && <CurrentlyRelevant statistics={statistics} />}
@@ -102,8 +102,7 @@ export default function ProjectDashboardPage() {
               </div>
             </div>
           </div>
-
-        </>
+        </div>
       )}
     </div>
   );

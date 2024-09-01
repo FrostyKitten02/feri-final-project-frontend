@@ -101,7 +101,7 @@ export const UpcomingProject = () => {
                                     </div>
                                 </div>
                             </div> :
-                            <div className="flex-grow flex items-center justify-center text-muted">
+                            <div className="flex-grow h-full flex items-center justify-center text-muted">
                                 There is no upcoming project.
                             </div>
                 }

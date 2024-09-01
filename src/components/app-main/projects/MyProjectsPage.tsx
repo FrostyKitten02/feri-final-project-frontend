@@ -130,7 +130,7 @@ export const MyProjectsPage = () => {
                                 className="border-[1px] h-full border-solid rounded-[20px] border-gray-200 flex flex-col flex-grow p-5">
                                 <div className="flex justify-center items-center h-full">
                                     {projects?.projects && projects.projects.length > 0 ? (
-                                        <div className="grid grid-cols-3 w-full h-full">
+                                        <div className="grid min-[1750px]:grid-cols-3 w-full h-full">
                                             {projects.projects.map((project) => (
                                                 currentPerson &&
                                                 <ProjectItem

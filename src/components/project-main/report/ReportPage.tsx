@@ -149,31 +149,23 @@ export const ReportPage = () => {
               <Spinner size="xl" />
             </div>
           ) : (
-            <div className="flex h-full">
-              <div className="w-[450px]">
+            <div className="flex max-[1800px]:justify-center max-[1800px]:items-center h-full">
+              <div className="min-[1800px]:w-[450px] w-[700px]">
                 <div className="text-xl font-semibold text-center">
                   What kind of report would you like to create?
                 </div>
-                <div className="flex justify-evenly py-8">
+                <div className="flex justify-evenly py-8 space-x-2">
                   <button
-                    className={`${
-                      reportType === "monthly"
-                        ? "bg-c-blue bg-opacity-20"
-                        : "hover:bg-gray-100"
-                    } text-lg rounded-lg py-2 px-4`}
-                    onClick={() => handleButton("monthly")}
+                      className="bg-primary w-full text-white font-semibold py-2 px-4 rounded-lg uppercase"
+                      onClick={() => handleButton("monthly")}
                   >
                     Monthly
                   </button>
                   <button
-                    className={`${
-                      reportType === "quarterly"
-                        ? "bg-c-blue bg-opacity-20"
-                        : "hover:bg-gray-100"
-                    } text-lg rounded-lg py-2 px-4`}
-                    onClick={() => handleButton("quarterly")}
+                      className="bg-primary text-white w-full font-semibold py-2 px-4 rounded-lg uppercase"
+                      onClick={() => handleButton("quarterly")}
                   >
-                    Quarterly
+                    quarterly
                   </button>
                 </div>
                 {reportType === "monthly" ? (
@@ -266,8 +258,8 @@ export const ReportPage = () => {
                   )
                 )}
               </div>
-              <div className="bg-gray-200 w-[1px] mx-5 h-full" />
-              <div className="overflow-y-auto h-full w-full flex items-center justify-center">
+              <div className="bg-gray-200 w-[1px] mx-5 max-[1800px]:hidden h-full" />
+              <div className="overflow-y-auto h-full w-full flex items-center justify-center max-[1800px]:hidden">
                 {selectedMonthly.value === "" ? (
                   <div className="flex flex-col h-full items-center justify-center">
                     <TbReportAnalytics className="stroke-muted size-44 pb-6" />

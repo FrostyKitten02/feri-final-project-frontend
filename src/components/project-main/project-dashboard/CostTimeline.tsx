@@ -20,7 +20,7 @@ export const CostTimeline = ({stats}: CostTimelineProps) => {
     return (
         <div className="relative p-5 z-0">
             <div
-                className="border-gray-200 w-[700px] h-full flex justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
+                className="border-gray-200 min-[1400px]:w-[700px] h-full flex justify-center items-center rounded-[20px] p-5 border-solid border-[1px]">
                 {
                     stats.workPackages?.length !== 0 && chartData.length !== 0 ?
                         <AreaChart
