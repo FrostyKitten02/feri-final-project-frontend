@@ -23,7 +23,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project, currentPerson}) => {
     const [assignedData, setAssignedData] = useState<PersonOnProjectDto>();
     const [loading, setLoading] = useState<boolean>(true);
     const progress: number = TextUtil.returnProgress(project?.startDate, project?.endDate);
-    const {text, color, bgColor} = TextUtil.returnProgressText(progress);
+    const {text, color, bgColor, animation} = TextUtil.returnProgressText(progress);
 
     useEffect(() => {
         if (project) {
@@ -126,7 +126,7 @@ export const ProjectItem: FC<ProjectItemProps> = ({project, currentPerson}) => {
                                 />
                                 <div className="text-muted text-start uppercase text-sm pb-4">
                                     <div className="flex items-center">
-                                        <div className={`${bgColor} rounded-full w-2 h-2 mr-2`}/>
+                                        <div className={`${bgColor} rounded-full w-2 h-2 mr-2 ${animation}`}/>
                                         <div className="text-sm uppercase tracking-wider">
                                             {`${text}: ${Math.floor(TextUtil.returnProgress(project?.startDate, project?.endDate)).toString()}%`}
                                         </div>
