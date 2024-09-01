@@ -144,7 +144,7 @@ export const ProjectSectionItem = ({project, currentPerson}: ProjectSectionItemP
                                                 index="name"
                                                 colors={['rose', 'blue']}
                                                 yAxisWidth={0}
-                                                className="h-full max-h-[250px] w-[350px]"
+                                                className="h-full h-[250px] w-[350px]"
                                                 valueFormatter={pmValueFormatter}
                                             /> :
                                             <div
@@ -172,7 +172,7 @@ export const ProjectSectionItem = ({project, currentPerson}: ProjectSectionItemP
                                                 index="name"
                                                 colors={['rose', 'violet']}
                                                 yAxisWidth={0}
-                                                className="h-full max-h-[250px] w-[350px]"
+                                                className="h-full h-[250px] w-[350px]"
                                                 valueFormatter={budgetValueFormatter}
                                             /> :
                                             <div

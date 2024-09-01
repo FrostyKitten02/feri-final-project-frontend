@@ -70,7 +70,7 @@ export const ActiveProjectsSection = () => {
                         <div className="flex flex-grow justify-center items-center h-full">
                             <Spinner size="xl"/>
                         </div> :
-                        <div className="flex max-[900px]:flex-col max-[900px]:space-y-10 min-[900px]:space-x-5 w-full">
+                        <div className="flex max-[1750px]:flex-col max-[1750px]:space-y-10 min-[1750px]:space-x-5 w-full">
                             {
                                 (relevantProjects && currentPerson && relevantProjects?.length > 0) ? relevantProjects?.map((project, index) => {
                                     return (
