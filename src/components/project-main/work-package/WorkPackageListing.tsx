@@ -65,9 +65,9 @@ export const WorkPackageListing: FC = () => {
   return (
     <div className="flex w-full p-10">
       <div
-        className={`relative flex flex-col  flex-grow border-[1px] border-gray-200 border-solid rounded-[20px]`}
+        className={`relative flex flex-col flex-grow border-[1px] border-gray-200 border-solid rounded-[20px]`}
       >
-        <div className="w-full h-full px-16 rounded-bl-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-muted scrollbar-track-white">
+        <div className="w-full h-full px-10 pb-10 rounded-bl-[20px] overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thumb-muted scrollbar-track-white">
           {loading ? (
             <div className="flex justify-center items-center h-full">
               <Spinner size="xl" />

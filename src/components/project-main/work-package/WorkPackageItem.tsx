@@ -50,7 +50,7 @@ export const WorkPackageItem: FC<WorkPackageItemProps> = ({
     workPackage && (
       <div
         key={workPackage.id}
-        className="flex rounded-xl border border-gray-200 border-solid mt-8"
+        className="flex rounded-xl border border-gray-200 border-solid mt-10"
       >
         <div className="flex flex-col w-1/3 rounded-l-xl">
           <div className="flex flex-col flex-grow p-5">

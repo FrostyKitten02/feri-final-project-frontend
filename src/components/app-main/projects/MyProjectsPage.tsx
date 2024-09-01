@@ -147,13 +147,8 @@ export const MyProjectsPage = () => {
                                                 <IoFolderOutline className="stroke-muted size-40 pb-6"/>
                                                 <p className="text-2xl font-bold text-muted">No projects found.</p>
                                                 <p className="pb-6 text-muted">
-                                                    Navigate to the top right to create a project or click
-                                                    the button below.
+                                                    Navigate to the top right to create a project.
                                                 </p>
-                                                <ProjectModal
-                                                    handleProjectSubmit={handleProjectAdd}
-                                                    callToAction={true}
-                                                />
                                             </div>
                                         </div>
                                     )}
